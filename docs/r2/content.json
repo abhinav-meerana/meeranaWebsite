@@ -1,0 +1,1166 @@
+{
+ "products": [
+  {
+   "slug": "tasree3",
+   "audiences": [
+    "Process owners and process-excellence teams",
+    "Transformation and BPR programme teams",
+    "Compliance and internal audit",
+    "Finance and operations approvers (Viewer, Author, Reviewer, Endorser, Approver, Admin roles)",
+    "Government entities working on Zero Government Bureaucracy",
+    "Enterprises and SMEs in manufacturing, banking and finance, healthcare and government"
+   ],
+   "useCases": [
+    {
+     "title": "Clear bureaucracy from government services",
+     "body": "Map a service as it really runs, remove the steps that add nothing, and publish the approved version. Tasree3 is built for the re-engineering work the UAE's Zero Government Bureaucracy programme calls for.",
+     "evidence": "EV-410 (ok-to-use); EV-403 (ok-to-use); EV-405 (ok-to-use)",
+     "status": "Phrase as alignment with the programme, never as government endorsement (EV-410 note)."
+    },
+    {
+     "title": "Turn event logs into an as-is map",
+     "body": "Upload CSV, JSON, PDF or DOCX files, or connect an HRMS. The wizard maps case, activity and timestamp columns, explains anything it cannot read, and AI extracts events from documents.",
+     "evidence": "EV-552 (ok-to-use)",
+     "status": "Do not name the HRMS (Tamkeen HRMS is EV-470, confirm-with-meerana)."
+    },
+    {
+     "title": "Find the bottleneck before the workshop",
+     "body": "Switch the mined map between frequency and performance views, see the primary bottleneck, and inspect any step for waiting time and SLA conformance. The AI Copilot Consultant then explains delay, rework and what to change.",
+     "evidence": "EV-556 (ok-to-use)"
+    },
+    {
+     "title": "Audit every process against its approved model",
+     "body": "Start a global audit from the Conformance Center and export the Conformance Analysis Report as PDF or Excel for compliance and internal audit teams.",
+     "evidence": "EV-557 (ok-to-use); EV-404 (ok-to-use)"
+    },
+    {
+     "title": "Publish manuals and RACI matrices from one repository",
+     "body": "Generate process manuals, RACI matrices, gap analyses and digital-maturity reports from the shared process repository, so documentation follows the approved process instead of a separate file.",
+     "evidence": "EV-557 (ok-to-use); EV-402 (ok-to-use)"
+    },
+    {
+     "title": "Govern changes across departments",
+     "body": "Send a revised model through an ordered reviewer chain to a final approver. Reviewers see an AI summary of what changed, and an archived version can be restored as a draft.",
+     "evidence": "EV-555 (ok-to-use)"
+    }
+   ],
+   "capabilities": [
+    {
+     "title": "Process Copilot in the BPMN editor",
+     "body": "Ask in plain language to add gateways, insert events, explain a model or analyse it for bottlenecks.",
+     "evidence": "EV-554 (ok-to-use)"
+    },
+    {
+     "title": "Describe a process, get a BPMN draft",
+     "body": "Type the process in a sentence; Tasree3 drafts the BPMN diagram and waits for you to add it to the canvas or discard it.",
+     "evidence": "EV-554 (ok-to-use); EV-523 (ok-to-use, proposed row in docs/DEMO-MEDIA-PLAN.md §9, not yet merged into the register)"
+    },
+    {
+     "title": "Frequency and performance views",
+     "body": "One mining canvas shows how often each path runs and how long it takes, with total cases, average throughput time and variants.",
+     "evidence": "EV-556 (ok-to-use)"
+    },
+    {
+     "title": "A node inspector for every step",
+     "body": "Waiting time, SLA conformance and resources for any activity on the discovered map.",
+     "evidence": "EV-556 (ok-to-use)"
+    },
+    {
+     "title": "AI Analyst and case explorer",
+     "body": "Question the mined data in a chat, then open the individual cases behind the answer.",
+     "evidence": "EV-556 (ok-to-use)"
+    },
+    {
+     "title": "Fourteen built-in reports",
+     "body": "Overview dashboard, global matrix, relationship log, alignment health registry, RACI matrix, process manuals, gap analysis, user access audit and platform adoption, among others.",
+     "evidence": "EV-557 (ok-to-use)"
+    },
+    {
+     "title": "AI summary of changes between versions",
+     "body": "Reviewers read what changed before they approve, instead of comparing two diagrams by eye.",
+     "evidence": "EV-555 (ok-to-use)"
+    },
+    {
+     "title": "Approval cycle time and workflow history",
+     "body": "See how long approvals take and the full audit trail of every submission, review and decision.",
+     "evidence": "EV-555 (ok-to-use)"
+    },
+    {
+     "title": "As-is and to-be in one catalogue",
+     "body": "Scopes for as-is and to-be; EPC, BPMN, value-added chain, organisation and mining diagrams; statuses from draft to approved, with search, filters and bulk upload.",
+     "evidence": "EV-553 (ok-to-use)"
+    },
+    {
+     "title": "BPMN 2.0 XML import and export",
+     "body": "Bring models in from other tools and take them out again; export maps as PDF (A4 or A3), PNG, HTML or animated GIF.",
+     "evidence": "EV-554 (ok-to-use); EV-556 (ok-to-use)"
+    }
+   ],
+   "deploymentAndSecurity": [
+    {
+     "fact": "Can run in your own cloud or data centre, in the region you choose.",
+     "evidence": "EV-407 (ok-to-use; phrase as an option, delivered on-premises projects are unconfirmed)"
+    },
+    {
+     "fact": "Separated as-is and to-be staging, alongside encryption at rest, role-based access control and SIEM-compatible logging.",
+     "evidence": "EV-408 (ok-to-use)"
+    },
+    {
+     "fact": "Single sign-on with Microsoft Entra ID, SAML 2.0 or OIDC, including Google, Microsoft or your organisation's own identity provider.",
+     "evidence": "EV-408 (ok-to-use); EV-551 (ok-to-use)"
+    },
+    {
+     "fact": "No self-registration: your administrator provisions every user; passwords are reset by one-time code.",
+     "evidence": "EV-551 (ok-to-use)"
+    },
+    {
+     "fact": "Six governance roles: Viewer, Author, Reviewer, Endorser, Approver and Admin.",
+     "evidence": "EV-405 (ok-to-use)"
+    },
+    {
+     "fact": "Every approval captures a version, with full history and one-click rollback.",
+     "evidence": "EV-405 (ok-to-use)"
+    },
+    {
+     "fact": "A user access audit report shows who can see and change what.",
+     "evidence": "EV-557 (ok-to-use)"
+    },
+    {
+     "fact": "Designed and developed in the United Arab Emirates by Meerana.",
+     "evidence": "EV-410 (ok-to-use)"
+    }
+   ],
+   "integrations": [
+    {
+     "fact": "Identity: Microsoft Entra ID, SAML 2.0 and OIDC single sign-on; Google and Microsoft sign-in.",
+     "evidence": "EV-408 (ok-to-use); EV-551 (ok-to-use)"
+    },
+    {
+     "fact": "Data in: CSV, JSON, PDF and DOCX event sources, or a connected HRMS, with automatic header mapping.",
+     "evidence": "EV-552 (ok-to-use)"
+    },
+    {
+     "fact": "Models: BPMN 2.0 XML import and export.",
+     "evidence": "EV-554 (ok-to-use)"
+    },
+    {
+     "fact": "Outputs: PDF, Excel and PowerPoint exports; maps as PNG, PDF or animated GIF; audit reports as PDF or Excel.",
+     "evidence": "EV-402 (ok-to-use); EV-556 (ok-to-use); EV-557 (ok-to-use)"
+    },
+    {
+     "fact": "AI provider settings that accept your organisation's own keys.",
+     "evidence": "EV-523 (ok-to-use, proposed row in docs/DEMO-MEDIA-PLAN.md §9)"
+    }
+   ],
+   "faq": [
+    {
+     "q": "Do we need clean event logs to start?",
+     "a": "No. You can model in the editor, describe a process in plain language, or upload CSV, JSON, PDF or DOCX files. AI extracts events from documents and the wizard maps the required fields.",
+     "evidence": "EV-552 (ok-to-use); EV-554 (ok-to-use)"
+    },
+    {
+     "q": "Which notations does Tasree3 support?",
+     "a": "BPMN 2.0, EPC and value chains, plus organisation diagrams, with BPMN 2.0 XML import and export.",
+     "evidence": "EV-403 (ok-to-use); EV-553 (ok-to-use); EV-554 (ok-to-use)"
+    },
+    {
+     "q": "Can Tasree3 run on our own infrastructure?",
+     "a": "It can run in your own cloud or data centre, in the region you choose. Tell us your requirements and we will confirm the configuration with you.",
+     "evidence": "EV-407 (ok-to-use)"
+    },
+    {
+     "q": "How are process changes approved?",
+     "a": "Through an ordered chain of reviewers and a final approver. Each approval captures a version, reviewers see an AI summary of the changes, and earlier versions can be restored.",
+     "evidence": "EV-555 (ok-to-use); EV-405 (ok-to-use)"
+    },
+    {
+     "q": "Does Tasree3 work in Arabic?",
+     "a": "Yes. Users switch between English and Arabic at sign-in, and the platform supports right-to-left layouts.",
+     "evidence": "EV-551 (ok-to-use); EV-123 (ok-to-use)"
+    }
+   ],
+   "availableRealScreens": [
+    "public/media/v3/card-tasree3-command-center.webp: Command Center, 1920x1200, Product screen · demo data (demo recording; tenant greeting painted out). No people. In use (hero, showcase).",
+    "public/media/v3/wall-02-tasree3-command-center.webp: same view as a 1200x750 tile. No people. In use (hero room).",
+    "public/media/v3/wall-10-tasree3-conformance.webp: Conformance Center KPIs, 1200x750, Product screen · demo data. No people. In use (Output beat).",
+    "media-src/held/unreferenced/media/v3/card-tasree3-text-to-bpmn.webp: plain-language prompt and the BPMN it generated, with Add to canvas / Discard all, 1920x1200, Product screen · demo data. No people. Recommended for the 'Describe a process' capability.",
+    "media-src/held/unreferenced/media/v3/wall-14-tasree3-bpmn.webp: BPMN gateway close-up, 1200x750. No people. Good foreground layer for a parallax panel.",
+    "media-src/held/unreferenced/media/v3/mobile-tasree3-command-center.webp: 4:3 crop, 1200x900. No people. For narrow viewports.",
+    "media-src/held/unreferenced/media/bg/tasree3-1280.webp and tasree3-1920.webp: AI-generated background plates. Not product screens; do not use.",
+    "Not available: the 11 IP-documentation screenshots (EV-550, confirm-with-meerana; red call-outs, clean recaptures needed)."
+   ],
+   "doNotSay": [
+    "'Reduce process modelling time by up to 70%' or any speed figure (EV-125, EV-412)",
+    "'100% end-to-end visibility', 'zero manual mapping errors' (EV-126)",
+    "The tasree3.ae example metrics: -34% cycle time, 98.2% conformance, 12 bottlenecks (EV-412)",
+    "Named connectors: SAP S/4HANA, Oracle, Dynamics 365, ServiceNow, Salesforce (EV-409, confirm-with-meerana)",
+    "'ISO 9001 aligned' (EV-406)",
+    "'Endorsed by' the government or the Zero Government Bureaucracy programme: alignment only (EV-410)",
+    "'Tashree' or 'TASREE' in running text (EV-120, B7)",
+    "Azure, Azure OpenAI, MongoDB or any production-stack detail (EV-558, internal-only)",
+    "On-premises delivery stated as an accomplished fact (EV-407 is an option)",
+    "'Tamkeen HRMS' by name (EV-470)",
+    "The real app screenshots with red IP call-outs (EV-550)"
+   ]
+  },
+  {
+   "slug": "yisbir",
+   "audiences": [
+    "Investigations and evidence teams",
+    "Security and control-room operators",
+    "HSE and site operations teams",
+    "Records, archive and media teams",
+    "Universities and campuses",
+    "Supermarket and retail operations",
+    "Construction and infrastructure operators",
+    "National and large organisations that prioritise data sovereignty"
+   ],
+   "useCases": [
+    {
+     "title": "Searchable lecture and meeting archives",
+     "body": "Universities and organisations index recorded lectures, town halls and meetings, then find a topic, phrase or on-screen slide across years of recordings, in more than 50 languages.",
+     "evidence": "EV-533 (use-with-edit); EV-440 (ok-to-use); EV-442 (ok-to-use)",
+     "status": "Documented capability (tier A); the vertical is owner framing (EV-533)."
+    },
+    {
+     "title": "Faster evidence review for investigators",
+     "body": "Index CCTV exports and interview recordings, search transcripts and on-screen text, and share only the relevant clips through secure downloads with access control.",
+     "evidence": "EV-533 (use-with-edit); EV-440 (ok-to-use); EV-442 (ok-to-use)",
+     "status": "Lead with evidence handling, never surveillance; no face or person search in copy (EV-535, DL-P07)."
+    },
+    {
+     "title": "Construction site safety and compliance",
+     "body": "Existing site cameras flag missing helmets and vests, restricted-zone entry, falls and workers in hazardous areas, and the same footage supports the incident investigation.",
+     "evidence": "EV-133 (ok-to-use); EV-134 (ok-to-use)",
+     "status": "Documented module (tier A)."
+    },
+    {
+     "title": "Headcount attendance, nobody identified",
+     "body": "Count people in lecture halls, classrooms or shifts and see attendance curves by room and hour, with face recognition left off.",
+     "evidence": "EV-138 (use-with-edit); EV-534 (ok-to-use); EV-535 (ok-to-use)",
+     "status": "Confirm with the product owner that headcount mode runs without face recognition (YISBIR-USE-CASES §8 item 2) before publishing."
+    },
+    {
+     "title": "Shelf checks for supermarkets and stores",
+     "body": "Camera analytics spot misplaced products on the shelf and sit beside footfall heatmaps by zone, so busy aisles with gaps are visible.",
+     "evidence": "EV-533 (use-with-edit); EV-138 (use-with-edit)",
+     "status": "Owner-stated (tier B). Publish as a capability only after model readiness is confirmed per deployment."
+    },
+    {
+     "title": "After-hours site security",
+     "body": "Watch entry and exit gates, storage areas, equipment yards and material warehouses for unauthorised access, after-hours intrusion, perimeter breaches and vehicle movement anomalies.",
+     "evidence": "EV-537 (use-with-edit)",
+     "status": "Describe observable events only; no 'suspicious behaviour' profiling, no licence plates."
+    }
+   ],
+   "capabilities": [
+    {
+     "title": "Transcripts in 50+ languages, by speaker",
+     "body": "Speech is transcribed with speaker diarization, so every passage carries who said it and when.",
+     "evidence": "EV-440 (ok-to-use); EV-442 (ok-to-use)"
+    },
+    {
+     "title": "Documents and on-screen text, searchable",
+     "body": "LLM-powered document analysis with OCR reads signage, slides and paperwork inside video.",
+     "evidence": "EV-442 (ok-to-use); EV-136 (use-with-edit)"
+    },
+    {
+     "title": "Six ways to search one index",
+     "body": "Phrase, metadata, similarity, fuzzy and synonym, vector and natural-language search over the same library.",
+     "evidence": "EV-442 (ok-to-use); EV-136 (use-with-edit)"
+    },
+    {
+     "title": "Cross-camera search by clothing colour",
+     "body": "Find a moment across cameras by clothing, helmet or vest colour, location, date and time.",
+     "evidence": "EV-135 (use-with-edit; no gender or plate search); EV-136 (use-with-edit)"
+    },
+    {
+     "title": "Fire and smoke on existing cameras",
+     "body": "Smoke and fire are flagged on the cameras already installed, with an event timeline from detection to acknowledgement.",
+     "evidence": "EV-138 (use-with-edit); EV-534 (ok-to-use)"
+    },
+    {
+     "title": "PPE, restricted zones and falls",
+     "body": "Missing helmets or vests, restricted-zone entry, falls and incidents, unsafe work practices and workers in hazardous areas.",
+     "evidence": "EV-134 (ok-to-use)"
+    },
+    {
+     "title": "Crowd density heatmaps",
+     "body": "See where people gather and when, by zone and hour, without identifying anyone.",
+     "evidence": "EV-138 (use-with-edit)"
+    },
+    {
+     "title": "Real-time alerts",
+     "body": "Detections raise alerts as they happen, so teams can act while an event is unfolding.",
+     "evidence": "EV-136 (use-with-edit); EV-132 (ok-to-use)"
+    },
+    {
+     "title": "Insight dashboards you configure",
+     "body": "Turn detections into compliance rates, occupancy curves and incident timelines on a fully customisable dashboard.",
+     "evidence": "EV-138 (use-with-edit); EV-534 (ok-to-use)"
+    },
+    {
+     "title": "Cited answers across video, audio, documents",
+     "body": "Ask a question in plain language and get an answer that cites the recordings and documents it came from, with key moments and side-by-side compare.",
+     "evidence": "EV-524 (capabilities ok-to-use, proposed row in docs/DEMO-MEDIA-PLAN.md §9; demo footage do-not-use)"
+    }
+   ],
+   "deploymentAndSecurity": [
+    {
+     "fact": "Can run fully on-premises, with no public cloud connection required; cloud and hybrid are also available.",
+     "evidence": "EV-443 (use-with-edit: say 'can run fully on-premises'); EV-444 (ok-to-use)"
+    },
+    {
+     "fact": "Engineered to run in your own data centre with minimal GPU overhead.",
+     "evidence": "EV-443 (use-with-edit)"
+    },
+    {
+     "fact": "Face recognition is an optional module, switched on or off per deployment, and is not part of any demonstration.",
+     "evidence": "EV-535 (ok-to-use)"
+    },
+    {
+     "fact": "Access control and secure downloads govern every export.",
+     "evidence": "EV-442 (ok-to-use)"
+    },
+    {
+     "fact": "Built for organisations that prioritise data sovereignty.",
+     "evidence": "EV-446 (use-with-edit; phrase as intent)"
+    },
+    {
+     "fact": "Developed by Meerana Technologies.",
+     "evidence": "EV-441 (ok-to-use)"
+    }
+   ],
+   "integrations": [
+    {
+     "fact": "API integration with your existing systems.",
+     "evidence": "EV-442 (ok-to-use)"
+    },
+    {
+     "fact": "Works with existing CCTV cameras and infrastructure; no hardware changes required.",
+     "evidence": "EV-444 (ok-to-use)"
+    },
+    {
+     "fact": "Upload content, let AI process it, search and discover, then export and share.",
+     "evidence": "EV-442 (ok-to-use)"
+    }
+   ],
+   "faq": [
+    {
+     "q": "Do we need new cameras?",
+     "a": "No. Yisbir works with your existing cameras and infrastructure, with no hardware changes required.",
+     "evidence": "EV-444 (ok-to-use)"
+    },
+    {
+     "q": "Can Yisbir run without the public cloud?",
+     "a": "Yes. It can run fully on-premises, or in the cloud or a hybrid set-up if you prefer.",
+     "evidence": "EV-443 (use-with-edit); EV-444 (ok-to-use)"
+    },
+    {
+     "q": "Does Yisbir use face recognition?",
+     "a": "Face recognition is an optional module that each organisation switches on or off for its own deployment. Our demonstrations focus on other detections.",
+     "evidence": "EV-535 (ok-to-use)"
+    },
+    {
+     "q": "What can it detect on live cameras?",
+     "a": "Fire and smoke, missing helmets and vests, restricted-zone entry, falls, unsafe work practices, after-hours intrusion, perimeter breaches, crowd density and attendance. Ask us about uniform compliance for your site.",
+     "evidence": "EV-134 (ok-to-use); EV-138 (use-with-edit); EV-534 (ok-to-use); EV-537 (use-with-edit)"
+    },
+    {
+     "q": "Which languages can it transcribe?",
+     "a": "More than 50, with speaker diarization so each passage is attributed to a speaker.",
+     "evidence": "EV-440 (ok-to-use); EV-442 (ok-to-use)"
+    }
+   ],
+   "availableRealScreens": [
+    "public/media/v3/card-yisbir-fire-smoke.webp: fire and smoke event with timeline, Design concept · sample data. No people. In use (hero). Shows 'Median time to alert: 4 s' as sample data; keep the label visible.",
+    "public/media/v3/wall-11-yisbir-fire-smoke.webp: 1200x750 version of the same. No people. In use (scenario, hero room).",
+    "public/media/v3/wall-01-yisbir-ppe-compliance.webp: PPE compliance by zone, no camera image. No people. In use. Recommended replacement for card-yisbir-ppe.",
+    "public/media/v3/wall-15-yisbir-alerts.webp: alerts by severity and type (PPE, zone, crowd, falls, smoke only). No people. In use.",
+    "FLAG (people): public/media/v3/card-yisbir-ppe.webp has a camera tile with six workers (about 10 px tall, faces not visible). Not recommended. It is the current showcase shot and Value-beat screen; swap for wall-01.",
+    "media-src/held/unreferenced/media/v3/card-yisbir-attendance.webp: campus attendance in headcount mode ('nobody identified'), 3D classroom render. No people. Recommended for the headcount use case.",
+    "media-src/held/unreferenced/media/v3/wall-03-yisbir-classroom-heatmap.webp and mobile-yisbir-classroom-heatmap.webp: classroom heatmap on a 3D floor-plan render. No people.",
+    "media-src/held/unreferenced/media/v3/wall-05-yisbir-occupancy-trend.webp: occupancy line chart. No people.",
+    "media-src/held/unreferenced/media/v3/wall-07-yisbir-campus-headcount.webp: 'People on campus, counted, not identified' (numbers only). No people.",
+    "media-src/held/unreferenced/media/v3/wall-13-yisbir-room-occupancy.webp: room occupancy grid. No people.",
+    "media-src/held/unreferenced/media/v3/wall-17-yisbir-store-footfall.webp: mall footfall by hour and zone, vector only. No people. Recommended for the retail use case.",
+    "FLAG (people, do not use): media-src/held/unreferenced/media/v3/wall-09-yisbir-camera-matrix.webp has a blurred classroom of people, warehouse workers, overhead pedestrians and a mall crowd.",
+    "FLAG (people, do not use): media-src/held/unreferenced/media/v3/wall-16-yisbir-restricted-zone.webp has an overhead camera with softened human figures.",
+    "media-src/held/unreferenced/media/bg/yisbir-1280.webp and yisbir-1920.webp: AI-generated plates. Do not use.",
+    "Not available: indexing-demo footage ('MediaVault', archival photographs of real people; B2, B3)."
+   ],
+   "doNotSay": [
+    "Face recognition, face search or person clips in any hero, demo, poster or homepage panel (EV-535, DL-P07)",
+    "Gender-attribute search, licence plates, weapons, violence or fight detection, spills, abandoned objects (EV-135, YISBIR-USE-CASES D20)",
+    "Accuracy percentages, '10M+ hours processed', '500+ cameras', '10x faster review' (EV-447)",
+    "'Suspicious behaviour' presented as profiling (EV-537)",
+    "Exam-hall monitoring, 'track anyone', 'identify everyone', watch lists, crime prediction (YISBIR-USE-CASES §5.2, §6)",
+    "'MediaVault' (B3)",
+    "info@yisbir.ai (EV-448)",
+    "'AI HR' or recruitment descriptions (EV-139)",
+    "'Smart gate and access control' under the Yisbir logo (EV-130)",
+    "Any integration with Wasel or another Meerana product (DL-P06)",
+    "Uniform compliance or product misplacement presented as proven before model readiness is confirmed (EV-533, EV-534 notes)",
+    "Live-looking counters or unlabelled numbers (YISBIR-USE-CASES §4)"
+   ]
+  },
+  {
+   "slug": "nazo",
+   "audiences": [
+    "Requesters and drafters of official correspondence",
+    "Reviewers and approvers",
+    "Authorised signatories",
+    "Administrators who own templates and workflows",
+    "Records and archive teams",
+    "Government entities and enterprises with formal correspondence (framing)"
+   ],
+   "useCases": [
+    {
+     "title": "Letters that need several signatures",
+     "body": "Route an outgoing letter through ordered review, approval and signing steps, with each signature placed where the template defines it.",
+     "evidence": "EV-545 (ok-to-use); EV-543 (ok-to-use)"
+    },
+    {
+     "title": "Recipients who can check a letter themselves",
+     "body": "Every sealed letter carries a QR code. Scanning it re-hashes the archived file and shows whether it is unchanged since sealing.",
+     "evidence": "EV-544 (ok-to-use)",
+     "status": "Say 'tamper-evident' and 'verifiable by QR', never 'legally binding' or 'immutable'."
+    },
+    {
+     "title": "Bilingual correspondence from one template",
+     "body": "Templates have English and Arabic twins with typed fields, and the AI translates a draft or a whole template on request.",
+     "evidence": "EV-545 (ok-to-use); EV-542 (ok-to-use)"
+    },
+    {
+     "title": "Reviewers who see what changed",
+     "body": "Approvers get an AI summary, a missing-information check and a 'what changed' view before they decide, and can return, redirect or reject.",
+     "evidence": "EV-542 (ok-to-use); EV-543 (ok-to-use)"
+    },
+    {
+     "title": "Standard templates across departments",
+     "body": "Administrators generate templates, suggest variables, and build and validate workflows with AI, then keep every workflow definition versioned.",
+     "evidence": "EV-542 (ok-to-use); EV-545 (ok-to-use)"
+    },
+    {
+     "title": "Inbound and outbound in one register",
+     "body": "Manage inbox and outbox together, search scanned documents with OCR, and keep every version in a vault with an audit trail.",
+     "evidence": "EV-142 (ok-to-use); EV-141 (ok-to-use)"
+    }
+   ],
+   "capabilities": [
+    {
+     "title": "Fourteen AI actions, scoped by role",
+     "body": "Requesters auto-fill, check errors, draft, generate references and translate; approvers summarise, check for missing information and draft comments; administrators generate templates and workflows.",
+     "evidence": "EV-542 (ok-to-use)"
+    },
+    {
+     "title": "References allocated on registration",
+     "body": "Each correspondence receives its reference when it is registered, before review begins.",
+     "evidence": "EV-543 (ok-to-use)"
+    },
+    {
+     "title": "Return, redirect, revise or skip",
+     "body": "The workflow handles the real paths a letter takes, not only approval.",
+     "evidence": "EV-543 (ok-to-use)"
+    },
+    {
+     "title": "SHA-256 seal on signature",
+     "body": "The signed PDF is hashed and its seal stored in the vault, so any later change is detectable.",
+     "evidence": "EV-544 (ok-to-use)"
+    },
+    {
+     "title": "QR verification for recipients",
+     "body": "A verification page re-hashes the archived bytes and compares them with the seal.",
+     "evidence": "EV-544 (ok-to-use)"
+    },
+    {
+     "title": "Typed fields in bilingual templates",
+     "body": "Text, date and signature fields, with English and Arabic twins of each template.",
+     "evidence": "EV-545 (ok-to-use)"
+    },
+    {
+     "title": "Signatures placed on attachments",
+     "body": "Signature positions are set on attachments as well as on the letter itself.",
+     "evidence": "EV-545 (ok-to-use)"
+    },
+    {
+     "title": "AI suggestions checked before they apply",
+     "body": "AI output is validated against the form before it touches the record; people approve.",
+     "evidence": "EV-546 (ok-to-use)"
+    },
+    {
+     "title": "Signature profiles and initials",
+     "body": "Draw or upload a signature, and apply initials at review.",
+     "evidence": "EV-522 (ok-to-use for capabilities, proposed row in docs/DEMO-MEDIA-PLAN.md §9; profile scene marked clean)"
+    },
+    {
+     "title": "OCR search across correspondence",
+     "body": "Find a letter by what it says, including scanned documents.",
+     "evidence": "EV-142 (ok-to-use)"
+    }
+   ],
+   "deploymentAndSecurity": [
+    {
+     "fact": "Deploys on-premises or in the cloud.",
+     "evidence": "EV-142 (ok-to-use)"
+    },
+    {
+     "fact": "Its AI model runs on the same servers as the application, so no outside AI service is needed for drafting and checks.",
+     "evidence": "EV-541 (use-with-edit; keep model names and version numbers internal)"
+    },
+    {
+     "fact": "Tamper-evident: sealed with SHA-256 and verifiable by QR.",
+     "evidence": "EV-544 (ok-to-use)"
+    },
+    {
+     "fact": "A vault with encryption and an audit trail.",
+     "evidence": "EV-142 (ok-to-use)"
+    },
+    {
+     "fact": "Users, roles and signature authority are managed centrally.",
+     "evidence": "EV-142 (ok-to-use)"
+    },
+    {
+     "fact": "AI output is schema-checked before any change is applied to a record.",
+     "evidence": "EV-546 (ok-to-use)"
+    }
+   ],
+   "integrations": [
+    {
+     "fact": "Self-contained: application, database, search and AI model run together, with no third-party AI service in the loop.",
+     "evidence": "EV-541 (use-with-edit)"
+    },
+    {
+     "fact": "A public verification page lets external recipients check a sealed letter by QR.",
+     "evidence": "EV-544 (ok-to-use)"
+    }
+   ],
+   "faq": [
+    {
+     "q": "How can a recipient tell a letter is genuine?",
+     "a": "By scanning its QR code. The verification page re-hashes the archived file and confirms whether it is unchanged since it was sealed.",
+     "evidence": "EV-544 (ok-to-use)"
+    },
+    {
+     "q": "Does Nazo send our documents to an outside AI service?",
+     "a": "No. Nazo's AI model runs on the same servers as the application.",
+     "evidence": "EV-541 (use-with-edit)"
+    },
+    {
+     "q": "Can the AI change a letter on its own?",
+     "a": "No. AI suggestions are checked against the form before they are applied, and people approve every step.",
+     "evidence": "EV-546 (ok-to-use); EV-543 (ok-to-use)"
+    },
+    {
+     "q": "Does Nazo work in Arabic?",
+     "a": "Yes. Templates have English and Arabic twins, and the interface supports both languages with right-to-left layouts.",
+     "evidence": "EV-545 (ok-to-use); EV-541 (use-with-edit)"
+    },
+    {
+     "q": "Can we run Nazo on our own servers?",
+     "a": "Yes. Nazo deploys on-premises or in the cloud.",
+     "evidence": "EV-142 (ok-to-use)"
+    }
+   ],
+   "availableRealScreens": [
+    "public/media/v3/card-nazo-ai-draft.webp: AI draft of a public-holiday announcement with typed variables, 1920x1200, Product screen · demo data (letterhead and tenant names cropped out). No people. In use (hero, showcase, Interface beat).",
+    "media-src/held/unreferenced/media/v3/wall-06-nazo-ai-draft.webp and mobile-nazo-ai-draft.webp: crops of the same draft. No people. The sample text reads 'applies to all federal government entities' (generic, no named body); acceptable, but prefer the card crop.",
+    "media-src/held/v3-video/nazo-loop-ai-drafting.mp4 (+ .av1.mp4, poster): AI Template Generator loop. No people. Held until a frame-by-frame clearance review (B1, EV-547).",
+    "media-src/held/unreferenced/media/bg/nazo-1280.webp and nazo-1920.webp: AI-generated plates. Do not use.",
+    "Not available: neutral-tenant screens of the decision panel, workflow builder, Arabic letter or verify page (EV-548 internal-only; re-record per B1)."
+   ],
+   "doNotSay": [
+    "'Legally binding' or 'immutable' (EV-544)",
+    "'10x faster processing', '100% secure and compliant' (EV-143)",
+    "Real ministry, bank or programme names in sample data (EV-145, EV-547, B1)",
+    "'Neonax' (EV-547)",
+    "'U Sign', 'NAZO Crystal Clear' or 'Nazoo' until DV-03 is decided (EV-540, EV-140)",
+    "Model names, vLLM, Qwen or API version numbers (EV-541 note)",
+    "'Approval chains with due dates': due dates are not in any register row; the current showcase and storyboard use it",
+    "Decision-panel or Arabic-letter footage from nazo.mp4 (B1)"
+   ]
+  },
+  {
+   "slug": "mandoobee",
+   "audiences": [
+    "Employees in the office, remote or in the field",
+    "Line managers who approve requests",
+    "Executives who need an attendance overview",
+    "HR and administration teams",
+    "HR directors and COOs choosing a workplace platform"
+   ],
+   "useCases": [
+    {
+     "title": "The whole workforce at a glance",
+     "body": "An admin dashboard and reports show attendance across the organisation: who clocked in at the office, who is remote and who has not clocked in yet.",
+     "evidence": "EV-115 (ok-to-use); EV-421 (ok-to-use)"
+    },
+    {
+     "title": "Meetings that end with shared minutes",
+     "body": "Schedule meetings, record minutes and share them from the same app, with the AI note assistant and speech to text doing the typing.",
+     "evidence": "EV-421 (ok-to-use); EV-115 (ok-to-use)"
+    },
+    {
+     "title": "Paperless document approval",
+     "body": "Create, review, sign and archive documents in one flow, with OCR scanning and PDF tools for the paper that still arrives.",
+     "evidence": "EV-421 (ok-to-use); EV-114 (ok-to-use); EV-115 (ok-to-use)"
+    },
+    {
+     "title": "Payroll and assets beside attendance",
+     "body": "HR runs payroll management and keeps an asset register in the same app as attendance and leave.",
+     "evidence": "EV-421 (ok-to-use)"
+    },
+    {
+     "title": "Projects and tasks without another tool",
+     "body": "Assign tasks, track projects and keep shared folders, links and videos next to the work.",
+     "evidence": "EV-421 (ok-to-use); EV-114 (ok-to-use)"
+    },
+    {
+     "title": "AI for contracts, documents and notes",
+     "body": "Ask questions of a document, review a contract or turn meeting notes into a summary with the built-in AI assistant.",
+     "evidence": "EV-114 (ok-to-use); EV-421 (ok-to-use)"
+    }
+   ],
+   "capabilities": [
+    {
+     "title": "Payroll management",
+     "body": "Payroll sits in the same platform as attendance and leave.",
+     "evidence": "EV-421 (ok-to-use)"
+    },
+    {
+     "title": "Asset management",
+     "body": "Keep track of the equipment issued to each team.",
+     "evidence": "EV-421 (ok-to-use)"
+    },
+    {
+     "title": "Minutes of meeting",
+     "body": "Record minutes against the meeting they belong to.",
+     "evidence": "EV-421 (ok-to-use)"
+    },
+    {
+     "title": "AI note assistant and speech to text",
+     "body": "Dictate or capture notes and let the assistant tidy them.",
+     "evidence": "EV-421 (ok-to-use); EV-115 (ok-to-use)"
+    },
+    {
+     "title": "AI document engine with OCR",
+     "body": "Scan paper, read it with OCR and generate documents with AI.",
+     "evidence": "EV-421 (ok-to-use); EV-114 (ok-to-use)"
+    },
+    {
+     "title": "Contract review and document Q&A",
+     "body": "Ask the assistant about a document or have it review a contract.",
+     "evidence": "EV-114 (ok-to-use)"
+    },
+    {
+     "title": "Smart signature",
+     "body": "Sign documents inside the app.",
+     "evidence": "EV-115 (ok-to-use)"
+    },
+    {
+     "title": "Chat, groups and announcements",
+     "body": "Internal chat, group conversations and company-wide announcements.",
+     "evidence": "EV-114 (ok-to-use); EV-421 (ok-to-use)"
+    },
+    {
+     "title": "Directories, shared folders and links",
+     "body": "Staff directories, shared folders and a library of important links and videos.",
+     "evidence": "EV-114 (ok-to-use); EV-115 (ok-to-use); EV-421 (ok-to-use)"
+    },
+    {
+     "title": "White-labelling and customisation",
+     "body": "Run Mandoobee under your own brand, configured to your organisation.",
+     "evidence": "EV-116 (ok-to-use)"
+    }
+   ],
+   "deploymentAndSecurity": [
+    {
+     "fact": "Deploys on-premise, in the cloud or as a hybrid.",
+     "evidence": "EV-116 (ok-to-use)"
+    },
+    {
+     "fact": "White-labelling and customisation are supported.",
+     "evidence": "EV-116 (ok-to-use)"
+    },
+    {
+     "fact": "Native apps are listed on the App Store and Google Play.",
+     "evidence": "EV-420 (ok-to-use)"
+    }
+   ],
+   "integrations": [
+    {
+     "fact": "Supports third-party integrations; none are named publicly, so scope them per project.",
+     "evidence": "EV-116 (ok-to-use)"
+    },
+    {
+     "fact": "Distributed through the App Store and Google Play.",
+     "evidence": "EV-420 (ok-to-use)"
+    }
+   ],
+   "faq": [
+    {
+     "q": "Is Mandoobee available on iOS and Android?",
+     "a": "Yes. Mandoobee is listed on the App Store and Google Play.",
+     "evidence": "EV-420 (ok-to-use)"
+    },
+    {
+     "q": "Can we host Mandoobee ourselves?",
+     "a": "Yes. It deploys on-premise, in the cloud or as a hybrid.",
+     "evidence": "EV-116 (ok-to-use)"
+    },
+    {
+     "q": "Can it carry our brand?",
+     "a": "Yes. Mandoobee supports white-labelling and customisation.",
+     "evidence": "EV-116 (ok-to-use)"
+    },
+    {
+     "q": "Does it connect to our other systems?",
+     "a": "Mandoobee supports third-party integrations. Tell us which systems you use and we will scope the connection with you.",
+     "evidence": "EV-116 (ok-to-use)"
+    },
+    {
+     "q": "What does the AI assistant do?",
+     "a": "It answers questions about documents, reviews contracts, keeps smart notes, turns speech into text and reads scanned paper with OCR.",
+     "evidence": "EV-114 (ok-to-use); EV-115 (ok-to-use); EV-421 (ok-to-use)"
+    }
+   ],
+   "availableRealScreens": [
+    "FLAG (people): public/media/v3/mandoobee-phones-cutout.webp shows three phones from smart-office-app.png. The greeting avatar and the employee-list photos are blurred but are still personal photos, and the source is EV-117 (confirm-with-meerana). It also shows an 'En | Ar' toggle and '18 Nov 2024'. In use (hero, showcase, Interface beat). Replace with a neutral reconstruction or cleared store screenshots.",
+    "public/media/v3/wall-08-mandoobee-app.webp: single phone home screen with clock-in and attendance donut; avatar and names out of frame. No people visible. In use (hero room). The safest current asset, though still derived from EV-117.",
+    "FLAG (people, low resolution): media-src/held/unreferenced/media/v3/card-mandoobee-app.webp has a blurred avatar and is visibly upscaled. Do not recommend.",
+    "FLAG (people): media-src/held/unreferenced/media/v3/mobile-mandoobee-app.webp has a blurred avatar in frame. Do not recommend.",
+    "media-src/held/unreferenced/media/bg/mandoobee-1280.webp and mandoobee-1920.webp: AI-generated plates. Do not use.",
+    "Not available: 8 Google Play and 8 App Store screenshots (EV-423, confirm-with-meerana; permission and a v1.0.17 check needed)."
+   ],
+   "doNotSay": [
+    "'Arabic and English' or 'bilingual' until EV-427 is confirmed (the En | Ar toggle in the phone images implies it, so caption carefully)",
+    "'Mandoobi' or 'Mandobee' (EV-110, EV-111)",
+    "'512+ organisations', '50K+ users', '99.9% uptime' or any adoption figure (EV-1190, EV-426)",
+    "Pricing, including AED per-user plans (EV-425)",
+    "'IoT Gate Pass', 'Control IoT Smart Pass' or any Wasel link (EV-115 note, EV-425, DL-P06)",
+    "'PRO automation' (EV-119)",
+    "'Web app' claims: the only evidence is EV-422 (internal-only), which the current storyboard cites; prefer the store listings (EV-420)",
+    "'Exportable for HR and audit' and 'from a single team to a group with several entities': current copy with no register row",
+    "Relationship to Campus 360 or Tamkeen HRMS (EV-470, EV-471)"
+   ]
+  },
+  {
+   "slug": "wasel",
+   "audiences": [
+    "Residents",
+    "Staff and contractors",
+    "Guards",
+    "Facility managers",
+    "Residential communities, villas and apartment buildings",
+    "Commercial buildings and multi-gate sites",
+    "Industrial and warehouse sites",
+    "Construction sites"
+   ],
+   "useCases": [
+    {
+     "title": "Residential communities with several gates",
+     "body": "Residents and staff open the gates they are allowed through from one app, and managers see the status of every gate in one place.",
+     "evidence": "EV-101 (ok-to-use); EV-103 (ok-to-use)"
+    },
+    {
+     "title": "Phone access for villas and apartments",
+     "body": "Open the building door or car-park gate from a phone, with an activity log of every opening.",
+     "evidence": "EV-101 (ok-to-use); EV-103 (ok-to-use)"
+    },
+    {
+     "title": "Role-based access for commercial buildings",
+     "body": "Give staff and contractors access by role to the doors and gates they need, secured with encrypted keys.",
+     "evidence": "EV-101 (ok-to-use); EV-103 (ok-to-use)"
+    },
+    {
+     "title": "Sites where the network drops",
+     "body": "When the internet fails, Wasel switches to the local network, and Bluetooth still opens the gate when there is no network at all.",
+     "evidence": "EV-102 (ok-to-use); EV-103 (ok-to-use)"
+    },
+    {
+     "title": "Warehouse and industrial gates",
+     "body": "Monitor gate position, temperature and humidity at the controller, and manage loading and service gates from one account.",
+     "evidence": "EV-104 (use-with-edit); EV-103 (ok-to-use)",
+     "status": "Lead with residential, commercial and multi-gate sites (EV-104 note)."
+    },
+    {
+     "title": "Construction site perimeters",
+     "body": "Control site gates from the app, keep a record of every opening, and keep access working offline when the site network is unreliable.",
+     "evidence": "EV-104 (use-with-edit); EV-103 (ok-to-use)",
+     "status": "Secondary environment per EV-104 note."
+    }
+   ],
+   "capabilities": [
+    {
+     "title": "Cellular, Wi-Fi, Bluetooth and offline modes",
+     "body": "Four ways to reach the gate, so one failed connection never locks anyone out.",
+     "evidence": "EV-103 (ok-to-use)"
+    },
+    {
+     "title": "An industrial-grade, plug-and-play controller",
+     "body": "Meerana's own controller hardware, with plug-and-play connections.",
+     "evidence": "EV-103 (ok-to-use); EV-530 (ok-to-use)"
+    },
+    {
+     "title": "Gate position sensing",
+     "body": "Position sensors report whether a gate is open or closed.",
+     "evidence": "EV-103 (ok-to-use)"
+    },
+    {
+     "title": "Temperature and humidity monitoring",
+     "body": "The controller reports its environment as well as the gate's state.",
+     "evidence": "EV-103 (ok-to-use)"
+    },
+    {
+     "title": "Over-the-air device provisioning",
+     "body": "Controllers are provisioned over the air.",
+     "evidence": "EV-103 (ok-to-use)"
+    },
+    {
+     "title": "Encrypted digital keys",
+     "body": "Access is carried by encrypted keys tied to roles.",
+     "evidence": "EV-103 (ok-to-use)"
+    },
+    {
+     "title": "Multi-gate management",
+     "body": "Every gate on a site, or across sites, in one account.",
+     "evidence": "EV-103 (ok-to-use); EV-101 (ok-to-use)"
+    },
+    {
+     "title": "One app for every role",
+     "body": "Residents, staff, guards and facility managers use the same mobile app, each with their own access.",
+     "evidence": "EV-103 (ok-to-use); EV-101 (ok-to-use)"
+    }
+   ],
+   "deploymentAndSecurity": [
+    {
+     "fact": "Commercially available, running on Meerana's own controller hardware.",
+     "evidence": "EV-530 (ok-to-use)"
+    },
+    {
+     "fact": "Industrial-grade controller with plug-and-play connections.",
+     "evidence": "EV-103 (ok-to-use)"
+    },
+    {
+     "fact": "Connects over cellular, local Wi-Fi or Bluetooth, and keeps working offline.",
+     "evidence": "EV-103 (ok-to-use)"
+    },
+    {
+     "fact": "Encrypted keys and role-based access.",
+     "evidence": "EV-103 (ok-to-use)"
+    },
+    {
+     "fact": "Controllers are provisioned over the air.",
+     "evidence": "EV-103 (ok-to-use)"
+    }
+   ],
+   "integrations": [
+    {
+     "fact": "One system joining the mobile app, the gate controller, cloud services, the local network and Bluetooth fallback.",
+     "evidence": "EV-102 (ok-to-use)"
+    }
+   ],
+   "faq": [
+    {
+     "q": "What happens if the internet goes down?",
+     "a": "Wasel switches to the local network. With no network at all, Bluetooth still opens the gate from the phone.",
+     "evidence": "EV-102 (ok-to-use); EV-103 (ok-to-use)"
+    },
+    {
+     "q": "Whose hardware does Wasel use?",
+     "a": "Meerana's own controller: industrial-grade, with plug-and-play connections.",
+     "evidence": "EV-530 (ok-to-use); EV-103 (ok-to-use)"
+    },
+    {
+     "q": "Can one account manage several gates?",
+     "a": "Yes. Wasel is built for multi-gate sites, with every gate managed from one app.",
+     "evidence": "EV-103 (ok-to-use); EV-101 (ok-to-use)"
+    },
+    {
+     "q": "What does the controller report?",
+     "a": "Gate position from its sensors, plus temperature and humidity.",
+     "evidence": "EV-103 (ok-to-use)"
+    },
+    {
+     "q": "How are controllers set up?",
+     "a": "They are provisioned over the air.",
+     "evidence": "EV-103 (ok-to-use)"
+    }
+   ],
+   "availableRealScreens": [
+    "public/media/v3/wasel-gate-access.svg: illustration (app, controller, barrier), labelled Illustration. Not a product screen. In use.",
+    "public/media/v3/wasel-phone-to-gate.svg: illustration of phone to controller to gate. Not a product screen. In use.",
+    "media-src/held/unreferenced/media/bg/wasel-1280.webp and wasel-1920.webp: AI-generated plates. Do not use.",
+    "Not available: no real app screens or controller photos exist; the owner request is still open (plan/10 A6). Never use the promo video (EV-106) or cover banner (EV-305)."
+   ],
+   "doNotSay": [
+    "'99.9% uptime', '256-bit AES', '<1s response' (EV-105)",
+    "Face recognition or turnstile scenes (EV-106)",
+    "'Wasel (Logistics)' (EV-107)",
+    "Remootio or 'Remotioo Smart Gate' text or images (EV-108, EV-431)",
+    "Parking or toll gates 'linked to billing systems' (EV-104 note)",
+    "Any link to Mandoobee ('IoT Gate Pass') or Yisbir (DL-P06)",
+    "'Auto-close after 60 seconds' (EV-109, internal-only)",
+    "Time-limited grants ('for a period you set'), 'which direction, in or out', 'to the second' and 'exportable': these are in the current storyboard but not in EV-101 to EV-103",
+    "Controller model, relay or power specifications until supplied"
+   ]
+  },
+  {
+   "slug": "ai-in-a-box",
+   "audiences": [
+    "Executives and executive offices",
+    "Legal and procurement teams",
+    "Finance teams",
+    "HR teams",
+    "Research and analyst teams",
+    "Administrators and governance owners",
+    "CIOs and CDOs evaluating agentic AI"
+   ],
+   "useCases": [
+    {
+     "title": "Contract review before signature",
+     "body": "The agent reads an agreement, flags the clauses that fall short and proposes a fix for each, then saves the review note to the contract file.",
+     "evidence": "EV-521 (use-with-edit, proposed row in docs/DEMO-MEDIA-PLAN.md §9)",
+     "status": "Demonstrated in the working demo, not a deployment. Publish after the DV-01 name decision."
+    },
+    {
+     "title": "Scheduling without the back-and-forth",
+     "body": "Ask for a meeting; the agent checks the calendar for conflicts and proposes a time that works.",
+     "evidence": "EV-521 (use-with-edit, proposed row)",
+     "status": "Demonstrated; present as a proposal the person confirms."
+    },
+    {
+     "title": "Inbox triage and formal replies",
+     "body": "The agent triages incoming email and drafts formal replies for a person to review.",
+     "evidence": "EV-521 (use-with-edit, proposed row); EV-573 (use-with-edit: sending is approval-gated by design, confirm implemented)",
+     "status": "Re-record before showing: the demo beat uses 'Ministry of Finance' data (B5)."
+    },
+    {
+     "title": "Approvals with the context attached",
+     "body": "Requests reach the approver with a summary, and the decision and its note are recorded.",
+     "evidence": "EV-521 (use-with-edit, proposed row)",
+     "status": "Demonstrated (proactive approval beat)."
+    },
+    {
+     "title": "Executive reports on request",
+     "body": "Ask for a period report and the agent compiles it into a PDF from the sources it can access.",
+     "evidence": "EV-521 (use-with-edit, proposed row)",
+     "status": "Demo beat blocked (B5, B12); describe, do not show."
+    },
+    {
+     "title": "Answers from your knowledge sources",
+     "body": "Administrators add document collections as knowledge sources, so answers draw on your own material.",
+     "evidence": "EV-521 (use-with-edit, proposed row)",
+     "status": "Demo beat blocked (B5); describe, do not show."
+    }
+   ],
+   "capabilities": [
+    {
+     "title": "A suggested fix for every flagged clause",
+     "body": "Each flagged clause comes with a proposed fix, saved to the contract file.",
+     "evidence": "EV-521 (use-with-edit, proposed row)"
+    },
+    {
+     "title": "Conflict-aware scheduling",
+     "body": "Overlaps are found and a new time proposed.",
+     "evidence": "EV-521 (use-with-edit, proposed row)"
+    },
+    {
+     "title": "Email triage",
+     "body": "The agent sorts incoming mail and drafts the replies that need one.",
+     "evidence": "EV-521 (use-with-edit, proposed row)"
+    },
+    {
+     "title": "Formal drafting",
+     "body": "Letters and memos drafted in a formal register for review.",
+     "evidence": "EV-521 (use-with-edit, proposed row)"
+    },
+    {
+     "title": "An approval queue",
+     "body": "Pending decisions in one place, each with its context.",
+     "evidence": "EV-521 (use-with-edit, proposed row)"
+    },
+    {
+     "title": "Reports compiled to PDF",
+     "body": "From a one-line request to a formatted report.",
+     "evidence": "EV-521 (use-with-edit, proposed row)"
+    },
+    {
+     "title": "Voice mode",
+     "body": "Ask about a task or a document by voice.",
+     "evidence": "EV-521 (use-with-edit, proposed row)"
+    },
+    {
+     "title": "Knowledge sources",
+     "body": "Answers grounded in the documents your administrators add.",
+     "evidence": "EV-521 (use-with-edit, proposed row)"
+    },
+    {
+     "title": "Governance roles and permissions",
+     "body": "Administrators decide who can do what.",
+     "evidence": "EV-521 (use-with-edit, proposed row)"
+    },
+    {
+     "title": "A daily record of agent actions",
+     "body": "See the actions agents took today and the approvals completed, each reviewed by a person.",
+     "evidence": "EV-521 (use-with-edit, proposed row); EV-573 (use-with-edit, confirm implemented)"
+    }
+   ],
+   "deploymentAndSecurity": [
+    {
+     "fact": "Designed so that consequential actions, such as sending email, changing meetings or editing external records, wait for a person's approval.",
+     "evidence": "EV-573 (use-with-edit; publish only once the product owner confirms it is implemented)"
+    },
+    {
+     "fact": "A governance screen manages roles and permissions.",
+     "evidence": "EV-521 (use-with-edit, proposed row)"
+    },
+    {
+     "fact": "Approvals are recorded with the person who reviewed them.",
+     "evidence": "EV-521 (use-with-edit, proposed row); EV-573 (use-with-edit)"
+    },
+    {
+     "fact": "Every action is designed to be traceable from trigger to result.",
+     "evidence": "EV-573 (use-with-edit; confirm implemented before publishing)"
+    }
+   ],
+   "integrations": [],
+   "faq": [
+    {
+     "q": "Does the agent act without asking?",
+     "a": "It is designed so that consequential actions, such as sending email or changing meetings, wait for a person's approval, and the governance view shows each approval and who reviewed it.",
+     "evidence": "EV-573 (use-with-edit; confirm implemented); EV-521 (use-with-edit, proposed row)"
+    },
+    {
+     "q": "What does it do today?",
+     "a": "In the working demo it reviews contracts with suggested fixes, schedules around conflicts, triages email and drafts formal replies, routes approvals, compiles reports as PDF, takes voice commands and coordinates five specialist agents.",
+     "evidence": "EV-521 (use-with-edit, proposed row)"
+    },
+    {
+     "q": "Who controls what each person can do?",
+     "a": "Administrators manage roles and permissions from the governance screen.",
+     "evidence": "EV-521 (use-with-edit, proposed row)"
+    },
+    {
+     "q": "Can we see it working?",
+     "a": "Yes. Book a briefing and we will walk you through the working demo.",
+     "evidence": "EV-521 (use-with-edit, proposed row)"
+    }
+   ],
+   "availableRealScreens": [
+    "public/media/v3/card-aibox-contract-review.webp: contract review with two clause flags and fixes, Product screen · demo data. No people. In use. It shows an 'Ask Meerana' input and a data-residency clause ('mandate in-country processing'): caption it as contract content, never as a deployment claim.",
+    "public/media/v3/card-aibox-agent-matrix.webp: five agents in a topology. No people. In use.",
+    "public/media/v3/wall-12-aibox-governance.webp: 'Today's Summary', 29 actions and 6 approvals 'All reviewed by a person'. No people. In use (hero room). Recommended for the approval and governance capability.",
+    "media-src/held/unreferenced/media/v3/wall-04-aibox-contract-review.webp and mobile-aibox-contract-review.webp: review-note crops. No people.",
+    "media-src/held/v3-video/aibox-loop-contract-review.mp4 (+ .av1.mp4, poster): contract-review loop. No people. Held pending clearance and DV-01.",
+    "media-src/held/unreferenced/media/bg/aibox-1280.webp and aibox-1920.webp: AI-generated plates. Do not use.",
+    "All AI in a Box media carries the product name; DV-01 is still open (EV-574)."
+   ],
+   "doNotSay": [
+    "Sovereignty, on-premises, 'no public cloud', 'runs entirely inside your organisation' (DL-P13, EV-460, EV-571)",
+    "'Sovereignty in Your Hands' (EV-160, EV-460)",
+    "Planned spec features as shipped: Microsoft 365 mail and calendar, persistent memory, a personal agent per employee, document generation, correspondence or EPC integration (EV-570, EV-572)",
+    "Named integrations: SharePoint, Oracle ERP Cloud, SAP S/4HANA, Salesforce, Azure AD (EV-521 integrations confirm-with-meerana, B15, DV-08)",
+    "'Immutable', 'compliant', 'append-only' (EV-573 note)",
+    "Calibrated confidence scores (EV-573)",
+    "'Aria' or 'Meerana OS v2.7.4' until DV-01 (EV-574)",
+    "'Ministry of Finance', 'Your Excellency', 'National AI Policy' or 'Ministerial' demo content (B5, B12, EV-525)",
+    "'Voice in English and Arabic': the demo shows voice in English only. The current showcase and hero say this.",
+    "Interface languages (EN, AR, DE): only EV-520 supports this, and it is 'internal until DV-01'",
+    "EV-520 as public evidence: the current showcase and storyboard cite it; re-cite to EV-521 once the rows are merged",
+    "That AI in a Box powers or connects the other products (DL-P06, EV-572 P2)",
+    "'The agent never signs': current copy with no register row",
+    "Robot or brain imagery (DD-16)"
+   ]
+  }
+ ],
+ "homepageAdditions": [
+  {
+   "idea": "Give the mandated 'Meerana Intelligence Layer' heading real content: one shared principle, proven product by product, with no integration claim",
+   "content": "Heading: Meerana Intelligence Layer. Line: AI proposes. People decide. Three facts, each naming its product: 'Nazo checks every AI suggestion against the form before it touches the record.' · 'Tasree3 shows reviewers an AI summary of what changed before they approve.' · 'Yisbir keeps face recognition off unless an organisation switches it on.' Present it as a design principle, never as a product or a layer that connects the products.",
+   "evidence": "EV-546 (ok-to-use); EV-555 (ok-to-use); EV-535 (ok-to-use). Note: EV-473 (do-not-use) records the phrase as having no public source, so it must not be described as a product; DL-P06 forbids implied integrations."
+  },
+  {
+   "idea": "A deployment comparison band answering 'where does our data live?'",
+   "content": "Headline: Deployed where your data has to stay. Rows: Tasree3, can run in your own cloud or data centre, in the region you choose · Yisbir, on-premise, cloud or hybrid, on the cameras you already have · Nazo, on-premises or cloud, with its AI model on the same servers · Mandoobee, on-premise, cloud or hybrid · Wasel, cloud, local network or Bluetooth, on Meerana's own controller. AI in a Box is omitted. If added, remove the duplicate deploy line from each gallery panel.",
+   "evidence": "EV-407 (ok-to-use); EV-444 (ok-to-use); EV-142 (ok-to-use); EV-541 (use-with-edit); EV-116 (ok-to-use); EV-103 (ok-to-use); EV-530 (ok-to-use); framing EV-461 (use-with-edit). AI in a Box excluded per DL-P13."
+  },
+  {
+   "idea": "Arabic name moments on the Tasree3 and Yisbir gallery panels (new foreground text layer)",
+   "content": "Tasree3 · تسريع · acceleration. Yisbir · يسبر · to probe, to examine in depth. Set in Changa and Tajawal (brand Arabic faces) as a large, slow-parallax background word behind the panel media.",
+   "evidence": "EV-415 (use-with-edit); EV-445 (use-with-edit); EV-302 (ok-to-use, product fonts)"
+  },
+  {
+   "idea": "A Zero Government Bureaucracy line on the Tasree3 panel",
+   "content": "Built for the re-engineering work the UAE's Zero Government Bureaucracy programme calls for. (Alignment, never endorsement.)",
+   "evidence": "EV-410 (ok-to-use)"
+  },
+  {
+   "idea": "Founding year in the hero eyebrow",
+   "content": "Meerana Technologies · Dubai, UAE · since 2022",
+   "evidence": "EV-020 (ok-to-use); EV-001 (ok-to-use)"
+  },
+  {
+   "idea": "Direct outbound links on the gallery panels",
+   "content": "Tasree3: 'Visit tasree3.ae'. Yisbir: 'Visit yisbir.com'. Mandoobee: 'Get the app on the App Store or Google Play'.",
+   "evidence": "EV-400 (ok-to-use); EV-440 (ok-to-use); EV-420 (ok-to-use)"
+  },
+  {
+   "idea": "Yisbir vertical chips on its panel",
+   "content": "Universities · Public safety · Retail · Construction. Each chip links to the matching use case on /products/yisbir/. Public safety is framed as evidence review.",
+   "evidence": "EV-533 (use-with-edit); EV-133 (ok-to-use); EV-134 (ok-to-use)"
+  },
+  {
+   "idea": "A services teaser between World and the closing CTA (the homepage has no route to services today)",
+   "content": "Headline: Products, and the people behind them. Four links: Consulting · Bespoke development · Technology partnerships · Staff augmentation, then 'Explore services'.",
+   "evidence": "EV-030 (ok-to-use); EV-031 (use-with-edit); EV-032 (ok-to-use); EV-033 (use-with-edit)"
+  },
+  {
+   "idea": "Proof extras in the World section",
+   "content": "Featured: 'Dubai Dreamers: From Dubai to the World with Meerana Technologies' (Dubai Chambers, video, linked not embedded). Where we've been: GITEX Global 2022 and 2024 · Dubai International Chamber trade mission to Vietnam, 2024 · Dubai Business Forum, London and New York, 2025.",
+   "evidence": "EV-022 (ok-to-use); EV-513 (ok-to-use); EV-261 (use-with-edit; Vietnam leg only); EV-507 (ok-to-use); EV-512 (ok-to-use)"
+  }
+ ],
+ "companyAdditions": [
+  {
+   "idea": "Extend 'In the news' with Arabic and regional coverage (outbound links only)",
+   "content": "Emarat Al Youm, 2024-08-09: Arabic coverage of the FPT MoU (https://www.emaratalyoum.com/business/local/2024-08-09-1.1873897) · Al Bayan, 2024-09-05: the UAE at the 10th GCC Labour Ministers Committee meeting, Doha, where Meerana was honoured (https://www.albayan.ae/uae/news/2024-09-05-1.4929701) · Al Ittihad, 2024-09-05: same event (https://www.aletihad.ae/news/%D8%A7%D9%84%D8%A5%D9%85%D8%A7%D8%B1%D8%A7%D8%AA/4513082/) · WAM via Eye of Riyadh, 2025-11-13: Dubai Business Forum USA, New York (https://www.eyeofriyadh.com/news/details/dubai-business-forum-usa-participants-praise-its-new-york-edition) · Channel Post MEA, 2022-10-21: Software AG partnership (https://channelpostmea.com/2022/10/21/software-ag-meerana-technologies-collaborate-build-future-ready-business-models/) · Entrepreneur Middle East: Future 100 inaugural list, 2023 (https://mena.entrepreneur.com/technology/future-100-unveils-its-inaugural-list-of-100-future-proof/466718). The Al Bayan 2024-05-10 interview is left out because its headline carries an unverified hiring figure.",
+   "evidence": "EV-514 (ok-to-use); EV-203 (ok-to-use); EV-202 (ok-to-use); EV-505 (ok-to-use); EV-512 (ok-to-use); EV-240 (ok-to-use). URLs from research/sources/company-web-research.md."
+  },
+  {
+   "idea": "Add the Vietnam trade mission to Events, with its outcome",
+   "content": "2024 · Dubai International Chamber trade mission to Vietnam. It led to the strategic partnership (MoU) with FPT Software.",
+   "evidence": "EV-261 (use-with-edit; Vietnam leg verified, Jakarta excluded); EV-509 (ok-to-use); EV-505 (ok-to-use)"
+  },
+  {
+   "idea": "A 'Built by Meerana' block: the products are Meerana's own",
+   "content": "Headline: Our products are our own. Tasree3 is designed and developed in the UAE by Meerana. Yisbir is developed by Meerana Technologies. Wasel runs on Meerana's own controller. Six products in all: Mandoobee, Tasree3, Nazo, Yisbir, Wasel and AI in a Box, each linked to its page.",
+   "evidence": "EV-410 (ok-to-use); EV-441 (ok-to-use); EV-530 (ok-to-use); EV-536 (ok-to-use)"
+  },
+  {
+   "idea": "An approach statement on deployment, tied to product facts",
+   "content": "We build AI solutions and enterprise platforms that can be deployed locally and are secured by design. Follow it with the per-product deployment facts. Never attach it to AI in a Box.",
+   "evidence": "EV-461 (use-with-edit); per-product facts EV-407, EV-444, EV-142, EV-116 (ok-to-use); DL-P13"
+  },
+  {
+   "idea": "A positioning line for the company page header",
+   "content": "Your digital transformation partner.",
+   "evidence": "EV-010 (ok-to-use)"
+  },
+  {
+   "idea": "How a partner describes Meerana (attributed third-party quote)",
+   "content": "'UAE-based IT solutions company delivering AI automation and document intelligence across industries.' Botminds, regional partner listing.",
+   "evidence": "EV-508 (ok-to-use)"
+  },
+  {
+   "idea": "Richer service capability lists",
+   "content": "Consulting: add 'Customer experience and happiness' (verbatim category). Partnerships and managed services: add 'Hardware and software reselling'. Bespoke development: add 'Cloud services', 'E-commerce' and 'Voice of customer with generative AI', subject to the DL-S02 prune.",
+   "evidence": "EV-030 (ok-to-use); EV-032 (ok-to-use); EV-031 (use-with-edit)"
+  },
+  {
+   "idea": "The founder's civic role, unnamed until the leadership section is approved",
+   "content": "Meerana's founder serves as Vice President on the board of the UAE Inventors Association. This is an affiliation, not a partnership. Name and spelling wait for DL-C03.",
+   "evidence": "EV-023 (use-with-edit). The name itself (EV-013) is confirm-with-meerana and is deliberately left out."
+  }
+ ]
+}

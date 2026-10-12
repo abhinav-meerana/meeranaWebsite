@@ -1,0 +1,491 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-brand="meerana" data-surface="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Meerana · M1 Quiet Futurist · hero prototype</title>
+<meta name="description" content="Design prototype M1 (Quiet Futurist) for the Meerana Technologies homepage. Internal exploration: copy is proposed and pending evidence sign-off.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* Critical paint before the Tailwind browser build compiles: page colour and font only (no layout). */
+  html { background: #071B36; color: #FFFFFF; font-family: "Poppins", ui-sans-serif, system-ui, sans-serif; }
+</style>
+<script>
+  /* Motion preference before first paint: OS setting or the persisted on-page toggle. */
+  (function () { var d = document.documentElement; d.classList.add('js-motion');
+    try { if (localStorage.getItem('meerana-motion') === 'reduce') d.dataset.motion = 'reduce'; } catch (e) {} })();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.3"></script>
+<style type="text/tailwindcss">
+@import "tailwindcss";
+{{TOKENS_CSS}}
+
+/* ---------------- page components (prototype M1) ---------------- */
+@layer components {
+  .wrap { margin-inline: auto; max-width: 80rem; padding-inline: clamp(16px, 4vw, 48px); }
+  .skip { position: absolute; inset-inline-start: -9999px; }
+  .skip:focus { inset-inline-start: 16px; top: 16px; z-index: 50; background: var(--action-primary-bg); color: var(--action-primary-fg); padding: 10px 14px; border-radius: var(--radius-control); }
+  .btn-primary { display: inline-flex; align-items: center; min-height: 44px; padding-inline: 20px; border-radius: var(--radius-control);
+    background: var(--action-primary-bg); color: var(--action-primary-fg); font-weight: 500; font-size: var(--text-ui);
+    transition: background-color var(--dur-1) var(--ease-standard); }
+  .btn-primary:hover { background: var(--action-primary-hover); }
+  .btn-outline { display: inline-flex; align-items: center; min-height: 40px; padding-inline: 16px; border-radius: var(--radius-control);
+    border: 1px solid var(--action-secondary-border); color: var(--action-secondary-fg); font-size: var(--text-ui); font-weight: 500;
+    transition: background-color var(--dur-1) var(--ease-standard); }
+  .btn-outline:hover { background: var(--surface-raised); }
+  .link-arrow { display: inline-flex; align-items: center; gap: .45em; min-height: 44px; color: var(--text-link); font-weight: 500; font-size: var(--text-ui); }
+  .link-arrow > span { transition: transform var(--dur-1) var(--ease-standard); }
+  .link-arrow:hover > span { transform: translateX(3px); }
+  .mono-btn { font-family: var(--font-family-mono); font-size: .75rem; letter-spacing: .04em; text-transform: uppercase; min-height: 40px;
+    padding-inline: 12px; border-radius: var(--radius-pill); border: 1px solid var(--border-control); color: var(--text-secondary); }
+  .mono-btn[aria-pressed="true"] { background: var(--surface-raised); color: var(--text-primary); }
+
+  /* signature stage */
+  .stage { position: relative; aspect-ratio: 600 / 520; width: 100%; margin: 0; }
+  .stage .poster, .stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .stage canvas { opacity: 0; transition: opacity var(--dur-2) var(--ease-standard); }
+  .stage .poster { transition: opacity var(--dur-1) var(--ease-standard); }
+  .stage.is-live canvas { opacity: 1; }
+  .stage.is-live .poster { opacity: 0; }
+  .stage .zone polygon { transition: stroke-width var(--dur-1) var(--ease-standard), fill-opacity var(--dur-1) var(--ease-standard); }
+  .stage .zone.is-hot polygon { stroke-width: 2.5; fill-opacity: .16; }
+  .zone-label { position: absolute; inset-inline-start: var(--px); top: var(--py); transform: translate(14px, -50%);
+    display: inline-flex; align-items: baseline; gap: .5em; min-height: 32px; padding: 4px 8px; border-radius: var(--radius-control);
+    font-size: .75rem; letter-spacing: .04em; color: var(--text-secondary); background: rgb(5 19 38 / .78); white-space: nowrap;
+    transition: color var(--dur-1) var(--ease-standard), background-color var(--dur-1) var(--ease-standard); }
+  .zone-label .env { font-family: var(--font-family-mono); }
+  .zone-label .prod { color: var(--text-primary); font-weight: 500; letter-spacing: 0; }
+  .zone-label:hover, .zone-label:focus-visible, .zone-label.is-hot { color: var(--text-primary); background: var(--surface-raised); }
+  .readout { position: absolute; pointer-events: none; font-size: .6875rem; letter-spacing: .04em; color: var(--text-accent); opacity: 0;
+    transition: opacity var(--dur-1) var(--ease-standard); }
+  .readout.is-on { opacity: 1; }
+  @media (max-width: 767px) {
+    .zones { position: static; display: flex; gap: 8px; overflow-x: auto; padding-top: 12px; scroll-snap-type: x mandatory; }
+    .zone-label { position: static; transform: none; scroll-snap-align: start; background: var(--surface-raised); }
+  }
+
+  /* museum placards */
+  .rail { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(280px, 1fr); gap: 16px; overflow-x: auto;
+    scroll-snap-type: x mandatory; padding-bottom: 8px; }
+  @media (min-width: 1024px) { .rail { grid-auto-columns: calc((100% - 32px) / 3); } }
+  .placard { scroll-snap-align: start; border-top: 1px solid var(--border-control); padding: 28px 4px 8px; }
+
+  /* product catalogue */
+  .cat-row { display: grid; grid-template-columns: 3rem 9rem 1fr; gap: 8px 24px; align-items: center; padding: 22px 0 22px 16px;
+    border-inline-start: 2px solid var(--product-accent); border-bottom: 1px solid var(--border-subtle); }
+  .cat-row .logo { height: 34px; width: auto; max-width: 9rem; object-fit: contain; object-position: left center; }
+  .cat-row .fact { grid-column: 3; }
+  @media (min-width: 1024px) { .cat-row { grid-template-columns: 3rem 10rem 1fr 15rem 9rem; } .cat-row .fact { grid-column: auto; } }
+  @media (max-width: 639px) { .cat-row { grid-template-columns: 2.5rem 1fr; } .cat-row .logo { grid-column: 2; } .cat-row > div, .cat-row .fact, .cat-row a { grid-column: 2; } }
+
+  /* services bento */
+  .bento { display: grid; gap: 16px; grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-areas: "consult consult bespoke bespoke" "consult consult partners staff" "bridge bridge bridge bridge"; }
+  @media (max-width: 1023px) { .bento { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-areas: "consult consult" "bespoke bespoke" "partners staff" "bridge bridge"; } }
+  @media (max-width: 767px) { .bento { grid-template-columns: 1fr; grid-template-areas: "consult" "bespoke" "partners" "staff" "bridge"; } }
+  .cell { border: 1px solid var(--border-subtle); border-radius: var(--radius-card); padding: 28px; background: var(--surface-raised); }
+  .cell-list { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 6px 14px; font-family: var(--font-family-mono); font-size: .75rem;
+    letter-spacing: .04em; text-transform: uppercase; color: var(--text-muted); }
+
+  /* quiet reveal (web-animations/references/motion-tokens.css) */
+  @media (prefers-reduced-motion: no-preference) {
+    html.js-motion:not([data-motion="reduce"]) [data-reveal]:not([data-revealed]) { opacity: 0; transform: translateY(8px); }
+    html.js-motion [data-reveal] { transition: opacity var(--dur-2) var(--ease-enter), transform var(--dur-2) var(--ease-enter);
+      transition-delay: calc(var(--i, 0) * 60ms); }
+  }
+}
+</style>
+</head>
+<body class="bg-surface text-fg antialiased">
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="border-b border-line">
+  <div class="wrap flex h-[72px] items-center justify-between gap-6">
+    <a href="#top" class="flex items-center" aria-label="Meerana Technologies — home">
+      <img src="{{LOGO_MEERANA_H}}" width="{{LOGO_MEERANA_H_W}}" height="{{LOGO_MEERANA_H_H}}" alt="Meerana Technologies" class="h-7 w-auto">
+    </a>
+    <nav aria-label="Primary" class="hidden md:block">
+      <ul class="flex items-center gap-8 text-ui text-fg-secondary">
+        <li><a class="hover:text-fg" href="#products">Products</a></li>
+        <li><a class="hover:text-fg" href="#services">Services</a></li>
+        <li><a class="hover:text-fg" href="#partners">Company</a></li>
+      </ul>
+    </nav>
+    <div class="flex items-center gap-3">
+      <button type="button" class="mono-btn hidden sm:inline-flex items-center" data-motion-toggle aria-pressed="false">Reduce motion</button>
+      <a class="btn-outline" href="#contact">Talk to Meerana</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <!-- 1 · HERO ------------------------------------------------------------------------------------>
+  <section id="top" data-surface="dark" aria-labelledby="hero-title" class="relative overflow-hidden">
+    <div class="wrap grid grid-cols-12 gap-x-6 gap-y-12 pt-16 pb-20 lg:pt-24 lg:pb-28">
+      <div class="col-span-12 flex min-w-0 flex-col justify-center lg:col-span-7">
+        <p class="font-mono text-mono uppercase text-fg-muted"><span data-ev="EV-001">Meerana Technologies</span> · Dubai, UAE · <span data-ev="EV-020">Est. 2022</span></p>
+        <h1 id="hero-title" class="mt-6 font-light text-display-xl text-balance text-fg">From the front gate <span class="text-fg-muted">to the final approval.</span></h1>
+        <p class="mt-7 max-w-[34rem] text-lede text-fg-secondary" data-ev="EV-006 EV-007 EV-101 EV-440 EV-113 EV-400 EV-141 EV-461">Meerana builds AI products for access control, video intelligence, workplace operations, process management and official correspondence. Built in the UAE and deployable on your own infrastructure.</p>
+        <div class="mt-10 flex flex-wrap items-center gap-x-7 gap-y-3">
+          <a class="btn-primary" href="#products">Explore the products</a>
+          <a class="link-arrow" href="#contact">Talk to Meerana <span aria-hidden="true">→</span></a>
+        </div>
+        <p class="mt-14 flex flex-wrap gap-x-3 gap-y-1 font-mono text-mono uppercase text-fg-muted">
+          <span title="Blue Bay Tower, Business Bay (live site map pin)">25.1876°N 55.2680°E</span><span aria-hidden="true">·</span>
+          <span data-ev="EV-116 EV-407 EV-444 EV-103">Runs on-prem · cloud · hybrid</span>
+        </p>
+      </div>
+
+      <div class="col-span-12 min-w-0 lg:col-span-5">
+        <!-- Signature motion. Purpose: shows that one company's five products occupy five operating environments of one
+             organisation — scattered endpoints assemble into the brand's own isometric lattice, then the environments are named.
+             Plays once (≈2.2 s), then rests; poster SVG is the identical end state (LCP = the H1 text, never this figure). -->
+        <figure class="stage" data-signature aria-labelledby="stage-caption">
+          {{M1_LATTICE_SVG}}
+          <canvas aria-hidden="true"></canvas>
+          <nav class="zones" aria-label="Five operating environments">{{M1_ZONE_LABELS}}</nav>
+          <output class="readout font-mono" aria-hidden="true"></output>
+        </figure>
+        <div class="mt-4 flex items-center justify-between gap-4">
+          <p id="stage-caption" class="font-mono text-mono uppercase text-fg-muted">Fig. 1 — One company, five operating environments</p>
+          <button type="button" class="mono-btn" data-replay>Replay</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 · MUSEUM PLACARDS (verified partners) --------------------------------------------------------->
+  <section id="partners" data-surface="light" aria-labelledby="partners-title" class="bg-surface-muted">
+    <div class="wrap py-20 lg:py-28">
+      <div class="flex flex-wrap items-end justify-between gap-6">
+        <div>
+          <p class="font-mono text-mono uppercase text-fg-muted">Partners, on the record</p>
+          <h2 id="partners-title" class="mt-4 font-light text-display-2 text-fg">Six verified relationships.</h2>
+        </div>
+        <div class="flex gap-2">
+          <button type="button" class="mono-btn" data-rail="-1" aria-label="Previous placards">←</button>
+          <button type="button" class="mono-btn" data-rail="1" aria-label="Next placards">→</button>
+        </div>
+      </div>
+      <ol class="rail mt-12" data-audit-ok="G05" aria-label="Verified partners">
+        <li class="placard" data-reveal style="--i:0">
+          <p class="font-mono text-mono text-fg-muted">01</p>
+          <h3 class="mt-6 text-heading-2 font-medium text-fg">Software AG</h3>
+          <p class="mt-3 font-mono text-mono uppercase text-fg-muted">PartnerConnect · signed at GITEX Global</p>
+          <p class="mt-6 flex items-baseline justify-between text-small text-fg-secondary"><span>Technology partner</span><span class="font-mono" data-ev="EV-240">2022</span></p>
+        </li>
+        <li class="placard" data-reveal style="--i:1">
+          <p class="font-mono text-mono text-fg-muted">02</p>
+          <h3 class="mt-6 text-heading-2 font-medium text-fg">FPT Software</h3>
+          <p class="mt-3 font-mono text-mono uppercase text-fg-muted">Strategic MoU · after the Vietnam trade mission</p>
+          <p class="mt-6 flex items-baseline justify-between text-small text-fg-secondary"><span>Strategic partner</span><span class="font-mono" data-ev="EV-505 EV-261">2024</span></p>
+        </li>
+        <li class="placard" data-reveal style="--i:2">
+          <p class="font-mono text-mono text-fg-muted">03</p>
+          <h3 class="mt-6 text-heading-2 font-medium text-fg">CyberHive</h3>
+          <p class="mt-3 font-mono text-mono uppercase text-fg-muted">Memorandum of understanding</p>
+          <p class="mt-6 flex items-baseline justify-between text-small text-fg-secondary"><span>Cybersecurity partner</span><span class="font-mono" data-ev="EV-507">2025</span></p>
+        </li>
+        <li class="placard" data-reveal style="--i:3">
+          <p class="font-mono text-mono text-fg-muted">04</p>
+          <h3 class="mt-6 text-heading-2 font-medium text-fg">Dubai Chambers</h3>
+          <p class="mt-3 font-mono text-mono uppercase text-fg-muted">Supporter · Dubai International Chamber missions</p>
+          <p class="mt-6 flex items-baseline justify-between text-small text-fg-secondary"><span>Institutional support</span><span class="font-mono" data-ev="EV-509 EV-261">2024</span></p>
+        </li>
+        <li class="placard" data-reveal style="--i:4">
+          <p class="font-mono text-mono text-fg-muted">05</p>
+          <h3 class="mt-6 text-heading-2 font-medium text-fg">Commvault</h3>
+          <p class="mt-3 font-mono text-mono uppercase text-fg-muted">Value Added Partner · GITEX Global</p>
+          <p class="mt-6 flex items-baseline justify-between text-small text-fg-secondary"><span>Technology partner</span><span class="font-mono" data-ev="EV-506">2024</span></p>
+        </li>
+        <li class="placard" data-reveal style="--i:5">
+          <p class="font-mono text-mono text-fg-muted">06</p>
+          <h3 class="mt-6 text-heading-2 font-medium text-fg">Botminds</h3>
+          <p class="mt-3 font-mono text-mono uppercase text-fg-muted">Regional partner</p>
+          <p class="mt-6 flex items-baseline justify-between text-small text-fg-secondary"><span>Document AI partner</span><span class="font-mono" data-ev="EV-508">—</span></p>
+        </li>
+      </ol>
+      <p class="mt-8 max-w-[46rem] text-small text-fg-muted">Relationship wording and years from the evidence register. Logos appear once supplied and permitted (DL-R02).</p>
+    </div>
+  </section>
+
+  <!-- 3 · PRODUCT CATALOGUE (the page's single product set) ------------------------------------------>
+  <section id="products" data-surface="dark" aria-labelledby="products-title" class="bg-surface-deep">
+    <div class="wrap py-20 lg:py-28">
+      <p class="font-mono text-mono uppercase text-fg-muted">Products</p>
+      <h2 id="products-title" class="mt-4 max-w-[40rem] font-light text-display-2 text-fg">Five products. Start where the problem is.</h2>
+      <ol class="mt-12 border-t border-line" data-audit-ok="G05" aria-label="Meerana products">
+        <li id="product-wasel" class="cat-row" data-product="wasel" data-reveal style="--i:0">
+          <span class="font-mono text-mono text-fg-muted">01</span>
+          <img class="logo" src="{{LOGO_WASEL}}" width="{{LOGO_WASEL_W}}" height="{{LOGO_WASEL_H}}" alt="Wasel">
+          <div><p class="text-label uppercase text-fg-muted" data-ev="EV-100">Smart gate &amp; access control</p>
+            <p class="mt-1 text-body text-fg-secondary" data-ev="EV-100 EV-103">Open, monitor and manage gates from your phone, with Bluetooth fallback when the internet is down.</p></div>
+          <p class="fact font-mono text-mono uppercase text-fg-muted" data-ev="EV-103">Cloud · local · Bluetooth</p>
+          <a class="link-arrow" href="#product-wasel">Explore Wasel <span aria-hidden="true">→</span></a>
+        </li>
+        <li id="product-yisbir" class="cat-row" data-product="yisbir" data-reveal style="--i:1">
+          <span class="font-mono text-mono text-fg-muted">02</span>
+          <img class="logo" src="{{LOGO_YISBIR}}" width="{{LOGO_YISBIR_W}}" height="{{LOGO_YISBIR_H}}" alt="YISBIR">
+          <div><p class="text-label uppercase text-fg-muted" data-ev="EV-131">Operational intelligence</p>
+            <p class="mt-1 text-body text-fg-secondary" data-ev="EV-440 EV-442">Search hours of video by what is said, what appears on screen and what happens in frame.</p></div>
+          <p class="fact font-mono text-mono uppercase text-fg-muted" data-ev="EV-443 EV-444">On-prem · cloud · hybrid</p>
+          <a class="link-arrow" href="#product-yisbir">Explore Yisbir <span aria-hidden="true">→</span></a>
+        </li>
+        <li id="product-mandoobee" class="cat-row" data-product="mandoobee" data-reveal style="--i:2">
+          <span class="font-mono text-mono text-fg-muted">03</span>
+          <img class="logo" src="{{LOGO_MANDOOBEE}}" width="{{LOGO_MANDOOBEE_W}}" height="{{LOGO_MANDOOBEE_H}}" alt="Mandoobee">
+          <div><p class="text-label uppercase text-fg-muted" data-ev="EV-112">Smart office application</p>
+            <p class="mt-1 text-body text-fg-secondary" data-ev="EV-113 EV-421">Attendance, requests, tasks, documents and an AI assistant in one workplace app.</p></div>
+          <p class="fact font-mono text-mono uppercase text-fg-muted" data-ev="EV-116">On-prem · cloud · hybrid</p>
+          <a class="link-arrow" href="#product-mandoobee">Explore Mandoobee <span aria-hidden="true">→</span></a>
+        </li>
+        <li id="product-tasree3" class="cat-row" data-product="tasree3" data-reveal style="--i:3">
+          <span class="font-mono text-mono text-fg-muted">04</span>
+          <img class="logo" src="{{LOGO_TASREE3}}" width="{{LOGO_TASREE3_W}}" height="{{LOGO_TASREE3_H}}" alt="Tasree3">
+          <div><p class="text-label uppercase text-fg-muted" data-ev="EV-400">AI-native process management</p>
+            <p class="mt-1 text-body text-fg-secondary" data-ev="EV-400">Zero bureaucracy. One process solution.</p></div>
+          <p class="fact font-mono text-mono uppercase text-fg-muted" data-ev="EV-407">Your cloud or data centre</p>
+          <a class="link-arrow" href="#product-tasree3">Explore Tasree3 <span aria-hidden="true">→</span></a>
+        </li>
+        <li id="product-nazo" class="cat-row" data-product="nazo" data-reveal style="--i:4">
+          <span class="font-mono text-mono text-fg-muted">05</span>
+          <img class="logo" src="{{LOGO_NAZO}}" width="{{LOGO_NAZO_W}}" height="{{LOGO_NAZO_H}}" alt="Nazo">
+          <div><p class="text-label uppercase text-fg-muted" data-ev="EV-141">Correspondence &amp; workflow management</p>
+            <p class="mt-1 text-body text-fg-secondary" data-ev="EV-141 EV-142">Route, approve, sign and seal official correspondence, in English and Arabic.</p></div>
+          <p class="fact font-mono text-mono uppercase text-fg-muted" data-ev="EV-142">On-prem · cloud</p>
+          <a class="link-arrow" href="#product-nazo">Explore Nazo <span aria-hidden="true">→</span></a>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 4 · SERVICES BENTO ---------------------------------------------------------------------------->
+  <section id="services" data-surface="dark" aria-labelledby="services-title">
+    <div class="wrap py-20 lg:py-28">
+      <p class="font-mono text-mono uppercase text-fg-muted">How Meerana delivers</p>
+      <h2 id="services-title" class="mt-4 max-w-[44rem] font-light text-display-2 text-fg">Products — and the people to make them work.</h2>
+      <div class="bento mt-12">
+        <article class="cell" style="grid-area: consult" data-reveal>
+          <h3 class="text-heading-1 font-normal text-fg">Consulting</h3>
+          <p class="mt-4 max-w-[30rem] text-body text-fg-secondary" data-ev="EV-030">Advisory for organisations modernising how they manage data, infrastructure and service. It begins with how your processes actually run.</p>
+          <p class="cell-list"><span>Data management</span><span>Data centre</span><span>Customer experience</span><span>Digital transformation</span><span>Enterprise architecture</span><span>Process re-engineering</span></p>
+        </article>
+        <article class="cell" style="grid-area: bespoke; --i:1" data-reveal>
+          <h3 class="text-heading-2 font-medium text-fg">Bespoke development</h3>
+          <p class="mt-3 text-body text-fg-secondary" data-ev="EV-031">Software, cloud and IoT systems built to your requirements, by Meerana's own engineering team.</p>
+          <p class="cell-list"><span>Software &amp; cloud</span><span>ERP</span><span>RPA</span><span>Data services</span><span>Cybersecurity testing</span><span>IoT solutions</span></p>
+        </article>
+        <article class="cell" style="grid-area: partners" data-reveal>
+          <h3 class="text-heading-3 font-medium text-fg">Technology partnerships</h3>
+          <p class="mt-3 text-small text-fg-secondary">Platforms from verified partners, deployed and supported locally.</p>
+          <a class="link-arrow mt-2" href="#partners">See the placards <span aria-hidden="true">→</span></a>
+        </article>
+        <article class="cell bg-surface-deep" style="grid-area: staff" data-reveal>
+          <h3 class="text-heading-3 font-medium text-fg">Staff augmentation</h3>
+          <p class="mt-3 text-small text-fg-secondary" data-ev="EV-032 EV-033">Skilled technology professionals on flexible terms.</p>
+          <p class="cell-list"><span>AI</span><span>Cloud</span><span>Data</span><span>Software</span></p>
+        </article>
+        <a class="cell flex flex-wrap items-center justify-between gap-4 border-t-2 border-t-product" style="grid-area: bridge" data-product="tasree3" href="#product-tasree3" data-reveal>
+          <span class="text-heading-3 font-medium text-fg">Process re-engineering → Tasree3</span>
+          <span class="text-small text-fg-secondary" data-ev="EV-401">When the work is a process, the product is Tasree3.</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 · CLOSE ------------------------------------------------------------------------------------->
+  <section id="contact" data-surface="dark" aria-labelledby="contact-title" class="border-t border-line">
+    <div class="wrap grid grid-cols-12 gap-6 py-20 lg:py-24">
+      <h2 id="contact-title" class="col-span-12 font-light text-display-2 text-fg lg:col-span-7">Tell us what you want to run better.</h2>
+      <div class="col-span-12 flex flex-col justify-end gap-3 lg:col-span-5">
+        <a class="btn-primary self-start" href="mailto:info@meerana.ae">Email info@meerana.ae</a>
+        <p class="text-small text-fg-muted">Blue Bay Tower, Business Bay, Dubai (unit to be confirmed, DL-C06).</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="border-t border-line">
+  <div class="wrap flex flex-wrap items-center justify-between gap-4 py-8 text-small text-fg-muted">
+    <p>Prototype M1 · Quiet Futurist · internal design exploration — copy is proposed and pending evidence sign-off.</p>
+    <p class="font-mono text-mono uppercase">Official raster logos at ≤ native size · awaiting vector masters (DL-B02)</p>
+  </div>
+</footer>
+
+<script type="application/json" id="lattice-data">{{M1_LATTICE_JSON}}</script>
+<script>
+(function () {
+  'use strict';
+  var root = document.documentElement;
+  var mqReduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  function isReduced() { return mqReduce.matches || root.dataset.motion === 'reduce'; }
+
+  /* ---------- on-page "Reduce motion" toggle (persists; try/catch per storage rules) ---------- */
+  var toggle = document.querySelector('[data-motion-toggle]');
+  function syncToggle() { toggle.setAttribute('aria-pressed', String(isReduced())); }  /* label stays constant; aria-pressed carries the state (APG) */
+  toggle.addEventListener('click', function () {
+    if (root.dataset.motion === 'reduce') { delete root.dataset.motion; try { localStorage.removeItem('meerana-motion'); } catch (e) {} }
+    else { root.dataset.motion = 'reduce'; try { localStorage.setItem('meerana-motion', 'reduce'); } catch (e) {} lattice.halt(); revealAll(); }
+    syncToggle();
+  });
+  syncToggle();
+
+  /* ---------- quiet reveals ---------- */
+  var reveals = document.querySelectorAll('[data-reveal]');
+  function revealAll() { reveals.forEach(function (el) { el.setAttribute('data-revealed', ''); }); }
+  if (!('IntersectionObserver' in window) || isReduced()) { revealAll(); }
+  else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) { e.target.setAttribute('data-revealed', ''); io.unobserve(e.target); } });
+    }, { rootMargin: '0px 0px -8% 0px' });
+    reveals.forEach(function (el) { io.observe(el); });
+  }
+
+  /* ---------- placard rail ---------- */
+  var rail = document.querySelector('.rail');
+  document.querySelectorAll('[data-rail]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var card = rail.querySelector('.placard');
+      rail.scrollBy({ left: Number(b.dataset.rail) * (card.getBoundingClientRect().width + 16), behavior: isReduced() ? 'auto' : 'smooth' });
+    });
+  });
+
+  /* ---------- signature: lattice assembly ---------- */
+  var data = JSON.parse(document.getElementById('lattice-data').textContent);
+  var stage = document.querySelector('[data-signature]');
+  var canvas = stage.querySelector('canvas');
+  var ctx = canvas.getContext('2d');
+  var readout = stage.querySelector('.readout');
+  var labels = stage.querySelectorAll('.zone-label');
+  var svgZones = stage.querySelectorAll('.poster .zone');
+
+  // cubic-bezier(0, 0, 0, 1) = --ease-enter (one easing family)
+  function bezier(p1x, p1y, p2x, p2y) {
+    function a(a1, a2) { return 1 - 3 * a2 + 3 * a1; } function b(a1, a2) { return 3 * a2 - 6 * a1; } function c(a1) { return 3 * a1; }
+    function calc(t, a1, a2) { return ((a(a1, a2) * t + b(a1, a2)) * t + c(a1)) * t; }
+    function slope(t, a1, a2) { return 3 * a(a1, a2) * t * t + 2 * b(a1, a2) * t + c(a1); }
+    return function (x) { if (x <= 0) return 0; if (x >= 1) return 1; var t = x;
+      for (var i = 0; i < 8; i++) { var s = slope(t, p1x, p2x); if (s === 0) break; t -= (calc(t, p1x, p2x) - x) / s; }
+      return calc(Math.min(1, Math.max(0, t)), p1y, p2y); };
+  }
+  var easeEnter = bezier(0, 0, 0, 1);
+  function rng(seed) { return function () { seed |= 0; seed = seed + 0x6D2B79F5 | 0; var t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+
+  var N = data.nodes.length, W = data.w, H = data.h;
+  var start = [], delay = [];
+  (function () { var r = rng(2022);
+    for (var i = 0; i < N; i++) { var p = data.nodes[i];
+      start.push([p[0] + (r() - 0.5) * W * 1.1, p[1] + (r() - 0.5) * H * 1.1]);
+      delay.push(((p[0] / W) + (1 - p[1] / H)) / 2 * 650); } })();
+  var NODE_DUR = 900, ZONE_T0 = 1250, ZONE_STEP = 140, ZONE_DUR = 420;
+  var TOTAL = ZONE_T0 + ZONE_STEP * (data.zones.length - 1) + ZONE_DUR;
+
+  var dpr = 1, scale = 1, offX = 0, offY = 0, raf = 0, t0 = 0, settled = false, hot = -1, pointer = null;
+  function resize() {
+    var r = stage.getBoundingClientRect();
+    dpr = Math.min(window.devicePixelRatio || 1, window.innerWidth < 768 ? 1.25 : 1.5);
+    canvas.width = Math.round(r.width * dpr); canvas.height = Math.round(r.height * dpr);
+    scale = Math.min(r.width / W, r.height / H); offX = (r.width - W * scale) / 2; offY = (r.height - H * scale) / 2;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  function X(x) { return offX + x * scale; } function Y(y) { return offY + y * scale; }
+
+  function draw(elapsed) {
+    var r = canvas.width / dpr, h = canvas.height / dpr;
+    ctx.clearRect(0, 0, r, h);
+    var prog = new Array(N), pos = new Array(N);
+    for (var i = 0; i < N; i++) {
+      var p = Math.min(1, Math.max(0, (elapsed - delay[i]) / NODE_DUR)), e = easeEnter(p), n = data.nodes[i];
+      prog[i] = p; pos[i] = [start[i][0] + (n[0] - start[i][0]) * e, start[i][1] + (n[1] - start[i][1]) * e];
+    }
+    ctx.lineWidth = 1; ctx.strokeStyle = '#3FD0FF';
+    for (var k = 0; k < data.edges.length; k++) {
+      var a = data.edges[k][0], b = data.edges[k][1], al = Math.min(prog[a], prog[b]);
+      if (al <= 0.02) continue;
+      ctx.globalAlpha = 0.28 * al * al;
+      ctx.beginPath(); ctx.moveTo(X(pos[a][0]), Y(pos[a][1])); ctx.lineTo(X(pos[b][0]), Y(pos[b][1])); ctx.stroke();
+    }
+    ctx.fillStyle = '#B5BBC3';
+    for (i = 0; i < N; i++) {
+      var near = pointer ? Math.hypot(X(pos[i][0]) - pointer[0], Y(pos[i][1]) - pointer[1]) < 90 : false;
+      ctx.globalAlpha = (near ? 1 : 0.75) * (0.25 + 0.75 * prog[i]);
+      ctx.beginPath(); ctx.arc(X(pos[i][0]), Y(pos[i][1]), near ? 2.2 : 1.6, 0, Math.PI * 2); ctx.fill();
+    }
+    for (var z = 0; z < data.zones.length; z++) {
+      var zp = Math.min(1, Math.max(0, (elapsed - ZONE_T0 - z * ZONE_STEP) / ZONE_DUR)), ze = easeEnter(zp);
+      if (ze <= 0) continue;
+      var zone = data.zones[z], isHot = z === hot;
+      ctx.beginPath();
+      zone.hex.forEach(function (idx, j) { var q = data.nodes[idx]; j ? ctx.lineTo(X(q[0]), Y(q[1])) : ctx.moveTo(X(q[0]), Y(q[1])); });
+      ctx.closePath();
+      ctx.globalAlpha = (isHot ? 0.16 : 0.07) * ze; ctx.fillStyle = '#3FD0FF'; ctx.fill();
+      ctx.globalAlpha = ze; ctx.lineWidth = isHot ? 2.5 : 1.5; ctx.strokeStyle = '#3FD0FF'; ctx.stroke();
+      ctx.fillStyle = '#FFFFFF'; ctx.beginPath(); ctx.arc(X(zone.cx), Y(zone.cy), 2.6, 0, Math.PI * 2); ctx.fill();
+      ctx.lineWidth = 1; ctx.fillStyle = '#B5BBC3';
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  function step(now) {
+    var elapsed = now - t0;
+    draw(elapsed);
+    if (elapsed < TOTAL) { raf = requestAnimationFrame(step); } else { settled = true; raf = 0; }
+  }
+  function run() {
+    if (isReduced() || window.innerWidth < 768) return;
+    cancelAnimationFrame(raf); settled = false; resize();
+    stage.classList.add('is-live');
+    t0 = performance.now(); raf = requestAnimationFrame(step);
+  }
+  function halt() { cancelAnimationFrame(raf); raf = 0; settled = true; stage.classList.remove('is-live'); }
+  var lattice = { run: run, halt: halt };
+  window.lattice = lattice;
+
+  // QA hook for design review / screenshots: #frame=<ms> renders that exact frame once, with no animation loop.
+  var qaFrame = (function () { var m = /[#&]frame=(\d+)/.exec(location.hash); return m ? Number(m[1]) : null; })();
+  function currentElapsed() { return qaFrame !== null ? qaFrame : (settled ? TOTAL : performance.now() - t0); }
+
+  // mount after first paint (LCP-safe): rAF → idle (Safari lacks requestIdleCallback)
+  var idle = 'requestIdleCallback' in window ? function (cb) { window.requestIdleCallback(cb, { timeout: 1200 }); } : function (cb) { setTimeout(cb, 200); };
+  if (qaFrame !== null) { setTimeout(function () { resize(); stage.classList.add('is-live'); draw(qaFrame); settled = true; }, 400); }
+  else { requestAnimationFrame(function () { idle(run); }); }
+  document.querySelector('[data-replay]').addEventListener('click', function () { if (isReduced()) return; qaFrame = null; run(); });
+  if ('ResizeObserver' in window) new ResizeObserver(function () { if (stage.classList.contains('is-live')) { resize(); draw(currentElapsed()); } }).observe(stage);
+  document.addEventListener('visibilitychange', function () { if (document.hidden && raf) { halt(); } });
+
+  /* ---------- zone highlight: labels ↔ lattice (works in poster and canvas modes) ---------- */
+  function setHot(i) {
+    hot = i;
+    labels.forEach(function (l, j) { l.classList.toggle('is-hot', j === i); });
+    svgZones.forEach(function (g, j) { g.classList.toggle('is-hot', j === i); });
+    if (settled && stage.classList.contains('is-live')) draw(TOTAL);
+  }
+  labels.forEach(function (l, i) {
+    l.addEventListener('mouseenter', function () { setHot(i); }); l.addEventListener('focus', function () { setHot(i); });
+    l.addEventListener('mouseleave', function () { setHot(-1); }); l.addEventListener('blur', function () { setHot(-1); });
+  });
+  if (window.matchMedia('(pointer: fine)').matches) {
+    var pending = false;
+    stage.addEventListener('pointermove', function (ev) {
+      if (!settled || !stage.classList.contains('is-live') || isReduced()) return;
+      var r = stage.getBoundingClientRect(); pointer = [ev.clientX - r.left, ev.clientY - r.top];
+      if (pending) return; pending = true;
+      requestAnimationFrame(function () {
+        pending = false; var best = -1, bd = 46;
+        data.zones.forEach(function (z, i) { var d = Math.hypot(X(z.cx) - pointer[0], Y(z.cy) - pointer[1]); if (d < bd) { bd = d; best = i; } });
+        setHot(best); draw(TOTAL);
+        if (best >= 0) { readout.textContent = labels[best].textContent.replace(/\s+/g, ' ').trim().toUpperCase();
+          readout.style.left = (pointer[0] + 14) + 'px'; readout.style.top = (pointer[1] + 14) + 'px'; readout.classList.add('is-on'); }
+        else { readout.classList.remove('is-on'); }
+      });
+    }, { passive: true });
+    stage.addEventListener('pointerleave', function () { pointer = null; readout.classList.remove('is-on'); setHot(-1); if (settled && stage.classList.contains('is-live')) draw(TOTAL); });
+  }
+})();
+</script>
+</body>
+</html>

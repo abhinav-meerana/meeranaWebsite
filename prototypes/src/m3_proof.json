@@ -1,0 +1,2147 @@
+{
+ "_meta": {
+  "generated": "2026-10-10",
+  "revision": "v3 (fixer, 2026-10-10 after the second verification): matches build.py m3_proof() as edited at 15:23",
+  "owner_directive": "Regarding proof, bring everything from meerana.ae for now; we'll change later if needed.",
+  "retrieved": "meerana.ae API snapshot 2026-10-02; logos and award images fetched 2026-10-10. All 41 fetched files in research/live-site/proof-originals/{logos,awards,other} match the 2026-10-02 HEAD-check byte lengths; the 13 files already on disk (10 logos, new01, new02, news12) are SHA-256 identical to the fetched copies.",
+  "rendered_by_build": "build.py m3_proof() (edited 2026-10-10 15:23 by the build owner) renders, in array order: every logos[] entry as <li title=label-or-name><img src=file alt=name>; awards[] then awards_withheld[] entries whose withheld_reason does not contain 'never promote' (h4 = title, caption = issuer, no image), so ELMA renders and the EV-201 item does not; partner_text[] then partner_text_site_only[] (partner + relationship) under the template's 'Partnerships' heading. logos_government[], site_mentions_not_partnerships[], site_copy, news, stats, testimonials_ref and not_proof are never read by the build.",
+  "order": "Arrays are in recommended display order, strongest first.",
+  "schema_note": "Site wording sits in site_* fields (site_title, site_date, site_issuer, site_image_copy) so the build cannot pick it up; the rendered fields are title/issuer (awards) and relationship (partners).",
+  "logo_treatment": "logos[] (the wall, 29): single-colour white marks on transparency. logos_government[] (3, off the wall): the UAE state-emblem lockups (MOHRE, MoI/Dubai Civil Defence, Cabinet Affairs) as colour marks as published with the page-white removed, so no emblem is recoloured (white versions kept as alt_files.white_mark). All trimmed to the alpha > 0 bounding box, max 240x96 px, lossless WebP. display_css is an optical-size suggestion (CSS px); the template currently ignores it and fits each logo in a 139x40 slot at 1440 px.",
+  "legibility_fields": "mono_legible = every text line in the mark reads at 1x in the build's 139x40 slot (the field name is kept from v1 and applies to the colour files too); identity_legible_1x = the name or mark that identifies the organisation reads; legibility.display_css_legible = the size at which the smallest line would read.",
+  "visible_caption": "As published on meerana.ae (retrieved 2 October 2026). (build.py's own caption)",
+  "inventory": "docs/review/m3-2026-10-10/PROOF-INVENTORY.md",
+  "rules": [
+   "Judge §4a: logos (DL-R02) and client names/logos (EV-243) are 'never' for launch; the owner overrode this for the prototype only.",
+   "No visible EV/DL codes: register_ev and register_status are data, never page text.",
+   "Never display: testimonials (placeholder; held research-side), news id 3 and 21 (display=false), the EV-201 record (awards_withheld[1]), unmasked award photos, personal LinkedIn URLs.",
+   "Visible by owner choice, prototype only: the ELMA placard (judge condition: certificate seen) and the 4 reselling-portfolio lines (EV-034 confirm-with-meerana).",
+   "logos_government[] stays off the monochrome wall until the template has a larger government row, or the owner drops it."
+  ],
+  "summary": {
+   "logos_total": 32,
+   "logos_on_wall": 29,
+   "logos_government_row": 3,
+   "tier_counts": {
+    "1": 3,
+    "2": 4,
+    "3": 6,
+    "4": 7,
+    "5": 2,
+    "6": 10
+   },
+   "high_risk_logos": [
+    "Emirates NBD",
+    "Abu Dhabi Islamic Bank (ADIB)",
+    "Ruya",
+    "Dubai Electricity & Water Authority",
+    "Digital DEWA",
+    "Moro",
+    "General Civil Aviation Authority",
+    "Neonax",
+    "UAE Ministry of Human Resources & Emiratisation",
+    "UAE Ministry of Interior, Dubai Civil Defense",
+    "UAE Ministry of Cabinet Affairs"
+   ],
+   "not_legible_1x": [
+    "Magrudy's",
+    "Dubai Electricity & Water Authority",
+    "General Civil Aviation Authority",
+    "Almuetamadah Real Estate",
+    "Sabeel Technologies",
+    "Neonax",
+    "UAE Ministry of Human Resources & Emiratisation",
+    "UAE Ministry of Interior, Dubai Civil Defense",
+    "UAE Ministry of Cabinet Affairs"
+   ],
+   "identity_not_legible_1x": [
+    "UAE Ministry of Human Resources & Emiratisation",
+    "UAE Ministry of Interior, Dubai Civil Defense",
+    "UAE Ministry of Cabinet Affairs"
+   ],
+   "awards_rendered": 3,
+   "awards_never_rendered": 1,
+   "partner_lines_rendered": 10,
+   "partner_lines_verified": 6,
+   "partner_lines_site_portfolio": 4,
+   "site_mentions_not_rendered": 3
+  },
+  "owner_choice_note": "Not 'safe by default' any more: the build owner applied the owner's 'bring everything' directive, so the ELMA placard (certificate unseen, judge §4a condition open) and the 4 reselling-portfolio lines (confirm-with-meerana, EV-034) are visible in the prototype by owner choice."
+ },
+ "logos": [
+  {
+   "order": 1,
+   "tier": 1,
+   "tier_name": "Verified partner",
+   "file": "media/m3/proof/logos/software-ag.webp",
+   "name": "Software AG",
+   "name_note": "build.py uses `name` as the img alt. It is the text the mark itself shows ('United Arab Emirates' shortened to 'UAE'; the mark's own spelling kept). Acronyms or identities the mark does not show live in inferred_identity.",
+   "label": "Software AG",
+   "identified": true,
+   "identification_confidence": "high",
+   "source_url": "https://www.meerana.ae/assets/software.png",
+   "original": "research/live-site/proof-originals/logos/software.png",
+   "original_px": [
+    960,
+    210
+   ],
+   "original_sha256_16": "7274e17da3d3ca2f",
+   "relationship_text_on_site": "Logo in the unlabelled 'Partners  & Clients' grid on /partners (grayscale, alt=\"\"); footer calls the set 'Clients & Partners'. Also on 'Our Partners & Clients', company profile PDF p19. News (October 12, 2022): \"Software AG, Meerana sign partnership\". Managed Services portfolio: \"Software AG - Seamless integration of data, applications, processes, devices and clouds\".",
+   "register_ev": "EV-240; EV-034; EV-241",
+   "register_status": "relationship ok-to-use (EV-240); logo use confirm-with-meerana (EV-241, DL-R02)",
+   "risk": "low",
+   "risk_flags": [
+    "Past-tense claim only: 'Joined Software AG's PartnerConnect programme (2022)'; status after 2022 unverified"
+   ],
+   "px": [
+    240,
+    45
+   ],
+   "display_css": {
+    "w": 126,
+    "h": 24
+   },
+   "treatment": "white mark on transparency (colour distance from background -> alpha)",
+   "mono_legible": true,
+   "identity_legible_1x": true,
+   "legibility": {
+    "slot_css": [
+     139,
+     26
+    ],
+    "note": "All text in the mark reads at 1x in the slot."
+   },
+   "label_note": "build.py uses `label` (else `name`) as the li title, i.e. a hover tooltip viewers see. Internal wording lives in label_internal."
+  },
+  {
+   "order": 2,
+   "tier": 1,
+   "tier_name": "Verified partner",
+   "file": "media/m3/proof/logos/commvault.webp",
+   "name": "Commvault",
+   "name_note": "build.py uses `name` as the img alt. It is the text the mark itself shows ('United Arab Emirates' shortened to 'UAE'; the mark's own spelling kept). Acronyms or identities the mark does not show live in inferred_identity.",
+   "label": "Commvault",
+   "identified": true,
+   "identification_confidence": "high",
+   "source_url": "https://www.meerana.ae/assets/commvalt.png",
+   "original": "research/live-site/proof-originals/logos/commvalt.png",
+   "original_px": [
+    960,
+    210
+   ],
+   "original_sha256_16": "e03b16a87f4f28e8",
+   "relationship_text_on_site": "Logo in the unlabelled 'Partners  & Clients' grid on /partners (grayscale, alt=\"\"); footer calls the set 'Clients & Partners'. Also on 'Our Partners & Clients', company profile PDF p19. Managed Services portfolio: \"Commvault - Data Security & Back up Platforms\". Listed as a course provider on /courses.",
+   "register_ev": "EV-506; EV-034; EV-041; EV-241",
+   "register_status": "relationship ok-to-use (EV-506); logo use confirm-with-meerana (EV-241)",
+   "risk": "low",
+   "risk_flags": [
+    "Site filename misspelt 'commvalt.png' (cosmetic)"
+   ],
+   "px": [
+    240,
+    40
+   ],
+   "display_css": {
+    "w": 134,
+    "h": 22
+   },
+   "treatment": "white mark on transparency (colour distance from background -> alpha)",
+   "mono_legible": true,
+   "identity_legible_1x": true,
+   "legibility": {
+    "slot_css": [
+     139,
+     23
+    ],
+    "note": "All text in the mark reads at 1x in the slot."
+   },
+   "label_note": "build.py uses `label` (else `name`) as the li title, i.e. a hover tooltip viewers see. Internal wording lives in label_internal."
+  },
+  {
+   "order": 3,
+   "tier": 1,
+   "tier_name": "Verified partner",
+   "file": "media/m3/proof/logos/botminds.webp",
+   "name": "Botminds",
+   "name_note": "build.py uses `name` as the img alt. It is the text the mark itself shows ('United Arab Emirates' shortened to 'UAE'; the mark's own spelling kept). Acronyms or identities the mark does not show live in inferred_identity.",
+   "label": "Botminds",
+   "identified": true,
+   "identification_confidence": "high",
+   "source_url": "https://www.meerana.ae/assets/botminds.png",
+   "original": "research/live-site/proof-originals/logos/botminds.png",
+   "original_px": [
+    960,
+    210
+   ],
+   "original_sha256_16": "3944fe3b2af752cc",
+   "relationship_text_on_site": "Logo in the unlabelled 'Partners  & Clients' grid on /partners (grayscale, alt=\"\"); footer calls the set 'Clients & Partners'. Also on 'Our Partners & Clients', company profile PDF p19. Listed as a course provider on /courses.",
+   "register_ev": "EV-508; EV-041; EV-241",
+   "register_status": "relationship ok-to-use (EV-508); logo use confirm-with-meerana (EV-241)",
+   "risk": "low",
+   "risk_flags": [
+    "Document-AI vendor; overlaps Nazo's category (partner, not competitor, per botminds.ai/partners)"
+   ],
+   "px": [
+    240,
+    35
+   ],
+   "display_css": {
+    "w": 151,
+    "h": 22
+   },
+   "treatment": "white mark on transparency (colour distance from background -> alpha)",
+   "mono_legible": true,
+   "identity_legible_1x": true,
+   "legibility": {
+    "slot_css": [
+     139,
+     20
+    ],
+    "note": "All text in the mark reads at 1x in the slot."
+   },
+   "label_note": "build.py uses `label` (else `name`) as the li title, i.e. a hover tooltip viewers see. Internal wording lives in label_internal."
+  },
+  {
+   "order": 4,
+   "tier": 2,
+   "tier_name": "Technology vendor named on site",
+   "file": "media/m3/proof/logos/confluent.webp",
+   "name": "Confluent",
+   "name_note": "build.py uses `name` as the img alt. It is the text the mark itself shows ('United Arab Emirates' shortened to 'UAE'; the mark's own spelling kept). Acronyms or identities the mark does not show live in inferred_identity.",
+   "label": "Confluent",
+   "identified": true,
+   "identification_confidence": "high",
+   "source_url": "https://www.meerana.ae/assets/confluent.png",
+   "original": "research/live-site/proof-originals/logos/confluent.png",
+   "original_px": [
+    960,
+    210
+   ],
+   "original_sha256_16": "5e399c3b83fb281d",
+   "relationship_text_on_site": "Logo in the unlabelled 'Partners  & Clients' grid on /partners (grayscale, alt=\"\"); footer calls the set 'Clients & Partners'. Also on 'Our Partners & Clients', company profile PDF p19. Managed Services portfolio: \"Confluent - Data Streaming Platform\".",
+   "register_ev": "EV-034; EV-241",
+   "register_status": "confirm-with-meerana (EV-034: not found in Confluent partner directory)",
+   "risk": "medium",
+   "risk_flags": [
+    "Reseller claim not independently verified"
+   ],
+   "px": [
+    240,
+    40
+   ],
+   "display_css": {
+    "w": 134,
+    "h": 22
+   },
+   "treatment": "white mark on transparency (colour distance from background -> alpha)",
+   "mono_legible": true,
+   "identity_legible_1x": true,
+   "legibility": {
+    "slot_css": [
+     139,
+     23
+    ],
+    "note": "All text in the mark reads at 1x in the slot."
+   },
+   "label_note": "build.py uses `label` (else `name`) as the li title, i.e. a hover tooltip viewers see. Internal wording lives in label_internal."
+  },
+  {
+   "order": 5,
+   "tier": 2,
+   "tier_name": "Technology vendor named on site",
+   "file": "media/m3/proof/logos/kofax.webp",
+   "name": "Kofax",
+   "name_note": "build.py uses `name` as the img alt. It is the text the mark itself shows ('United Arab Emirates' shortened to 'UAE'; the mark's own spelling kept). Acronyms or identities the mark does not show live in inferred_identity.",
+   "label": "Kofax",
+   "identified": true,
+   "identification_confidence": "high",
+   "source_url": "https://www.meerana.ae/assets/kofax.png",
+   "original": "research/live-site/proof-originals/logos/kofax.png",
+   "original_px": [
+    960,
+    210
+   ],
+   "original_sha256_16": "9e09960c76c52bc6",
+   "relationship_text_on_site": "Logo in the unlabelled 'Partners  & Clients' grid on /partners (grayscale, alt=\"\"); footer calls the set 'Clients & Partners'. Also on 'Our Partners & Clients', company profile PDF p19. Managed Services portfolio: \"Kofax - Robotic Automation Platform\".",
+   "register_ev": "EV-034; EV-241",
+   "register_status": "confirm-with-meerana (EV-034)",
+   "risk": "medium",
+   "risk_flags": [
+    "Outdated brand: Kofax is now Tungsten Automation (EV-034)",
+    "Reseller claim not independently verified"
+   ],
+   "px": [
+    240,
+    44
+   ],
+   "display_css": {
+    "w": 120,
+    "h": 22
+   },
+   "treatment": "white mark on transparency (colour distance from background -> alpha)",
+   "mono_legible": true,
+   "identity_legible_1x": true,
+   "legibility": {
+    "slot_css": [
+     139,
+     25
+    ],
+    "note": "All text in the mark reads at 1x in the slot."
+   },
+   "label_note": "build.py uses `label` (else `name`) as the li title, i.e. a hover tooltip viewers see. Internal wording lives in label_internal."
+  },
+  {
+   "order": 6,
+   "tier": 2,
+   "tier_name": "Technology vendor named on site",
+   "file": "media/m3/proof/logos/agilepoint.webp",
+   "name": "AgilePoint",
+   "name_note": "build.py uses `name` as the img alt. It is the text the mark itself shows ('United Arab Emirates' shortened to 'UAE'; the mark's own spelling kept). Acronyms or identities the mark does not show live in inferred_identity.",
+   "label": "AgilePoint",
+   "identified": true,
+   "identification_confidence": "high",
+   "source_url": "https://www.meerana.ae/assets/agilePoint.png",
+   "original": "research/live-site/proof-originals/logos/agilePoint.png",
+   "original_px": [
+    960,
+    210
+   ],
+   "original_sha256_16": "dd0848a1dc0f959a",
+   "relationship_text_on_site": "Logo in the unlabelled 'Partners  & Clients' grid on /partners (grayscale, alt=\"\"); footer calls the set 'Clients & Partners'. Also on 'Our Partners & Clients', company profile PDF p19. Managed Services portfolio: \"Agilepoint - No Code Low Code\".",
+   "register_ev": "EV-034; EV-241",
+   "register_status": "confirm-with-meerana (EV-034: not found in partner directory)",
+   "risk": "medium",
+   "risk_flags": [
+    "Reseller claim not independently verified",
+    "Low-code process vendor: adjacent to Tasree3's category"
+   ],
+   "px": [
+    239,
+    56
+   ],
+   "display_css": {
+    "w": 113,
+    "h": 27
+   },
+   "treatment": "white mark on transparency (colour distance from background -> alpha)",
+   "mono_legible": true,
+   "identity_legible_1x": true,
+   "legibility": {
+    "slot_css": [
+     139,
+     33
+    ],
+    "note": "All text in the mark reads at 1x in the slot."
+   },
+   "trim_note": "v3: re-trimmed to the alpha > 0 bounding box (v2 left one fully transparent column on the right).",
+   "label_note": "build.py uses `label` (else `name`) as the li title, i.e. a hover tooltip viewers see. Internal wording lives in label_internal."
+  },
+  {
+   "order": 7,
+   "tier": 2,
+   "tier_name": "Technology vendor named on site",
+   "file": "media/m3/proof/logos/sas.webp",
+   "name": "SAS",
+   "name_note": "build.py uses `name` as the img alt. It is the text the mark itself shows ('United Arab Emirates' shortened to 'UAE'; the mark's own spelling kept). Acronyms or identities the mark does not show live in inferred_identity.",
+   "label": "SAS",
+   "identified": true,
+   "identification_confidence": "high",
+   "source_url": "https://www.meerana.ae/assets/course_provider2.jpeg",
+   "original": "research/live-site/proof-originals/logos/course_provider2.jpeg",
+   "original_px": [
+    351,
+    144
+   ],
+   "original_sha256_16": "613b3d7f50491639",
+   "relationship_text_on_site": "Logo in the unlabelled 'Partners  & Clients' grid on /partners (grayscale, alt=\"\"); footer calls the set 'Clients & Partners'. Same file is the SAS card on /courses (course provider, no courses listed). Not in the profile PDF.",
+   "register_ev": "EV-041; EV-241",
+   "register_status": "confirm-with-meerana (EV-041; courses out of v1 scope, DL-S04)",
+   "risk": "medium",
+   "risk_flags": [
+    "Only relationship shown is 'course provider' with zero courses",
+    "Source is a JPEG with a white box; converted cleanly"
+   ],
+   "px": [
+    234,
+    96
+   ],
+   "display_css": {
+    "w": 86,
+    "h": 35
+   },
+   "treatment": "white mark on transparency (colour distance from background -> alpha)",
+   "mono_legible": true,
+   "identity_legible_1x": true,
+   "legibility": {
+    "slot_css": [
+     98,
+     40
+    ],
+    "note": "All text in the mark reads at 1x in the slot."
+   },
+   "label_note": "build.py uses `label` (else `name`) as the li title, i.e. a hover tooltip viewers see. Internal wording lives in label_internal."
+  },
+  {
+   "order": 8,
+   "tier": 3,
+   "tier_name": "Recognised enterprise (relationship unstated)",
+   "file": "media/m3/proof/logos/dell.webp",
+   "name": "Dell",
+   "name_note": "build.py uses `name` as the img alt. It is the text the mark itself shows ('United Arab Emirates' shortened to 'UAE'; the mark's own spelling kept). Acronyms or identities the mark does not show live in inferred_identity.",
+   "label": "Dell",
+   "inferred_identity": "Dell Technologies (the circle mark reads DELL)",
+   "identified": true,
+   "identification_confidence": "high",
+   "source_url": "https://www.meerana.ae/assets/dell.png",
+   "original": "research/live-site/proof-originals/logos/dell.png",
+   "original_px": [
+    960,
+    210
+   ],
+   "original_sha256_16": "bf1bb9c6ea7ac64e",
+   "relationship_text_on_site": "Logo in the unlabelled 'Partners  & Clients' grid on /partners (grayscale, alt=\"\"); footer calls the set 'Clients & Partners'. Also one of the 4 logos on the home page partner strip. Also on 'Our Partners & Clients', company profile PDF p19. Managed Services mentions PC hardware reselling (\"Computer, all in one pc, business laptops, school laptops etc..\") but never names Dell.",
+   "register_ev": "EV-241",
+   "register_status": "confirm-with-meerana (EV-241)",
+   "risk": "medium",
+   "risk_flags": [
+    "Client vs vendor unknown; no Dell partner listing checked"
+   ],
+   "px": [
+    96,
+    96
+   ],
+   "display_css": {
+    "w": 48,
+    "h": 48
+   },
+   "treatment": "white mark on transparency (colour distance from background -> alpha)",
+   "mono_legible": true,
+   "identity_legible_1x": true,
+   "legibility": {
+    "slot_css": [
+     40,
+     40
+    ],
+    "note": "All text in the mark reads at 1x in the slot."
+   },
+   "label_note": "build.py uses `label` (else `name`) as the li title, i.e. a hover tooltip viewers see. Internal wording lives in label_internal."
+  },
+  {
+   "order": 9,
+   "tier": 3,
+   "tier_name": "Recognised enterprise (relationship unstated)",
+   "file": "media/m3/proof/logos/emirates-nbd.webp",
+   "name": "Emirates NBD",
+   "name_note": "build.py uses `name` as the img alt. It is the text the mark itself shows ('United Arab Emirates' shortened to 'UAE'; the mark's own spelling kept). Acronyms or identities the mark does not show live in inferred_identity.",
+   "label": "Emirates NBD",
+   "identified": true,
+   "identification_confidence": "high",
+   "source_url": "https://www.meerana.ae/assets/EmiratesNBD.png",
+   "original": "research/live-site/proof-originals/logos/EmiratesNBD.png",
+   "original_px": [
+    960,
+    210
+   ],
+   "original_sha256_16": "40d63cdf5e52a98b",
+   "relationship_text_on_site": "Logo in the unlabelled 'Partners  & Clients' grid on /partners (grayscale, alt=\"\"); footer calls the set 'Clients & Partners'. Also one of the 4 logos on the home page partner strip. Also on 'Our Partners & Clients', company profile PDF p19.",
+   "register_ev": "EV-243; EV-241",
+   "register_status": "confirm-with-meerana (EV-243: never label as client or imply endorsement without written confirmation)",
+   "risk": "high",
+   "risk_flags": [
+    "Regulated bank: strict brand-use rules; written permission needed",
+    "Implied client endorsement",
+    "Converted from the navy plate lockup to a white mark (brand may require the plate)"
+   ],
+   "px": [
+    240,
+    62
+   ],
+   "display_css": {
+    "w": 108,
+    "h": 28
+   },
+   "treatment": "white mark on transparency (colour distance from background -> alpha); cropped from solid plate",
+   "mono_legible": true,
+   "identity_legible_1x": true,
+   "legibility": {
+    "slot_css": [
+     139,
+     36
+    ],
+    "note": "All text in the mark reads at 1x in the slot."
+   },
+   "label_note": "build.py uses `label` (else `name`) as the li title, i.e. a hover tooltip viewers see. Internal wording lives in label_internal."
+  },
+  {
+   "order": 10,
+   "tier": 3,
+   "tier_name": "Recognised enterprise (relationship unstated)",
+   "file": "media/m3/proof/logos/adib.webp",
+   "name": "Abu Dhabi Islamic Bank (ADIB)",
+   "name_note": "build.py uses `name` as the img alt. It is the text the mark itself shows ('United Arab Emirates' shortened to 'UAE'; the mark's own spelling kept). Acronyms or identities the mark does not show live in inferred_identity.",
+   "label": "Abu Dhabi Islamic Bank (ADIB)",
+   "identified": true,
+   "identification_confidence": "high",
+   "source_url": "https://www.meerana.ae/assets/ADIB.png",
+   "original": "research/live-site/proof-originals/logos/ADIB.png",
+   "original_px": [
+    960,
+    210
+   ],
+   "original_sha256_16": "9a9c15b3bca2ebec",
+   "relationship_text_on_site": "Logo in the unlabelled 'Partners  & Clients' grid on /partners (grayscale, alt=\"\"); footer calls the set 'Clients & Partners'. Also on 'Our Partners & Clients', company profile PDF p19.",
+   "register_ev": "EV-243; EV-145; EV-241",
+   "register_status": "confirm-with-meerana (EV-243)",
+   "risk": "high",
+   "risk_flags": [
+    "Regulated bank: written permission needed",
+    "Implied client endorsement",
+    "ADIB also appears as demo data in the live Nazoo mock ('Official Letter to ADIB Bank', EV-145 do-not-use)"
+   ],
+   "px": [
+    240,
+    41
+   ],
+   "display_css": {
+    "w": 133,
+    "h": 23
+   },
+   "treatment": "white mark on transparency (colour distance from background -> alpha)",
+   "mono_legible": true,
+   "identity_legible_1x": true,
+   "legibility": {
+    "slot_css": [
+     139,
+     24
+    ],
+    "note": "All text in the mark reads at 1x in the slot."
+   },
+   "label_note": "build.py uses `label` (else `name`) as the li title, i.e. a hover tooltip viewers see. Internal wording lives in label_internal."
+  },
+  {
+   "order": 11,
+   "tier": 3,
+   "tier_name": "Recognised enterprise (relationship unstated)",
+   "file": "media/m3/proof/logos/ruya.webp",
+   "name": "Ruya",
+   "name_note": "build.py uses `name` as the img alt. It is the text the mark itself shows ('United Arab Emirates' shortened to 'UAE'; the mark's own spelling kept). Acronyms or identities the mark does not show live in inferred_identity.",
+   "label": "Ruya",
+   "inferred_identity": "likely Ruya Community Islamic Bank (from the wordmark 'ruya / رويا' and the filename 'ruyabank'; unconfirmed)",
+   "identified": true,
+   "identification_confidence": "medium",
+   "source_url": "https://www.meerana.ae/assets/ruyabank.png",
+   "original": "research/live-site/proof-originals/logos/ruyabank.png",
+   "original_px": [
+    1280,
+    558
+   ],
+   "original_sha256_16": "feb7f77c30df75d5",
+   "relationship_text_on_site": "Logo in the unlabelled 'Partners  & Clients' grid on /partners (grayscale, alt=\"\"); footer calls the set 'Clients & Partners'. Not in the profile PDF (added to the site later).",
+   "register_ev": "EV-241",
+   "register_status": "confirm-with-meerana (EV-241)",
+   "risk": "high",
+   "risk_flags": [
+    "Identification from wordmark 'ruya / رويا' plus filename 'ruyabank'; entity (likely Ruya Community Islamic Bank) unconfirmed",
+    "Regulated bank: written permission needed",
+    "Only transparent-background source on the wall (1280x558)"
+   ],
+   "px": [
+    229,
+    96
+   ],
+   "display_css": {
+    "w": 85,
+    "h": 35
+   },
+   "treatment": "white mark on transparency (colour distance from background -> alpha)",
+   "mono_legible": true,
+   "identity_legible_1x": true,
+   "legibility": {
+    "slot_css": [
+     95,
+     40
+    ],
+    "note": "All text in the mark reads at 1x in the slot."
+   },
+   "label_note": "build.py uses `label` (else `name`) as the li title, i.e. a hover tooltip viewers see. Internal wording lives in label_internal."
+  },
+  {
+   "order": 12,
+   "tier": 3,
+   "tier_name": "Recognised enterprise (relationship unstated)",
+   "file": "media/m3/proof/logos/jumbo.webp",
+   "name": "Jumbo",
+   "name_note": "build.py uses `name` as the img alt. It is the text the mark itself shows ('United Arab Emirates' shortened to 'UAE'; the mark's own spelling kept). Acronyms or identities the mark does not show live in inferred_identity.",
+   "label": "Jumbo",
+   "inferred_identity": "probably Jumbo Electronics (UAE retailer; unconfirmed)",
+   "identified": true,
+   "identification_confidence": "medium",
+   "source_url": "https://www.meerana.ae/assets/jumbo.png",
+   "original": "research/live-site/proof-originals/logos/jumbo.png",
+   "original_px": [
+    960,
+    210
+   ],
+   "original_sha256_16": "e363ed4e3f77fc03",
+   "relationship_text_on_site": "Logo in the unlabelled 'Partners  & Clients' grid on /partners (grayscale, alt=\"\"); footer calls the set 'Clients & Partners'. Also on 'Our Partners & Clients', company profile PDF p19.",
+   "register_ev": "EV-241",
+   "register_status": "confirm-with-meerana (EV-241)",
+   "risk": "medium",
+   "risk_flags": [
+    "Probably Jumbo Electronics (UAE retailer); entity unconfirmed"
+   ],
+   "px": [
+    240,
+    51
+   ],
+   "display_css": {
+    "w": 119,
+    "h": 25
+   },
+   "treatment": "white mark on transparency (colour distance from background -> alpha)",
+   "mono_legible": true,
+   "identity_legible_1x": true,
+   "legibility": {
+    "slot_css": [
+     139,
+     30
+    ],
+    "note": "All text in the mark reads at 1x in the slot."
+   },
+   "label_note": "build.py uses `label` (else `name`) as the li title, i.e. a hover tooltip viewers see. Internal wording lives in label_internal."
+  },
+  {
+   "order": 13,
+   "tier": 3,
+   "tier_name": "Recognised enterprise (relationship unstated)",
+   "file": "media/m3/proof/logos/magrudys.webp",
+   "name": "Magrudy's",
+   "name_note": "build.py uses `name` as the img alt. It is the text the mark itself shows ('United Arab Emirates' shortened to 'UAE'; the mark's own spelling kept). Acronyms or identities the mark does not show live in inferred_identity.",
+   "label": "Magrudy's",
+   "identified": true,
+   "identification_confidence": "high",
+   "source_url": "https://www.meerana.ae/assets/magrudy.png",
+   "original": "research/live-site/proof-originals/logos/magrudy.png",
+   "original_px": [
+    960,
+    210
+   ],
+   "original_sha256_16": "663342d3b6b51178",
+   "relationship_text_on_site": "Logo in the unlabelled 'Partners  & Clients' grid on /partners (grayscale, alt=\"\"); footer calls the set 'Clients & Partners'. Also on 'Our Partners & Clients', company profile PDF p19.",
+   "register_ev": "EV-241",
+   "register_status": "confirm-with-meerana (EV-241)",
+   "risk": "medium",
+   "risk_flags": [
+    "Relationship unstated"
+   ],
+   "px": [
+    240,
+    67
+   ],
+   "display_css": {
+    "w": 114,
+    "h": 32
+   },
+   "treatment": "white mark on transparency (colour distance from background -> alpha)",
+   "mono_legible": false,
+   "identity_legible_1x": true,
+   "legibility": {
+    "slot_css": [
+     139,
+     39
+    ],
+    "smallest_text_css_at_slot": 8.7,
+    "display_css_legible": {
+     "w": 147,
+     "h": 41
+    },
+    "note": "Not legible at 1x in the 139x40 slot: the tagline 'Bringing you only the best' is about 8.7 CSS px tall (ascender to descender). Still reads: the Magrudy's wordmark. The smallest line would read from about 147x41 CSS px, wider than the 8-column cell allows."
+   },
+   "trim_note": "v3: re-trimmed to the alpha > 0 bounding box (v2 left one fully transparent row at the top).",
+   "label_note": "build.py uses `label` (else `name`) as the li title, i.e. a hover tooltip viewers see. Internal wording lives in label_internal."
+  },
+  {
+   "order": 14,
+   "tier": 4,
+   "tier_name": "Government / semi-government (endorsement risk)",
+   "file": "media/m3/proof/logos/dewa.webp",
+   "name": "Dubai Electricity & Water Authority",
+   "name_note": "build.py uses `name` as the img alt. It is the text the mark itself shows ('United Arab Emirates' shortened to 'UAE'; the mark's own spelling kept). Acronyms or identities the mark does not show live in inferred_identity.",
+   "label": "Dubai Electricity & Water Authority",
+   "identified": true,
+   "identification_confidence": "high",
+   "source_url": "https://www.meerana.ae/assets/DubaiELEC.png",
+   "original": "research/live-site/proof-originals/logos/DubaiELEC.png",
+   "original_px": [
+    960,
+    210
+   ],
+   "original_sha256_16": "93d228372d16aab7",
+   "relationship_text_on_site": "Logo in the unlabelled 'Partners  & Clients' grid on /partners (grayscale, alt=\"\"); footer calls the set 'Clients & Partners'. Also one of the 4 logos on the home page partner strip. Also on 'Our Partners & Clients', company profile PDF p19.",
+   "register_ev": "EV-243; EV-241",
+   "register_status": "confirm-with-meerana (EV-243)",
+   "risk": "high",
+   "risk_flags": [
+    "Government authority logo implies endorsement",
+    "Written permission needed before any public use",
+    "Three DEWA-group marks on one wall (DEWA, Digital DEWA, Moro) read as one client counted three times"
+   ],
+   "px": [
+    240,
+    58
+   ],
+   "display_css": {
+    "w": 139,
+    "h": 34
+   },
+   "treatment": "white mark on transparency (colour distance from background -> alpha)",
+   "mono_legible": false,
+   "identity_legible_1x": true,
+   "legibility": {
+    "slot_css": [
+     139,
+     34
+    ],
+    "smallest_text_css_at_slot": 6.4,
+    "display_css_legible": {
+     "w": 199,
+     "h": 48
+    },
+    "note": "Not legible at 1x in the 139x40 slot: the English line 'Dubai Electricity & Water Authority' is about 6.4 CSS px tall (ascender to descender). Still reads: the ring mark and the Arabic line. The smallest line would read from about 199x48 CSS px, wider than the 8-column cell allows."
+   },
+   "inferred_identity": "Dubai Electricity & Water Authority (DEWA)",
+   "name_check": "The mark reads 'Dubai Electricity & Water Authority' plus the Arabic name; the acronym 'DEWA' is not in the mark.",
+   "label_note": "build.py uses `label` (else `name`) as the li title, i.e. a hover tooltip viewers see. Internal wording lives in label_internal."
+  },
+  {
+   "order": 15,
+   "tier": 4,
+   "tier_name": "Government / semi-government (endorsement risk)",
+   "file": "media/m3/proof/logos/digital-dewa.webp",
+   "name": "Digital DEWA",
+   "name_note": "build.py uses `name` as the img alt. It is the text the mark itself shows ('United Arab Emirates' shortened to 'UAE'; the mark's own spelling kept). Acronyms or identities the mark does not show live in inferred_identity.",
+   "label": "Digital DEWA",
+   "identified": true,
+   "identification_confidence": "high",
+   "source_url": "https://www.meerana.ae/assets/dewa.png",
+   "original": "research/live-site/proof-originals/logos/dewa.png",
+   "original_px": [
+    960,
+    210
+   ],
+   "original_sha256_16": "01e80e439f27f5da",
+   "relationship_text_on_site": "Logo in the unlabelled 'Partners  & Clients' grid on /partners (grayscale, alt=\"\"); footer calls the set 'Clients & Partners'. Also one of the 4 logos on the home page partner strip. Also on 'Our Partners & Clients', company profile PDF p19. The extract guessed 'a second DEWA logo'; the image is the Digital DEWA mark (ديوا الرقمية / digital dewa).",
+   "register_ev": "EV-243; EV-241",
+   "register_status": "confirm-with-meerana (EV-243)",
+   "risk": "high",
+   "risk_flags": [
+    "DEWA subsidiary; government endorsement risk",
+    "Identification corrected from filename guess"
+   ],
+   "px": [
+    240,
+    79
+   ],
+   "display_css": {
+    "w": 105,
+    "h": 35
+   },
+   "treatment": "white mark on transparency (colour distance from background -> alpha)",
+   "mono_legible": true,
+   "identity_legible_1x": true,
+   "legibility": {
+    "slot_css": [
+     122,
+     40
+    ],
+    "note": "All text in the mark reads at 1x in the slot."
+   },
+   "label_note": "build.py uses `label` (else `name`) as the li title, i.e. a hover tooltip viewers see. Internal wording lives in label_internal."
+  },
+  {
+   "order": 16,
+   "tier": 4,
+   "tier_name": "Government / semi-government (endorsement risk)",
+   "file": "media/m3/proof/logos/moro.webp",
+   "name": "Moro",
+   "name_note": "build.py uses `name` as the img alt. It is the text the mark itself shows ('United Arab Emirates' shortened to 'UAE'; the mark's own spelling kept). Acronyms or identities the mark does not show live in inferred_identity.",
+   "label": "Moro",
+   "inferred_identity": "likely Moro Hub, a Digital DEWA subsidiary (wordmark 'M( )RO' only; unconfirmed)",
+   "identified": true,
+   "identification_confidence": "medium",
+   "source_url": "https://www.meerana.ae/assets/moro.png",
+   "original": "research/live-site/proof-originals/logos/moro.png",
+   "original_px": [
+    960,
+    210
+   ],
+   "original_sha256_16": "e5079b9975fbbe34",
+   "relationship_text_on_site": "Logo in the unlabelled 'Partners  & Clients' grid on /partners (grayscale, alt=\"\"); footer calls the set 'Clients & Partners'. Also on 'Our Partners & Clients', company profile PDF p19.",
+   "register_ev": "EV-241",
+   "register_status": "confirm-with-meerana (EV-241)",
+   "risk": "high",
+   "risk_flags": [
+    "Wordmark 'M( )RO'; likely Moro Hub (Digital DEWA subsidiary), unconfirmed",
+    "Tier 4 and high risk are precautionary: they assume the inferred identity (Moro Hub); if it is another company, re-tier",
+    "Possible competitor: data-centre, cloud and managed digital services overlap Meerana's managed services"
+   ],
+   "px": [
+    240,
+    64
+   ],
+   "display_css": {
+    "w": 106,
+    "h": 28
+   },
+   "treatment": "white mark on transparency (colour distance from background -> alpha)",
+   "mono_legible": true,
+   "identity_legible_1x": true,
+   "legibility": {
+    "slot_css": [
+     139,
+     37
+    ],
+    "note": "All text in the mark reads at 1x in the slot."
+   },
+   "label_note": "build.py uses `label` (else `name`) as the li title, i.e. a hover tooltip viewers see. Internal wording lives in label_internal."
+  },
+  {
+   "order": 17,
+   "tier": 4,
+   "tier_name": "Government / semi-government (endorsement risk)",
+   "file": "media/m3/proof/logos/gcaa.webp",
+   "name": "General Civil Aviation Authority",
+   "name_note": "build.py uses `name` as the img alt. It is the text the mark itself shows ('United Arab Emirates' shortened to 'UAE'; the mark's own spelling kept). Acronyms or identities the mark does not show live in inferred_identity.",
+   "label": "General Civil Aviation Authority",
+   "identified": true,
+   "identification_confidence": "high",
+   "source_url": "https://www.meerana.ae/assets/generalCivil.png",
+   "original": "research/live-site/proof-originals/logos/generalCivil.png",
+   "original_px": [
+    960,
+    210
+   ],
+   "original_sha256_16": "aca7e23dc3842605",
+   "relationship_text_on_site": "Logo in the unlabelled 'Partners  & Clients' grid on /partners (grayscale, alt=\"\"); footer calls the set 'Clients & Partners'. Also on 'Our Partners & Clients', company profile PDF p19. The image reads 'GENERAL CIVIL AVIATION AUTHORITY' (resolves the extract's 'uncertain').",
+   "register_ev": "EV-243; EV-241",
+   "register_status": "confirm-with-meerana (EV-243)",
+   "risk": "high",
+   "risk_flags": [
+    "Federal authority; implies endorsement"
+   ],
+   "px": [
+    240,
+    57
+   ],
+   "display_css": {
+    "w": 146,
+    "h": 35
+   },
+   "treatment": "white mark on transparency (colour distance from background -> alpha)",
+   "mono_legible": false,
+   "identity_legible_1x": true,
+   "legibility": {
+    "slot_css": [
+     139,
+     33
+    ],
+    "smallest_text_css_at_slot": 4.1,
+    "display_css_legible": {
+     "w": 206,
+     "h": 49
+    },
+    "note": "Not legible at 1x in the 139x40 slot: the English line 'GENERAL CIVIL AVIATION AUTHORITY' is about 4.1 CSS px tall (cap height). Still reads: the wing mark and the Arabic line. The smallest line would read from about 206x49 CSS px, wider than the 8-column cell allows."
+   },
+   "inferred_identity": "UAE General Civil Aviation Authority (GCAA)",
+   "name_check": "The mark reads 'GENERAL CIVIL AVIATION AUTHORITY' plus the Arabic name; 'UAE' and 'GCAA' are inferred.",
+   "label_note": "build.py uses `label` (else `name`) as the li title, i.e. a hover tooltip viewers see. Internal wording lives in label_internal."
+  },
+  {
+   "order": 18,
+   "tier": 5,
+   "tier_name": "Association / non-profit",
+   "file": "media/m3/proof/logos/uae-inventors-association.webp",
+   "name": "UAE Inventors Association",
+   "name_note": "build.py uses `name` as the img alt. It is the text the mark itself shows ('United Arab Emirates' shortened to 'UAE'; the mark's own spelling kept). Acronyms or identities the mark does not show live in inferred_identity.",
+   "label": "UAE Inventors Association",
+   "identified": true,
+   "identification_confidence": "high",
+   "source_url": "https://www.meerana.ae/assets/UAEInvertors.png",
+   "original": "research/live-site/proof-originals/logos/UAEInvertors.png",
+   "original_px": [
+    960,
+    210
+   ],
+   "original_sha256_16": "01c883bff2c48244",
+   "relationship_text_on_site": "Logo in the unlabelled 'Partners  & Clients' grid on /partners (grayscale, alt=\"\"); footer calls the set 'Clients & Partners'. Also on 'Our Partners & Clients', company profile PDF p19. News (July 2023): \"CEO contribution as deputy chairman of UAE innovation association\".",
+   "register_ev": "EV-023; EV-241",
+   "register_status": "use-with-edit (EV-023): an affiliation of the CEO, not a client or partner",
+   "risk": "medium",
+   "risk_flags": [
+    "Affiliation, not a commercial relationship",
+    "Ties to the founder (EV-013 consent)",
+    "Site filename misspelt 'UAEInvertors.png'"
+   ],
+   "px": [
+    240,
+    65
+   ],
+   "display_css": {
+    "w": 126,
+    "h": 34
+   },
+   "treatment": "white mark on transparency (colour distance from background -> alpha)",
+   "mono_legible": true,
+   "identity_legible_1x": true,
+   "legibility": {
+    "slot_css": [
+     139,
+     38
+    ],
+    "note": "All text in the mark reads at 1x in the slot."
+   },
+   "label_note": "build.py uses `label` (else `name`) as the li title, i.e. a hover tooltip viewers see. Internal wording lives in label_internal."
+  },
+  {
+   "order": 19,
+   "tier": 5,
+   "tier_name": "Association / non-profit",
+   "file": "media/m3/proof/logos/dar-al-ber-society.webp",
+   "name": "Dar Al Ber Society",
+   "name_note": "build.py uses `name` as the img alt. It is the text the mark itself shows ('United Arab Emirates' shortened to 'UAE'; the mark's own spelling kept). Acronyms or identities the mark does not show live in inferred_identity.",
+   "label": "Dar Al Ber Society",
+   "identified": true,
+   "identification_confidence": "high",
+   "source_url": "https://www.meerana.ae/assets/darAlBar.png",
+   "original": "research/live-site/proof-originals/logos/darAlBar.png",
+   "original_px": [
+    960,
+    210
+   ],
+   "original_sha256_16": "619013447af8193a",
+   "relationship_text_on_site": "Logo in the unlabelled 'Partners  & Clients' grid on /partners (grayscale, alt=\"\"); footer calls the set 'Clients & Partners'. Also on 'Our Partners & Clients', company profile PDF p19.",
+   "register_ev": "EV-241",
+   "register_status": "confirm-with-meerana (EV-241)",
+   "risk": "medium",
+   "risk_flags": [
+    "Charity; relationship unstated (client, donor or CSR?)"
+   ],
+   "px": [
+    216,
+    96
+   ],
+   "display_css": {
+    "w": 82,
+    "h": 37
+   },
+   "treatment": "white mark on transparency (colour distance from background -> alpha)",
+   "mono_legible": true,
+   "identity_legible_1x": true,
+   "legibility": {
+    "slot_css": [
+     90,
+     40
+    ],
+    "note": "All text in the mark reads at 1x in the slot."
+   },
+   "label_note": "build.py uses `label` (else `name`) as the li title, i.e. a hover tooltip viewers see. Internal wording lives in label_internal."
+  },
+  {
+   "order": 20,
+   "tier": 6,
+   "tier_name": "Lesser-known or uncertain",
+   "file": "media/m3/proof/logos/almuetamadah-real-estate.webp",
+   "name": "Almuetamadah Real Estate",
+   "name_note": "build.py uses `name` as the img alt. It is the text the mark itself shows ('United Arab Emirates' shortened to 'UAE'; the mark's own spelling kept). Acronyms or identities the mark does not show live in inferred_identity.",
+   "label": "Almuetamadah Real Estate",
+   "identified": true,
+   "identification_confidence": "medium",
+   "source_url": "https://www.meerana.ae/assets/realEstate.png",
+   "original": "research/live-site/proof-originals/logos/realEstate.png",
+   "original_px": [
+    960,
+    210
+   ],
+   "original_sha256_16": "8cf05ff195917eba",
+   "relationship_text_on_site": "Logo in the unlabelled 'Partners  & Clients' grid on /partners (grayscale, alt=\"\"); footer calls the set 'Clients & Partners'. Also on 'Our Partners & Clients', company profile PDF p19.",
+   "register_ev": "EV-241",
+   "register_status": "confirm-with-meerana (EV-241)",
+   "risk": "medium",
+   "risk_flags": [
+    "Name read from the logo; entity not researched",
+    "Converted from a teal plate to a white mark"
+   ],
+   "px": [
+    240,
+    56
+   ],
+   "display_css": {
+    "w": 130,
+    "h": 30
+   },
+   "treatment": "white mark on transparency (colour distance from background -> alpha); cropped from solid plate",
+   "mono_legible": false,
+   "identity_legible_1x": true,
+   "legibility": {
+    "slot_css": [
+     139,
+     32
+    ],
+    "smallest_text_css_at_slot": 4.6,
+    "display_css_legible": {
+     "w": 180,
+     "h": 42
+    },
+    "note": "Not legible at 1x in the 139x40 slot: the English line 'AIMUETAMADAH REAL ESTATE' is about 4.6 CSS px tall (cap height). Still reads: the Arabic name and the mark. The smallest line would read from about 180x42 CSS px, wider than the 8-column cell allows."
+   },
+   "label_note": "build.py uses `label` (else `name`) as the li title, i.e. a hover tooltip viewers see. Internal wording lives in label_internal."
+  },
+  {
+   "order": 21,
+   "tier": 6,
+   "tier_name": "Lesser-known or uncertain",
+   "file": "media/m3/proof/logos/digitalx.webp",
+   "name": "DigitalX",
+   "name_note": "build.py uses `name` as the img alt. It is the text the mark itself shows ('United Arab Emirates' shortened to 'UAE'; the mark's own spelling kept). Acronyms or identities the mark does not show live in inferred_identity.",
+   "label": "DigitalX",
+   "identified": true,
+   "identification_confidence": "low",
+   "source_url": "https://www.meerana.ae/assets/digital.png",
+   "original": "research/live-site/proof-originals/logos/digital.png",
+   "original_px": [
+    960,
+    210
+   ],
+   "original_sha256_16": "f80ee4a90a3f1439",
+   "relationship_text_on_site": "Logo in the unlabelled 'Partners  & Clients' grid on /partners (grayscale, alt=\"\"); footer calls the set 'Clients & Partners'. Also on 'Our Partners & Clients', company profile PDF p19.",
+   "register_ev": "EV-241",
+   "register_status": "confirm-with-meerana (EV-241)",
+   "risk": "medium",
+   "risk_flags": [
+    "Entity unknown (company or event brand?)",
+    "Possible peer/competitor in digital transformation",
+    "Converted from a grey plate; the X is an outline in the source"
+   ],
+   "px": [
+    240,
+    78
+   ],
+   "display_css": {
+    "w": 96,
+    "h": 31
+   },
+   "treatment": "white mark on transparency (colour distance from background -> alpha); cropped from solid plate",
+   "mono_legible": true,
+   "identity_legible_1x": true,
+   "legibility": {
+    "slot_css": [
+     123,
+     40
+    ],
+    "note": "All text in the mark reads at 1x in the slot."
+   },
+   "label_note": "build.py uses `label` (else `name`) as the li title, i.e. a hover tooltip viewers see. Internal wording lives in label_internal."
+  },
+  {
+   "order": 22,
+   "tier": 6,
+   "tier_name": "Lesser-known or uncertain",
+   "file": "media/m3/proof/logos/smartxhub.webp",
+   "name": "SmartXHub",
+   "name_note": "build.py uses `name` as the img alt. It is the text the mark itself shows ('United Arab Emirates' shortened to 'UAE'; the mark's own spelling kept). Acronyms or identities the mark does not show live in inferred_identity.",
+   "label": "SmartXHub",
+   "identified": true,
+   "identification_confidence": "low",
+   "source_url": "https://www.meerana.ae/assets/smartHub.png",
+   "original": "research/live-site/proof-originals/logos/smartHub.png",
+   "original_px": [
+    960,
+    210
+   ],
+   "original_sha256_16": "6cf8682cadee5f11",
+   "relationship_text_on_site": "Logo in the unlabelled 'Partners  & Clients' grid on /partners (grayscale, alt=\"\"); footer calls the set 'Clients & Partners'. Also on 'Our Partners & Clients', company profile PDF p19.",
+   "register_ev": "EV-241",
+   "register_status": "confirm-with-meerana (EV-241)",
+   "risk": "medium",
+   "risk_flags": [
+    "Entity unknown",
+    "Possible peer/competitor (smart-technology firm)"
+   ],
+   "px": [
+    240,
+    52
+   ],
+   "display_css": {
+    "w": 118,
+    "h": 25
+   },
+   "treatment": "white mark on transparency (colour distance from background -> alpha)",
+   "mono_legible": true,
+   "identity_legible_1x": true,
+   "legibility": {
+    "slot_css": [
+     139,
+     30
+    ],
+    "note": "All text in the mark reads at 1x in the slot."
+   },
+   "label_note": "build.py uses `label` (else `name`) as the li title, i.e. a hover tooltip viewers see. Internal wording lives in label_internal."
+  },
+  {
+   "order": 23,
+   "tier": 6,
+   "tier_name": "Lesser-known or uncertain",
+   "file": "media/m3/proof/logos/sabeel-technologies.webp",
+   "name": "Sabeel Technologies",
+   "name_note": "build.py uses `name` as the img alt. It is the text the mark itself shows ('United Arab Emirates' shortened to 'UAE'; the mark's own spelling kept). Acronyms or identities the mark does not show live in inferred_identity.",
+   "label": "Sabeel Technologies",
+   "identified": true,
+   "identification_confidence": "medium",
+   "source_url": "https://www.meerana.ae/assets/sabeeltech.png",
+   "original": "research/live-site/proof-originals/logos/sabeeltech.png",
+   "original_px": [
+    960,
+    210
+   ],
+   "original_sha256_16": "ade1fe0221419f2c",
+   "relationship_text_on_site": "Logo in the unlabelled 'Partners  & Clients' grid on /partners (grayscale, alt=\"\"); footer calls the set 'Clients & Partners'. Also on 'Our Partners & Clients', company profile PDF p19.",
+   "register_ev": "EV-241",
+   "register_status": "confirm-with-meerana (EV-241)",
+   "risk": "medium",
+   "risk_flags": [
+    "Possible peer/competitor IT firm (tagline 'Turn your vision into Virtual reality')"
+   ],
+   "px": [
+    240,
+    59
+   ],
+   "display_css": {
+    "w": 110,
+    "h": 27
+   },
+   "treatment": "white mark on transparency (colour distance from background -> alpha)",
+   "mono_legible": false,
+   "identity_legible_1x": true,
+   "legibility": {
+    "slot_css": [
+     139,
+     34
+    ],
+    "smallest_text_css_at_slot": 6.4,
+    "display_css_legible": {
+     "w": 199,
+     "h": 49
+    },
+    "note": "Not legible at 1x in the 139x40 slot: the tagline 'Turn your vision into Virtual reality' is about 6.4 CSS px tall (ascender to descender). Still reads: the S mark and SABEEL TECHNOLOGIES. The smallest line would read from about 199x49 CSS px, wider than the 8-column cell allows."
+   },
+   "label_note": "build.py uses `label` (else `name`) as the li title, i.e. a hover tooltip viewers see. Internal wording lives in label_internal."
+  },
+  {
+   "order": 24,
+   "tier": 6,
+   "tier_name": "Lesser-known or uncertain",
+   "file": "media/m3/proof/logos/indus-novateur.webp",
+   "name": "Indus Novateur",
+   "name_note": "build.py uses `name` as the img alt. It is the text the mark itself shows ('United Arab Emirates' shortened to 'UAE'; the mark's own spelling kept). Acronyms or identities the mark does not show live in inferred_identity.",
+   "label": "Indus Novateur",
+   "identified": true,
+   "identification_confidence": "medium",
+   "source_url": "https://www.meerana.ae/assets/indusNovateur.png",
+   "original": "research/live-site/proof-originals/logos/indusNovateur.png",
+   "original_px": [
+    960,
+    210
+   ],
+   "original_sha256_16": "b73f037ead23ec98",
+   "relationship_text_on_site": "Logo in the unlabelled 'Partners  & Clients' grid on /partners (grayscale, alt=\"\"); footer calls the set 'Clients & Partners'. Also on 'Our Partners & Clients', company profile PDF p19.",
+   "register_ev": "EV-241",
+   "register_status": "confirm-with-meerana (EV-241)",
+   "risk": "medium",
+   "risk_flags": [
+    "Possible peer/competitor IT firm; entity not researched"
+   ],
+   "px": [
+    240,
+    65
+   ],
+   "display_css": {
+    "w": 105,
+    "h": 29
+   },
+   "treatment": "white mark on transparency (colour distance from background -> alpha)",
+   "mono_legible": true,
+   "identity_legible_1x": true,
+   "legibility": {
+    "slot_css": [
+     139,
+     38
+    ],
+    "note": "All text in the mark reads at 1x in the slot."
+   },
+   "label_note": "build.py uses `label` (else `name`) as the li title, i.e. a hover tooltip viewers see. Internal wording lives in label_internal."
+  },
+  {
+   "order": 25,
+   "tier": 6,
+   "tier_name": "Lesser-known or uncertain",
+   "file": "media/m3/proof/logos/neonax.webp",
+   "name": "Neonax",
+   "name_note": "build.py uses `name` as the img alt. It is the text the mark itself shows ('United Arab Emirates' shortened to 'UAE'; the mark's own spelling kept). Acronyms or identities the mark does not show live in inferred_identity.",
+   "label": "Neonax",
+   "identified": true,
+   "identification_confidence": "medium",
+   "source_url": "https://www.meerana.ae/assets/neonax.png",
+   "original": "research/live-site/proof-originals/logos/neonax.png",
+   "original_px": [
+    960,
+    210
+   ],
+   "original_sha256_16": "f6c09e1e06bc86b4",
+   "relationship_text_on_site": "Logo in the unlabelled 'Partners  & Clients' grid on /partners (grayscale, alt=\"\"); footer calls the set 'Clients & Partners'. Also on 'Our Partners & Clients', company profile PDF p19.",
+   "register_ev": "EV-547; EV-241",
+   "register_status": "confirm-with-meerana (EV-241); EV-547 do-not-use for the Nazo demo tenant",
+   "risk": "high",
+   "risk_flags": [
+    "'NEONAX' is also the demo tenant in Nazo product media (EV-547): if Neonax is a real organisation, that media shows its data",
+    "Possible peer/competitor ('Future Digital World')"
+   ],
+   "px": [
+    240,
+    78
+   ],
+   "display_css": {
+    "w": 96,
+    "h": 31
+   },
+   "treatment": "white mark on transparency (colour distance from background -> alpha)",
+   "mono_legible": false,
+   "identity_legible_1x": true,
+   "legibility": {
+    "slot_css": [
+     123,
+     40
+    ],
+    "smallest_text_css_at_slot": 4.1,
+    "display_css_legible": {
+     "w": 182,
+     "h": 59
+    },
+    "note": "Not legible at 1x in the 139x40 slot: the tagline 'FUTURE DIGITAL WORLD' is about 4.1 CSS px tall (cap height). Still reads: the NEONAX wordmark. The smallest line would read from about 182x59 CSS px, wider than the 8-column cell allows."
+   },
+   "label_note": "build.py uses `label` (else `name`) as the li title, i.e. a hover tooltip viewers see. Internal wording lives in label_internal."
+  },
+  {
+   "order": 26,
+   "tier": 6,
+   "tier_name": "Lesser-known or uncertain",
+   "file": "media/m3/proof/logos/cronos-international.webp",
+   "name": "Cronos International",
+   "name_note": "build.py uses `name` as the img alt. It is the text the mark itself shows ('United Arab Emirates' shortened to 'UAE'; the mark's own spelling kept). Acronyms or identities the mark does not show live in inferred_identity.",
+   "label": "Cronos International",
+   "identified": true,
+   "identification_confidence": "low",
+   "source_url": "https://www.meerana.ae/assets/cronos.png",
+   "original": "research/live-site/proof-originals/logos/cronos.png",
+   "original_px": [
+    960,
+    210
+   ],
+   "original_sha256_16": "a38d909f25d6d5e4",
+   "relationship_text_on_site": "Logo in the unlabelled 'Partners  & Clients' grid on /partners (grayscale, alt=\"\"); footer calls the set 'Clients & Partners'. Also on 'Our Partners & Clients', company profile PDF p19.",
+   "register_ev": "EV-241",
+   "register_status": "confirm-with-meerana (EV-241)",
+   "risk": "medium",
+   "risk_flags": [
+    "Entity unknown",
+    "Possible peer/competitor"
+   ],
+   "px": [
+    240,
+    79
+   ],
+   "display_css": {
+    "w": 95,
+    "h": 31
+   },
+   "treatment": "white mark on transparency (colour distance from background -> alpha)",
+   "mono_legible": true,
+   "identity_legible_1x": true,
+   "legibility": {
+    "slot_css": [
+     122,
+     40
+    ],
+    "note": "All text in the mark reads at 1x in the slot."
+   },
+   "label_note": "build.py uses `label` (else `name`) as the li title, i.e. a hover tooltip viewers see. Internal wording lives in label_internal."
+  },
+  {
+   "order": 27,
+   "tier": 6,
+   "tier_name": "Lesser-known or uncertain",
+   "file": "media/m3/proof/logos/modon-global.webp",
+   "name": "MODON global",
+   "name_note": "build.py uses `name` as the img alt. It is the text the mark itself shows ('United Arab Emirates' shortened to 'UAE'; the mark's own spelling kept). Acronyms or identities the mark does not show live in inferred_identity.",
+   "label": "MODON global",
+   "identified": true,
+   "identification_confidence": "low",
+   "source_url": "https://www.meerana.ae/assets/modon.png",
+   "original": "research/live-site/proof-originals/logos/modon.png",
+   "original_px": [
+    960,
+    210
+   ],
+   "original_sha256_16": "0a9dbbcb90decd2b",
+   "relationship_text_on_site": "Logo in the unlabelled 'Partners  & Clients' grid on /partners (grayscale, alt=\"\"); footer calls the set 'Clients & Partners'. Not in the profile PDF.",
+   "register_ev": "EV-241",
+   "register_status": "confirm-with-meerana (EV-241)",
+   "risk": "medium",
+   "risk_flags": [
+    "Entity unknown; do not confuse with Abu Dhabi's Modon Holding",
+    "Converted from a dark plate to a white mark"
+   ],
+   "px": [
+    240,
+    42
+   ],
+   "display_css": {
+    "w": 131,
+    "h": 23
+   },
+   "treatment": "white mark on transparency (colour distance from background -> alpha); cropped from solid plate",
+   "mono_legible": true,
+   "identity_legible_1x": true,
+   "legibility": {
+    "slot_css": [
+     139,
+     24
+    ],
+    "note": "All text in the mark reads at 1x in the slot."
+   },
+   "label_note": "build.py uses `label` (else `name`) as the li title, i.e. a hover tooltip viewers see. Internal wording lives in label_internal."
+  },
+  {
+   "order": 28,
+   "tier": 6,
+   "tier_name": "Lesser-known or uncertain",
+   "file": "media/m3/proof/logos/src.webp",
+   "name": "SRC",
+   "name_note": "build.py uses `name` as the img alt. It is the text the mark itself shows ('United Arab Emirates' shortened to 'UAE'; the mark's own spelling kept). Acronyms or identities the mark does not show live in inferred_identity.",
+   "label": "SRC",
+   "identified": false,
+   "identification_confidence": "low",
+   "source_url": "https://www.meerana.ae/assets/src.png",
+   "original": "research/live-site/proof-originals/logos/src.png",
+   "original_px": [
+    960,
+    210
+   ],
+   "original_sha256_16": "e48474f300eafff2",
+   "relationship_text_on_site": "Logo in the unlabelled 'Partners  & Clients' grid on /partners (grayscale, alt=\"\"); footer calls the set 'Clients & Partners'. Also on 'Our Partners & Clients', company profile PDF p19.",
+   "register_ev": "EV-241",
+   "register_status": "confirm-with-meerana (EV-241)",
+   "risk": "medium",
+   "risk_flags": [
+    "Unidentified: initials only"
+   ],
+   "px": [
+    133,
+    96
+   ],
+   "display_css": {
+    "w": 55,
+    "h": 40
+   },
+   "treatment": "white mark on transparency (colour distance from background -> alpha)",
+   "mono_legible": true,
+   "identity_legible_1x": true,
+   "legibility": {
+    "slot_css": [
+     55,
+     40
+    ],
+    "note": "All text in the mark reads at 1x in the slot."
+   },
+   "label_note": "build.py uses `label` (else `name`) as the li title, i.e. a hover tooltip viewers see. Internal wording lives in label_internal."
+  },
+  {
+   "order": 29,
+   "tier": 6,
+   "tier_name": "Lesser-known or uncertain",
+   "file": "media/m3/proof/logos/unidentified-b.webp",
+   "name": "",
+   "name_note": "build.py uses `name` as the img alt. It is the text the mark itself shows ('United Arab Emirates' shortened to 'UAE'; the mark's own spelling kept). Acronyms or identities the mark does not show live in inferred_identity.",
+   "label": "",
+   "identified": false,
+   "identification_confidence": "none",
+   "source_url": "https://www.meerana.ae/assets/b.png",
+   "original": "research/live-site/proof-originals/logos/b.png",
+   "original_px": [
+    960,
+    210
+   ],
+   "original_sha256_16": "e4abdedf54a53be4",
+   "relationship_text_on_site": "Logo in the unlabelled 'Partners  & Clients' grid on /partners (grayscale, alt=\"\"); footer calls the set 'Clients & Partners'. Also on 'Our Partners & Clients', company profile PDF p19.",
+   "register_ev": "EV-241",
+   "register_status": "confirm-with-meerana (EV-241)",
+   "risk": "medium",
+   "risk_flags": [
+    "Unidentified: a 'b' monogram with no wordmark; name is empty so the build's alt is empty (decorative) until Meerana names it"
+   ],
+   "px": [
+    94,
+    96
+   ],
+   "display_css": {
+    "w": 43,
+    "h": 44
+   },
+   "treatment": "white mark on transparency (colour distance from background -> alpha)",
+   "mono_legible": true,
+   "identity_legible_1x": true,
+   "legibility": {
+    "slot_css": [
+     39,
+     40
+    ],
+    "note": "All text in the mark reads at 1x in the slot."
+   },
+   "label_internal": "Unidentified ('b' mark)",
+   "label_note": "build.py uses `label` (else `name`) as the li title, i.e. a hover tooltip viewers see. Internal wording lives in label_internal."
+  }
+ ],
+ "logos_government": [
+  {
+   "order": "G1",
+   "tier": 4,
+   "tier_name": "Government / semi-government (endorsement risk)",
+   "file": "media/m3/proof/logos/mohre.webp",
+   "name": "UAE Ministry of Human Resources & Emiratisation",
+   "name_note": "build.py uses `name` as the img alt. It is the text the mark itself shows ('United Arab Emirates' shortened to 'UAE'; the mark's own spelling kept). Acronyms or identities the mark does not show live in inferred_identity.",
+   "label": "UAE Ministry of Human Resources & Emiratisation",
+   "identified": true,
+   "identification_confidence": "high",
+   "source_url": "https://www.meerana.ae/assets/humanResources.png",
+   "original": "research/live-site/proof-originals/logos/humanResources.png",
+   "original_px": [
+    960,
+    210
+   ],
+   "original_sha256_16": "18f56fb131a270c5",
+   "relationship_text_on_site": "Logo in the unlabelled 'Partners  & Clients' grid on /partners (grayscale, alt=\"\"); footer calls the set 'Clients & Partners'. Also on 'Our Partners & Clients', company profile PDF p19. MOHRE is also the issuer named in the award news items (EV-200, EV-201).",
+   "register_ev": "EV-200; EV-241",
+   "register_status": "confirm-with-meerana (EV-241); never imply client status",
+   "risk": "high",
+   "risk_flags": [
+    "Federal ministry; implies endorsement",
+    "Carries a UAE state emblem. The wall file is the colour mark as published (emblem not recoloured; only the page-white background removed). A white reversed version exists as <slug>.white.webp: use it only if legal approves a reversed mark",
+    "Mixes award issuer with client wall (a reader may assume MOHRE is a client)"
+   ],
+   "px": [
+    240,
+    64
+   ],
+   "display_css": {
+    "w": 138,
+    "h": 37
+   },
+   "treatment": "full colour as published; page-white background removed (border-connected whites and letter counters), enclosed emblem whites kept, emblem not recoloured",
+   "mono_legible": false,
+   "identity_legible_1x": false,
+   "legibility": {
+    "slot_css": [
+     139,
+     37
+    ],
+    "smallest_text_css_at_slot": 4.6,
+    "display_css_legible": {
+     "w": 180,
+     "h": 48
+    },
+    "note": "Not legible at 1x in the 139x40 slot: the 3 lines of caps are about 4.6 CSS px tall (cap height). Still reads: only the falcon emblem, which every federal body shares, so the ministry cannot be told apart. The smallest line would read from about 180x48 CSS px, wider than the 8-column cell allows."
+   },
+   "alt_files": {
+    "white_mark": "media/m3/proof/logos/mohre.white.webp",
+    "white_mark_note": "v1 white conversion; recolours a state emblem (legal check)"
+   },
+   "inferred_identity": "UAE Ministry of Human Resources & Emiratisation (MOHRE)",
+   "name_check": "The mark reads 'UNITED ARAB EMIRATES / MINISTRY OF HUMAN RESOURCES & EMIRATISATION'; the acronym 'MOHRE' is not in the mark.",
+   "label_note": "build.py uses `label` (else `name`) as the li title, i.e. a hover tooltip viewers see. Internal wording lives in label_internal.",
+   "wall": false,
+   "row_display_css": {
+    "w": 180,
+    "h": 48
+   },
+   "held_from_wall": "v3: held off the 8-column monochrome wall. In its 139x40 cell this colour lockup renders at about 139x37 CSS px with text about 4.6 px tall, so it reads as a smudge, and it is the only colour mark on a white wall. Show it in a separate government row at row_display_css (about 180x48), or drop it. Its white version (alt_files.white_mark) recolours a state emblem: legal check first."
+  },
+  {
+   "order": "G2",
+   "tier": 4,
+   "tier_name": "Government / semi-government (endorsement risk)",
+   "file": "media/m3/proof/logos/moi-dubai-civil-defence.webp",
+   "name": "UAE Ministry of Interior, Dubai Civil Defense",
+   "name_note": "build.py uses `name` as the img alt. It is the text the mark itself shows ('United Arab Emirates' shortened to 'UAE'; the mark's own spelling kept). Acronyms or identities the mark does not show live in inferred_identity.",
+   "label": "UAE Ministry of Interior, Dubai Civil Defense",
+   "identified": true,
+   "identification_confidence": "high",
+   "source_url": "https://www.meerana.ae/assets/ministryOfInterior.png",
+   "original": "research/live-site/proof-originals/logos/ministryOfInterior.png",
+   "original_px": [
+    960,
+    210
+   ],
+   "original_sha256_16": "a934e3a424c0a977",
+   "relationship_text_on_site": "Logo in the unlabelled 'Partners  & Clients' grid on /partners (grayscale, alt=\"\"); footer calls the set 'Clients & Partners'. Also on 'Our Partners & Clients', company profile PDF p19.",
+   "register_ev": "EV-243; EV-241",
+   "register_status": "confirm-with-meerana (EV-243)",
+   "risk": "high",
+   "risk_flags": [
+    "Security/interior ministry: highest endorsement sensitivity",
+    "Carries a UAE state emblem. The wall file is the colour mark as published (emblem not recoloured; only the page-white background removed). A white reversed version exists as <slug>.white.webp: use it only if legal approves a reversed mark",
+    "The white-mark conversion reduced the MoI wreath emblem to an unreadable disc (kept only as .white.webp)",
+    "Four lines of small caps are unreadable in the build's 139x40 slot at 1x"
+   ],
+   "px": [
+    240,
+    51
+   ],
+   "display_css": {
+    "w": 160,
+    "h": 34
+   },
+   "treatment": "full colour as published; page-white background removed (border-connected whites and letter counters), enclosed emblem whites kept, emblem not recoloured",
+   "mono_legible": false,
+   "identity_legible_1x": false,
+   "legibility": {
+    "slot_css": [
+     139,
+     30
+    ],
+    "smallest_text_css_at_slot": 4.1,
+    "display_css_legible": {
+     "w": 207,
+     "h": 44
+    },
+    "note": "Not legible at 1x in the 139x40 slot: the 4 lines of caps are about 4.1 CSS px tall (cap height). Still reads: the MoI wreath emblem (recognisable in the colour file only). The smallest line would read from about 207x44 CSS px, wider than the 8-column cell allows."
+   },
+   "alt_files": {
+    "white_mark": "media/m3/proof/logos/moi-dubai-civil-defence.white.webp",
+    "white_mark_note": "v1 white conversion; recolours a state emblem (legal check); emblem degraded to an unreadable disc"
+   },
+   "inferred_identity": "UAE Ministry of Interior, Dubai Civil Defence",
+   "name_check": "The mark reads 'UNITED ARAB EMIRATES / MINISTRY OF INTERIOR / GEN. COMMAND OF CIVIL DEFENSE / DIRECTORATE GEN. OF DUBAI CIVIL DEFENSE': the name keeps the mark's spelling 'Defense'.",
+   "label_note": "build.py uses `label` (else `name`) as the li title, i.e. a hover tooltip viewers see. Internal wording lives in label_internal.",
+   "wall": false,
+   "row_display_css": {
+    "w": 207,
+    "h": 44
+   },
+   "held_from_wall": "v3: held off the 8-column monochrome wall. In its 139x40 cell this colour lockup renders at about 139x30 CSS px with text about 4.1 px tall, so it reads as a smudge, and it is the only colour mark on a white wall. Show it in a separate government row at row_display_css (about 207x44), or drop it. Its white version (alt_files.white_mark) recolours a state emblem: legal check first."
+  },
+  {
+   "order": "G3",
+   "tier": 4,
+   "tier_name": "Government / semi-government (endorsement risk)",
+   "file": "media/m3/proof/logos/ministry-of-cabinet-affairs.webp",
+   "name": "UAE Ministry of Cabinet Affairs",
+   "name_note": "build.py uses `name` as the img alt. It is the text the mark itself shows ('United Arab Emirates' shortened to 'UAE'; the mark's own spelling kept). Acronyms or identities the mark does not show live in inferred_identity.",
+   "label": "UAE Ministry of Cabinet Affairs",
+   "identified": true,
+   "identification_confidence": "high",
+   "source_url": "https://www.meerana.ae/assets/cabinetAffairs.png",
+   "original": "research/live-site/proof-originals/logos/cabinetAffairs.png",
+   "original_px": [
+    960,
+    210
+   ],
+   "original_sha256_16": "82ac77f0c7f8860e",
+   "relationship_text_on_site": "Logo in the unlabelled 'Partners  & Clients' grid on /partners (grayscale, alt=\"\"); footer calls the set 'Clients & Partners'. Also on 'Our Partners & Clients', company profile PDF p19.",
+   "register_ev": "EV-243; EV-241",
+   "register_status": "confirm-with-meerana (EV-243)",
+   "risk": "high",
+   "risk_flags": [
+    "Federal ministry; implies endorsement",
+    "Carries a UAE state emblem. The wall file is the colour mark as published (emblem not recoloured; only the page-white background removed). A white reversed version exists as <slug>.white.webp: use it only if legal approves a reversed mark"
+   ],
+   "px": [
+    240,
+    68
+   ],
+   "display_css": {
+    "w": 134,
+    "h": 38
+   },
+   "treatment": "full colour as published; page-white background removed (border-connected whites and letter counters), enclosed emblem whites kept, emblem not recoloured",
+   "mono_legible": false,
+   "identity_legible_1x": false,
+   "legibility": {
+    "slot_css": [
+     139,
+     39
+    ],
+    "smallest_text_css_at_slot": 4.6,
+    "display_css_legible": {
+     "w": 180,
+     "h": 51
+    },
+    "note": "Not legible at 1x in the 139x40 slot: the 2 lines of caps are about 4.6 CSS px tall (cap height). Still reads: only the falcon emblem, which every federal body shares, so the ministry cannot be told apart. The smallest line would read from about 180x51 CSS px, wider than the 8-column cell allows."
+   },
+   "alt_files": {
+    "white_mark": "media/m3/proof/logos/ministry-of-cabinet-affairs.white.webp",
+    "white_mark_note": "v1 white conversion; recolours a state emblem (legal check)"
+   },
+   "label_note": "build.py uses `label` (else `name`) as the li title, i.e. a hover tooltip viewers see. Internal wording lives in label_internal.",
+   "wall": false,
+   "row_display_css": {
+    "w": 180,
+    "h": 51
+   },
+   "held_from_wall": "v3: held off the 8-column monochrome wall. In its 139x40 cell this colour lockup renders at about 139x39 CSS px with text about 4.6 px tall, so it reads as a smudge, and it is the only colour mark on a white wall. Show it in a separate government row at row_display_css (about 180x51), or drop it. Its white version (alt_files.white_mark) recolours a state emblem: legal check first."
+  }
+ ],
+ "awards": [
+  {
+   "order": 1,
+   "title": "Selected for Future 100 (2023)",
+   "issuer": "UAE Ministry of Economy & the Government Development and the Future Office",
+   "date_iso": "2023-12",
+   "placard_note": "title + ' — ' + issuer reproduces judge_allowed_wording; only the line break (and, for Best small enterprise, the capital H that starts the caption line) is typographic. The issuer field is the caption line build.py renders.",
+   "site_title": "Meerana Selected Among 100 Future Companies",
+   "site_hero_slide": {
+    "title": "Chosen Among Future 100 Companies",
+    "content": "We are humbled and honored to be selected among the Future 100 companies, a testament to Meerana's commitment to excellence and innovation."
+   },
+   "site_date": "Decemeber 2, 2023",
+   "site_date_note": "[sic] 'Decemeber'",
+   "site_issuer": null,
+   "news_url": "https://www.linkedin.com/posts/meerana_future100-activity-7139199069037539328-j3Im/?utm_source=share&utm_medium=member_android",
+   "site_image_copy": "media/m3/proof/awards/new02.webp",
+   "site_image_note": "Future 100 list graphic, 285x354 (native; not upscaled). Text is unreadable below ~2x; lists 99 other company names.",
+   "site_image_url": "https://www.meerana.ae/assets/new02.webp",
+   "ev": "EV-202",
+   "register_status": "ok-to-use",
+   "judge_allowed_wording": "Selected for Future 100 (2023) — UAE Ministry of Economy & the Government Development and the Future Office",
+   "condition": "A selection: never 'award' or 'Top 100'.",
+   "display_recommendation": "text placard (no image): the 285 px list graphic is unreadable at card size and names 99 other companies"
+  },
+  {
+   "order": 2,
+   "title": "Best small enterprise in the UAE",
+   "issuer": "Honoured at the GCC Labour Ministers Committee ceremony, Doha (September 2024)",
+   "date_iso": "2024-09",
+   "placard_note": "title + ' — ' + issuer reproduces judge_allowed_wording; only the line break (and, for Best small enterprise, the capital H that starts the caption line) is typographic. The issuer field is the caption line build.py renders.",
+   "site_title": "Meerana received the award for Best Small Enterprise",
+   "site_date": "September 5, 2024",
+   "site_issuer": null,
+   "news_url": "https://www.instagram.com/p/C_fTX7-uCtz/?img_index=1",
+   "site_image_copy": "media/m3/proof/awards/news12-faces-masked.webp",
+   "site_image_note": "Ceremony photo, 562x596 native (not upscaled). Three identifiable people (senior officials): faces masked in the web copy; the unmasked original stays in research/ only. Backdrop shows '2024م' and part of 'دولة قطر'.",
+   "site_image_url": "https://www.meerana.ae/assets/news12.webp",
+   "ev": "EV-203",
+   "register_status": "ok-to-use",
+   "judge_allowed_wording": "Best small enterprise in the UAE — honoured at the GCC Labour Ministers Committee ceremony, Doha (September 2024)",
+   "condition": "Never 'best in the GCC' or 'MOHRE 2024' (EV-201, EV-204).",
+   "display_recommendation": "text placard (no image): the ceremony photo shows officials, whose masked faces read as a defect"
+  }
+ ],
+ "awards_withheld": [
+  {
+   "withheld_reason": "Judge §4a condition still open: use only after the certificate is seen (EV-200 use-with-edit). build.py renders this placard anyway since 2026-10-10 15:23, under the owner's 'bring everything from meerana.ae for now' directive (prototype only).",
+   "promote_when": "Already rendered. Before any public use: marketing sees the certificate. To hide it, add 'never promote' to withheld_reason or remove the record (build.py skips those).",
+   "title": "Emirates Labour Market Award 2023 (MOHRE)",
+   "issuer": "Workforce Wellbeing & Quality of Life",
+   "date_iso": "2023-11",
+   "placard_note": "title + ' — ' + issuer reproduces judge_allowed_wording; only the line break (and, for Best small enterprise, the capital H that starts the caption line) is typographic. The issuer field is the caption line build.py renders.",
+   "site_title": "Winning MOHRE Award for Workforce wellbeing, Quality of Life",
+   "site_hero_slide": {
+    "title": "Ensuring Employee Wellbeing and Workplace Environment",
+    "content": "MOHRE Award Recognizes Our Dedication to Workforce Wellbeing!"
+   },
+   "site_date": "November 23, 2023",
+   "site_issuer": "MOHRE",
+   "news_url": "https://www.instagram.com/p/Cz_etD0SErJ/?igshid=MjlkZjg0ZTE3YQ%3D%3D",
+   "site_image_copy": "media/m3/proof/awards/new01.webp",
+   "site_image_note": "'Winning Establishments / Meerana Information Technology' card, 285x354 (native; not upscaled). No people.",
+   "site_image_url": "https://www.meerana.ae/assets/new01.webp",
+   "ev": "EV-200",
+   "register_status": "use-with-edit",
+   "judge_allowed_wording": "Emirates Labour Market Award 2023 (MOHRE) — Workforce Wellbeing & Quality of Life",
+   "condition": "Only after the certificate is seen (marketing to confirm). Rank or size class unconfirmed: omit.",
+   "display_recommendation": "text placard (no image); rendered in the prototype by owner choice; certificate check still open",
+   "rendered_by_build": true,
+   "display_basis": "Owner directive 2026-10-10 as applied by the build owner. meerana.ae itself shows this award (news card and hero slide). The rendered title/issuer are the judge's §4a wording; the official 2023 winners list names 'Meerana Information Technology' (EV-200)."
+  },
+  {
+   "withheld_reason": "EV-201 do-not-use: probably the local handover of the September 2024 Doha honour (EV-203), not a separate award. Never 'MOHRE 2024'. Never promote.",
+   "site_title": "Meerana recieving award from MOHRE UAE",
+   "site_title_note": "[sic] 'recieving'",
+   "site_date": "September 13, 2024",
+   "site_issuer": "MOHRE UAE",
+   "news_url": "https://www.instagram.com/p/C_2RRcQvWI1/?igsh=MXEydmEybzU1dnhoNQ%3D%3D",
+   "site_image_copy": "media/m3/proof/awards/news13-faces-masked.webp",
+   "site_image_note": "Group photo at MOHRE, 1600x1094 resized to 1200x820. Five identifiable people: faces masked in the web copy; original in research/ only. Plaques bear Arabic calligraphy; MOHRE emblem and name on the wall.",
+   "site_image_url": "https://www.meerana.ae/assets/news13.webp",
+   "ev": "EV-201",
+   "register_status": "do-not-use",
+   "judge_allowed_wording": null,
+   "condition": "Probably the local handover of the September 2024 Doha honour (EV-203), not a separate award. Never 'MOHRE 2024'.",
+   "display_recommendation": "do not display; merge into the Best small enterprise placard",
+   "rendered_by_build": false
+  }
+ ],
+ "testimonials": [],
+ "testimonials_ref": {
+  "file": "research/live-site/proof-originals/site-records.json#testimonials",
+  "count": 2,
+  "placeholder": true,
+  "register_status": "do-not-use",
+  "note": "Both meerana.ae testimonials are Lorem Ipsum attached to personal names and are never rendered on the site. Kept research-side only. Never display."
+ },
+ "partner_text": [
+  {
+   "partner": "Software AG",
+   "relationship": "Joined Software AG's PartnerConnect programme (2022)",
+   "text_as_site": "Software AG, Meerana sign partnership",
+   "on_meerana_ae": true,
+   "ev": "EV-240",
+   "status": "ok-to-use",
+   "rendered_by_build": true
+  },
+  {
+   "partner": "Commvault",
+   "relationship": "Value Added Partner for Commvault — announced at GITEX Global 2024",
+   "text_as_site": "Commvault - Data Security & Back up Platforms",
+   "on_meerana_ae": true,
+   "ev": "EV-506",
+   "status": "ok-to-use",
+   "rendered_by_build": true
+  },
+  {
+   "partner": "FPT Software",
+   "relationship": "Strategic partnership (MoU) with FPT Software, 2024",
+   "text_as_site": "FPT: \"A global IT services provider from Vietnam, offering custom software, digital transformation, and specialized technology services.\" (course provider)",
+   "on_meerana_ae": true,
+   "ev": "EV-505",
+   "status": "ok-to-use",
+   "note": "No FPT logo on the meerana.ae wall.",
+   "rendered_by_build": true
+  },
+  {
+   "partner": "Botminds",
+   "relationship": "Regional partner — Botminds",
+   "text_as_site": "Botminds: \"A company specializing in AI-powered document processing and automation, providing solutions for intelligent data extraction and workflow automation to enhance business efficiency.\" (course provider)",
+   "on_meerana_ae": true,
+   "ev": "EV-508",
+   "status": "ok-to-use",
+   "rendered_by_build": true
+  },
+  {
+   "partner": "Dubai Chambers",
+   "relationship": "Supported by Dubai Chambers",
+   "text_as_site": "Embedded video \"Dubai Dreamers: From Dubai to the World with Meerana Technologies\" (Dubai Chambers channel)",
+   "on_meerana_ae": true,
+   "ev": "EV-509; EV-022",
+   "status": "ok-to-use",
+   "note": "A programme host, not a partner or client. No logo on the wall.",
+   "rendered_by_build": true
+  },
+  {
+   "partner": "CyberHive",
+   "relationship": "MoU with CyberHive, 2025 — Dubai Business Forum, London",
+   "text_as_site": null,
+   "on_meerana_ae": false,
+   "ev": "EV-507",
+   "status": "ok-to-use",
+   "note": "Not on meerana.ae; verified in press. Never attribute CyberHive's ISO 27001 to Meerana.",
+   "rendered_by_build": true
+  }
+ ],
+ "partner_text_site_only": [
+  {
+   "partner": "Kofax",
+   "relationship": "Reselling portfolio — Robotic Automation Platform",
+   "text_as_site": "Kofax - Robotic Automation Platform",
+   "on_meerana_ae": true,
+   "ev": "EV-034",
+   "status": "confirm-with-meerana",
+   "note": "Reseller portfolio line; Kofax is now Tungsten Automation.",
+   "relationship_note": "Rendered by build.py under 'Partnerships' (owner choice). Framed with the site's own section, Managed Services > 'Reselling Hardware & Software' (EV-034 'Reselling portfolio vendors'), so it does not read as a verified partnership. Kofax is now Tungsten Automation; the site still says Kofax.",
+   "rendered_by_build": true
+  },
+  {
+   "partner": "AgilePoint",
+   "relationship": "Reselling portfolio — No Code Low Code",
+   "text_as_site": "Agilepoint - No Code Low Code",
+   "on_meerana_ae": true,
+   "ev": "EV-034",
+   "status": "confirm-with-meerana",
+   "relationship_note": "Rendered by build.py under 'Partnerships' (owner choice). Framed with the site's own section, Managed Services > 'Reselling Hardware & Software' (EV-034 'Reselling portfolio vendors'), so it does not read as a verified partnership.",
+   "rendered_by_build": true
+  },
+  {
+   "partner": "Confluent",
+   "relationship": "Reselling portfolio — Data Streaming Platform",
+   "text_as_site": "Confluent - Data Streaming Platform",
+   "on_meerana_ae": true,
+   "ev": "EV-034",
+   "status": "confirm-with-meerana",
+   "relationship_note": "Rendered by build.py under 'Partnerships' (owner choice). Framed with the site's own section, Managed Services > 'Reselling Hardware & Software' (EV-034 'Reselling portfolio vendors'), so it does not read as a verified partnership.",
+   "rendered_by_build": true
+  },
+  {
+   "partner": "SAP",
+   "relationship": "Reselling portfolio — Ariba, S/4HANA, Business ByDesign, Business One, C4C, SuccessFactors",
+   "text_as_site": "SAP Ariba, S/4 Hana, Business  By design, Business One, C4C, Success Factors",
+   "on_meerana_ae": true,
+   "ev": "EV-034; EV-242",
+   "status": "confirm-with-meerana",
+   "note": "Not found in SAP Partner Finder; never 'SAP Gold Partner' (EV-242 do-not-use). No SAP logo on the wall. Site has a double space in 'Business  By design'.",
+   "relationship_note": "Rendered by build.py under 'Partnerships' (owner choice). Framed with the site's own section, Managed Services > 'Reselling Hardware & Software' (EV-034 'Reselling portfolio vendors'), so it does not read as a verified partnership. Product names corrected to SAP's own spelling (site: 'S/4 Hana', 'Business  By design', 'Success Factors'); 'SAP' dropped from the line because the row label already says SAP. Highest-risk visible line: Meerana is not in SAP Partner Finder, and 'SAP Gold Partner' is do-not-use (EV-242). Drop this row first if anything is cut.",
+   "rendered_by_build": true
+  }
+ ],
+ "site_mentions_not_partnerships": [
+  {
+   "partner": "SAS",
+   "text_as_site": "SAS: \"A global analytics software company offering data management, advanced analytics, and AI solutions to help organizations make data-driven decisions.\"",
+   "on_meerana_ae": true,
+   "ev": "EV-041",
+   "status": "confirm-with-meerana",
+   "suggested_line": "Listed as a training-course provider on meerana.ae (no courses listed)",
+   "rendered_by_build": false,
+   "why_not_in_partner_lines": "Not a partnership: a course provider with no courses listed (EV-041). build.py renders every partner_text_site_only[] line under the 'Partnerships' heading, so this record lives here instead. If the owner wants it on the page, show suggested_line under a heading that fits (e.g. 'Training' or 'Integrations')."
+  },
+  {
+   "partner": "Sprinklr",
+   "text_as_site": "Sprinklr: \"A platform for managing customer experience and engagement across digital channels, offering social media management and analytics solutions.\"",
+   "on_meerana_ae": true,
+   "ev": "EV-041",
+   "status": "confirm-with-meerana",
+   "note": "No Sprinklr logo on the wall.",
+   "suggested_line": "Listed as a training-course provider on meerana.ae (no courses listed)",
+   "rendered_by_build": false,
+   "why_not_in_partner_lines": "Not a partnership: a course provider with no courses listed (EV-041). build.py renders every partner_text_site_only[] line under the 'Partnerships' heading, so this record lives here instead. If the owner wants it on the page, show suggested_line under a heading that fits (e.g. 'Training' or 'Integrations')."
+  },
+  {
+   "partner": "Zing HR",
+   "text_as_site": "We provide Zing HR integration for comprehensive human capital management, payroll automation, leave tracking, and employee self-service. (chatbot)",
+   "on_meerana_ae": true,
+   "ev": null,
+   "status": "confirm-with-meerana",
+   "note": "An integration, not a partnership claim.",
+   "suggested_line": "Meerana offers a Zing HR integration",
+   "rendered_by_build": false,
+   "why_not_in_partner_lines": "Not a partnership: an integration Meerana offers (chatbot and contact form). build.py renders every partner_text_site_only[] line under the 'Partnerships' heading, so this record lives here instead. If the owner wants it on the page, show suggested_line under a heading that fits (e.g. 'Training' or 'Integrations')."
+  }
+ ],
+ "site_copy": {
+  "partners_heading": "Partners  & Clients",
+  "partners_heading_note": "two spaces in the CMS data; footer says 'Clients & Partners'",
+  "partners_title": "Empowering Innovation Through Collaborative Partnerships in Emerging Technologies",
+  "partners_intro": "We are proud to partner with a wide range of organizations on emerging technologies. Together we bring unique and global solutions for reinventing business.",
+  "partners_cta_as_site": [
+   "See more",
+   "Become a Partner",
+   "Be a Partner"
+  ],
+  "about_title": "Meerana is your Digital Transformation Partner",
+  "about_subtitle": "An Emarati Group of Companies",
+  "about_subtitle_note": "[sic] 'Emarati'; group unnamed (EV-012 confirm-with-meerana)",
+  "about": "Meerana is an innovative technology company focused on developing leading edge smart solutions. We believe that these intelligent technologies will help revolutionize how businesses are planned and operated in the future, opening up a wealth of possibilities for both our customers and partners",
+  "vision": "Build the most trusted community to deliver the highest quality technological services",
+  "why_choose_us": [
+   "Meerana's mission is to build the most trusted community and deliver the highest quality technology services.",
+   {
+    "heading": "Most Trusted Community",
+    "text": "Services will not only be provided by Meerana but also by our highly valued partners. This is the reason Meerana is a \"Community\" and not a company."
+   },
+   {
+    "heading": "Our Goal",
+    "text": "It is our goal to provide an environment of relations that is the most beneficial for everyone, regardless of whether they are employees, partners, or customers...."
+   }
+  ],
+  "experience_banner": "Experience the difference with Meerana!",
+  "experience_cta": "Download Profile (email-gated; file 'Meerana Profile.pdf')",
+  "video": {
+   "title": "Dubai Dreamers: From Dubai to the World with Meerana Technologies",
+   "youtube_id": "VRD8hzICcYQ",
+   "author": "Dubai Chambers",
+   "ev": "EV-022",
+   "status": "ok-to-use (privacy-enhanced embed)"
+  },
+  "ev_notes": {
+   "about": "EV-009 use-with-edit",
+   "about_title": "EV-010 ok-to-use",
+   "vision": "EV-011 confirm-with-meerana (3 variants)"
+  }
+ },
+ "news": [
+  {
+   "id": 1,
+   "date": "October 12, 2022",
+   "headline": "Software AG, Meerana sign partnership",
+   "url": "https://techxmedia.com/software-ag-meerana-technologies-sign-partnership-to-build-future-ready-business-models/",
+   "image_as_site": "new04.webp",
+   "ev": "EV-240",
+   "status": "ok-to-use",
+   "display": true
+  },
+  {
+   "id": 2,
+   "date": "July 2023",
+   "headline": "CEO contribution as deputy chairman of UAE innovation association",
+   "url": "https://www.linkedin.com/posts/meerana_meerana-activity-7082238453475647488-tDJb/?utm_source=share&utm_medium=member_desktop",
+   "image_as_site": "new05.webp",
+   "ev": "EV-023",
+   "status": "use-with-edit",
+   "note": "Association's own title is Vice President; founder consent (EV-013).",
+   "display": true,
+   "display_note": "register condition must be met before any use (use-with-edit); the site headline is not approved wording"
+  },
+  {
+   "id": 3,
+   "date": "Novemeber 15, 2023",
+   "headline": "MEERANA's strategic expansion into Kenya and Rwanda",
+   "url": "https://www.theeastafrican.co.ke/tea/sponsored/-meerana-s-strategic-expansion-into-kenya-and-rwanda-4434204",
+   "image_as_site": "new06.webp",
+   "ev": "EV-266",
+   "status": "do-not-use",
+   "note": "[sic] date; sponsored placement.",
+   "display": false,
+   "display_note": "do-not-use"
+  },
+  {
+   "id": 4,
+   "date": "November 23, 2023",
+   "headline": "Ministry of economy Korea and Qatar stands",
+   "url": "https://www.linkedin.com/posts/meerana_comeup-activity-7128277489184890881-v0Xf/?utm_source=share&utm_medium=member_desktop",
+   "image_as_site": "new03.webp",
+   "ev": "EV-264",
+   "status": "confirm-with-meerana",
+   "note": "COMEUP 2023, Seoul (medium confidence).",
+   "display": true,
+   "display_note": "register condition must be met before any use (confirm-with-meerana); the site headline is not approved wording"
+  },
+  {
+   "id": 5,
+   "date": "November 23, 2023",
+   "headline": "Winning MOHRE Award for Workforce wellbeing, Quality of Life",
+   "url": "https://www.instagram.com/p/Cz_etD0SErJ/?igshid=MjlkZjg0ZTE3YQ%3D%3D",
+   "image_as_site": "new01.webp",
+   "ev": "EV-200",
+   "status": "use-with-edit",
+   "display": false,
+   "display_note": "ELMA: keep the site headline off the page. The ELMA placard (awards_withheld[0]) is rendered by build.py by owner choice with the judge's wording; the certificate check is still open."
+  },
+  {
+   "id": 6,
+   "date": "Decemeber 2, 2023",
+   "headline": "Meerana Selected Among 100 Future Companies",
+   "url": "https://www.linkedin.com/posts/meerana_future100-activity-7139199069037539328-j3Im/?utm_source=share&utm_medium=member_android",
+   "image_as_site": "new02.webp",
+   "ev": "EV-202",
+   "status": "ok-to-use",
+   "note": "[sic] date.",
+   "display": true
+  },
+  {
+   "id": 7,
+   "date": "May 6, 2024",
+   "headline": "Jakarta visit: Enhancing bilateral cooperation and expressing gratitude.",
+   "url": null,
+   "image_as_site": "news10.webp",
+   "ev": "EV-261",
+   "status": "use-with-edit",
+   "note": "Self-reported; links to a personal LinkedIn post.",
+   "display": true,
+   "display_note": "register condition must be met before any use (use-with-edit); the site headline is not approved wording",
+   "url_ref": "research/live-site/proof-originals/site-records.json#news_personal_urls/7",
+   "url_note": "Personal LinkedIn post: URL kept research-side only; never link it from a page."
+  },
+  {
+   "id": 8,
+   "date": "May 9, 2024",
+   "headline": "Vietnam visit: Fostering international trade relations and collaboration.",
+   "url": null,
+   "image_as_site": "news09.webp",
+   "ev": "EV-261",
+   "status": "use-with-edit",
+   "note": "Verified Dubai International Chamber trade mission; links to a personal LinkedIn post.",
+   "display": true,
+   "display_note": "register condition must be met before any use (use-with-edit); the site headline is not approved wording",
+   "url_ref": "research/live-site/proof-originals/site-records.json#news_personal_urls/8",
+   "url_note": "Personal LinkedIn post: URL kept research-side only; never link it from a page."
+  },
+  {
+   "id": 9,
+   "date": "May 24, 2024",
+   "headline": "Paris visit: Strategic partnerships with the Ministry of Economy.",
+   "url": null,
+   "image_as_site": "news08.webp",
+   "ev": "EV-262",
+   "status": "confirm-with-meerana",
+   "note": "Links to a staff member's personal LinkedIn post.",
+   "display": true,
+   "display_note": "register condition must be met before any use (confirm-with-meerana); the site headline is not approved wording",
+   "url_ref": "research/live-site/proof-originals/site-records.json#news_personal_urls/9",
+   "url_note": "Personal LinkedIn post: URL kept research-side only; never link it from a page."
+  },
+  {
+   "id": 10,
+   "date": "June 4-7, 2024",
+   "headline": "St. Petersburg visit: Discussing global economic and trade matters.",
+   "url": null,
+   "image_as_site": "news11.webp",
+   "ev": "EV-260",
+   "status": "confirm-with-meerana",
+   "note": "SPIEF ran 5–8 June; panel unverified (DL-R04). Russia forum: owner to judge reputational fit.",
+   "display": true,
+   "display_note": "register condition must be met before any use (confirm-with-meerana); the site headline is not approved wording",
+   "url_ref": "research/live-site/proof-originals/site-records.json#news_personal_urls/10",
+   "url_note": "Personal LinkedIn post: URL kept research-side only; never link it from a page."
+  },
+  {
+   "id": 11,
+   "date": "August 22, 2024",
+   "headline": "Lithuania visit: Strengthening B2B relations, exploring new opportunities",
+   "url": null,
+   "image_as_site": "news07.webp",
+   "ev": "EV-263",
+   "status": "confirm-with-meerana",
+   "note": "Links to a staff member's personal LinkedIn post.",
+   "display": true,
+   "display_note": "register condition must be met before any use (confirm-with-meerana); the site headline is not approved wording",
+   "url_ref": "research/live-site/proof-originals/site-records.json#news_personal_urls/11",
+   "url_note": "Personal LinkedIn post: URL kept research-side only; never link it from a page."
+  },
+  {
+   "id": 12,
+   "date": "September 5, 2024",
+   "headline": "Meerana received the award for Best Small Enterprise",
+   "url": "https://www.instagram.com/p/C_fTX7-uCtz/?img_index=1",
+   "image_as_site": "news12.webp",
+   "ev": "EV-203",
+   "status": "ok-to-use",
+   "display": true
+  },
+  {
+   "id": 21,
+   "date": "September 13, 2024",
+   "headline": "Meerana recieving award from MOHRE UAE",
+   "url": "https://www.instagram.com/p/C_2RRcQvWI1/?igsh=MXEydmEybzU1dnhoNQ%3D%3D",
+   "image_as_site": "news13.webp",
+   "ev": "EV-201",
+   "status": "do-not-use",
+   "note": "[sic] 'recieving'.",
+   "display": false,
+   "display_note": "do-not-use"
+  }
+ ],
+ "stats": [
+  {
+   "value": "04+",
+   "label": "Location",
+   "source": "Company profile PDF p3 (meerana.ae/assets/Meerana Profile.pdf)",
+   "rendered_on_site": false,
+   "ev": "EV-016",
+   "register_status": "confirm-with-meerana",
+   "note": "UK company dissolved 2025-11-25 (EV-502); KSA unevidenced (EV-015). Do not publish."
+  },
+  {
+   "value": "30+",
+   "label": "Workforce",
+   "source": "Company profile PDF p3",
+   "rendered_on_site": false,
+   "ev": "EV-017",
+   "register_status": "confirm-with-meerana",
+   "note": "Conflicts with draft '60+ Skilled professionals'."
+  },
+  {
+   "value": "Dubai SME",
+   "label": "(badge)",
+   "source": "Company profile PDF p3",
+   "rendered_on_site": false,
+   "ev": "EV-019",
+   "register_status": "confirm-with-meerana",
+   "note": "Judge: never 'Dubai SME' until the programme is confirmed."
+  },
+  {
+   "value": "10x",
+   "label": "Faster Processing",
+   "source": "Nazoo page hero badge",
+   "rendered_on_site": true,
+   "ev": "EV-143",
+   "register_status": "do-not-use",
+   "note": "Product claim, absolute, unverifiable."
+  },
+  {
+   "value": "100%",
+   "label": "Secure & Compliant",
+   "source": "Nazoo page hero badge",
+   "rendered_on_site": true,
+   "ev": "EV-143",
+   "register_status": "do-not-use",
+   "note": "Absolute claim."
+  },
+  {
+   "value": "70%",
+   "label": "Faster Time to Model — \"Reduce process modeling time by up to 70%\"",
+   "source": "Tasree3 page 'Drive Better Outcomes'",
+   "rendered_on_site": true,
+   "ev": "EV-125",
+   "register_status": "confirm-with-meerana",
+   "note": "No methodology."
+  },
+  {
+   "value": "100%",
+   "label": "End-to-End Visibility — \"Get full transparency across all workflows\"",
+   "source": "Tasree3 page outcomes",
+   "rendered_on_site": true,
+   "ev": "EV-126",
+   "register_status": "do-not-use",
+   "note": "Absolute claim."
+  },
+  {
+   "value": "90%",
+   "label": "\"Reduced asset retrieval and lookup times by 90%\"",
+   "source": "Asset Tracking page benefits",
+   "rendered_on_site": true,
+   "ev": "EV-154",
+   "register_status": "do-not-use",
+   "note": "Unsubstantiated; Asset Tracking is out of the M3 product set (DL-P05)."
+  }
+ ],
+ "stats_note": "meerana.ae renders no company-level statistics (no client, project, partner or year counts). The /experience and 'Why Choose Us' API records contain no figures. Product config 'stats' arrays ship in the bundle but are never rendered (EV-412, EV-447) and are excluded. Derived count (not site wording): 32 logos on the wall, 29 of them also in the profile PDF.",
+ "not_proof": [
+  {
+   "file": "research/live-site/proof-originals/other/partner01.webp",
+   "what": "Stock photo (two men with a phone) on /partners",
+   "use": "no"
+  },
+  {
+   "file": "research/live-site/proof-originals/other/partner02.webp",
+   "what": "Stock photo (lounge meeting) on /partners",
+   "use": "no"
+  },
+  {
+   "file": "research/live-site/proof-originals/other/testi-01.png",
+   "what": "Stock avatar for placeholder testimonials",
+   "use": "no"
+  },
+  {
+   "file": "research/live-site/proof-originals/awards/banner-02.webp",
+   "what": "Hero slide behind the MOHRE line: stock silhouette photo, not an award image",
+   "use": "no"
+  },
+  {
+   "file": "research/live-site/proof-originals/awards/herobg5.webp",
+   "what": "Hero slide behind 'Chosen Among Future 100': an exhibition booth photo with identifiable faces, not Future 100",
+   "use": "no"
+  },
+  {
+   "what": "Mandoobee config 'trustedBy': TechSolutions, InnoWave, DigitalCorp, NextGen, AlphaSoft, CloudSync",
+   "use": "no",
+   "note": "placeholder company names, bundle only"
+  }
+ ]
+}

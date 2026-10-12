@@ -1,0 +1,61 @@
+{
+ "_meta": {
+  "generated": "2026-10-10",
+  "what": "Verbatim meerana.ae records that hold personal names or placeholder content. Research only: never a build input, never rendered.",
+  "source": "research/live-site/api-snapshot-2026-10-02/testimonalsInfo.json and latestnewsInfo.json",
+  "pairs_with": "prototypes/src/m3_proof.json (testimonials_ref, news[].url_ref)"
+ },
+ "testimonials": [
+  {
+   "quote": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+   "name": "Abdul Waheed",
+   "role": null,
+   "org": null,
+   "location_as_site": "Dubai,UAE",
+   "image_as_site": "testi-01.png",
+   "placeholder": true,
+   "rendered_on_site": false,
+   "register_status": "do-not-use",
+   "note": "CMS placeholder (Lorem Ipsum) attached to a personal name; fetched by the home page but never rendered (nav item commented out). testi-01.png is a generic stock avatar. Never display."
+  },
+  {
+   "quote": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+   "name": "Mohamed Imran",
+   "role": null,
+   "org": null,
+   "location_as_site": "Chennai,TN",
+   "image_as_site": "testi-01.png",
+   "placeholder": true,
+   "rendered_on_site": false,
+   "register_status": "do-not-use",
+   "note": "Same placeholder as above. Never display."
+  }
+ ],
+ "news_personal_urls": [
+  {
+   "news_id": 7,
+   "url": "https://www.linkedin.com/posts/mataralmehairi_thanks-activity-7193617560318226433-AC1X?utm_source=share&utm_medium=member_desktop",
+   "kind": "personal LinkedIn post (the URL slug contains a person's name)"
+  },
+  {
+   "news_id": 8,
+   "url": "https://www.linkedin.com/posts/mataralmehairi_dubaiinternationalchamber-worldinfocus-activity-7194695281953669123-OkuZ?utm_source=share&utm_medium=member_desktop",
+   "kind": "personal LinkedIn post (the URL slug contains a person's name)"
+  },
+  {
+   "news_id": 9,
+   "url": "https://www.linkedin.com/posts/mohamed-elsaady-8a8311151_ministry-of-economy-activity-7201085203698577408-9xg0?utm_source=share&utm_medium=member_desktop",
+   "kind": "personal LinkedIn post (the URL slug contains a person's name)"
+  },
+  {
+   "news_id": 10,
+   "url": "https://www.linkedin.com/posts/mataralmehairi_great-activity-7206008268425465856-JSzw?utm_source=share&utm_medium=member_desktop",
+   "kind": "personal LinkedIn post (the URL slug contains a person's name)"
+  },
+  {
+   "news_id": 11,
+   "url": "https://www.linkedin.com/posts/mohamed-elsaady-8a8311151_b2b-h2h-activity-7233877754759311363-Ib3z?utm_source=share&utm_medium=member_desktop",
+   "kind": "personal LinkedIn post (the URL slug contains a person's name)"
+  }
+ ]
+}

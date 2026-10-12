@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Meerana Technologies — Dark Draft v2</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#071B5E;--blue:#123DCC;--elec:#1769FF;--soft:#EAF2FF;--ink:#EAF0FF;--mut:#9fb0d6;--line:#1a2a66;--bg:#050A1E;--dark:#03060F;--pn:#0b1642;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth;scroll-padding-top:80px;background:var(--bg)}
+body{font-family:Manrope,Inter,system-ui,sans-serif;color:var(--ink);background:var(--bg);font-size:17px;line-height:1.6;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid #6fa0ff;outline-offset:3px}
+.w{max-width:1280px;margin:0 auto;padding:0 clamp(20px,5vw,72px)}
+section{padding:clamp(72px,10vw,140px) 0}
+h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.08}
+h1{font-size:clamp(40px,6vw,76px)}h2{font-size:clamp(30px,4vw,50px)}h3{font-size:24px}
+.eb{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#5f9bff;margin-bottom:20px}
+.sub{color:var(--mut);max-width:60ch;margin-top:22px}
+.btn{display:inline-block;padding:14px 22px;border-radius:10px;font-weight:600;font-size:15px;transition:transform .18s,box-shadow .18s}
+.btn:hover{transform:translateY(-3px)}
+.p{background:var(--elec);color:#fff}.p:hover{box-shadow:0 8px 30px rgba(23,105,255,.5)}
+.s{border:1px solid #3a5bd0;color:#fff}.s:hover{background:rgba(23,105,255,.15)}
+nav{position:sticky;top:0;z-index:20;background:rgba(5,10,30,.72);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+nav .w{display:flex;align-items:center;justify-content:space-between;height:68px}
+nav img{height:30px;display:block}
+nav ul{display:flex;gap:30px;list-style:none;padding:0;font-size:14.5px;font-weight:500;color:#cdd8f5}
+nav ul a{padding:6px 0;border-bottom:1px solid transparent}nav ul a:hover{border-color:var(--elec)}
+@media(max-width:860px){nav ul{display:none}}
+/* hero */
+.hero{background:radial-gradient(70% 80% at 75% 40%,#123DCC 0%,#0a2290 28%,#071B5E 52%,#050A1E 85%);padding:clamp(56px,7vw,100px) 0 clamp(40px,5vw,70px);overflow:hidden}
+.hg{display:grid;grid-template-columns:1fr 1.15fr;gap:40px;align-items:center}
+@media(max-width:960px){.hg{grid-template-columns:1fr}}
+.cta{display:flex;gap:14px;flex-wrap:wrap;margin-top:34px}
+.scene{perspective:1400px;height:440px;position:relative}
+.rig{position:absolute;inset:0;transform-style:preserve-3d;transform:rotateX(52deg) rotateZ(-28deg) translateY(-10px);transition:transform .25s ease-out}
+.pl3{position:absolute;border-radius:14px;border:1px solid rgba(120,160,255,.4);background:linear-gradient(145deg,rgba(23,60,200,.55),rgba(7,20,80,.85));box-shadow:0 40px 70px rgba(0,0,40,.55),inset 0 0 40px rgba(60,120,255,.18);padding:16px;font-size:12px;color:#cfdcff}
+.pl3 h4{font-size:11px;font-weight:600;color:#9fbaff;margin-bottom:10px}
+.pl3.a{left:12%;top:18%;width:56%;height:56%;transform:translateZ(0)}
+.pl3.b{left:46%;top:2%;width:44%;height:36%;transform:translateZ(90px)}
+.pl3.c{left:2%;top:58%;width:42%;height:34%;transform:translateZ(150px)}
+.pl3.d{left:56%;top:60%;width:36%;height:30%;transform:translateZ(60px)}
+.bars{display:flex;gap:6px;align-items:flex-end;height:70%}.bars i{flex:1;background:linear-gradient(#5f9bff,#1769FF);border-radius:3px 3px 0 0}
+.box{position:absolute;border:1.5px solid #5f9bff;border-radius:3px;font-size:9px;padding:1px 4px;color:#fff;background:rgba(23,105,255,.3)}
+.vd{position:relative;height:78%;background:linear-gradient(160deg,#1a2f85,#0a1450);border-radius:8px}
+.row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(120,160,255,.2)}
+.note{font-size:11px;color:#8fa4d8;margin-top:8px}
+@media(max-width:600px){.scene{height:340px}}
+/* carousel */
+.cw{padding:20px 0 clamp(60px,8vw,110px);background:linear-gradient(180deg,#050A1E,#071445 60%,#050A1E)}
+.cv{perspective:1600px;height:360px;position:relative;margin-top:36px}
+.ring{position:absolute;inset:0;transform-style:preserve-3d}
+.cd{position:absolute;left:50%;top:0;width:270px;height:330px;margin-left:-135px;border-radius:16px;border:1px solid rgba(110,150,255,.35);background:linear-gradient(160deg,#10206b,#081444);padding:26px 22px;display:flex;flex-direction:column;justify-content:space-between;transition:transform .7s cubic-bezier(.2,.7,.2,1),opacity .7s,filter .7s;cursor:pointer;box-shadow:0 30px 60px rgba(0,0,30,.5)}
+.cd img{max-height:64px;max-width:190px;object-fit:contain;object-position:left}
+.cd p{font-size:14.5px;color:#b9c8ee;margin-top:14px}.cd b{font-size:13px;color:#6fa0ff;font-weight:600}
+.cd.on{border-color:#4f86ff;box-shadow:0 0 0 1px #2a5cff,0 30px 80px rgba(23,105,255,.35)}
+.ctl{display:flex;gap:12px;justify-content:center;align-items:center;margin-top:10px}
+.ctl button{width:44px;height:44px;border-radius:50%;background:transparent;border:1px solid #3a5bd0;color:#fff;font-size:18px;cursor:pointer}
+.ctl button:hover{background:rgba(23,105,255,.25)}
+.dots{display:flex;gap:8px}.dots i{width:7px;height:7px;border-radius:50%;background:#2a3f8f}.dots i.on{background:#6fa0ff}
+/* trust */
+.trust{padding:50px 0;border-bottom:1px solid var(--line)}
+.trust p{font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--mut);text-align:center;margin-bottom:22px}
+.tr{overflow:hidden;background:#fff;border-radius:14px;padding:18px 0}
+.tk{display:flex;gap:40px;width:max-content;animation:sl 60s linear infinite}
+.tk img{height:56px;display:block}
+@keyframes sl{to{transform:translateX(-50%)}}
+/* flow */
+.flow{display:grid;grid-template-columns:repeat(5,1fr);margin-top:56px;border-top:1px solid var(--line)}
+.flow div{padding:22px 16px 0 0;position:relative;font-weight:700}
+.flow div:before{content:"";position:absolute;top:-5px;left:0;width:9px;height:9px;border-radius:50%;background:#5f9bff;box-shadow:0 0 12px #1769FF}
+.flow span{display:block;font-weight:500;font-size:14px;color:var(--mut)}
+.tags,.sus{display:flex;flex-wrap:wrap;gap:10px;margin-top:36px}
+.tags span,.sus span{border:1px solid var(--line);background:rgba(23,105,255,.08);border-radius:8px;padding:8px 14px;font-size:14.5px;font-weight:600;color:#bcd2ff}
+@media(max-width:760px){.flow{grid-template-columns:1fr;border-top:0;border-left:1px solid var(--line)}.flow div{padding:0 0 22px 22px}.flow div:before{top:6px;left:-5px}}
+.alt{background:linear-gradient(180deg,#050A1E,#08123a 50%,#050A1E)}
+.pg{display:grid;grid-template-columns:1fr 1.2fr;gap:64px;align-items:start}
+@media(max-width:900px){.pg{grid-template-columns:1fr;gap:36px}}
+.pl button{all:unset;display:flex;gap:22px;align-items:baseline;width:100%;padding:20px 0;border-bottom:1px solid var(--line);cursor:pointer;font-size:clamp(22px,2.6vw,32px);font-weight:700;color:#4d5f9a;transition:color .2s}
+.pl button:hover,.pl button.on,.pl button:focus-visible{color:#fff}
+.pl button span{font-size:13px;color:#5f9bff;font-weight:600}
+.pd{margin-top:22px;color:var(--mut);min-height:92px}
+.lay{margin-top:50px}.lay svg{width:100%;height:auto;display:block}
+.lay text{fill:#dbe6ff;font:600 13px Manrope,sans-serif}
+.lay line{stroke:#2e5cd6;stroke-width:1.2;stroke-dasharray:4 4;animation:dash 6s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-80}}
+.ap{display:grid;grid-template-columns:repeat(4,1fr);margin-top:50px;border-top:1px solid var(--line)}
+.ap div{padding:28px 24px 8px 0}.ap h3{font-size:20px}.ap p{font-size:14.5px;color:var(--mut);margin-top:10px}
+@media(max-width:900px){.ap{grid-template-columns:1fr 1fr}}@media(max-width:520px){.ap{grid-template-columns:1fr}}
+.mt{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;margin-top:50px}
+.mt b{display:block;font-size:clamp(48px,7vw,88px);font-weight:700;letter-spacing:-.03em;color:#fff;line-height:1}
+.mt span{color:var(--mut);font-size:15px}
+@media(max-width:700px){.mt{grid-template-columns:1fr 1fr}}
+.wg{display:grid;grid-template-columns:1fr 1.2fr;gap:48px;align-items:center}
+@media(max-width:900px){.wg{grid-template-columns:1fr}}
+.wg svg{width:100%;height:auto}.wg text{fill:#cfdcff;font:600 12px Manrope,sans-serif}
+.pulse{animation:pu 3s ease-in-out infinite;transform-origin:center;transform-box:fill-box}
+@keyframes pu{50%{transform:scale(1.9);opacity:.3}}
+.aw{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:48px}
+.aw div{border-top:2px solid var(--elec);padding-top:18px;font-weight:700;font-size:19px;line-height:1.3}
+@media(max-width:800px){.aw{grid-template-columns:1fr 1fr}}
+.fin{background:radial-gradient(60% 90% at 50% 100%,#123DCC55,transparent 70%),var(--bg)}
+footer{background:var(--dark);color:#b6c4e6;padding:64px 0 40px;font-size:15px;border-top:1px solid var(--line)}
+footer .w{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap}footer img{height:34px}
+footer small{display:block;margin-top:20px;font-size:12px;opacity:.6}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head><body>
+<nav><div class="w"><a href="#top" aria-label="Meerana Technologies"><img src="[[img01.png]]" alt="Meerana Technologies"></a>
+<ul><li><a href="#solutions">Solutions</a></li><li><a href="#products">Products</a></li><li><a href="#industries">Industries</a></li><li><a href="#company">Company</a></li><li><a href="#insights">Insights</a></li></ul>
+<a class="btn p" href="#contact">Contact Us</a></div></nav>
+
+<header class="hero" id="top"><div class="w"><div class="hg">
+<div><div class="eb">UAE • Global technology company</div>
+<h1>Intelligent technology for a smarter enterprise.</h1>
+<p class="sub">Meerana Technologies delivers intelligent, reliable and future-ready digital solutions across AI, digital transformation, automation, IoT and enterprise software.</p>
+<div class="cta"><a class="btn p" href="#products">Explore Solutions →</a><a class="btn s" href="#contact">Talk to Meerana →</a></div></div>
+<div><div class="scene" id="sc" role="img" aria-label="Illustrative 3D enterprise intelligence interface"><div class="rig" id="rig">
+<div class="pl3 a"><h4>Video intelligence</h4><div class="vd"><div class="box" style="left:12%;top:34%;width:18%;height:46%">person</div><div class="box" style="left:44%;top:50%;width:26%;height:32%">vehicle</div><div class="box" style="left:76%;top:38%;width:14%;height:44%">person</div></div></div>
+<div class="pl3 b"><h4>Operations</h4><div class="bars"><i style="height:40%"></i><i style="height:65%"></i><i style="height:50%"></i><i style="height:88%"></i><i style="height:60%"></i><i style="height:78%"></i></div></div>
+<div class="pl3 c"><h4>Workflow</h4><div class="row"><span>Document routed</span><span>Approved</span></div><div class="row"><span>Gate access</span><span>Logged</span></div></div>
+<div class="pl3 d"><h4>Assets &amp; workforce</h4><div class="row"><span>Asset moved</span><span>Tracked</span></div></div>
+</div></div><p class="note">Illustrative interface — to be replaced with real product screens.</p></div>
+</div></div></header>
+
+<div class="cw" id="products"><div class="w">
+<div class="eb" style="margin-top:56px">Product portfolio</div>
+<h2>Technology products built for real operations.</h2>
+<div class="cv" id="cv"><div class="ring" id="ring"></div></div>
+<div class="ctl"><button id="pv" aria-label="Previous product">←</button><div class="dots" id="dots"></div><button id="nx" aria-label="Next product">→</button></div>
+</div></div>
+
+<div class="trust"><div class="w"><p>Our partners &amp; clients</p>
+<div class="tr"><div class="tk"><img src="[[img02.jpg]]" alt="Partner and client logos"><img src="[[img03.jpg]]" alt="Partner and client logos"><img src="[[img04.jpg]]" alt="Partner and client logos"><img src="[[img05.jpg]]" alt=""><img src="[[img06.jpg]]" alt=""><img src="[[img07.jpg]]" alt=""></div></div></div></div>
+
+<section id="solutions"><div class="w">
+<div class="eb">What Meerana does</div>
+<h2>Technology that connects strategy, systems and intelligence.</h2>
+<p class="sub">Meerana helps organizations improve operations through technology, people, consulting and smart solutions.</p>
+<div class="flow"><div>Consult<span>Roadmap &amp; strategy</span></div><div>Design<span>Architecture</span></div><div>Build<span>Bespoke solutions</span></div><div>Integrate<span>Systems &amp; partners</span></div><div>Operate<span>Managed services</span></div></div>
+<div class="tags"><span>AI</span><span>Automation</span><span>IoT</span><span>Enterprise software</span><span>Cloud</span><span>Digital transformation</span></div>
+</div></section>
+
+<section class="alt"><div class="w"><div class="pg">
+<div><div class="eb">Our business is built on 4 pillars</div><h2>One partner across advice, people, platforms and products.</h2><p class="pd" id="pd"></p></div>
+<div class="pl" id="pl"></div></div></div></section>
+
+<section><div class="w">
+<div class="eb">Intelligence layer</div><h2>One intelligence layer. Connected operations.</h2>
+<p class="sub">AI, IoT, automation and enterprise systems working as one connected platform.</p>
+<div class="lay"><svg viewBox="0 0 1000 380" role="img" aria-label="Architecture diagram"><g id="ly"></g>
+<rect x="400" y="150" width="200" height="80" rx="12" fill="#123DCC" fill-opacity=".3" stroke="#1769FF"/><text x="500" y="196" text-anchor="middle" style="font-size:16px;fill:#fff">Meerana Intelligence Layer</text></svg></div>
+</div></section>
+
+<section class="alt" id="industries"><div class="w">
+<div class="eb">Solutions in the portfolio</div><h2>From business challenge to digital solution.</h2>
+<div class="ap">
+<div><h3>FinTech</h3><p>Strategy, payments &amp; remittance, e-KYC and UAE PASS integration, and secure user experience.</p></div>
+<div><h3>Visitor Management</h3><p>Emirates ID, QR, facial recognition, passport reader, number plate recognition and gate integration.</p></div>
+<div><h3>HR Tech with ZingHR</h3><p>Unified AI-powered HR suite, hosted in the UAE and localized for GCC and Africa.</p></div>
+<div><h3>Voice of Customer</h3><p>Capture, analyze, generate ticket, route and escalate, resolve and close — using Gen AI.</p></div>
+</div></div></section>
+
+<section id="company"><div class="w">
+<div class="eb">Why Meerana</div><h2>Driving AI-powered digital transformation with sustainable impact.</h2>
+<div class="mt"><div><b>5+</b><span>Operating locations</span></div><div><b>60+</b><span>Skilled professionals</span></div><div><b>40+</b><span>Strategic alliances</span></div><div><b>50+</b><span>Valued clients</span></div></div>
+</div></section>
+
+<section class="alt"><div class="w"><div class="wg">
+<div><div class="eb">UAE to the world</div><h2>Born in the UAE. Built for the world.</h2><p class="sub">Delivering intelligent solutions with global impact.</p></div>
+<svg viewBox="0 0 600 340" role="img" aria-label="UAE headquarters connected to UK, Egypt, KSA and India">
+<path d="M300 170 Q230 60 130 70" fill="none" stroke="#2e5cd6"/><path d="M300 170 Q230 150 190 210" fill="none" stroke="#2e5cd6"/><path d="M300 170 Q300 220 265 270" fill="none" stroke="#2e5cd6"/><path d="M300 170 Q380 130 470 200" fill="none" stroke="#2e5cd6"/>
+<g fill="#8fb0ff"><circle cx="130" cy="70" r="5"/><circle cx="190" cy="210" r="5"/><circle cx="265" cy="270" r="5"/><circle cx="470" cy="200" r="5"/></g>
+<circle class="pulse" cx="300" cy="170" r="9" fill="#1769FF"/><circle cx="300" cy="170" r="6" fill="#fff"/>
+<text x="318" y="160">UAE – HQ</text><text x="100" y="58">UK</text><text x="150" y="232">Egypt</text><text x="240" y="294">KSA</text><text x="480" y="222">India</text></svg>
+</div></div></section>
+
+<section><div class="w">
+<div class="eb">Sustainability &amp; green innovation</div><h2>Technology with measurable impact.</h2>
+<p class="sub">Intelligent digital solutions that help organizations reduce paper use, optimize resources and improve efficiency.</p>
+<div class="sus"><span>Reduce Paper-Based Operations</span><span>Improve Operational Efficiency</span><span>Enable Smart Resource Management</span><span>Support ESG &amp; Governance Goals</span><span>Build Sustainable Digital Ecosystems</span></div>
+<div style="height:90px"></div>
+<div class="eb">Awards &amp; recognitions</div><h2>Recognised across the UAE and GCC.</h2>
+<div class="aw"><div>Top 100 Future Company in UAE Reward for 2023</div><div>The Best SME Company in GCC, Qatar 2024</div><div>Best employee environment Reward for 2023</div><div>The Best SME Company in UAE, MOHRE 2024</div></div>
+</div></section>
+
+<section class="fin" id="contact"><div class="w">
+<h2>Ready to build what's next?</h2>
+<p class="sub">Let's transform your next business challenge into an intelligent technology solution.</p>
+<div class="cta"><a class="btn p" href="mailto:Info@meerana.ae">Talk to Meerana →</a><a class="btn s" href="#products">Explore Our Solutions →</a></div></div></section>
+
+<footer id="insights"><div class="w"><div><img src="[[img08.png]]" alt="Meerana Technologies"></div>
+<div><strong style="color:#fff">Head Office</strong><br>Business Bay, Blue Bay Tower, 1704, Dubai, UAE<br>+971 52 363 2255<br>Info@meerana.ae<br>www.meerana.ae</div></div>
+<div class="w"><small>©2026 Meerana information Technology LLC. All rights reserved. LinkedIn · Instagram · YouTube · X</small></div></footer>
+
+<script>
+const PR=[["mandobee","Smart Office & AI Productivity Platform"],["yisbir","AI Video Indexing & Analytics Platform"],["nazo","Correspondence & Workflow Management System"],["wasel","IoT Smart Access & Gate Management"],["tracking","Smart Asset & Workforce Tracking Solution"],["tasree","AI Assisted Process Mining & Process Engineering"],["aibox","MEERANA AI in a Box"]];
+const IM={"mandobee": "[[img09.png]]", "yisbir": "[[img10.png]]", "nazo": "[[img11.png]]", "wasel": "[[img12.png]]", "tracking": "[[img13.png]]", "tasree": "[[img14.png]]", "aibox": "[[img15.png]]"};
+const ring=document.getElementById('ring'),dots=document.getElementById('dots');let cur=1,tm;
+PR.forEach((p,i)=>{const d=document.createElement('div');d.className='cd';d.tabIndex=0;d.innerHTML='<img src="'+IM[p[0]]+'" alt="'+p[0]+'"><div><p>'+p[1].replace(/&/g,'&amp;')+'</p></div><b>Learn more →</b>';d.onclick=()=>{cur=i;ph();rs()};ring.appendChild(d);const t=document.createElement('i');dots.appendChild(t)});
+function ph(){const n=PR.length,cs=ring.children,mob=innerWidth<700;[...cs].forEach((c,i)=>{let o=((i-cur+n+Math.floor(n/2))%n)-Math.floor(n/2);const a=Math.abs(o),sp=mob?150:250;c.style.transform='translateX('+o*sp+'px) translateZ('+(-a*130)+'px) rotateY('+(-o*22)+'deg)';c.style.opacity=a>2?0:1-a*.28;c.style.zIndex=10-a;c.style.pointerEvents=a>2?'none':'auto';c.style.filter=a?'brightness('+(1-a*.2)+')':'none';c.classList.toggle('on',!a)});[...dots.children].forEach((d,i)=>d.classList.toggle('on',i==cur))}
+function go(d){cur=(cur+d+PR.length)%PR.length;ph();rs()}
+function rs(){clearInterval(tm);tm=setInterval(()=>{cur=(cur+1)%PR.length;ph()},4200)}
+pv.onclick=()=>go(-1);nx.onclick=()=>go(1);addEventListener('resize',ph);ph();rs();
+const rig=document.getElementById('rig');document.getElementById('sc').addEventListener('mousemove',e=>{const r=e.currentTarget.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;rig.style.transform='rotateX('+(52-y*10)+'deg) rotateZ('+(-28+x*12)+'deg) translateY(-10px)'});
+const P=[["Digital Consulting","Digital transformation advisory that supports strategy, process optimization, architecture and change management for sustainable business growth."],["Outsourcing Services","Talent solutions and managed services that help you scale with the right mix of UAE National and international experts."],["Hardware & Software Reselling","Enterprise technology procurement through trusted partners including Microsoft, Dell, Cisco, SAP and more."],["Bespoke Solutions","Custom software, mobile apps, web apps, enterprise systems and AI solutions built to your exact requirements."]];
+const pl=document.getElementById('pl'),pd=document.getElementById('pd');
+P.forEach((p,i)=>{const b=document.createElement('button');b.innerHTML='<span>0'+(i+1)+'</span>'+p[0].replace('&','&amp;');const s=()=>{pl.querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');pd.textContent=p[1]};b.onmouseenter=b.onfocus=b.onclick=s;pl.appendChild(b);if(!i)s()});
+const N=[["AI",80,40],["IoT",80,110],["Automation",80,180],["Analytics",80,250],["Enterprise Systems",760,40],["Workforce",760,110],["Video Intelligence",760,180],["Cloud",760,250]];
+document.getElementById('ly').innerHTML=N.map(n=>{const l=n[1]<500;return '<line x1="'+(l?230:760)+'" y1="'+(n[2]+20)+'" x2="'+(l?400:600)+'" y2="190"/><rect x="'+n[1]+'" y="'+n[2]+'" width="'+(l?150:160)+'" height="40" rx="8" fill="#0f1c4d" stroke="#2e5cd6"/><text x="'+(n[1]+(l?75:80))+'" y="'+(n[2]+25)+'" text-anchor="middle">'+n[0]+'</text>'}).join('');
+</script></body></html>

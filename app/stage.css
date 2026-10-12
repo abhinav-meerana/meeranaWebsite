@@ -1,0 +1,1491 @@
+/* ============================================================================
+   Product story: the horizontal stage (FINAL-SPEC §4). Owner A.
+   Replaces app/story.css. Every class here is `.ps-*`.
+
+   One frame in every mode. A scene is 100% of the pin (never 100vw: on
+   Windows that includes the scrollbar), and its frame is the same box in the
+   rail and the stage, so the stage turning on shifts nothing:
+
+     .ps                        mode root; 100svh + (N−1) × step tall in stage
+       .ps-pin                  100svh, overflow clip; CSS sticky in stage
+         .ps-far                the lattice floor in perspective (0.25×)
+         .ps-track              the strip: one flex row of scenes
+           .ps-scene            100% × 100%, clipped, its own stacking context
+             .ps-bg             accent field + outlined big type  (0.70×)
+             .ps-frame          header-h … dock, 12 columns
+               .ps-fg           the copy                          (1.00×)
+               .ps-mid          the installed module              (0.88×)
+             .ps-near           the vertical scene label          (1.15×)
+             .ps-shutter        the act wipe (stage only)
+         .ps-dock               progress, chapters, counter, buttons
+
+   Rules this file keeps (§4.3, §4.4):
+     · no hidden pre-states: GSAP applies `from` states in stage mode only;
+     · `.ps-pin` and `.ps-scene` clip, never `hidden`, so focus can never
+       scroll anything sideways and off-screen scenes add no scroll width;
+     · `.ps-floor` is never animated by GSAP (its transform is the perspective);
+     · copy and media sit in separate grid columns (I4);
+     · `will-change` only on the scenes next to the current one, while live.
+   Raw colours live in app/tokens.css only.
+   ========================================================================== */
+
+.ps {
+  --ps-step: clamp(480px, 70svh, 720px);
+  --ps-dock: 56px;
+  --ps-pad-y: clamp(8px, 2.4svh, 32px);
+  --ps-content-h: min(calc(100svh - var(--header-h) - var(--ps-dock) - 2 * var(--ps-pad-y)), 820px);
+  /* Copy rhythm: one fluid step between blocks, a small one under the eyebrow. */
+  --ps-gap: var(--sp-fluid-s);
+  --ps-gap-s: var(--sp-fluid-xs);
+  /* The module's own padding (registration corners above, plinth below) and
+     the provenance row under a screen. */
+  --ps-module-pad: 14px;
+  --ps-plinth-h: 26px;
+  --ps-prov-h: 28px;
+  /* The tallest a screen may be drawn: the content box minus the module and
+     its provenance label. Layouts that share the column height lower it. */
+  --ps-media-h: calc(var(--ps-content-h) - var(--ps-module-pad) - var(--ps-plinth-h) - var(--ps-prov-h));
+  --p-line: var(--p-accent-2, var(--p-accent));
+  position: relative;
+  /* ProductStage places the reader itself on every mode change; the
+     browser's scroll anchoring would move them again a frame later. */
+  overflow-anchor: none;
+}
+
+@media (max-height: 760px) {
+  .ps {
+    --ps-dock: 52px;
+  }
+}
+
+@media (max-height: 620px) {
+  .ps {
+    --ps-dock: 48px;
+    --ps-module-pad: 10px;
+    --ps-plinth-h: 18px;
+  }
+}
+
+.ps-pin {
+  position: relative;
+  height: 100svh;
+  overflow: clip;
+  container-type: inline-size;
+}
+
+.ps[data-mode="stage"] {
+  height: calc(100svh + (var(--ps-n) - 1) * var(--ps-step));
+}
+
+.ps[data-mode="stage"] .ps-pin {
+  position: sticky;
+  top: 0;
+}
+
+.ps-track {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  height: 100%;
+}
+
+.ps[data-mode="stage"] .ps-track {
+  will-change: transform;
+}
+
+.ps-scene {
+  position: relative;
+  flex: 0 0 100%;
+  height: 100%;
+  overflow: clip;
+  isolation: isolate;
+  contain: layout paint style;
+}
+
+/* The only will-change on the page: the planes of the scenes either side of
+   the current one, while the film is on screen. */
+.ps.is-live .ps-scene.is-near :is(.ps-bg, .ps-shadow, .ps-mid, .ps-stage3d, .ps-near) {
+  will-change: transform;
+}
+
+/* ---- far: the lattice floor (0.25×, the page's only lattice) ------------- */
+
+.ps-far {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.ps-floor {
+  position: absolute;
+  left: -30%;
+  right: -30%;
+  bottom: -8%;
+  height: 62%;
+  transform: perspective(900px) rotateX(64deg);
+  transform-origin: 50% 100%;
+  -webkit-mask-image: linear-gradient(to top, var(--ink-950) 0 38%, transparent 92%);
+  mask-image: linear-gradient(to top, var(--ink-950) 0 38%, transparent 92%);
+}
+
+/* Moved by a quickSetter in the floor's own plane, so near rows travel
+   further than far ones. 448 px is the horizontal period of the 224 px accent
+   family, so the wrap is seamless. */
+.ps-floor-grid {
+  position: absolute;
+  inset: 0 -448px;
+  background-image:
+    repeating-linear-gradient(30deg, var(--lattice-line) 0 1px, transparent 1px 56px),
+    repeating-linear-gradient(-30deg, var(--lattice-line) 0 1px, transparent 1px 56px),
+    repeating-linear-gradient(30deg, color-mix(in srgb, var(--p-line) 18%, transparent) 0 1px, transparent 1px 224px);
+}
+
+.ps-horizon {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(70% 45% at 50% 38%, color-mix(in srgb, var(--p-bg) 40%, transparent), transparent 70%);
+}
+
+/* ---- frame and layouts --------------------------------------------------- */
+
+.ps-frame {
+  position: absolute;
+  inset: var(--header-h) 0 var(--ps-dock);
+  z-index: 2;
+  max-width: var(--content-max);
+  margin-inline: auto;
+  padding: var(--ps-pad-y) var(--gutter);
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: clamp(16px, 2vw, 32px);
+  align-items: center;
+  align-content: center;
+}
+
+.ps-fg {
+  grid-column: 1 / 6;
+  min-width: 0;
+}
+
+.ps-mid {
+  grid-column: 7 / -1;
+}
+
+.ps-scene[data-layout="split"] .ps-fg {
+  grid-column: 1 / 6;
+}
+
+.ps-scene[data-layout="split"] .ps-mid {
+  grid-column: 7 / -1;
+}
+
+.ps-scene[data-layout="reverse"] .ps-mid {
+  grid-column: 1 / 7;
+  grid-row: 1;
+}
+
+.ps-scene[data-layout="reverse"] .ps-fg {
+  grid-column: 8 / -1;
+  grid-row: 1;
+}
+
+/* Wide: a heading row (eyebrow and heading left, body right) over a visual
+   that runs along the direction of travel. The copy's blocks join the
+   frame's grid, so a closing line (sectors) can follow the visual. */
+.ps-scene[data-layout="wide"] :is(.ps-fg, .ps-copy) {
+  display: contents;
+}
+
+.ps-scene[data-layout="wide"] .ps-copy > * {
+  grid-column: 1 / -1;
+}
+
+.ps-scene[data-layout="wide"] .ps-copy > .ps-eyebrow {
+  grid-column: 1 / 8;
+  grid-row: 1;
+  align-self: end;
+}
+
+.ps-scene[data-layout="wide"] .ps-copy > .ps-h {
+  grid-column: 1 / 8;
+  grid-row: 2;
+  align-self: start;
+}
+
+.ps-scene[data-layout="wide"] .ps-copy > .ps-body {
+  grid-column: 8 / -1;
+  grid-row: 1 / span 2;
+  align-self: end;
+  margin-top: 0;
+}
+
+.ps-scene[data-layout="wide"] .ps-mid {
+  grid-column: 1 / -1;
+  grid-row: 3;
+  margin-top: var(--ps-gap);
+  --ps-media-h: calc(var(--ps-content-h) * 0.62 - var(--ps-module-pad) - var(--ps-plinth-h) - var(--ps-prov-h));
+}
+
+/* Center: a title card. The statement, then its visual under it. */
+.ps-scene[data-layout="center"] .ps-fg {
+  grid-column: 2 / 12;
+  text-align: center;
+}
+
+.ps-scene[data-layout="center"] .ps-copy > * {
+  margin-inline: auto;
+}
+
+.ps-scene[data-layout="center"] .ps-mid {
+  grid-column: 3 / 11;
+  grid-row: 2;
+  margin-top: var(--ps-gap);
+  --ps-media-h: calc(var(--ps-content-h) * 0.5 - var(--ps-module-pad) - var(--ps-plinth-h) - var(--ps-prov-h));
+}
+
+/* The title's H1 gets seven columns and its picture five (§4.2 gives it six):
+   at the regular tier the H1 is 59–72 px, and a 49-character hero such as
+   Yisbir's needs about 610–700 px to stay within three lines (P-04). The end
+   card gets six, so its two actions sit side by side. */
+.ps-scene[data-kind="title"] .ps-fg {
+  grid-column: 1 / 8;
+}
+
+.ps-scene[data-kind="title"] .ps-mid {
+  grid-column: 8 / -1;
+}
+
+.ps-scene[data-kind="next"] .ps-fg {
+  grid-column: 1 / 7;
+}
+
+.ps-scene[data-kind="next"] .ps-mid {
+  grid-column: 8 / -1;
+}
+
+/* Tight (≤620 tall): a wider copy column means fewer heading lines. */
+@media (max-height: 620px) {
+  .ps-scene[data-layout="split"] .ps-fg,
+  .ps-scene[data-kind="title"] .ps-fg {
+    grid-column: 1 / 7;
+  }
+  .ps-scene[data-layout="split"] .ps-mid,
+  .ps-scene[data-kind="title"] .ps-mid {
+    grid-column: 7 / -1;
+  }
+  .ps-scene[data-layout="reverse"] .ps-fg {
+    grid-column: 7 / -1;
+  }
+  .ps-scene[data-layout="reverse"] .ps-mid {
+    grid-column: 1 / 7;
+  }
+}
+
+/* ---- background: field and big type (0.70×) ------------------------------ */
+
+.ps-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  /* The big type's glyphs reach well past its 0.8 line box; clipped
+     vertically so they never add to the scene's scrollable height (P-13).
+     Sideways stays open: the field is wider than the scene on purpose. */
+  overflow: visible clip;
+}
+
+/* Oversized so the layer's travel never shows an edge. The accent glow sits on
+   the media side; the product's own surface tints the whole scene. */
+.ps-field {
+  --field-x: 64%;
+  position: absolute;
+  inset: 0 -32%;
+  background:
+    radial-gradient(30% 52% at var(--field-x) 46%, color-mix(in srgb, var(--p-line) 11%, transparent), transparent 72%),
+    radial-gradient(60% 70% at 50% 60%, color-mix(in srgb, var(--p-bg) 34%, transparent), transparent 75%);
+}
+
+.ps-scene[data-layout="reverse"] .ps-field {
+  --field-x: 36%;
+}
+
+.ps-scene:is([data-layout="center"], [data-layout="wide"]) .ps-field {
+  --field-x: 50%;
+}
+
+/* Outlined, on the media side, behind nothing that has to be read. Long
+   words (a product name) are sized down to half the frame. */
+.ps-bigtype {
+  position: absolute;
+  right: 4%;
+  bottom: calc(var(--ps-dock) + 2svh);
+  font-family: var(--font-poppins), system-ui, sans-serif;
+  font-weight: 600;
+  font-size: min(var(--fs-bigtype), calc(48cqw / (var(--ps-big-len, 2) * 0.62)));
+  line-height: 0.8;
+  letter-spacing: -0.06em;
+  white-space: nowrap;
+  color: color-mix(in srgb, var(--p-line) 6%, transparent);
+  user-select: none;
+}
+
+@supports (-webkit-text-stroke-width: 1px) {
+  .ps-bigtype {
+    color: transparent;
+    -webkit-text-stroke: 1px color-mix(in srgb, var(--p-line) 26%, transparent);
+  }
+}
+
+.ps-bigtype[lang="ar"] {
+  font-family: system-ui, sans-serif;
+  letter-spacing: 0;
+  line-height: 1.1;
+}
+
+.ps-scene[data-layout="reverse"] .ps-bigtype {
+  right: auto;
+  left: 4%;
+}
+
+.ps-scene[data-layout="center"] .ps-bigtype {
+  right: 50%;
+  translate: 50% 0;
+}
+
+/* The seam between scenes, on the floor only. */
+.ps-seam {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: 1;
+  width: 1px;
+  height: 40%;
+  background: linear-gradient(to top, var(--line-strong), transparent);
+  pointer-events: none;
+}
+
+/* ---- near: the gutter label (1.15×) ---------------------------------------- */
+
+.ps-near {
+  position: absolute;
+  top: calc(var(--header-h) + var(--ps-pad-y));
+  right: max(8px, calc((100cqw - var(--content-max)) / 4));
+  z-index: 3;
+  writing-mode: vertical-rl;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* ---- the act shutter (stage only; GSAP slides it off the incoming scene) -- */
+
+/* Solid product surface with a lit leading edge. The label sits towards the
+   shutter's left, so it is in frame while the scene is still arriving. */
+.ps-shutter {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: none;
+  align-items: center;
+  padding-left: max(var(--gutter), 8%);
+  background: var(--p-bg);
+  color: var(--p-fg);
+  border-left: 2px solid var(--p-line);
+  pointer-events: none;
+}
+
+.ps[data-mode="stage"] .ps-shutter {
+  display: flex;
+}
+
+.ps-shutter-act {
+  font-size: var(--fs-ps-statement);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+
+/* ---- foreground: the copy (1.00×) ---------------------------------------- */
+
+.ps-copy > * {
+  margin: 0;
+}
+
+.ps-copy > * + * {
+  margin-top: var(--ps-gap);
+}
+
+.ps-copy > .ps-eyebrow + .ps-h {
+  margin-top: var(--ps-gap-s);
+}
+
+.ps-eyebrow .tnum {
+  color: color-mix(in srgb, var(--p-accent) 80%, var(--meerana-white));
+}
+
+.ps-h {
+  font-size: var(--fs-ps-h);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+  color: var(--p-fg, var(--text-primary));
+  text-wrap: balance;
+}
+
+.ps-h1 {
+  font-size: var(--fs-ps-title);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+.ps-scene:is([data-kind="value"], [data-kind="next"]) .ps-h {
+  font-size: var(--fs-ps-statement);
+  line-height: 1.06;
+  letter-spacing: -0.03em;
+}
+
+/* Headings take focus after a chapter jump; the ring stays inside the frame. */
+.ps-h:focus-visible {
+  outline-offset: 4px;
+}
+
+.ps-body {
+  font-size: var(--fs-ps-body);
+  line-height: 1.55;
+  color: var(--text-secondary);
+  max-width: 52ch;
+  text-wrap: pretty;
+}
+
+.ps-name {
+  color: color-mix(in srgb, var(--p-accent) 80%, var(--meerana-white));
+}
+
+.ps-ar {
+  font-family: system-ui, sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* Features (and steps outside a stations visual): two columns of short lines. */
+.ps-features {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--ps-gap-s) var(--sp-5);
+  font-size: var(--fs-ps-item);
+  line-height: 1.45;
+  color: var(--text-secondary);
+}
+
+.ps-features li {
+  position: relative;
+  padding-left: var(--sp-4);
+}
+
+.ps-features li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.68em;
+  width: 7px;
+  height: 1px;
+  background: var(--p-line);
+}
+
+.ps-steps strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+/* Facts: label over value, two columns, hairline above each. */
+.ps-facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--ps-gap-s) var(--sp-5);
+}
+
+.ps-fact {
+  padding-top: var(--ps-gap-s);
+  border-top: 1px solid var(--line);
+}
+
+.ps-fact dt {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.ps-fact dd {
+  margin: 2px 0 0;
+  font-size: var(--fs-ps-item);
+  line-height: 1.4;
+  color: var(--text-primary);
+}
+
+/* Cases in the copy column (a screen holds the media column). */
+.ps-cases {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--ps-gap-s) var(--sp-5);
+}
+
+.ps-case {
+  display: grid;
+  gap: 2px;
+  padding-top: var(--ps-gap-s);
+  border-top: 1px solid var(--line);
+}
+
+.ps-case-l {
+  font-size: var(--fs-ps-item);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.ps-case-copy {
+  font-size: var(--fs-ps-item);
+  line-height: 1.4;
+  color: var(--text-secondary);
+}
+
+/* FAQ: question over answer, a 2 × 2 grid. */
+.ps-faq {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--ps-gap) var(--sp-fluid-m);
+}
+
+.ps-qa {
+  padding-top: var(--ps-gap-s);
+  border-top: 1px solid var(--line);
+}
+
+.ps-qa dt {
+  font-size: var(--fs-ps-body);
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--text-primary);
+}
+
+.ps-qa dd {
+  margin: var(--sp-1) 0 0;
+  font-size: var(--fs-ps-item);
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.ps-links {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--sp-4);
+}
+
+.ps-links .btn-text {
+  padding-inline: 0;
+  text-decoration: underline;
+  text-decoration-color: var(--line-strong);
+  text-underline-offset: 4px;
+}
+
+.ps-sectors {
+  color: var(--text-muted);
+}
+
+.ps-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+}
+
+.ps-scene[data-layout="center"] .ps-ctas {
+  justify-content: center;
+}
+
+/* The product's own accent on its primary action. */
+.ps .btn-primary {
+  background: var(--p-accent);
+  color: var(--ink-on-accent);
+}
+
+.ps .btn-primary:hover {
+  background: color-mix(in srgb, var(--p-accent) 86%, var(--meerana-white));
+}
+
+@media (max-height: 620px) {
+  .ps .btn {
+    height: 44px;
+  }
+}
+
+/* ---- midground: the installed module (0.88×) ------------------------------ */
+
+.ps-mid {
+  position: relative;
+  min-width: 0;
+  max-height: var(--ps-content-h);
+  display: grid;
+  place-items: center;
+}
+
+/* A soft ellipse under the module, with its own rate (0.82×): the gap
+   between object and shadow changes as the scene travels. No filter. */
+.ps-shadow {
+  position: absolute;
+  left: 14%;
+  right: 14%;
+  bottom: 0;
+  height: var(--ps-plinth-h);
+  z-index: 0;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--ink-950) 70%, transparent), transparent);
+  pointer-events: none;
+}
+
+.ps-module {
+  position: relative;
+  z-index: 1;
+  width: fit-content;
+  max-width: 100%;
+  min-width: 0;
+  padding: var(--ps-module-pad) var(--ps-module-pad) var(--ps-plinth-h);
+  display: grid;
+  place-items: center;
+}
+
+.ps-scene[data-layout="wide"] .ps-module {
+  width: 100%;
+}
+
+/* An isometric slab: two rhombi 12 units apart, hairline, on the product's
+   structure colour. Behind the visual, so the visual reads as installed. */
+.ps-plinth {
+  position: absolute;
+  left: 2%;
+  bottom: 0;
+  z-index: -1;
+  width: 96%;
+  height: calc(var(--ps-plinth-h) + 8px);
+  overflow: visible;
+  fill: none;
+  stroke: color-mix(in srgb, var(--p-line) 30%, transparent);
+  stroke-width: 1px;
+  pointer-events: none;
+}
+
+.ps-plinth-top {
+  fill: color-mix(in srgb, var(--p-line) 5%, transparent);
+}
+
+/* Registration corners: where the module is installed. */
+.ps-reg {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border: 0 solid var(--line-strong);
+  pointer-events: none;
+}
+
+.ps-reg[data-c="tl"] {
+  top: 0;
+  left: 0;
+  border-top-width: 1px;
+  border-left-width: 1px;
+}
+
+.ps-reg[data-c="tr"] {
+  top: 0;
+  right: 0;
+  border-top-width: 1px;
+  border-right-width: 1px;
+}
+
+.ps-reg[data-c="bl"] {
+  bottom: calc(var(--ps-plinth-h) - 10px);
+  left: 0;
+  border-bottom-width: 1px;
+  border-left-width: 1px;
+}
+
+.ps-reg[data-c="br"] {
+  bottom: calc(var(--ps-plinth-h) - 10px);
+  right: 0;
+  border-bottom-width: 1px;
+  border-right-width: 1px;
+}
+
+.ps-stage3d {
+  position: relative;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.ps-scene[data-layout="wide"] .ps-stage3d {
+  width: 100%;
+}
+
+/* Media fit: a screen is never taller than the space the layout leaves it,
+   and never wider than its file (ScreenFrame's max-width) or its column. */
+.ps-mid .screen {
+  width: auto;
+  max-width: 100%;
+  justify-items: center;
+}
+
+.ps-mid .screen img {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: var(--ps-media-h);
+}
+
+/* Diagrams: enough width to read as an object rather than a label. No padding
+   of their own: the module's padding is the space inside the registration
+   marks, and viz.css sizes every drawing to --ps-media-h, which already
+   leaves that padding, the plinth and the provenance row out. */
+.ps-mid .viz {
+  min-width: min(100%, 26rem);
+}
+
+.ps-scene[data-layout="wide"] .ps-mid .viz {
+  min-width: 0;
+}
+
+/* Transform origins for the choreography. choreo.ts writes transforms and
+   opacity only (P-20), so the pivot each hook needs is fixed here: lines draw
+   from their start, the boundary closes clockwise, tiles stand up on their
+   foot, the deploy module tilts on its base. An origin is not a rest state:
+   nothing here moves anything. */
+.ps-scene :is(.viz-edge, .viz-rail, .viz-record-rule, .callout-line, .port-wire, .chain-edge),
+.ps-scene .boundary-edge[data-edge="top"] {
+  transform-origin: 0 50%;
+}
+
+.ps-scene .callout[data-side="left"] .callout-line,
+.ps-scene .boundary-edge[data-edge="bottom"] {
+  transform-origin: 100% 50%;
+}
+
+.ps-scene .viz-divide,
+.ps-scene .boundary-edge[data-edge="right"] {
+  transform-origin: 50% 0;
+}
+
+.ps-scene .boundary-edge[data-edge="left"],
+.ps-scene :is(.viz-tile, .viz-grid-list > li),
+.ps-scene[data-kind="deploy"] .ps-stage3d {
+  transform-origin: 50% 100%;
+}
+
+/* The end card's image follows the same fit, leaving room for its name,
+   descriptor and link under it. */
+.ps-mid .next-shot img {
+  width: auto;
+  max-height: calc(var(--ps-media-h) - 8.5rem);
+}
+
+/* ---- the dock -------------------------------------------------------------- */
+
+.ps-dock {
+  position: absolute;
+  inset: auto 0 0;
+  z-index: 6;
+  height: var(--ps-dock);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  padding-inline: max(var(--gutter), calc((100% - var(--content-max)) / 2 + var(--gutter)));
+  background: color-mix(in srgb, var(--surface-deep) 94%, transparent);
+  border-top: 1px solid var(--line);
+}
+
+.ps-progress {
+  position: absolute;
+  inset: -1px 0 auto;
+  height: 2px;
+  pointer-events: none;
+}
+
+/* Scaled by GSAP in the stage, by --ps-progress in the rail. */
+.ps-progress-bar {
+  position: absolute;
+  inset: 0;
+  background: var(--p-line);
+  transform-origin: 0 50%;
+  transform: scaleX(var(--ps-progress, 0));
+}
+
+.ps-toc {
+  flex: 0 1 auto;
+  min-width: 0;
+}
+
+.ps-toc-summary {
+  display: none;
+}
+
+.ps-chapters {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.ps-chapters li.is-act-start {
+  margin-left: var(--sp-3);
+  padding-left: var(--sp-3);
+  border-left: 1px solid var(--line);
+}
+
+/* 24 × 44 targets (WCAG 2.5.8). The label is clipped, not hidden, so it is
+   always in the accessibility tree, and shown on hover and keyboard focus. */
+.ps-chapters a {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 44px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.ps-chapters a:focus-visible {
+  outline-offset: -2px;
+}
+
+.ps-tick {
+  display: block;
+  width: 2px;
+  height: 14px;
+  background: var(--line-strong);
+  transition:
+    height var(--dur-base) var(--ease-standard),
+    background-color var(--dur-base) var(--ease-standard);
+}
+
+.ps-chapters a:hover .ps-tick {
+  background: var(--text-secondary);
+}
+
+.ps-chapters a[aria-current="location"] .ps-tick {
+  height: 24px;
+  background: var(--p-accent);
+}
+
+.ps-chapter-label {
+  position: absolute;
+  left: 0;
+  bottom: calc(100% + 6px);
+  padding: 4px 8px;
+  white-space: nowrap;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  background: var(--ink-950);
+  border: 1px solid var(--line-strong);
+  border-radius: 4px;
+  clip-path: inset(50%);
+  pointer-events: none;
+}
+
+.ps-chapters a:is(:hover, :focus-visible) .ps-chapter-label {
+  clip-path: none;
+}
+
+.ps-counter {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.ps-counter .tnum {
+  color: var(--text-primary);
+}
+
+.ps-buttons {
+  display: flex;
+  gap: var(--sp-2);
+  flex: 0 0 auto;
+}
+
+.ps:not([data-hydrated]) .ps-buttons {
+  display: none;
+}
+
+.ps-btn {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--text-primary);
+  font: inherit;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: border-color var(--dur-fast) var(--ease-standard);
+}
+
+.ps-btn:hover:not(:disabled) {
+  border-color: var(--p-line);
+}
+
+.ps-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.ps-btn:focus-visible,
+.ps-view:focus-visible {
+  outline-offset: -2px;
+}
+
+.ps-view {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+/* ---- skip link ---------------------------------------------------------- */
+
+.ps-skip {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Fixed while focused, so taking focus never scrolls the film. */
+.ps-skip:focus {
+  position: fixed;
+  top: calc(var(--header-h) + var(--sp-3));
+  left: var(--gutter);
+  z-index: 70;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  clip-path: none;
+  padding: var(--sp-3) var(--sp-5);
+  border-radius: var(--radius-pill);
+  background: var(--action-primary-bg);
+  color: var(--action-primary-fg);
+  font-size: var(--fs-small);
+}
+
+.ps-end:focus {
+  outline: none;
+}
+
+/* ============================================================================
+   Rail (and the server HTML): a native horizontal snap rail.
+   ========================================================================== */
+
+.ps:is([data-mode="rail"], [data-mode="pending"]) .ps-track {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+
+.ps:is([data-mode="rail"], [data-mode="pending"]) .ps-track::-webkit-scrollbar {
+  display: none;
+}
+
+.ps:is([data-mode="rail"], [data-mode="pending"]) .ps-scene {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+/* The scroller takes focus (so keys scroll it); its ring is drawn inside. */
+.ps-track:focus-visible {
+  outline-offset: -4px;
+}
+
+/* Below 1024 px the frame joins the flow: copy first, then the visual, and a
+   scene may grow rather than clip. The dock sticks to the foot of the screen. */
+@media (max-width: 1023px) {
+  .ps:is([data-mode="rail"], [data-mode="pending"]) .ps-pin {
+    height: auto;
+  }
+  .ps:is([data-mode="rail"], [data-mode="pending"]) .ps-track {
+    height: auto;
+  }
+  /* Each scene is its own height (at least the screen's), starting at the
+     top; a long scene never stretches the short ones. */
+  .ps:is([data-mode="rail"], [data-mode="pending"]) .ps-scene {
+    align-self: flex-start;
+    height: auto;
+    min-height: 100svh;
+    display: grid;
+  }
+  .ps:is([data-mode="rail"], [data-mode="pending"]) .ps-frame {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    padding-top: calc(var(--header-h) + var(--ps-pad-y));
+    padding-bottom: calc(var(--ps-dock) + var(--ps-pad-y));
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: var(--sp-fluid-m);
+  }
+  .ps-scene .ps-fg,
+  .ps-scene .ps-mid,
+  .ps-scene[data-layout="wide"] .ps-copy > * {
+    grid-column: 1 / -1 !important;
+    grid-row: auto !important;
+  }
+  .ps-scene[data-layout="center"] .ps-fg {
+    text-align: start;
+  }
+  .ps-scene[data-layout="center"] .ps-copy > * {
+    margin-inline: 0;
+  }
+  .ps-scene[data-layout="wide"] .ps-mid {
+    margin-top: 0;
+  }
+  .ps-mid {
+    max-height: none;
+    justify-items: start;
+  }
+  .ps-module {
+    max-width: 100%;
+  }
+  .ps:is([data-mode="rail"], [data-mode="pending"]) .ps-dock {
+    position: sticky;
+    bottom: 0;
+  }
+  .ps-near {
+    display: none;
+  }
+}
+
+/* Below 1024 the whole module (picture, padding, plinth, provenance) is
+   capped: 42svh on tablets, 34svh on phones (§4.9). */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .ps {
+    --ps-media-h: calc(42svh - var(--ps-module-pad) - var(--ps-plinth-h) - var(--ps-prov-h));
+  }
+}
+
+@media (max-width: 767px) {
+  .ps {
+    --ps-module-pad: 8px;
+    --ps-plinth-h: 16px;
+    --ps-media-h: calc(34svh - var(--ps-module-pad) - var(--ps-plinth-h) - var(--ps-prov-h));
+    /* A phone's copy rhythm is one fixed small step, so a full scene (copy,
+       list or screen, dock) stays inside 100svh from 360 × 640 (P-13). */
+    --ps-gap: var(--sp-3);
+  }
+  .ps:is([data-mode="rail"], [data-mode="pending"]) .ps-frame {
+    align-content: start;
+    padding-top: calc(var(--header-h) + var(--sp-3));
+    padding-bottom: calc(var(--ps-dock) + var(--sp-4));
+    row-gap: var(--sp-4);
+  }
+  /* Drawings that only echo a list are left out; the list carries the
+     content. Real screens and the lists themselves always stay. */
+  .ps-scene:is(
+      [data-kind="walkthrough"],
+      [data-kind="features"],
+      [data-kind="usecases"],
+      [data-kind="integrations"],
+      [data-kind="deploy"],
+      [data-kind="governance"]
+    )
+    .ps-mid:has(.viz-art) {
+    display: none;
+  }
+  .ps-mid .viz {
+    min-width: 0;
+  }
+  .ps-faq {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Lists go to one column only on the narrowest phones (the pin is the
+   container, so this needs no extra media breakpoint). */
+@container (max-width: 359px) {
+  .ps-features,
+  .ps-facts,
+  .ps-cases {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Phone dock: the chapters fold into "All scenes", opening upward. */
+@media (max-width: 767px) {
+  .ps-dock {
+    gap: var(--sp-3);
+  }
+  .ps:not([data-hydrated]) .ps-toc {
+    display: none;
+  }
+  .ps-toc-summary {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding-inline: var(--sp-2);
+    list-style: none;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-primary);
+    white-space: nowrap;
+  }
+  .ps-toc-summary::-webkit-details-marker {
+    display: none;
+  }
+  .ps-toc[open] .ps-chapters {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding: var(--sp-2) var(--gutter);
+    background: var(--surface-deep);
+    border-top: 1px solid var(--line);
+  }
+  .ps-chapters li.is-act-start {
+    margin-left: 0;
+    padding-left: 0;
+    border-left: 0;
+  }
+  .ps-chapters a {
+    width: auto;
+    height: 40px;
+    display: flex;
+    justify-content: flex-start;
+    gap: var(--sp-2);
+  }
+  .ps-tick {
+    width: 10px;
+    height: 2px;
+  }
+  .ps-chapters a[aria-current="location"] .ps-tick {
+    width: 16px;
+    height: 2px;
+  }
+  .ps-chapter-label {
+    position: static;
+    padding: 0;
+    clip-path: none;
+    background: none;
+    border: 0;
+    color: var(--text-secondary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .ps-chapters a[aria-current="location"] .ps-chapter-label {
+    color: var(--text-primary);
+  }
+}
+
+@media (max-width: 479px) {
+  .ps-counter-label {
+    display: none;
+  }
+}
+
+/* Short phones (≤700 tall, e.g. 375 × 667, 360 × 640): the module gives up
+   its plinth, corners and shadow, the module comes down to 30svh and the
+   rhythm tightens, so copy, picture and dock share one screen where the
+   content allows. */
+@media (max-width: 767px) and (max-height: 700px) {
+  .ps {
+    --ps-module-pad: 0px;
+    --ps-plinth-h: 0px;
+    --ps-media-h: calc(30svh - var(--ps-prov-h));
+    --ps-gap: var(--sp-2);
+  }
+  .ps :is(.ps-plinth, .ps-reg, .ps-shadow) {
+    display: none;
+  }
+  .ps:is([data-mode="rail"], [data-mode="pending"]) .ps-frame {
+    padding-top: calc(var(--header-h) + var(--sp-2));
+    padding-bottom: calc(var(--ps-dock) + var(--sp-3));
+    row-gap: var(--sp-3);
+  }
+  .ps-ctas {
+    gap: var(--sp-2);
+  }
+  .ps .ps-ctas .btn {
+    height: 44px;
+  }
+}
+
+/* Depth on the rail without script: each scene's background and module ride
+   their own view timeline (motion allowed only). */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .ps[data-mode="rail"]:not([data-static]) .ps-scene {
+      view-timeline: --ps-scene inline;
+    }
+    .ps[data-mode="rail"]:not([data-static]) .ps-bg {
+      animation: ps-rail-bg linear both;
+      animation-timeline: --ps-scene;
+    }
+    .ps[data-mode="rail"]:not([data-static]) .ps-module {
+      animation: ps-rail-mid linear both;
+      animation-timeline: --ps-scene;
+    }
+    /* A turned module's 3D box would otherwise count towards its scene's
+       scrollable height while the scene is off-screen (P-13). At rest it is
+       untransformed and well inside the frame's padding. */
+    .ps[data-mode="rail"]:not([data-static]) .ps-frame {
+      overflow: clip;
+    }
+  }
+}
+
+@keyframes ps-rail-bg {
+  from {
+    transform: translateX(-30%);
+  }
+  to {
+    transform: translateX(30%);
+  }
+}
+
+@keyframes ps-rail-mid {
+  from {
+    transform: perspective(1400px) translateX(-8%) rotateY(-10deg);
+  }
+  50% {
+    transform: none;
+  }
+  to {
+    transform: perspective(1400px) translateX(8%) rotateY(8deg);
+  }
+}
+
+/* ============================================================================
+   List: scenes stacked, each composed as a frame. Chosen (stored), or
+   automatic at ≤499 px tall (landscape phones, 200% zoom), or print.
+   ========================================================================== */
+
+:is(.ps[data-mode="list"], html[data-view="list"] .ps[data-mode="pending"]) {
+  padding-top: var(--header-h);
+}
+
+:is(.ps[data-mode="list"], html[data-view="list"] .ps[data-mode="pending"]) .ps-pin {
+  height: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+:is(.ps[data-mode="list"], html[data-view="list"] .ps[data-mode="pending"]) :is(.ps-far, .ps-seam, .ps-near, .ps-shutter, .ps-progress, .ps-counter, .ps-buttons) {
+  display: none;
+}
+
+:is(.ps[data-mode="list"], html[data-view="list"] .ps[data-mode="pending"]) .ps-track {
+  display: block;
+  height: auto;
+  overflow: visible;
+}
+
+:is(.ps[data-mode="list"], html[data-view="list"] .ps[data-mode="pending"]) .ps-scene {
+  height: auto;
+  min-height: 0;
+  display: block;
+  border-top: 1px solid var(--line);
+  scroll-margin-top: var(--ps-dock);
+}
+
+:is(.ps[data-mode="list"], html[data-view="list"] .ps[data-mode="pending"]) .ps-scene:nth-child(n + 3) {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 100svh;
+}
+
+:is(.ps[data-mode="list"], html[data-view="list"] .ps[data-mode="pending"]) .ps-frame {
+  position: relative;
+  inset: auto;
+  padding-block: clamp(48px, 8vh, 96px);
+}
+
+:is(.ps[data-mode="list"], html[data-view="list"] .ps[data-mode="pending"]) .ps-mid {
+  max-height: none;
+}
+
+:is(.ps[data-mode="list"], html[data-view="list"] .ps[data-mode="pending"]) .ps-dock {
+  order: -1;
+  position: sticky;
+  top: var(--header-h);
+}
+
+@media (max-height: 499px) {
+  .ps {
+    padding-top: var(--header-h);
+    --ps-media-h: 70svh;
+  }
+  .ps .ps-pin {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+  }
+  .ps :is(.ps-far, .ps-seam, .ps-near, .ps-shutter, .ps-progress, .ps-counter, .ps-buttons, .ps-view) {
+    display: none;
+  }
+  .ps .ps-track {
+    display: block;
+    height: auto;
+    overflow: visible;
+  }
+  .ps .ps-scene {
+    height: auto;
+    min-height: 0;
+    display: block;
+    border-top: 1px solid var(--line);
+    scroll-margin-top: var(--ps-dock);
+  }
+  .ps .ps-scene:nth-child(n + 3) {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 100svh;
+  }
+  .ps .ps-frame {
+    position: relative;
+    inset: auto;
+    padding-block: clamp(48px, 8vh, 96px);
+  }
+  .ps .ps-mid {
+    max-height: none;
+  }
+  .ps .ps-dock {
+    order: -1;
+    position: sticky;
+    top: var(--header-h);
+  }
+}
+
+/* ============================================================================
+   Load, reduced motion, forced colours, print.
+   ========================================================================== */
+
+/* The title's load settle (420 ms, 60 ms stagger) and the floor assembling:
+   the only time-based motion on the page. The H1 never animates (it is the
+   LCP). `translate` and `scale`, not `transform`, so GSAP keeps that. */
+@media (prefers-reduced-motion: no-preference) {
+  .ps-floor {
+    animation: ps-floor-in var(--dur-signature) var(--ease-enter) backwards;
+  }
+  .ps-scene[data-kind="title"] .ps-copy > :not(.ps-h) {
+    animation: ps-load var(--dur-slow) var(--ease-enter) backwards;
+  }
+  .ps-scene[data-kind="title"] .ps-copy > :nth-child(3) {
+    animation-delay: 60ms;
+  }
+  .ps-scene[data-kind="title"] .ps-copy > :nth-child(4) {
+    animation-delay: 120ms;
+  }
+  .ps-scene[data-kind="title"] .ps-copy > :nth-child(5) {
+    animation-delay: 180ms;
+  }
+  .ps-scene[data-kind="title"] .ps-plinth {
+    transform-origin: 50% 100%;
+    animation: ps-plinth-in 480ms var(--ease-enter) 200ms backwards;
+  }
+}
+
+@keyframes ps-load {
+  from {
+    opacity: 0;
+    translate: 0 8px;
+  }
+}
+
+@keyframes ps-plinth-in {
+  from {
+    scale: 0 1;
+  }
+}
+
+/* The floor's own transform is its perspective, so it assembles with
+   `translate` and opacity (lattice-assemble would replace the perspective). */
+@keyframes ps-floor-in {
+  from {
+    opacity: 0;
+    translate: 0 -14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ps-shutter {
+    display: none !important;
+  }
+  .ps-tick,
+  .ps-btn {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .ps-far,
+  .ps-bg,
+  .ps-shutter,
+  .ps-plinth,
+  .ps-shadow {
+    display: none;
+  }
+  .ps-progress-bar,
+  .ps-chapters a[aria-current="location"] .ps-tick {
+    background: Highlight;
+  }
+}
+
+@media print {
+  .ps {
+    height: auto !important;
+    padding-top: 0;
+  }
+  .ps .ps-pin {
+    height: auto;
+    position: static;
+  }
+  .ps :is(.ps-far, .ps-bg, .ps-seam, .ps-near, .ps-shutter, .ps-dock, .ps-skip, .ps-shadow, .ps-plinth, .ps-reg) {
+    display: none;
+  }
+  .ps .ps-track {
+    display: block;
+    height: auto;
+    overflow: visible;
+    transform: none !important;
+  }
+  .ps .ps-scene {
+    height: auto;
+    display: block;
+    break-inside: avoid;
+    border-top: 1px solid var(--line);
+  }
+  .ps .ps-frame {
+    position: relative;
+    inset: auto;
+    padding-block: 24px;
+  }
+  .ps .ps-mid {
+    max-height: none;
+  }
+}

@@ -1,0 +1,272 @@
+/* Tailwind scans only this app's own source. Without `source(none)` it scanned
+   the whole repo, including research/ and prototypes/, and shipped a 172 KB
+   stylesheet full of utilities no page uses. */
+@import "tailwindcss" source(none);
+@import "./tokens.css";
+@import "./ui.css";
+@source "../app";
+@source "../components";
+@source "../content";
+@source "../lib";
+/* Binary files in app/ (icon.png and friends) are not source. */
+@source not "../app/*.png";
+
+/* ============================================================================
+   Meerana global styles.
+   The page is dark-first. Depth comes from a five-layer grade stack
+   (surface -> glow -> grid -> vignette -> grain), documented in
+   docs/DEPTH-DIRECTION-2026-10-10.md.
+   ========================================================================== */
+
+@theme inline {
+  --color-surface: var(--surface-page);
+  --color-deep: var(--surface-deep);
+  --color-raised: var(--surface-raised);
+  --color-fg: var(--text-primary);
+  --color-fg-secondary: var(--text-secondary);
+  --color-fg-muted: var(--text-muted);
+  --color-accent: var(--text-accent);
+  --color-line: var(--line);
+  --font-sans: var(--font-poppins), system-ui, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  /* No `scroll-behavior: smooth` here, on purpose. ScrollTrigger's snap and the
+     gallery's focus sync move the page with scrollTo(); native smooth scrolling
+     turns each of those calls into its own animation, and the two fight until
+     the page lands at the end of the pin (measured while tabbing through the
+     gallery). Anchors jump instead, which is also the safer default for people
+     who are sensitive to motion. */
+  /* Anchors and focus never land under the fixed header (WCAG 2.4.11). */
+  scroll-padding-top: calc(var(--header-h) + var(--sp-4));
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  /* Layer 1 + 2: flat base under the atmospheric mesh. The mesh is painted here
+     rather than as blurred divs, because gradient falloff is infinitely soft
+     and costs nothing, while a blurred div costs a full-radius blur pass. */
+  background-color: var(--surface-page);
+  background-image:
+    radial-gradient(120% 90% at 50% -10%, var(--glow-key), transparent 55%),
+    radial-gradient(90% 70% at 78% 15%, var(--glow-fill), transparent 60%),
+    radial-gradient(70% 50% at 12% 42%, var(--glow-deep), transparent 62%),
+    radial-gradient(100% 60% at 50% 108%, var(--glow-accent), transparent 60%);
+  background-attachment: fixed;
+  color: var(--text-primary);
+  font-family: var(--font-poppins), system-ui, -apple-system, sans-serif;
+  font-size: var(--fs-body);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  /* `clip`, not `hidden` (FINAL-SPEC C20): it never makes body a scroll
+     container, so `position: sticky` inside the product stage and the gallery
+     keeps the viewport as its scrollport, and nothing can scroll the page
+     sideways from script or focus. */
+  overflow-x: clip;
+}
+
+/* ----------------------------------------------------------------------------
+   Layer 3 · hairline structural grid + Layer 4 · vignette.
+   Both are decorative, so they live on one fixed, non-interactive overlay.
+   The mask makes the grid fade out radially: gridlines that stop abruptly at
+   the viewport edge look like graph paper; fading them reads as engineered.
+   -------------------------------------------------------------------------- */
+.grade-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: var(--grid-cell) var(--grid-cell);
+  -webkit-mask-image: radial-gradient(
+    80% 60% at 50% 0%,
+    var(--mask-solid) 30%,
+    transparent 100%
+  );
+  mask-image: radial-gradient(80% 60% at 50% 0%, var(--mask-solid) 30%, transparent 100%);
+}
+
+/* Vignette: pushed to the edges so it darkens corners without touching text.
+   Painted as a sibling rather than combined with the grid, so the two masks
+   stay independent and neither brightens the other. */
+.vignette-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 118% 92% at 50% 46%,
+    transparent var(--vignette-clear),
+    var(--vignette) 100%
+  );
+}
+
+/* ----------------------------------------------------------------------------
+   Layer 5 · film grain.
+   Baked at build time into a seamless tile (scripts/make-grain.mjs) and tiled
+   here. Never render feTurbulence live: a per-frame SVG filter is fill-rate
+   bound at every viewport size, which is the worst possible cost model.
+   `overlay` at 4.5% breaks banding on the near-black ramps and adds tactility
+   without greying the page.
+   -------------------------------------------------------------------------- */
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-image: url("/textures/grain.png");
+  background-size: var(--grain-size) var(--grain-size);
+  opacity: var(--grain-opacity);
+  mix-blend-mode: overlay;
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .grain-overlay,
+  .grade-overlay {
+    display: none;
+  }
+  body {
+    background-image: none;
+  }
+}
+
+/* Content sits above the grade stack AND above the grain (z-index 2 vs 1), so
+   grain films the page background but never sits on top of type. That keeps
+   text crisp: grain over body copy is the quickest way to make a page look
+   dirty and hurt legibility. */
+.page-content {
+  position: relative;
+  z-index: 2;
+}
+
+/* ----------------------------------------------------------------------------
+   Container · one left edge, one max width (plan/11 §4).
+   -------------------------------------------------------------------------- */
+.container {
+  width: 100%;
+  max-width: var(--content-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* ----------------------------------------------------------------------------
+   Type · only the sizes in the token scale.
+   Display, h2 and lede are fluid: --fs-display / --fs-h2 / --fs-lede read the
+   height-aware --u unit (tokens.css, FINAL-SPEC §3.2). Body, small and label
+   stay fixed at 17 / 15 / 13 px.
+   -------------------------------------------------------------------------- */
+.t-display {
+  font-size: var(--fs-display);
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+  font-weight: 600;
+  text-wrap: balance;
+}
+.t-h2 {
+  font-size: var(--fs-h2);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+  text-wrap: balance;
+}
+.t-h3 {
+  font-size: var(--fs-h3);
+  line-height: 1.3;
+  font-weight: 600;
+}
+.t-lede {
+  font-size: var(--fs-lede);
+  line-height: 1.55;
+  color: var(--text-secondary);
+}
+.t-body {
+  font-size: var(--fs-body);
+  line-height: 1.65;
+}
+.t-small {
+  font-size: var(--fs-small);
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+.t-label {
+  font-size: var(--fs-label);
+  line-height: 1.3;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* ----------------------------------------------------------------------------
+   Focus · visible, on-brand, never removed.
+   -------------------------------------------------------------------------- */
+:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 3px;
+  border-radius: var(--radius-control);
+}
+
+/* ----------------------------------------------------------------------------
+   Buttons · one scale (48 / 44 / 32).
+   -------------------------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  height: 48px;
+  padding-inline: var(--sp-5);
+  border-radius: var(--radius-pill);
+  border: 1px solid transparent;
+  font-size: var(--fs-small);
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color var(--dur-fast) var(--ease-standard),
+    border-color var(--dur-fast) var(--ease-standard),
+    transform var(--dur-fast) var(--ease-standard);
+}
+.btn-primary {
+  background: var(--action-primary-bg);
+  color: var(--action-primary-fg);
+}
+.btn-primary:hover {
+  background: var(--navy-100);
+}
+.btn-ghost {
+  border-color: var(--line-strong);
+  color: var(--text-primary);
+  background: transparent;
+}
+.btn-ghost:hover {
+  border-color: var(--meerana-cyan);
+  color: var(--text-accent);
+}
+
+/* ----------------------------------------------------------------------------
+   Utility · skip link.
+   -------------------------------------------------------------------------- */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: var(--sp-3);
+  z-index: 100;
+  background: var(--action-primary-bg);
+  color: var(--action-primary-fg);
+  padding: var(--sp-3) var(--sp-5);
+  border-radius: var(--radius-pill);
+  font-size: var(--fs-small);
+}
+.skip-link:focus {
+  left: var(--sp-4);
+}

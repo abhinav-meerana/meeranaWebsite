@@ -1,0 +1,138 @@
+{
+  "$description": "Meerana design tokens (DTCG-style). Tier 1 'primitive' values are brand-specified (verified from MEERANA-BRAND IDENTITY-04062026.pdf vector swatches). Tier 2 'derived' values are mixes of primitives with documented recipes. Tier 3 'semantic' tokens are what components use. Contrast ratios computed with .claude/skills/meerana-brand/scripts/contrast_check.py on 2026-10-02.",
+  "primitive": {
+    "meerana": {
+      "blue":    { "$type": "color", "$value": "#0D3BFF", "$extensions": { "source": "brand-pdf p1 swatch 1" } },
+      "navy":    { "$type": "color", "$value": "#071B36", "$extensions": { "source": "brand-pdf p1 swatch 2" } },
+      "cyan":    { "$type": "color", "$value": "#3FD0FF", "$extensions": { "source": "brand-pdf p1 swatch 3" } },
+      "neutral": { "$type": "color", "$value": "#EDEDED", "$extensions": { "source": "brand-pdf p1 swatch 4" } },
+      "white":   { "$type": "color", "$value": "#FFFFFF", "$extensions": { "source": "brand-pdf p1 swatch 5" } }
+    },
+    "wasel": {
+      "brown":  { "$type": "color", "$value": "#6B3E26", "$extensions": { "source": "brand-pdf p3 Wasel swatch 1" } },
+      "sand":   { "$type": "color", "$value": "#D9C1A3", "$extensions": { "source": "brand-pdf p3 Wasel swatch 2" } },
+      "copper": { "$type": "color", "$value": "#C58A52", "$extensions": { "source": "brand-pdf p3 Wasel swatch 3" } },
+      "ivory":  { "$type": "color", "$value": "#F7F4EF", "$extensions": { "source": "brand-pdf p3 Wasel swatch 4" } }
+    },
+    "mandoobee": {
+      "royal": { "$type": "color", "$value": "#0D3D91", "$extensions": { "source": "brand-pdf p3 Mandoobee swatch 1" } },
+      "azure": { "$type": "color", "$value": "#047AFF", "$extensions": { "source": "brand-pdf p3 Mandoobee swatch 2" } },
+      "slate": { "$type": "color", "$value": "#6C819A", "$extensions": { "source": "brand-pdf p3 Mandoobee swatch 3" } },
+      "mist":  { "$type": "color", "$value": "#F0F4F9", "$extensions": { "source": "brand-pdf p3 Mandoobee swatch 4" } }
+    },
+    "tasree3": {
+      "ink":    { "$type": "color", "$value": "#001731", "$extensions": { "source": "brand-pdf p3 Tasree3 swatch 1" } },
+      "sky":    { "$type": "color", "$value": "#009BFD", "$extensions": { "source": "brand-pdf p3 Tasree3 swatch 2" } },
+      "orange": { "$type": "color", "$value": "#FD5D01", "$extensions": { "source": "brand-pdf p3 Tasree3 swatch 3" } },
+      "white":  { "$type": "color", "$value": "#FFFFFF", "$extensions": { "source": "brand-pdf p3 Tasree3 swatch 4" } }
+    },
+    "yisbir": {
+      "blue":  { "$type": "color", "$value": "#0045F8", "$extensions": { "source": "brand-pdf p3 Yisbir swatch 1" } },
+      "aqua":  { "$type": "color", "$value": "#43DAFE", "$extensions": { "source": "brand-pdf p3 Yisbir swatch 2" } },
+      "abyss": { "$type": "color", "$value": "#00132D", "$extensions": { "source": "brand-pdf p3 Yisbir swatch 3" } },
+      "white": { "$type": "color", "$value": "#FFFFFF", "$extensions": { "source": "brand-pdf p3 Yisbir swatch 4" } }
+    },
+    "font": {
+      "latin":  { "$type": "fontFamily", "$value": ["Poppins", "system-ui", "sans-serif"], "$extensions": { "source": "brand-pdf p1" } },
+      "arabic": { "$type": "fontFamily", "$value": ["Almarai", "Tahoma", "sans-serif"], "$extensions": { "source": "brand-pdf p1" } },
+      "wasel-display":     { "$type": "fontFamily", "$value": ["Avenir LT Pro", "Poppins", "sans-serif"], "$extensions": { "source": "brand-pdf p3", "licence": "commercial — confirm webfont licence (DL-B04)" } },
+      "wasel-arabic":      { "$type": "fontFamily", "$value": ["Cairo", "Almarai", "sans-serif"] },
+      "mandoobee-display": { "$type": "fontFamily", "$value": ["Kufam", "Poppins", "sans-serif"] },
+      "mandoobee-arabic":  { "$type": "fontFamily", "$value": ["Alexandria", "Almarai", "sans-serif"] },
+      "tasree3-display":   { "$type": "fontFamily", "$value": ["Exo 2", "Poppins", "sans-serif"] },
+      "tasree3-arabic":    { "$type": "fontFamily", "$value": ["Changa", "Almarai", "sans-serif"] },
+      "yisbir-display":    { "$type": "fontFamily", "$value": ["Montserrat", "Poppins", "sans-serif"] },
+      "yisbir-arabic":     { "$type": "fontFamily", "$value": ["Tajawal", "Almarai", "sans-serif"] }
+    }
+  },
+  "derived": {
+    "navy": {
+      "950": { "$type": "color", "$value": "#051326", "$extensions": { "recipe": "mix(navy, #000, 0.30)", "use": "deepest dark surface; white 18.6:1, cyan 10.4:1" } },
+      "800": { "$type": "color", "$value": "#2C3D54", "$extensions": { "recipe": "mix(navy, white, 0.15)", "use": "text.secondary on light (11.0:1 white); subtle divider on dark" } },
+      "600": { "$type": "color", "$value": "#515F72", "$extensions": { "recipe": "mix(navy, white, 0.30)", "use": "text.muted on light (6.5:1 white, 5.55:1 neutral)" } },
+      "500": { "$type": "color", "$value": "#778290", "$extensions": { "recipe": "mix(navy, white, 0.45)", "use": "UI boundaries ≥3:1 on white (3.90) and on navy (4.41)" } },
+      "300": { "$type": "color", "$value": "#9CA4AF", "$extensions": { "recipe": "mix(navy, white, 0.60)", "use": "text.muted on navy (6.84:1)" } },
+      "200": { "$type": "color", "$value": "#B5BBC3", "$extensions": { "recipe": "mix(navy, white, 0.70)", "use": "text.secondary on navy (8.91:1)" } },
+      "150": { "$type": "color", "$value": "#C1C6CD", "$extensions": { "recipe": "mix(navy, white, 0.75)", "use": "decorative divider on light only (1.72:1)" } },
+      "050": { "$type": "color", "$value": "#F5F6F7", "$extensions": { "recipe": "mix(navy, white, 0.96)", "use": "raised light surface" } }
+    },
+    "blue": {
+      "050":     { "$type": "color", "$value": "#ECEFFF", "$extensions": { "recipe": "mix(blue, white, 0.92)", "use": "tinted light surface; blue text 5.95:1" } },
+      "100":     { "$type": "color", "$value": "#DBE2FF", "$extensions": { "recipe": "mix(blue, white, 0.85)" } },
+      "hover":   { "$type": "color", "$value": "#0C35D7", "$extensions": { "recipe": "mix(blue, navy, 0.20)", "use": "primary button hover; white 8.38:1" } },
+      "pressed": { "$type": "color", "$value": "#0B30B9", "$extensions": { "recipe": "mix(blue, navy, 0.35)" } }
+    },
+    "state": {
+      "$description": "Non-brand functional colours for form validation and demo status only. Never used as decoration.",
+      "success-on-light": { "$type": "color", "$value": "#0F7B4A", "$extensions": { "contrast": "5.31 on white" } },
+      "error-on-light":   { "$type": "color", "$value": "#B42318", "$extensions": { "contrast": "6.57 on white" } },
+      "warning-on-light": { "$type": "color", "$value": "#B54708", "$extensions": { "contrast": "5.43 on white" } },
+      "success-on-dark":  { "$type": "color", "$value": "#12B76A", "$extensions": { "contrast": "6.57 on navy" } },
+      "error-on-dark":    { "$type": "color", "$value": "#F97066", "$extensions": { "contrast": "6.18 on navy" } },
+      "warning-on-dark":  { "$type": "color", "$value": "#FDB022", "$extensions": { "contrast": "9.36 on navy" } }
+    }
+  },
+  "semantic": {
+    "$description": "Resolved per section via [data-surface=light|dark] and [data-product=wasel|mandoobee|tasree3|yisbir]. Components use only these.",
+    "light": {
+      "surface-page":    "{primitive.meerana.white}",
+      "surface-muted":   "{primitive.meerana.neutral}",
+      "surface-raised":  "{derived.navy.050}",
+      "surface-tint":    "{derived.blue.050}",
+      "text-primary":    "{primitive.meerana.navy}",
+      "text-secondary":  "{derived.navy.800}",
+      "text-muted":      "{derived.navy.600}",
+      "text-link":       "{primitive.meerana.blue}",
+      "border-subtle":   "{derived.navy.150}",
+      "border-control":  "{derived.navy.500}",
+      "action-primary-bg": "{primitive.meerana.blue}",
+      "action-primary-fg": "{primitive.meerana.white}",
+      "focus-ring":      "{primitive.meerana.blue}"
+    },
+    "dark": {
+      "surface-page":    "{primitive.meerana.navy}",
+      "surface-deep":    "{derived.navy.950}",
+      "surface-raised":  "{derived.navy.800}",
+      "text-primary":    "{primitive.meerana.white}",
+      "text-secondary":  "{derived.navy.200}",
+      "text-muted":      "{derived.navy.300}",
+      "text-accent":     "{primitive.meerana.cyan}",
+      "border-subtle":   "{derived.navy.800}",
+      "border-control":  "{derived.navy.500}",
+      "action-primary-bg": "{primitive.meerana.white}",
+      "action-primary-fg": "{primitive.meerana.navy}",
+      "action-secondary-border": "{primitive.meerana.cyan}",
+      "focus-ring":      "{primitive.meerana.cyan}"
+    },
+    "product": {
+      "wasel":     { "accent": "{primitive.wasel.copper}", "accent-text-on-dark": "{primitive.wasel.sand}", "surface-dark": "{primitive.wasel.brown}", "surface-light": "{primitive.wasel.ivory}", "text-on-light": "{primitive.wasel.brown}", "note": "copper is decorative on ivory (2.68:1); text uses brown/sand" },
+      "mandoobee": { "accent": "{primitive.mandoobee.azure}", "surface-dark": "{primitive.mandoobee.royal}", "surface-light": "{primitive.mandoobee.mist}", "text-on-light": "{primitive.mandoobee.royal}", "note": "azure on mist is large/UI only (3.63:1)" },
+      "tasree3":   { "accent": "{primitive.tasree3.orange}", "accent-2": "{primitive.tasree3.sky}", "surface-dark": "{primitive.tasree3.ink}", "surface-light": "{primitive.tasree3.white}", "text-on-light": "{primitive.tasree3.ink}", "button-fg-on-orange": "{primitive.tasree3.ink}", "note": "white on orange only ≥24px/bold (3.11:1); never green/teal" },
+      "yisbir":    { "accent": "{primitive.yisbir.aqua}", "accent-2": "{primitive.yisbir.blue}", "surface-dark": "{primitive.yisbir.abyss}", "surface-light": "{primitive.yisbir.white}", "text-on-light": "{primitive.yisbir.abyss}", "note": "yisbir blue never on abyss (2.84:1)" }
+    }
+  },
+  "type": {
+    "scale": {
+      "display-1": { "size": "clamp(2.75rem, 1.6rem + 4.6vw, 5.25rem)", "lineHeight": 1.04, "tracking": "-0.03em", "weight": 600 },
+      "display-2": { "size": "clamp(2.25rem, 1.5rem + 3vw, 3.75rem)", "lineHeight": 1.08, "tracking": "-0.025em", "weight": 600 },
+      "heading-1": { "size": "clamp(1.75rem, 1.35rem + 1.6vw, 2.5rem)", "lineHeight": 1.15, "tracking": "-0.015em", "weight": 600 },
+      "heading-2": { "size": "clamp(1.375rem, 1.2rem + 0.7vw, 1.75rem)", "lineHeight": 1.25, "tracking": "-0.01em", "weight": 600 },
+      "heading-3": { "size": "1.25rem", "lineHeight": 1.3, "weight": 600 },
+      "lede":      { "size": "clamp(1.125rem, 1.05rem + 0.35vw, 1.3125rem)", "lineHeight": 1.55, "weight": 400 },
+      "body":      { "size": "1.0625rem", "lineHeight": 1.65, "weight": 400 },
+      "small":     { "size": "0.9375rem", "lineHeight": 1.5, "weight": 400 },
+      "label":     { "size": "0.8125rem", "lineHeight": 1.3, "tracking": "0.06em", "weight": 600, "case": "uppercase" },
+      "ui":        { "size": "0.875rem", "lineHeight": 1.4, "weight": 500 }
+    },
+    "arabic-adjustments": { "lineHeight-body": 1.85, "tracking": "0", "case": "none", "weights": [400, 700, 800] },
+    "poppins-weights-loaded": [400, 500, 600, 700]
+  },
+  "space": { "0": "0", "1": "4px", "2": "8px", "3": "12px", "4": "16px", "5": "24px", "6": "32px", "7": "48px", "8": "64px", "9": "96px", "10": "128px", "11": "160px" },
+  "radius": { "control": "6px", "input": "8px", "card": "16px", "panel": "24px", "pill": "999px" },
+  "layout": { "content-max": "1280px", "media-max": "1440px", "gutter": "clamp(16px, 4vw, 48px)", "columns": 12 },
+  "motion": {
+    "duration": { "instant": "100ms", "fast": "160ms", "base": "240ms", "slow": "420ms" },
+    "easing": { "standard": "cubic-bezier(0.2, 0, 0, 1)", "enter": "cubic-bezier(0, 0, 0, 1)", "exit": "cubic-bezier(0.3, 0, 1, 1)" },
+    "scrub-smoothing-max": "0.5s"
+  }
+}

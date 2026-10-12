@@ -1,0 +1,36 @@
+{
+  "name": "meerana-web",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Meerana Technologies website. Next.js App Router with static export, per plan/11-technical-architecture.md.",
+  "scripts": {
+    "dev": "next dev",
+    "content:check": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/content-check.mjs",
+    "prebuild": "npm run content:check",
+    "build": "next build && node scripts/postexport-rsc.mjs",
+    "start": "npx serve out",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "grain": "node scripts/make-grain.mjs"
+  },
+  "dependencies": {
+    "@react-three/drei": "10.7.9",
+    "@react-three/fiber": "9.8.1",
+    "gsap": "3.15.0",
+    "next": "16.4.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "three": "0.186.1"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
+    "@tailwindcss/postcss": "4.3.3",
+    "@types/node": "26.6.5",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@types/three": "0.186.0",
+    "playwright": "^1.64.0",
+    "tailwindcss": "4.3.3",
+    "typescript": "6.0.3"
+  }
+}

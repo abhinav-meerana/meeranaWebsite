@@ -1,0 +1,285 @@
+
+[stage 1024×520: mode, geometry, rest and fit (P-01…P-04, P-16, P-19)]
+        mandoobee: data-mode="stage" after 6422 ms (dev server; the 1.5 s budget applies to the build)
+  PASS  [P-01] 1024×520 mandoobee: data-mode within 1.5 s of load — stage
+  PASS  [P-16] 1024×520 mandoobee: 12 scenes (§5.2 says 12)
+  PASS  [P-01] 1024×520 mandoobee: --ps-content-h 391.0 (expect 391)
+  PASS  [P-02] 1024×520 mandoobee: scene width = clientWidth 1024
+  PASS  [P-02] 1024×520 mandoobee: .ps height 5800 (expect 5800)
+  PASS  [P-16] 1024×520 mandoobee scene 07: features visible — 6 items
+  PASS  [P-03] 1024×520 mandoobee: every scene final at rest (12)
+        1024×520 mandoobee: the track was still moving after 700 ms (up to +4993 ms) at some scenes
+  PASS  [P-04] 1024×520 mandoobee: every scene fits the frame (12)
+  PASS  [P-19] 1024×520 mandoobee: no neighbour at the edges (12)
+  PASS  [P-01] 1024×520 mandoobee: no console errors
+        tasree3: data-mode="stage" after 2219 ms (dev server; the 1.5 s budget applies to the build)
+  PASS  [P-01] 1024×520 tasree3: data-mode within 1.5 s of load — stage
+  PASS  [P-16] 1024×520 tasree3: 14 scenes (§5.2 says 14)
+  PASS  [P-01] 1024×520 tasree3: --ps-content-h 391.0 (expect 391)
+  PASS  [P-02] 1024×520 tasree3: scene width = clientWidth 1024
+  PASS  [P-02] 1024×520 tasree3: .ps height 6760 (expect 6760)
+  PASS  [P-16] 1024×520 tasree3 scene 07: features visible — 6 items
+  PASS  [P-03] 1024×520 tasree3: every scene final at rest (14)
+        1024×520 tasree3: the track was still moving after 700 ms (up to +3901 ms) at some scenes
+  PASS  [P-04] 1024×520 tasree3: every scene fits the frame (14)
+  PASS  [P-19] 1024×520 tasree3: no neighbour at the edges (14)
+  PASS  [P-01] 1024×520 tasree3: no console errors
+        nazo: data-mode="stage" after 5523 ms (dev server; the 1.5 s budget applies to the build)
+  PASS  [P-01] 1024×520 nazo: data-mode within 1.5 s of load — stage
+  PASS  [P-16] 1024×520 nazo: 13 scenes (§5.2 says 13)
+  PASS  [P-01] 1024×520 nazo: --ps-content-h 391.0 (expect 391)
+  PASS  [P-02] 1024×520 nazo: scene width = clientWidth 1024
+  PASS  [P-02] 1024×520 nazo: .ps height 6280 (expect 6280)
+  PASS  [P-16] 1024×520 nazo scene 07: features visible — 14 items
+  PASS  [P-16] 1024×520 nazo scene 08: features visible — 6 items
+  PASS  [P-03] 1024×520 nazo: every scene final at rest (13)
+        1024×520 nazo: the track was still moving after 700 ms (up to +1336 ms) at some scenes
+  PASS  [P-04] 1024×520 nazo: every scene fits the frame (13)
+  PASS  [P-19] 1024×520 nazo: no neighbour at the edges (13)
+  PASS  [P-01] 1024×520 nazo: no console errors
+        yisbir: data-mode="stage" after 2838 ms (dev server; the 1.5 s budget applies to the build)
+  PASS  [P-01] 1024×520 yisbir: data-mode within 1.5 s of load — stage
+  PASS  [P-16] 1024×520 yisbir: 14 scenes (§5.2 says 14)
+  PASS  [P-01] 1024×520 yisbir: --ps-content-h 391.0 (expect 391)
+  PASS  [P-02] 1024×520 yisbir: scene width = clientWidth 1024
+  PASS  [P-02] 1024×520 yisbir: .ps height 6760 (expect 6760)
+  PASS  [P-16] 1024×520 yisbir scene 07: features visible — 6 items
+  PASS  [P-03] 1024×520 yisbir: every scene final at rest (14)
+        1024×520 yisbir: the track was still moving after 700 ms (up to +4446 ms) at some scenes
+  PASS  [P-04] 1024×520 yisbir: every scene fits the frame (14)
+  PASS  [P-19] 1024×520 yisbir: no neighbour at the edges (14)
+  PASS  [P-01] 1024×520 yisbir: no console errors
+        wasel: data-mode="stage" after 2624 ms (dev server; the 1.5 s budget applies to the build)
+  PASS  [P-01] 1024×520 wasel: data-mode within 1.5 s of load — stage
+  PASS  [P-16] 1024×520 wasel: 12 scenes (§5.2 says 12)
+  PASS  [P-01] 1024×520 wasel: --ps-content-h 391.0 (expect 391)
+  PASS  [P-02] 1024×520 wasel: scene width = clientWidth 1024
+  PASS  [P-02] 1024×520 wasel: .ps height 5800 (expect 5800)
+  PASS  [P-16] 1024×520 wasel scene 07: features visible — 6 items
+  PASS  [P-03] 1024×520 wasel: every scene final at rest (12)
+        1024×520 wasel: the track was still moving after 700 ms (up to +4500 ms) at some scenes
+  PASS  [P-04] 1024×520 wasel: every scene fits the frame (12)
+  PASS  [P-19] 1024×520 wasel: no neighbour at the edges (12)
+  PASS  [P-01] 1024×520 wasel: no console errors
+        ai-in-a-box: data-mode="stage" after 7383 ms (dev server; the 1.5 s budget applies to the build)
+  PASS  [P-01] 1024×520 ai-in-a-box: data-mode within 1.5 s of load — stage
+  PASS  [P-16] 1024×520 ai-in-a-box: 10 scenes (§5.2 says 10)
+  PASS  [P-01] 1024×520 ai-in-a-box: --ps-content-h 391.0 (expect 391)
+  PASS  [P-02] 1024×520 ai-in-a-box: scene width = clientWidth 1024
+  PASS  [P-02] 1024×520 ai-in-a-box: .ps height 4840 (expect 4840)
+  PASS  [P-16] 1024×520 ai-in-a-box scene 07: features visible — 5 items
+  PASS  [P-03] 1024×520 ai-in-a-box: every scene final at rest (10)
+        1024×520 ai-in-a-box: the track was still moving after 700 ms (up to +1462 ms) at some scenes
+  PASS  [P-04] 1024×520 ai-in-a-box: every scene fits the frame (10)
+  PASS  [P-19] 1024×520 ai-in-a-box: no neighbour at the edges (10)
+  PASS  [P-01] 1024×520 ai-in-a-box: no console errors
+
+[stage 1366×657: mode, geometry, rest and fit (P-01…P-04, P-16, P-19)]
+        mandoobee: data-mode="stage" after 2469 ms (dev server; the 1.5 s budget applies to the build)
+  PASS  [P-01] 1366×657 mandoobee: data-mode within 1.5 s of load — stage
+  PASS  [P-16] 1366×657 mandoobee: 12 scenes (§5.2 says 12)
+  PASS  [P-01] 1366×657 mandoobee: --ps-content-h 517.5 (expect 517)
+  PASS  [P-02] 1366×657 mandoobee: scene width = clientWidth 1366
+  PASS  [P-02] 1366×657 mandoobee: .ps height 5937 (expect 5937)
+  PASS  [P-16] 1366×657 mandoobee scene 07: features visible — 6 items
+  PASS  [P-03] 1366×657 mandoobee: every scene final at rest (12)
+        1366×657 mandoobee: the track was still moving after 700 ms (up to +3619 ms) at some scenes
+  PASS  [P-04] 1366×657 mandoobee: every scene fits the frame (12)
+  PASS  [P-19] 1366×657 mandoobee: no neighbour at the edges (12)
+  PASS  [P-01] 1366×657 mandoobee: no console errors
+        tasree3: data-mode="stage" after 8216 ms (dev server; the 1.5 s budget applies to the build)
+  PASS  [P-01] 1366×657 tasree3: data-mode within 1.5 s of load — stage
+  PASS  [P-16] 1366×657 tasree3: 14 scenes (§5.2 says 14)
+  PASS  [P-01] 1366×657 tasree3: --ps-content-h 517.5 (expect 517)
+  PASS  [P-02] 1366×657 tasree3: scene width = clientWidth 1366
+  PASS  [P-02] 1366×657 tasree3: .ps height 6897 (expect 6897)
+  PASS  [P-16] 1366×657 tasree3 scene 07: features visible — 6 items
+  PASS  [P-03] 1366×657 tasree3: every scene final at rest (14)
+        1366×657 tasree3: the track was still moving after 700 ms (up to +4500 ms) at some scenes
+  PASS  [P-04] 1366×657 tasree3: every scene fits the frame (14)
+  PASS  [P-19] 1366×657 tasree3: no neighbour at the edges (14)
+  PASS  [P-01] 1366×657 tasree3: no console errors
+  PASS  [P-01] 1366×657 nazo: data-mode within 1.5 s of load — stage
+  PASS  [P-16] 1366×657 nazo: 13 scenes (§5.2 says 13)
+  PASS  [P-01] 1366×657 nazo: --ps-content-h 517.5 (expect 517)
+  PASS  [P-02] 1366×657 nazo: scene width = clientWidth 1366
+  PASS  [P-02] 1366×657 nazo: .ps height 6417 (expect 6417)
+  PASS  [P-16] 1366×657 nazo scene 07: features visible — 14 items
+  PASS  [P-16] 1366×657 nazo scene 08: features visible — 6 items
+  FAIL  [P-03] 1366×657 nazo: every scene final at rest (13) — 12 faq: left 2.9
+        1366×657 nazo: the track was still moving after 700 ms (up to +3129 ms) at some scenes
+  PASS  [P-04] 1366×657 nazo: every scene fits the frame (13)
+  FAIL  [P-19] 1366×657 nazo: no neighbour at the edges (13) — 12: section#deploy.ps-scene.is-near@2,111, section#deploy.ps-scene.is-near@2,221
+  PASS  [P-01] 1366×657 nazo: no console errors
+        yisbir: data-mode="stage" after 5336 ms (dev server; the 1.5 s budget applies to the build)
+  PASS  [P-01] 1366×657 yisbir: data-mode within 1.5 s of load — stage
+  PASS  [P-16] 1366×657 yisbir: 14 scenes (§5.2 says 14)
+  PASS  [P-01] 1366×657 yisbir: --ps-content-h 517.5 (expect 517)
+  PASS  [P-02] 1366×657 yisbir: scene width = clientWidth 1366
+  PASS  [P-02] 1366×657 yisbir: .ps height 6897 (expect 6897)
+  PASS  [P-16] 1366×657 yisbir scene 07: features visible — 6 items
+  FAIL  [P-03] 1366×657 yisbir: every scene final at rest (14) — 08 output: left 2.4
+        1366×657 yisbir: the track was still moving after 700 ms (up to +3680 ms) at some scenes
+  PASS  [P-04] 1366×657 yisbir: every scene fits the frame (14)
+  FAIL  [P-19] 1366×657 yisbir: no neighbour at the edges (14) — 08: section#features.ps-scene.is-near@2,111, section#features.ps-scene.is-near@2,221
+  PASS  [P-01] 1366×657 yisbir: no console errors
+        wasel: data-mode="stage" after 2172 ms (dev server; the 1.5 s budget applies to the build)
+  PASS  [P-01] 1366×657 wasel: data-mode within 1.5 s of load — stage
+  PASS  [P-16] 1366×657 wasel: 12 scenes (§5.2 says 12)
+  PASS  [P-01] 1366×657 wasel: --ps-content-h 517.5 (expect 517)
+  PASS  [P-02] 1366×657 wasel: scene width = clientWidth 1366
+  PASS  [P-02] 1366×657 wasel: .ps height 5937 (expect 5937)
+  PASS  [P-16] 1366×657 wasel scene 07: features visible — 6 items
+  FAIL  [P-03] 1366×657 wasel: every scene final at rest (12) — 07 features: left 212.3; opacity: span.viz-grid-t@1.00, span.ps-near-label@0.98 | 08 output: left 2.0 | 10 deploy: left 209.3; opacity: dt@1.00, dd@1.00
+        1366×657 wasel: the track was still moving after 700 ms (up to +4500 ms) at some scenes
+  FAIL  [P-04] 1366×657 wasel: every scene fits the frame (12) — 07 features: 4 outside the frame, e.g. div.ps-copy [1010,274 → 1487,388] | 10 deploy: 14 outside the frame, e.g. div.ps-module [881,212 → 1459,449]
+  FAIL  [P-19] 1366×657 wasel: no neighbour at the edges (12) — 07: div.ps-frame@2,111, section#walkthrough.ps-scene.is-near@2,111 | 08: section#features.ps-scene.is-near@2,111, section#features.ps-scene.is-near@2,221 | 10: div.ps-frame@2,111, section#usecases.ps-scene.is-near@2,111
+  PASS  [P-01] 1366×657 wasel: no console errors
+        ai-in-a-box: data-mode="stage" after 2446 ms (dev server; the 1.5 s budget applies to the build)
+  PASS  [P-01] 1366×657 ai-in-a-box: data-mode within 1.5 s of load — stage
+  PASS  [P-16] 1366×657 ai-in-a-box: 10 scenes (§5.2 says 10)
+  PASS  [P-01] 1366×657 ai-in-a-box: --ps-content-h 517.5 (expect 517)
+  PASS  [P-02] 1366×657 ai-in-a-box: scene width = clientWidth 1366
+  PASS  [P-02] 1366×657 ai-in-a-box: .ps height 4977 (expect 4977)
+  PASS  [P-16] 1366×657 ai-in-a-box scene 07: features visible — 5 items
+  PASS  [P-03] 1366×657 ai-in-a-box: every scene final at rest (10)
+        1366×657 ai-in-a-box: the track was still moving after 700 ms (up to +3625 ms) at some scenes
+  PASS  [P-04] 1366×657 ai-in-a-box: every scene fits the frame (10)
+  PASS  [P-19] 1366×657 ai-in-a-box: no neighbour at the edges (10)
+  PASS  [P-01] 1366×657 ai-in-a-box: no console errors
+
+[stage 1920×937: mode, geometry, rest and fit (P-01…P-04, P-16, P-19)]
+        mandoobee: data-mode="stage" after 3005 ms (dev server; the 1.5 s budget applies to the build)
+  PASS  [P-01] 1920×937 mandoobee: data-mode within 1.5 s of load — stage
+  PASS  [P-16] 1920×937 mandoobee: 12 scenes (§5.2 says 12)
+  PASS  [P-01] 1920×937 mandoobee: --ps-content-h 764.0 (expect 764)
+  PASS  [P-02] 1920×937 mandoobee: scene width = clientWidth 1920
+  PASS  [P-02] 1920×937 mandoobee: .ps height 8152 (expect 8152)
+  PASS  [P-16] 1920×937 mandoobee scene 07: features visible — 6 items
+  FAIL  [P-03] 1920×937 mandoobee: every scene final at rest (12) — 05 interface: left -1.1 | 06 walkthrough: left 470.0; opacity: p.ps-body@1.00, span.viz-station-n.tnum@0.99 | 07 features: left 1.3
+        1920×937 mandoobee: the track was still moving after 700 ms (up to +4500 ms) at some scenes
+  FAIL  [P-04] 1920×937 mandoobee: every scene fits the frame (12) — 06 walkthrough: 16 outside the frame, e.g. p.ps-body [1556,369 → 2073,395]
+  FAIL  [P-19] 1920×937 mandoobee: no neighbour at the edges (12) — 05: section#walkthrough.ps-scene.is-near@1918,153, section#walkthrough.ps-scene.is-near@1918,315 | 06: div.ps-frame@2,153, section#interface.ps-scene.is-near@2,153
+  PASS  [P-01] 1920×937 mandoobee: no console errors
+        tasree3: data-mode="stage" after 7739 ms (dev server; the 1.5 s budget applies to the build)
+  PASS  [P-01] 1920×937 tasree3: data-mode within 1.5 s of load — stage
+  PASS  [P-16] 1920×937 tasree3: 14 scenes (§5.2 says 14)
+  PASS  [P-01] 1920×937 tasree3: --ps-content-h 764.0 (expect 764)
+  PASS  [P-02] 1920×937 tasree3: scene width = clientWidth 1920
+  PASS  [P-02] 1920×937 tasree3: .ps height 9464 (expect 9464)
+  PASS  [P-16] 1920×937 tasree3 scene 07: features visible — 6 items
+  FAIL  [P-03] 1920×937 tasree3: every scene final at rest (14) — 06 walkthrough: left -1.1 | 07 features: left -1.4 | 08 output: left 1.4
+        1920×937 tasree3: the track was still moving after 700 ms (up to +3873 ms) at some scenes
+  PASS  [P-04] 1920×937 tasree3: every scene fits the frame (14)
+  FAIL  [P-19] 1920×937 tasree3: no neighbour at the edges (14) — 06: section#features.ps-scene.is-near@1918,153, section#features.ps-scene.is-near@1918,315 | 07: section#output.ps-scene.is-near@1918,153, section#output.ps-scene.is-near@1918,315
+  PASS  [P-01] 1920×937 tasree3: no console errors
+        nazo: data-mode="stage" after 6169 ms (dev server; the 1.5 s budget applies to the build)
+  PASS  [P-01] 1920×937 nazo: data-mode within 1.5 s of load — stage
+  PASS  [P-16] 1920×937 nazo: 13 scenes (§5.2 says 13)
+  PASS  [P-01] 1920×937 nazo: --ps-content-h 764.0 (expect 764)
+  PASS  [P-02] 1920×937 nazo: scene width = clientWidth 1920
+  PASS  [P-02] 1920×937 nazo: .ps height 8808 (expect 8808)
+  PASS  [P-16] 1920×937 nazo scene 07: features visible — 14 items
+  PASS  [P-16] 1920×937 nazo scene 08: features visible — 6 items
+  FAIL  [P-03] 1920×937 nazo: every scene final at rest (13) — 06 walkthrough: left -1.2 | 07 features: left -1.5 | 08 features: left 1.2
+        1920×937 nazo: the track was still moving after 700 ms (up to +4500 ms) at some scenes
+  PASS  [P-04] 1920×937 nazo: every scene fits the frame (13)
+  FAIL  [P-19] 1920×937 nazo: no neighbour at the edges (13) — 06: section#ai-actions.ps-scene.is-near@1918,153, section#ai-actions.ps-scene.is-near@1918,315 | 07: section#features.ps-scene.is-near@1918,153, section#features.ps-scene.is-near@1918,315 | 13: section#faq.ps-scene.is-near@2,153, section#faq.ps-scene.is-near@2,315
+  PASS  [P-01] 1920×937 nazo: no console errors
+  PASS  [P-01] 1920×937 yisbir: data-mode within 1.5 s of load — stage
+  PASS  [P-16] 1920×937 yisbir: 14 scenes (§5.2 says 14)
+  PASS  [P-01] 1920×937 yisbir: --ps-content-h 764.0 (expect 764)
+  PASS  [P-02] 1920×937 yisbir: scene width = clientWidth 1920
+  PASS  [P-02] 1920×937 yisbir: .ps height 9464 (expect 9464)
+  PASS  [P-16] 1920×937 yisbir scene 07: features visible — 6 items
+  FAIL  [P-03] 1920×937 yisbir: every scene final at rest (14) — 06 walkthrough: left -1.1 | 07 features: left -1.4 | 08 output: left 1.4
+        1920×937 yisbir: the track was still moving after 700 ms (up to +3324 ms) at some scenes
+  PASS  [P-04] 1920×937 yisbir: every scene fits the frame (14)
+  FAIL  [P-19] 1920×937 yisbir: no neighbour at the edges (14) — 06: section#features.ps-scene.is-near@1918,153, section#features.ps-scene.is-near@1918,315 | 07: section#output.ps-scene.is-near@1918,153, section#output.ps-scene.is-near@1918,315 | 14: section#faq.ps-scene.is-near@2,153, section#faq.ps-scene.is-near@2,315
+  PASS  [P-01] 1920×937 yisbir: no console errors
+        wasel: data-mode="stage" after 1670 ms (dev server; the 1.5 s budget applies to the build)
+  PASS  [P-01] 1920×937 wasel: data-mode within 1.5 s of load — stage
+  PASS  [P-16] 1920×937 wasel: 12 scenes (§5.2 says 12)
+  PASS  [P-01] 1920×937 wasel: --ps-content-h 764.0 (expect 764)
+  PASS  [P-02] 1920×937 wasel: scene width = clientWidth 1920
+  PASS  [P-02] 1920×937 wasel: .ps height 8152 (expect 8152)
+  PASS  [P-16] 1920×937 wasel scene 07: features visible — 6 items
+  FAIL  [P-03] 1920×937 wasel: every scene final at rest (12) — 05 interface: left -1.1 | 06 walkthrough: left -1.3 | 07 features: left 1.3
+        1920×937 wasel: the track was still moving after 700 ms (up to +3539 ms) at some scenes
+  PASS  [P-04] 1920×937 wasel: every scene fits the frame (12)
+  FAIL  [P-19] 1920×937 wasel: no neighbour at the edges (12) — 05: section#walkthrough.ps-scene.is-near@1918,153, section#walkthrough.ps-scene.is-near@1918,315 | 06: section#features.ps-scene.is-near@1918,153, section#features.ps-scene.is-near@1918,315
+  PASS  [P-01] 1920×937 wasel: no console errors
+        ai-in-a-box: data-mode="stage" after 5816 ms (dev server; the 1.5 s budget applies to the build)
+  PASS  [P-01] 1920×937 ai-in-a-box: data-mode within 1.5 s of load — stage
+  PASS  [P-16] 1920×937 ai-in-a-box: 10 scenes (§5.2 says 10)
+  PASS  [P-01] 1920×937 ai-in-a-box: --ps-content-h 764.0 (expect 764)
+  PASS  [P-02] 1920×937 ai-in-a-box: scene width = clientWidth 1920
+  PASS  [P-02] 1920×937 ai-in-a-box: .ps height 6840 (expect 6840)
+  PASS  [P-16] 1920×937 ai-in-a-box scene 07: features visible — 5 items
+  FAIL  [P-03] 1920×937 ai-in-a-box: every scene final at rest (10) — 05 interface: left -1.3 | 06 walkthrough: left 1.3
+        1920×937 ai-in-a-box: the track was still moving after 700 ms (up to +3774 ms) at some scenes
+  PASS  [P-04] 1920×937 ai-in-a-box: every scene fits the frame (10)
+  FAIL  [P-19] 1920×937 ai-in-a-box: no neighbour at the edges (10) — 05: section#walkthrough.ps-scene.is-near@1918,153, section#walkthrough.ps-scene.is-near@1918,315
+  PASS  [P-01] 1920×937 ai-in-a-box: no console errors
+
+[stage 1024×520: depth, wheel, keys, focus, chapters, mutations, media (P-05…P-11, P-20, P-21)]
+  PASS  [P-05] 1024×520 mandoobee: scene 04 at p 0.25, bg:mid:fg = 0.70 : 0.88 : 1.00 — fg moved 512 px
+  PASS  [P-05] 1024×520 mandoobee: floor x in (−448, 0], monotonic between wraps — 0,-59,-117,-172,-213,-286…
+  PASS  [P-06] 1024×520 mandoobee: scene 05 entrance is matrix3d with perspective — matrix3d(0.982337, 0, 0.0696083, -4.97202e-05, 0, 0.9848, 0, 0, -0.0706827, 0, 0
+  PASS  [P-07] 1024×520 mandoobee: wheel 100 settles on k+1 within 900 ms — in 718 ms
+  FAIL  [P-07] 1024×520 mandoobee: wheel 45 advances — rests on scene 3
+  PASS  [P-07] 1024×520 mandoobee: wheel 25 returns — rests on scene 3
+  PASS  [P-07] 1024×520 mandoobee: two notches 300 ms apart reach k+2 — in 844 ms
+  PASS  [P-07] 1024×520 mandoobee: six fast notches end at a rest — scene 7
+  FAIL  [P-08] 1024×520 mandoobee: 8 keys move one scene each — ArrowDown: rests on scene 5
+  PASS  [P-08] 1024×520 mandoobee: ↓ on the last scene scrolls into the footer — y 5320 vs end 5280
+  PASS  [P-08] 1024×520 mandoobee: arrows in the open header panel do not move scenes — Δy 0
+  PASS  [P-08] 1024×520 mandoobee: Space on the Next button moves exactly one scene — rests on scene 4
+  PASS  [P-09] 1024×520 mandoobee: 80 Tab stops visible, outside header and dock, outlined
+  PASS  [P-09] 1024×520 mandoobee: the film follows focus into scenes — 12 stops inside a settled scene
+  PASS  [P-10] 1024×520 mandoobee: chapter 03 lands within 1 s, aria-current, focus on #people-h — in 306 ms, aria-current=location, focus=people-h, hash=#people
+  PASS  [P-11] 1024×520 mandoobee: jump 01→07 cuts (dip <0.2 by 450 ms, back to 1, ≤2 scenes in any frame) — dip 386 ms, end 1, max scenes 1
+  PASS  [P-10] 1024×520 mandoobee: the long jump lands on scene 07 — rests on scene 7
+  PASS  [P-10] 1024×520 mandoobee: /#faq loads settled with no glide — scene 11 (expect 11), 0 in-between frames
+  PASS  [P-10] 1024×520 mandoobee: back restores scene 11 — scene 11
+        mandoobee: data-mode="stage" after 1529 ms (dev server; the 1.5 s budget applies to the build)
+  FAIL  [P-20] 1024×520 mandoobee: style writes during a full traverse — transform, translate, rotate, scale, opacity, transform-origin — not allowed: transform-origin
+        mandoobee: data-mode="stage" after 5261 ms (dev server; the 1.5 s budget applies to the build)
+  PASS  [P-21] 1024×520 mandoobee: at load only scenes 1–3 request images
+  PASS  [P-21] 1024×520 mandoobee: settled on 6, images in scenes ≤ 8 complete
+        tasree3: data-mode="stage" after 1522 ms (dev server; the 1.5 s budget applies to the build)
+  PASS  [P-05] 1024×520 tasree3: scene 04 at p 0.25, bg:mid:fg = 0.70 : 0.88 : 1.00 — fg moved 512 px
+  FAIL  [P-05] 1024×520 tasree3: floor x in (−448, 0], monotonic between wraps — 0,-69,-139,-208,-277,-344…
+  PASS  [P-06] 1024×520 tasree3: scene 05 entrance is matrix3d with perspective — matrix3d(0.997006, 0, 0.0136555, -9.7539e-06, 0, 0.9971, 0, 0, -0.0136952, 0, 0.
+  PASS  [P-07] 1024×520 tasree3: wheel 100 settles on k+1 within 900 ms — in 1411 ms
+  PASS  [P-07] 1024×520 tasree3: wheel 45 advances — in 900 ms
+  PASS  [P-07] 1024×520 tasree3: wheel 25 returns — rests on scene 3
+  PASS  [P-07] 1024×520 tasree3: two notches 300 ms apart reach k+2 — in 904 ms
+  PASS  [P-07] 1024×520 tasree3: six fast notches end at a rest — scene 8
+  FAIL  [P-08] 1024×520 tasree3: 8 keys move one scene each — ArrowUp: rests on scene 2
+  PASS  [P-08] 1024×520 tasree3: ↓ on the last scene scrolls into the footer — y 6280 vs end 6240
+  PASS  [P-08] 1024×520 tasree3: arrows in the open header panel do not move scenes — Δy 0
+  PASS  [P-08] 1024×520 tasree3: Space on the Next button moves exactly one scene — rests on scene 4
+  PASS  [P-09] 1024×520 tasree3: 80 Tab stops visible, outside header and dock, outlined
+  PASS  [P-09] 1024×520 tasree3: the film follows focus into scenes — 12 stops inside a settled scene
+  PASS  [P-10] 1024×520 tasree3: chapter 03 lands within 1 s, aria-current, focus on #people-h — in 1448 ms, aria-current=location, focus=people-h, hash=#people
+  FAIL  [P-11] 1024×520 tasree3: jump 01→07 cuts (dip <0.2 by 450 ms, back to 1, ≤2 scenes in any frame) — dip 737 ms, end 1, max scenes 1
+  PASS  [P-10] 1024×520 tasree3: the long jump lands on scene 07 — rests on scene 7
+        tasree3: data-mode="stage" after 3797 ms (dev server; the 1.5 s budget applies to the build)
+  PASS  [P-10] 1024×520 tasree3: /#deploy loads settled with no glide — scene 12 (expect 12), 0 in-between frames
+  FAIL  [P-10] 1024×520 tasree3: back restores scene 12 — scene none
+  FAIL  [P-20] 1024×520 tasree3 — error: browserContext.newPage: Target crashed 
+  FAIL  [P-21] 1024×520 tasree3 — error: browserContext.newPage: Target crashed 
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+browserContext.newPage: Target crashed 
+    at newPage (C:\Users\abhin\Desktop\meerana\scripts\verify-lib.mjs:196:26)
+    at async open (C:\Users\abhin\Desktop\meerana\scripts\verify-stage.mjs:47:13)
+    at async file:///C:/Users/abhin/Desktop/meerana/scripts/verify-stage.mjs:305:20 {
+  log: [],
+  name: 'Error'
+}
+
+Node.js v24.13.1

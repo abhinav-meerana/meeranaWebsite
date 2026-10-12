@@ -1,0 +1,75 @@
+/* motion-tokens.css: one easing family, three durations, reveal utility, pause control.
+   Use it with ui-system/references/tokens.css; the values are identical, and this file holds only the motion parts.
+   Tailwind v4: the @theme block exposes ease-* and animate-* utilities. */
+
+@theme {
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-enter: cubic-bezier(0, 0, 0, 1);
+  --ease-exit: cubic-bezier(0.3, 0, 1, 1);
+  --animate-reveal: reveal 240ms cubic-bezier(0, 0, 0, 1) both;
+  --animate-fade: fade 240ms cubic-bezier(0.2, 0, 0, 1) both;
+  --animate-snap: snap 160ms cubic-bezier(0, 0, 0, 1) both;
+
+  @keyframes reveal { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  @keyframes fade   { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes snap   { from { opacity: 0; transform: scale(1.4); } to { opacity: 1; transform: none; } }
+}
+
+:root {
+  --dur-1: 160ms;   /* state feedback, snaps */
+  --dur-2: 240ms;   /* enter/exit, reveals */
+  --dur-3: 420ms;   /* one choreography step */
+  --stagger: 60ms;  /* per item; max 8 items per group */
+}
+
+/* ---------- Reveal utility (no library) ----------
+   HTML:  <div data-reveal>…</div>  (content is visible without JS)
+   JS:    document.documentElement.classList.add('js-motion');  ← run in <head>, before first paint
+          const io = new IntersectionObserver((entries) => {
+            for (const e of entries) if (e.isIntersecting) { e.target.dataset.revealed = ''; io.unobserve(e.target); }
+          }, { rootMargin: '0px 0px -10% 0px' });
+          document.querySelectorAll('[data-reveal]').forEach((el) => io.observe(el));
+   Never put data-reveal on the hero H1 / LCP element. */
+@media (prefers-reduced-motion: no-preference) {
+  html.js-motion:not([data-motion="reduce"]) [data-reveal]:not([data-revealed]) {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  html.js-motion [data-reveal] {
+    transition: opacity var(--dur-2) var(--ease-enter), transform var(--dur-2) var(--ease-enter);
+    transition-delay: calc(var(--i, 0) * var(--stagger));   /* set --i: 0..7 inline for staggers */
+  }
+}
+
+/* ---------- Reduced motion: OS setting OR the on-page toggle ---------- */
+@media (prefers-reduced-motion: reduce) {
+  :root { --dur-1: 0ms; --dur-2: 0ms; --dur-3: 0ms; --stagger: 0ms; }
+}
+html[data-motion="reduce"] { --dur-1: 0ms; --dur-2: 0ms; --dur-3: 0ms; --stagger: 0ms; }
+html[data-motion="reduce"] *, html[data-motion="reduce"] *::before, html[data-motion="reduce"] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
+
+/* ---------- Pause control (required for any loop > 5 s: WCAG 2.2.2) ----------
+   <button type="button" data-motion-control aria-pressed="false">Pause motion</button>
+   JS toggles aria-pressed (the label stays constant, per the APG button pattern), stops or starts the loop,
+   and persists the choice:
+   try { localStorage.setItem('motion', 'paused') } catch {} */
+[data-motion-control] {
+  font: 500 0.75rem/1 var(--font-mono, ui-monospace, monospace);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  min-height: 44px;
+  padding-inline: 14px;
+  border: 1px solid var(--border-control, currentColor);
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+[data-motion-control][aria-pressed="true"] { background: var(--surface-raised, transparent); }
+
+/* ---------- Never ---------- */
+html { scroll-behavior: auto; } /* global smooth scroll fights ScrollTrigger and Lenis */

@@ -1,0 +1,469 @@
+/* ============================================================================
+   Site header — plan/08 M-global-02, FINAL-SPEC §9.
+
+   Transparent over the hero, solid after 80px, and it never hides on scroll.
+   On a 13-screen page, hiding the navigation is hostile.
+
+   Its height is the fluid `--header-h` token (56 px on short laptops, 72 px
+   from about 1536×864 up), and the rendered bar matches that token exactly:
+   stage, sticky and scroll-padding geometry all read `--header-h`, so a bar
+   taller than the token would sit over content. Two things keep them equal:
+   the inner row's block padding never exceeds what the 44 px controls leave
+   free, and the bottom rule is an inset shadow, so it adds no height.
+   ========================================================================== */
+
+.site-header {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 60;
+  box-shadow: inset 0 -1px 0 transparent;
+  transition:
+    background-color var(--dur-fast) var(--ease-standard),
+    box-shadow var(--dur-fast) var(--ease-standard),
+    backdrop-filter var(--dur-fast) var(--ease-standard);
+}
+
+.site-header.is-condensed {
+  background: color-mix(in srgb, var(--surface-page) 82%, transparent);
+  box-shadow: inset 0 -1px 0 var(--line);
+  backdrop-filter: blur(14px) saturate(140%);
+}
+
+/* Without backdrop-filter support the condensed bar must still be opaque, or
+   the links sit on moving content. */
+@supports not (backdrop-filter: none) {
+  .site-header.is-condensed {
+    background: var(--surface-page);
+  }
+}
+
+/* While a horizontal film is pinned (product stage, homepage gallery) the bar
+   is solid: a live blur over a moving track re-samples every frame, which is
+   the most expensive thing on the page and buys nothing over a solid fill. */
+html.has-pin .site-header.is-condensed {
+  backdrop-filter: none;
+  background: var(--surface-page);
+}
+
+.hdr-inner {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-5);
+  width: 100%;
+  max-width: var(--content-max);
+  min-height: var(--header-h);
+  margin-inline: auto;
+  /* --sp-fluid-xs, capped so the 44 px controls always fit inside the token
+     height: at 56 px that leaves 6 px a side. */
+  padding-block: min(var(--sp-fluid-xs), calc((var(--header-h) - 44px) / 2));
+  padding-inline: var(--gutter);
+}
+
+/* ---- logo -------------------------------------------------------------- */
+
+.hdr-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-3);
+  text-decoration: none;
+  color: var(--text-primary);
+  flex: 0 0 auto;
+}
+
+/* The official symbol (white colourway), at less than its native size. It
+   scales with the bar: 20 px on a 56 px header, 24 px on a 72 px one.
+   The typed "MEERANA" beside it is gone: Poppins cannot draw the wordmark's
+   custom letterforms, so it read as a recreated logo (criticism ledger, D14).
+   Until the client approves the official horizontal lockup, the symbol stands
+   alone and the link's name comes from sr-only text. */
+.hdr-mark {
+  display: block;
+  height: clamp(20px, calc(1.9 * var(--u)), 24px);
+  width: auto;
+}
+
+/* The logo link is a 44 px target even though the mark is 20–24 px tall. */
+.hdr-logo {
+  min-height: 44px;
+}
+
+/* ---- nav ---------------------------------------------------------------- */
+
+.hdr-nav {
+  margin-inline-start: auto;
+}
+
+.hdr-nav ul {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-6);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.hdr-nav a,
+.hdr-trigger {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  min-height: 44px;
+  font: inherit;
+  font-size: var(--fs-small);
+  color: var(--text-secondary);
+  text-decoration: none;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+.hdr-trigger:hover {
+  color: var(--text-primary);
+}
+
+.hdr-caret {
+  width: 6px;
+  height: 6px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform var(--dur-fast) var(--ease-standard);
+}
+
+.hdr-caret[data-open="true"] {
+  transform: translateY(1px) rotate(-135deg);
+}
+
+/* ---- router panel: six rows, not a mega-menu ---- */
+
+.hdr-products-wrap {
+  position: relative;
+}
+
+.hdr-panel {
+  position: absolute;
+  top: calc(100% + var(--sp-2));
+  inset-inline-start: calc(var(--sp-4) * -1);
+  z-index: 5;
+  width: 22rem;
+  padding: var(--sp-3);
+  background: var(--surface-deep);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-room);
+  /* The bar is fixed, so a panel taller than the space under it could never
+     be scrolled into view: its last rows (and their focus rings) would sit
+     off-screen. It scrolls inside itself instead, and on short laptop
+     heights the rows tighten (below) so that never has to happen. */
+  max-height: calc(100svh - var(--header-h) - var(--sp-4));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hdr-panel:not([hidden]) {
+    animation: hdr-panel-in var(--dur-base) var(--ease-enter) both;
+  }
+}
+
+@keyframes hdr-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hdr-nav .hdr-panel-list {
+  display: grid;
+  gap: 0;
+  align-items: stretch;
+}
+
+.hdr-nav .hdr-panel-list a {
+  display: grid;
+  grid-template-columns: 4px 1fr;
+  grid-template-areas: "tick name" "tick desc";
+  gap: 2px var(--sp-3);
+  width: 100%;
+  padding: var(--sp-3);
+  border-radius: var(--radius-input);
+}
+
+.hdr-nav .hdr-panel-list a:hover,
+.hdr-nav .hdr-panel-list a:focus-visible {
+  background: var(--surface-inset);
+  color: var(--text-primary);
+}
+
+.hdr-tick {
+  grid-area: tick;
+  align-self: stretch;
+  width: 2px;
+  border-radius: 2px;
+}
+
+/* Set line-heights, not the body's 1.65: each row is a name over one line of
+   descriptor, and the looser leading made the panel too tall for a 520 px
+   laptop viewport. */
+.hdr-panel-name {
+  grid-area: name;
+  color: var(--text-primary);
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.hdr-panel-desc {
+  grid-area: desc;
+  font-size: var(--fs-label);
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+
+.hdr-nav .hdr-panel .hdr-panel-all {
+  display: flex;
+  margin-top: var(--sp-2);
+  padding: var(--sp-3);
+  border-top: 1px solid var(--line);
+  color: var(--text-accent);
+}
+
+/* Compact height tier (≤760 px tall): the whole panel, "All six products"
+   included, fits under the bar from 1024×520 up (about 400 px tall). */
+@media (max-height: 760px) {
+  .hdr-nav .hdr-panel-list a,
+  .hdr-nav .hdr-panel .hdr-panel-all {
+    padding-block: var(--sp-2);
+  }
+}
+
+.hdr-nav a:hover {
+  color: var(--text-primary);
+}
+
+/* The panel's own links manage their own hover state, with no underline. */
+.hdr-nav .hdr-panel a::after {
+  display: none;
+}
+
+/* A one-pixel cyan underline on hover: the accent is used for interaction only. */
+.hdr-nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 100%;
+  bottom: 0;
+  height: 1px;
+  background: var(--meerana-cyan);
+  transition: right var(--dur-base) var(--ease-standard);
+}
+
+.hdr-nav a:hover::after,
+.hdr-nav a:focus-visible::after {
+  right: 0;
+}
+
+.hdr-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-inline-start: var(--sp-5);
+}
+
+.hdr-cta {
+  height: 44px;
+  padding-inline: var(--sp-5);
+}
+
+/* ---- mobile toggle ----------------------------------------------------- */
+
+.hdr-toggle {
+  display: none;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+}
+
+.hdr-bars,
+.hdr-bars::before,
+.hdr-bars::after {
+  display: block;
+  width: 16px;
+  height: 1.5px;
+  background: var(--text-primary);
+  transition: transform var(--dur-fast) var(--ease-standard);
+}
+
+.hdr-bars {
+  position: relative;
+}
+
+.hdr-bars::before,
+.hdr-bars::after {
+  content: "";
+  position: absolute;
+  left: 0;
+}
+
+.hdr-bars::before {
+  top: -5px;
+}
+
+.hdr-bars::after {
+  top: 5px;
+}
+
+.hdr-bars[data-open="true"] {
+  background: transparent;
+}
+
+.hdr-bars[data-open="true"]::before {
+  transform: translateY(5px) rotate(45deg);
+}
+
+.hdr-bars[data-open="true"]::after {
+  transform: translateY(-5px) rotate(-45deg);
+}
+
+/* ---- sheet ------------------------------------------------------------- */
+
+.hdr-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  background: color-mix(in srgb, var(--surface-deep) 72%, transparent);
+  backdrop-filter: blur(2px);
+}
+
+.hdr-sheet[hidden],
+.hdr-scrim[hidden],
+.hdr-panel[hidden] {
+  display: none;
+}
+
+.hdr-sheet-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--sp-3);
+}
+
+.hdr-sheet-head .annot {
+  margin: 0;
+}
+
+.hdr-close {
+  min-height: 44px;
+  padding-inline: var(--sp-4);
+  background: transparent;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-pill);
+  color: var(--text-primary);
+  font: inherit;
+  font-size: var(--fs-small);
+  cursor: pointer;
+}
+
+.hdr-sheet-label {
+  margin: 0 0 var(--sp-2);
+}
+
+.hdr-sheet {
+  position: fixed;
+  z-index: 80;
+  inset: var(--header-h) var(--sp-4) auto var(--sp-4);
+  max-height: calc(100svh - var(--header-h) - var(--sp-5));
+  overflow-y: auto;
+  padding: var(--sp-6);
+  background: var(--surface-deep);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-panel);
+  box-shadow: var(--shadow-room);
+}
+
+.hdr-sheet-all {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  min-height: 44px;
+  margin: var(--sp-2) 0 var(--sp-5);
+  color: var(--text-accent);
+  font-size: var(--fs-small);
+  text-decoration: none;
+}
+
+.hdr-sheet-all:hover {
+  color: var(--text-primary);
+}
+
+.hdr-products,
+.hdr-sections {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.hdr-products a {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-3);
+  padding-block: var(--sp-3);
+  border-bottom: 1px solid var(--line);
+  color: var(--text-primary);
+  text-decoration: none;
+  font-size: var(--fs-body);
+}
+
+.hdr-products a .annot {
+  margin: 0;
+  min-width: 1.75rem;
+  color: var(--text-accent);
+}
+
+.hdr-sections a {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding-block: var(--sp-2);
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: var(--fs-small);
+}
+
+.hdr-products a:hover,
+.hdr-sections a:hover {
+  color: var(--text-accent);
+}
+
+/* ---- responsive -------------------------------------------------------- */
+
+@media (max-width: 1023px) {
+  .hdr-nav {
+    display: none;
+  }
+  .hdr-toggle {
+    display: inline-flex;
+  }
+  .hdr-actions {
+    margin-inline-start: auto;
+  }
+}
+
+@media (max-width: 479px) {
+  .hdr-cta {
+    display: none;
+  }
+}

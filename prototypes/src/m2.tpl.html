@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-brand="meerana" data-surface="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Meerana · M2 Operating Model (Daylight) · hero prototype</title>
+<meta name="description" content="Design prototype M2 (Operating Model, Daylight) for the Meerana Technologies homepage. Internal exploration: copy is proposed and pending evidence sign-off.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* Critical paint before the Tailwind browser build compiles: page colour and font only. */
+  html { background: #FFFFFF; color: #071B36; font-family: "Poppins", ui-sans-serif, system-ui, sans-serif; }
+</style>
+<script>
+  (function () { var d = document.documentElement; d.classList.add('js-motion');
+    try { if (localStorage.getItem('meerana-motion') === 'reduce') d.dataset.motion = 'reduce'; } catch (e) {} })();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.3"></script>
+<style type="text/tailwindcss">
+@import "tailwindcss";
+{{TOKENS_CSS}}
+
+@layer components {
+  .wrap { margin-inline: auto; max-width: 80rem; padding-inline: clamp(16px, 4vw, 48px); }
+  .skip { position: absolute; inset-inline-start: -9999px; }
+  .skip:focus { inset-inline-start: 16px; top: 16px; z-index: 50; background: var(--action-primary-bg); color: var(--action-primary-fg); padding: 10px 14px; border-radius: var(--radius-control); }
+  /* Official white raster rendered in the PDF's blue-on-white colourway via CSS mask (DD-09). Replace with the vector master. */
+  .logo-mask { display: block; width: 148px; height: 28px; background: var(--meerana-blue);
+    -webkit-mask: var(--logo) left center / contain no-repeat; mask: var(--logo) left center / contain no-repeat; }
+  .btn-primary { display: inline-flex; align-items: center; min-height: 44px; padding-inline: 20px; border-radius: var(--radius-control);
+    background: var(--action-primary-bg); color: var(--action-primary-fg); font-weight: 500; font-size: var(--text-ui);
+    transition: background-color var(--dur-1) var(--ease-standard); }
+  .btn-primary:hover { background: var(--action-primary-hover); }
+  .btn-outline { display: inline-flex; align-items: center; min-height: 40px; padding-inline: 16px; border-radius: var(--radius-control);
+    border: 1px solid var(--action-secondary-border); color: var(--action-secondary-fg); font-size: var(--text-ui); font-weight: 500; }
+  .link-arrow { display: inline-flex; align-items: center; gap: .45em; min-height: 44px; color: var(--text-link); font-weight: 500; font-size: var(--text-ui); }
+  .link-arrow > span { transition: transform var(--dur-1) var(--ease-standard); }
+  .link-arrow:hover > span { transform: translateX(3px); }
+  .mono-btn { font-family: var(--font-family-mono); font-size: .75rem; letter-spacing: .04em; text-transform: uppercase; min-height: 40px;
+    padding-inline: 12px; border-radius: var(--radius-pill); border: 1px solid var(--border-control); color: var(--text-secondary); }
+  .mono-btn[aria-pressed="true"] { background: var(--surface-muted); color: var(--text-primary); }
+
+  /* isometric model */
+  .model { width: 100%; height: auto; display: block; overflow: visible; }
+  .model .zone { transition: translate var(--dur-1) var(--ease-standard); }
+  .model .zone.is-active { translate: 0 -5px; }
+  .model .zone.is-active polygon:not([stroke-dasharray]) { stroke: var(--zone-accent); stroke-width: 1.3; }
+  .model .znum { font: 500 13px var(--font-family-mono); fill: var(--navy-600); letter-spacing: .04em; }
+  .model .znum.is-active { fill: var(--meerana-navy); }
+  [data-zone="wasel"] { --zone-accent: var(--wasel-copper); }
+  [data-zone="yisbir"] { --zone-accent: var(--yisbir-blue); }
+  [data-zone="mandoobee"] { --zone-accent: var(--mandoobee-azure); }
+  [data-zone="tasree3"] { --zone-accent: var(--tasree3-orange); }
+  [data-zone="nazo"] { --zone-accent: var(--meerana-blue); }
+  @media (prefers-reduced-motion: no-preference) {
+    html.js-motion:not([data-motion="reduce"]) .model.is-building .build { transform-box: fill-box; transform-origin: 50% 100%;
+      animation: build var(--dur-3) var(--ease-enter) both; animation-delay: calc(var(--d) * 280ms + 200ms); }
+    html.js-motion:not([data-motion="reduce"]) .model.is-building .plinth { animation: fade var(--dur-3) var(--ease-standard) both; }
+  }
+  @keyframes build { from { transform: scaleY(0.001); opacity: 0; } to { transform: none; opacity: 1; } }
+
+  /* zone index (also the product index) */
+  .zone-link { display: grid; grid-template-columns: 2.25rem 4.5rem 1fr; align-items: center; gap: 12px; min-height: 56px;
+    padding: 8px 10px 8px 0; border-top: 1px solid var(--border-subtle); color: var(--text-primary);
+    transition: background-color var(--dur-1) var(--ease-standard); }
+  .zone-link:hover, .zone-link:focus-visible, .zone-link.is-active { background: var(--surface-raised); }
+  .zone-link .chip { display: grid; place-items: center; height: 36px; border-radius: var(--radius-control); background: var(--meerana-navy);
+    border-top: 2px solid var(--zone-accent); }
+  .zone-link .chip img { max-height: 20px; max-width: 56px; width: auto; height: auto; }
+
+  /* fact table */
+  .facts { width: 100%; border-collapse: collapse; }
+  .facts th, .facts td { text-align: start; padding: 18px 12px 18px 0; border-top: 1px solid var(--border-subtle); vertical-align: top; }
+  .facts thead th { font: 500 .75rem var(--font-family-mono); letter-spacing: .04em; text-transform: uppercase; color: var(--text-muted); border-top: 0; }
+  @media (max-width: 767px) { .facts thead { display: none; } .facts tr { display: block; border-top: 1px solid var(--border-subtle); padding-block: 14px; }
+    .facts td, .facts th { display: block; border: 0; padding: 2px 0; } }
+}
+</style>
+</head>
+<body class="bg-surface text-fg antialiased">
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="border-b border-line">
+  <div class="wrap flex h-[72px] items-center justify-between gap-6">
+    <a href="#top" aria-label="Meerana Technologies — home"><span class="logo-mask" role="img" aria-label="Meerana Technologies" style="--logo:url('{{LOGO_MEERANA_H}}')"></span></a>
+    <nav aria-label="Primary" class="hidden md:block">
+      <ul class="flex items-center gap-8 text-ui text-fg-secondary">
+        <li><a class="hover:text-fg" href="#zones">Products</a></li>
+        <li><a class="hover:text-fg" href="#deployment">Deployment</a></li>
+        <li><a class="hover:text-fg" href="#contact">Company</a></li>
+      </ul>
+    </nav>
+    <div class="flex items-center gap-3">
+      <button type="button" class="mono-btn hidden sm:inline-flex items-center" data-motion-toggle aria-pressed="false">Reduce motion</button>
+      <a class="btn-outline" href="#contact">Talk to Meerana</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section id="top" data-surface="light" aria-labelledby="hero-title">
+    <div class="wrap pt-16 pb-16 lg:pt-20">
+      <p class="font-mono text-mono uppercase text-fg-muted"><span data-ev="EV-007">Built in the UAE</span> · <span data-ev="EV-020">since 2022</span></p>
+      <h1 id="hero-title" class="mt-5 max-w-[70rem] font-semibold text-display-xl text-balance text-fg">Five operating environments. One company behind them.</h1>
+
+      <div class="mt-12 grid grid-cols-12 gap-x-6 gap-y-10">
+        <!-- Signature motion. Purpose: shows WHERE each Meerana product sits in an organisation — the model builds from the
+             front gate to the archive — which a list cannot. Plays once (~1.7 s), then rests; no-JS / reduced motion = built model. -->
+        <figure class="col-span-12 min-w-0 m-0 lg:col-span-8" data-signature aria-labelledby="model-caption">
+          {{M2_MODEL_SVG}}
+          <figcaption id="model-caption" class="mt-3 font-mono text-mono uppercase text-fg-muted">Fig. 1 — The operating model: perimeter, cameras, workplace, processes, correspondence</figcaption>
+        </figure>
+
+        <div class="col-span-12 min-w-0 flex flex-col lg:col-span-4">
+          <p class="text-lede text-fg-secondary" data-ev="EV-007 EV-101 EV-440 EV-113 EV-400 EV-141">Perimeter, cameras, workplace, processes and correspondence — each is run by a Meerana product, built in the UAE.</p>
+          <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+            <a class="btn-primary" href="#zones">Explore the products</a>
+            <a class="link-arrow" href="#contact">Talk to Meerana <span aria-hidden="true">→</span></a>
+          </div>
+          <nav id="zones" class="mt-10" aria-label="Products by operating environment">
+            <ol data-audit-ok="G05">
+              <li><a class="zone-link" data-zone="wasel" href="#zones"><span class="font-mono text-mono text-fg-muted">01</span><span class="chip"><img src="{{LOGO_WASEL}}" width="{{LOGO_WASEL_W}}" height="{{LOGO_WASEL_H}}" alt="Wasel"></span><span><span class="block text-label uppercase text-fg-muted">Perimeter</span><span class="block text-small" data-ev="EV-100">Smart gate &amp; access control</span></span></a></li>
+              <li><a class="zone-link" data-zone="yisbir" href="#zones"><span class="font-mono text-mono text-fg-muted">02</span><span class="chip"><img src="{{LOGO_YISBIR}}" width="{{LOGO_YISBIR_W}}" height="{{LOGO_YISBIR_H}}" alt="YISBIR"></span><span><span class="block text-label uppercase text-fg-muted">Cameras</span><span class="block text-small" data-ev="EV-131">Operational intelligence</span></span></a></li>
+              <li><a class="zone-link" data-zone="mandoobee" href="#zones"><span class="font-mono text-mono text-fg-muted">03</span><span class="chip"><img src="{{LOGO_MANDOOBEE}}" width="{{LOGO_MANDOOBEE_W}}" height="{{LOGO_MANDOOBEE_H}}" alt="Mandoobee"></span><span><span class="block text-label uppercase text-fg-muted">Workplace</span><span class="block text-small" data-ev="EV-112">Smart office application</span></span></a></li>
+              <li><a class="zone-link" data-zone="tasree3" href="#zones"><span class="font-mono text-mono text-fg-muted">04</span><span class="chip"><img src="{{LOGO_TASREE3}}" width="{{LOGO_TASREE3_W}}" height="{{LOGO_TASREE3_H}}" alt="Tasree3"></span><span><span class="block text-label uppercase text-fg-muted">Processes</span><span class="block text-small" data-ev="EV-400">AI-native process management</span></span></a></li>
+              <li><a class="zone-link" data-zone="nazo" href="#zones"><span class="font-mono text-mono text-fg-muted">05</span><span class="chip"><img src="{{LOGO_NAZO}}" width="{{LOGO_NAZO_W}}" height="{{LOGO_NAZO_H}}" alt="Nazo"></span><span><span class="block text-label uppercase text-fg-muted">Correspondence</span><span class="block text-small" data-ev="EV-141">Correspondence &amp; workflow</span></span></a></li>
+            </ol>
+          </nav>
+          <button type="button" class="mono-btn mt-6 self-start" data-replay>Replay build</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="deployment" data-surface="light" aria-labelledby="deploy-title" class="bg-surface-muted">
+    <div class="wrap py-20 lg:py-24">
+      <p class="font-mono text-mono uppercase text-fg-muted">Deployment</p>
+      <h2 id="deploy-title" class="mt-4 font-semibold text-display-2 text-fg">Deployed where your data has to stay.</h2>
+      <p class="mt-5 max-w-[42rem] text-lede text-fg-secondary" data-ev="EV-461">Meerana builds its platforms to run locally when you need them to. No certification is implied here.</p>
+      <table class="facts mt-10 text-body">
+        <caption class="sr-only">Deployment options per product</caption>
+        <thead><tr><th scope="col">Product</th><th scope="col">Runs on</th><th scope="col">Evidence</th></tr></thead>
+        <tbody>
+          <tr><th scope="row" class="font-medium">Tasree3</th><td>Your own cloud or data centre, in the region you choose; your own AI model endpoint</td><td class="font-mono text-mono text-fg-muted">EV-407</td></tr>
+          <tr><th scope="row" class="font-medium">Yisbir</th><td>On-premise, cloud or hybrid; works with existing cameras</td><td class="font-mono text-mono text-fg-muted">EV-443 · EV-444</td></tr>
+          <tr><th scope="row" class="font-medium">Mandoobee</th><td>On-premise, cloud or hybrid</td><td class="font-mono text-mono text-fg-muted">EV-116</td></tr>
+          <tr><th scope="row" class="font-medium">Wasel</th><td>Cloud, local network, or Bluetooth when offline</td><td class="font-mono text-mono text-fg-muted">EV-103</td></tr>
+          <tr><th scope="row" class="font-medium">Nazo</th><td>On-premises or cloud (confirm current options)</td><td class="font-mono text-mono text-fg-muted">EV-142</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="contact" data-surface="dark" aria-labelledby="contact-title" class="bg-surface">
+    <div class="wrap grid grid-cols-12 gap-6 py-20 lg:py-24">
+      <h2 id="contact-title" class="col-span-12 min-w-0 font-semibold text-display-2 text-fg lg:col-span-7">Tell us what you want to run better.</h2>
+      <div class="col-span-12 min-w-0 flex flex-col justify-end gap-3 lg:col-span-5">
+        <a class="btn-primary self-start" href="mailto:info@meerana.ae">Email info@meerana.ae</a>
+        <p class="text-small text-fg-muted">Blue Bay Tower, Business Bay, Dubai (unit to be confirmed, DL-C06).</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer data-surface="dark" class="bg-surface-deep">
+  <div class="wrap flex flex-wrap items-center justify-between gap-4 py-8 text-small text-fg-muted">
+    <p>Prototype M2 · Operating Model (Daylight) · internal design exploration — copy is proposed and pending evidence sign-off.</p>
+    <p class="font-mono text-mono uppercase">Logo colourway via mask of the official raster (DD-09) · awaiting vector masters</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  var root = document.documentElement;
+  var mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+  function isReduced() { return mq.matches || root.dataset.motion === 'reduce'; }
+  var model = document.querySelector('.model');
+
+  var toggle = document.querySelector('[data-motion-toggle]');
+  function syncToggle() { toggle.setAttribute('aria-pressed', String(isReduced())); }  /* label stays constant; aria-pressed carries the state (APG) */
+  toggle.addEventListener('click', function () {
+    if (root.dataset.motion === 'reduce') { delete root.dataset.motion; try { localStorage.removeItem('meerana-motion'); } catch (e) {} }
+    else { root.dataset.motion = 'reduce'; try { localStorage.setItem('meerana-motion', 'reduce'); } catch (e) {} model.classList.remove('is-building'); }
+    syncToggle();
+  });
+  syncToggle();
+
+  /* signature: the model builds once, after first paint (LCP = the H1 text) */
+  function build() {
+    if (isReduced()) return;
+    model.classList.remove('is-building'); void model.getBoundingClientRect(); model.classList.add('is-building');
+  }
+  var idle = 'requestIdleCallback' in window ? function (cb) { window.requestIdleCallback(cb, { timeout: 1200 }); } : function (cb) { setTimeout(cb, 200); };
+  requestAnimationFrame(function () { idle(build); });
+  document.querySelector('[data-replay]').addEventListener('click', build);
+
+  /* zone ↔ link highlighting (colour + 5 px lift only; no motion under reduced motion via tokens) */
+  var links = document.querySelectorAll('.zone-link');
+  function setActive(slug) {
+    links.forEach(function (l) { l.classList.toggle('is-active', l.dataset.zone === slug); });
+    model.querySelectorAll('[data-zone]').forEach(function (g) { g.classList.toggle('is-active', g.getAttribute('data-zone') === slug); });
+  }
+  links.forEach(function (l) {
+    ['mouseenter', 'focus'].forEach(function (ev) { l.addEventListener(ev, function () { setActive(l.dataset.zone); }); });
+    ['mouseleave', 'blur'].forEach(function (ev) { l.addEventListener(ev, function () { setActive(null); }); });
+  });
+  model.querySelectorAll('g.zone').forEach(function (g) {
+    g.addEventListener('mouseenter', function () { setActive(g.getAttribute('data-zone')); });
+    g.addEventListener('mouseleave', function () { setActive(null); });
+  });
+})();
+</script>
+</body>
+</html>

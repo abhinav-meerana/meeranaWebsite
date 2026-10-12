@@ -1,0 +1,1904 @@
+/* ============================================================================
+   Scene visuals (owner B). FINAL-SPEC §4.5, §6.
+
+   Every `.viz-*`, `.port-*`, `.chain-*`, `.boundary-*`, `.callout*`,
+   `.next-*`, `.screen-box` and `.screen.is-fit` rule lives here. The product
+   page imports this file (owner A); nothing here depends on app/story.css.
+
+   The drawing language is a drafting floor (§6.1):
+     · nodes are hairline rectangles (1 px --line-strong) on --ink-900, given
+       a body by `.viz-slab`: a top face and a right face receding at 30°,
+       with the accent on the front edge;
+     · flow edges are 1.5 px of the product line colour; problems are dashed
+       in the product accent;
+     · labels are HTML, ≥12 px, ≥4.5:1 on --ink-900 / --ink-950.
+
+   Product colours arrive from the stage as --p-line (structure) and
+   --p-accent (warnings), with Meerana cyan as the fallback. Small text in a
+   product colour is mixed towards white, as in ui.css `.accent-text`, so
+   Mandoobee azure also clears 4.5:1.
+
+   Motion contract (§6.2): no hook element gets a CSS `transform`, `translate`,
+   `rotate` or `scale`, an opacity below 1 or a `visibility` rest state. GSAP
+   folds the individual transform properties into its own transform when it
+   first touches an element, so static offsets on hooks are layout only
+   (`top`, margins). The slab faces are pseudo-elements, which GSAP never
+   touches. Nothing here animates; the choreography is components/stage/
+   choreo.ts (owner A), in stage mode only.
+
+   Height: every visual fits `--viz-h`, the stage's media height
+   (`--ps-media-h`, owner A: the content box of §4.2 less the module's
+   padding, the plinth and the provenance row; 42svh / 34svh in the rail
+   below 1024 / 768 px, §4.9).
+   ========================================================================== */
+
+.viz,
+.screen.is-fit,
+.next-card {
+  --v-line: var(--p-line, var(--p-accent-2, var(--p-accent, var(--meerana-cyan))));
+  --v-warn: var(--p-accent, var(--meerana-cyan));
+  --v-line-text: color-mix(in srgb, var(--v-line) 78%, var(--meerana-white));
+  --v-warn-text: color-mix(in srgb, var(--v-warn) 80%, var(--meerana-white));
+  --viz-h: var(--ps-media-h, 60svh);
+  --viz-pad: clamp(10px, 2.2svh, 24px);
+  --viz-gap: clamp(6px, 1.3svh, 14px);
+  --slab-d: 6px;
+}
+
+/* ---- shared ------------------------------------------------------------- */
+
+.viz {
+  margin: 0;
+  width: 100%;
+  min-width: 0;
+  display: grid;
+  gap: var(--viz-gap);
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  color: var(--text-secondary);
+}
+
+/* Preferred widths. The module is `width: fit-content` (owner A), so a
+   percentage width would resolve to the content's own width; a definite
+   preferred width, capped at the column, gives each drawing the presence of
+   an object. Wide scenes stretch their stage, so `width: 100%` applies
+   there. */
+.viz:is(.viz-split, .viz-records, .viz-boundary) {
+  width: 30rem;
+  max-width: 100%;
+}
+
+.viz:is(.viz-lanes, .viz-tiles, .viz-layers, .viz-wall, .viz-system, .viz-grid, .viz-ribbon) {
+  width: 34rem;
+  max-width: 100%;
+}
+
+.viz:is(.viz-flow, .viz-ports, .viz-chain) {
+  width: 37rem;
+  max-width: 100%;
+}
+
+/* A drawing sits on a faint ground of its own, so its hairlines read over
+   the lattice floor and the outlined numerals behind it. No border: the
+   module's registration marks frame it (owner A). */
+.viz[data-viz="drawing"] .viz-art {
+  min-width: 0;
+  padding: var(--viz-pad);
+  background: color-mix(in srgb, var(--ink-950) 62%, transparent);
+}
+
+.viz > figcaption {
+  min-width: 0;
+}
+
+/* The slab: a node with a body. ::before is the top face, ::after the right
+   face; both are 30° projections of a depth of --slab-d (top face height
+   d·sin30, sheared by 60°; right face width d·cos30, sheared by 30°). */
+.viz-slab {
+  position: relative;
+  border: 1px solid var(--line-strong);
+  border-radius: 0;
+  border-bottom-color: color-mix(in srgb, var(--v-line) 65%, transparent);
+  background: var(--ink-900);
+}
+
+.viz-slab::before,
+.viz-slab::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  border: 1px solid var(--line-strong);
+}
+
+.viz-slab::before {
+  left: -1px;
+  right: -1px;
+  bottom: 100%;
+  height: calc(var(--slab-d) * 0.5);
+  border-bottom: 0;
+  background: color-mix(in srgb, var(--v-line) 14%, var(--ink-800));
+  transform-origin: 0 100%;
+  transform: skewX(-60deg);
+}
+
+.viz-slab::after {
+  top: -1px;
+  bottom: -1px;
+  left: 100%;
+  width: calc(var(--slab-d) * 0.866);
+  border-left: 0;
+  background: var(--ink-950);
+  transform-origin: 0 0;
+  transform: skewY(-30deg);
+}
+
+/* Isometric solids (SVG, drawn by SceneVisual's IsoBox). */
+.iso-box {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.iso-box polygon,
+.iso-box polyline {
+  stroke: var(--line-strong);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+  stroke-linejoin: round;
+}
+
+.iso-top {
+  fill: color-mix(in srgb, var(--v-line) 16%, var(--ink-900));
+}
+
+.iso-left {
+  fill: var(--ink-900);
+}
+
+.iso-right {
+  fill: var(--ink-950);
+}
+
+.iso-box .iso-edge {
+  fill: none;
+  stroke: var(--v-line);
+  stroke-width: 1.5;
+}
+
+/* ---- split: drawn versus real ------------------------------------------- */
+
+/* The node pitch comes from the media height: what is left of --viz-h after
+   the stage's padding round the drawing (--sp-fluid-s, owner A), the
+   drawing's own padding, the gap above the provenance label and the column
+   label (32 px with a little slack), shared by the rows of the longer column
+   (`--rows`, SceneVisual). Eight steps fit 1024×520 and 1280×601. */
+.viz-split-cols {
+  --rows: 6;
+  --node-gap: clamp(4px, 1.1svh, 12px);
+  --node-h: calc(
+    (
+        var(--viz-h) - 2 * var(--sp-fluid-s, 0px) - 2 * var(--viz-pad) - var(--viz-gap) - 32px -
+          (var(--rows) - 1) * var(--node-gap)
+      ) /
+      var(--rows)
+  );
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 1px minmax(0, 1fr);
+  column-gap: clamp(14px, 2.4vw, 32px);
+  align-items: start;
+}
+
+.viz-col-label {
+  margin: 0 0 var(--viz-gap);
+}
+
+.viz-col.is-problem .viz-col-label {
+  color: var(--v-warn-text);
+}
+
+.viz-divide {
+  align-self: stretch;
+  background: var(--line-strong);
+}
+
+.viz-col-chain {
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 3px 6px 0 0;
+  display: grid;
+  gap: var(--node-gap);
+}
+
+/* The spine: visible only in the gaps, so it reads as connectors. */
+.viz-col-chain::before {
+  content: "";
+  position: absolute;
+  left: 16px;
+  top: 12px;
+  bottom: 12px;
+  width: 1.5px;
+  background: var(--v-line);
+}
+
+.viz-col.is-problem .viz-col-chain::before {
+  background: repeating-linear-gradient(to bottom, var(--v-warn) 0 4px, transparent 4px 8px);
+}
+
+.viz-node {
+  padding: clamp(2px, calc((var(--node-h) - 1.3 * var(--fs-ps-item) - 2px) / 2), 9px) 10px;
+  font-size: var(--fs-ps-item);
+  line-height: 1.3;
+  color: var(--text-primary);
+}
+
+/* The warn colour marks only problems. */
+.viz-node.is-warn {
+  border-style: dashed;
+  border-color: var(--v-warn);
+  color: var(--v-warn-text);
+}
+
+/* ---- lanes: one case across departments --------------------------------- */
+
+.viz-lanes-wrap {
+  display: grid;
+  gap: var(--viz-gap);
+}
+
+.viz-lanes-cap {
+  margin: 0;
+}
+
+.viz-lanes-grid {
+  --name-w: 6.5rem;
+  position: relative;
+  display: grid;
+  gap: 0;
+}
+
+/* No row gap: equal rows put each stop exactly at (i + 0.5) / n, where the
+   path is drawn. */
+.viz-lane {
+  display: grid;
+  grid-template-columns: var(--name-w) minmax(0, 1fr);
+  column-gap: 12px;
+  align-items: center;
+  padding-block: clamp(3px, 0.8svh, 7px);
+}
+
+.viz-lane-name {
+  font-size: var(--fs-ps-item);
+  color: var(--text-primary);
+}
+
+.viz-lane-cell {
+  position: relative;
+  height: clamp(26px, 5svh, 44px);
+  border: 1px solid var(--line-strong);
+  border-radius: 0;
+  background: var(--ink-900);
+}
+
+.viz-lane-stop {
+  position: absolute;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  translate: -50% -50%;
+  background: var(--v-line);
+  box-shadow: 0 0 0 3px var(--ink-900);
+}
+
+.viz-lane-path {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--name-w) + 12px);
+  width: calc(100% - var(--name-w) - 12px);
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.viz-lane-path path {
+  fill: none;
+  stroke: var(--v-line);
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+}
+
+/* ---- tiles: standing slabs ---------------------------------------------- */
+
+.viz-tiles-list {
+  --cols: 2;
+  --slab-d: 10px;
+  list-style: none;
+  margin: 0;
+  padding: 5px 9px 0 0;
+  display: grid;
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  gap: clamp(10px, 1.8svh, 20px) clamp(14px, 1.6vw, 24px);
+}
+
+.viz-tiles-list[data-count="1"] {
+  --cols: 1;
+}
+
+/* Never an orphan in two columns (§6.1). */
+.viz-tiles-list:is([data-count="3"], [data-count="5"], [data-count="6"], [data-count="9"]) {
+  --cols: 3;
+}
+
+.viz-tiles-list:is([data-count="7"], [data-count="8"]) {
+  --cols: 4;
+}
+
+.viz-tile {
+  display: grid;
+  align-content: space-between;
+  gap: var(--sp-2);
+  min-height: clamp(64px, 14svh, 136px);
+  padding: clamp(10px, 1.8svh, 18px);
+}
+
+.viz-tile-n {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  color: var(--v-line-text);
+}
+
+.viz-tile-t {
+  font-size: var(--fs-ps-item);
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--text-primary);
+}
+
+/* ---- flow: a process graph, with a rework loop -------------------------- */
+
+.viz-flow-grid {
+  --gap: clamp(18px, 3vw, 44px);
+  --row-gap: clamp(26px, 5svh, 48px);
+  display: grid;
+  grid-template-columns: repeat(var(--n), minmax(0, 1fr));
+  column-gap: var(--gap);
+  row-gap: var(--row-gap);
+  padding: 4px 8px 0 0;
+}
+
+/* The list's items join the drawing's grid (row 1); the loop is row 2. */
+.viz-flow-row {
+  display: contents;
+}
+
+.viz-box {
+  grid-row: 1;
+  padding: clamp(7px, 1.5svh, 12px) 6px;
+  text-align: center;
+  font-size: var(--fs-ps-item);
+  line-height: 1.25;
+  color: var(--text-primary);
+}
+
+.viz-edge {
+  position: absolute;
+  top: 50%;
+  left: calc(100% + 7px);
+  width: calc(var(--gap) - 10px);
+  height: 1.5px;
+  background: var(--v-line);
+}
+
+.viz-edge::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: -3px;
+  width: 7px;
+  height: 7px;
+  border-top: 1.5px solid var(--v-line);
+  border-right: 1.5px solid var(--v-line);
+  rotate: 45deg;
+}
+
+.viz-rework {
+  grid-row: 2;
+  position: relative;
+  display: grid;
+  justify-items: center;
+}
+
+/* From the centre of the node before to the centre of the node after:
+   column centres sit a quarter of (span − gap) in from each side. */
+.viz-rework-loop {
+  position: absolute;
+  top: calc(-1 * var(--row-gap));
+  bottom: 50%;
+  left: calc((100% - var(--gap)) / 4);
+  right: calc((100% - var(--gap)) / 4);
+  border: 1.5px dashed var(--v-warn);
+  border-top: 0;
+  border-radius: 0 0 12px 12px;
+}
+
+.viz-rework .viz-box {
+  grid-row: auto;
+  min-width: calc((100% - var(--gap)) / 2);
+  border-style: dashed;
+  border-color: var(--v-warn);
+  color: var(--v-warn-text);
+}
+
+/* ---- steps as stations: along the direction of travel ------------------- */
+
+.viz-stations-wrap {
+  --tick: 10px;
+  position: relative;
+}
+
+.viz-rail {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(var(--tick) / 2);
+  height: 1px;
+  background: var(--v-line);
+}
+
+.viz-rail::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: -3.5px;
+  width: 8px;
+  height: 8px;
+  border-top: 1px solid var(--v-line);
+  border-right: 1px solid var(--v-line);
+  rotate: 45deg;
+}
+
+.viz-stations {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(var(--n), minmax(0, 1fr));
+  gap: clamp(14px, 2.2vw, 36px);
+}
+
+.viz-station {
+  display: grid;
+  align-content: start;
+  gap: clamp(4px, 0.9svh, 8px);
+  min-width: 0;
+}
+
+.viz-station-tick {
+  width: var(--tick);
+  height: var(--tick);
+  margin-bottom: clamp(4px, 1svh, 10px);
+  background: var(--v-line);
+  box-shadow: 0 0 0 4px var(--ink-950);
+}
+
+.viz-station-head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-2);
+}
+
+.viz-station-n {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  color: var(--v-line-text);
+}
+
+.viz-station-l {
+  font-size: var(--fs-ps-body);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.viz-station-copy {
+  max-width: 30ch;
+  font-size: var(--fs-ps-item);
+  line-height: 1.45;
+  color: var(--text-secondary);
+}
+
+/* Below 1024 px the stations run down a vertical rail. */
+@media (max-width: 1023px) {
+  .viz-stations {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--sp-4);
+    padding-left: 26px;
+  }
+
+  .viz-rail {
+    top: 6px;
+    bottom: 6px;
+    left: 4px;
+    right: auto;
+    width: 1px;
+    height: auto;
+  }
+
+  .viz-rail::after {
+    display: none;
+  }
+
+  .viz-station {
+    position: relative;
+  }
+
+  .viz-station-tick {
+    position: absolute;
+    left: -26px;
+    top: 6px;
+    margin: 0;
+  }
+}
+
+/* ---- grid: the features list, a contact sheet --------------------------- */
+
+.viz-grid-list {
+  list-style: none;
+  margin: 0;
+  padding: 4px 7px 0 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(10px, 1.9svh, 20px) clamp(12px, 1.6vw, 24px);
+}
+
+.viz-grid-list > li {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  min-height: clamp(44px, 9svh, 78px);
+  padding: clamp(8px, 1.6svh, 16px) 14px;
+  font-size: var(--fs-ps-item);
+  line-height: 1.35;
+  color: var(--text-primary);
+}
+
+.viz-tick {
+  flex: 0 0 auto;
+  transform: none;
+  width: 8px;
+  height: 8px;
+  background: var(--v-line);
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+}
+
+/* ---- layers: one frame, exploded into isometric planes ------------------ */
+
+.viz-layers .viz-art {
+  container-type: inline-size;
+}
+
+/* In isometric projection an explode along z is a straight vertical offset,
+   so each plane is placed by `top` (layout, not a transform). The plane is
+   an IsoBox 16 × 9 × 0.8: its drawing is 0.6143 times as tall as it is wide. */
+.viz-layers-list {
+  --plane-w: min(58cqw, calc((var(--viz-h) - (var(--n) - 1) * var(--layer-dy) - 96px) / 0.6143));
+  --plane-h: calc(var(--plane-w) * 0.6143);
+  --layer-dy: clamp(32px, 7.5svh, 68px);
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  height: calc(var(--plane-h) + (var(--n) - 1) * var(--layer-dy));
+}
+
+.viz-layer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(var(--i, 0) * var(--layer-dy));
+  bottom: auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.viz-layer-plane {
+  position: relative;
+  flex: 0 0 auto;
+  width: var(--plane-w);
+}
+
+.viz-layer-plane .viz-layer-marks {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.viz-layer-marks polyline {
+  fill: none;
+  stroke: var(--v-line);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+  opacity: 0.7;
+}
+
+/* Planes are slightly translucent at their top face so the stack reads as
+   layers of one frame; the front edges stay at full strength. */
+.viz-layer .iso-top {
+  fill: color-mix(in srgb, var(--v-line) 12%, color-mix(in srgb, var(--ink-900) 88%, transparent));
+}
+
+/* The label sits at the plane's right corner, on a leader, clear of every
+   other plane, so all four are legible. The right corner is at 9/25 of the
+   drawing's height. */
+.viz-layer-name {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-2);
+  margin-top: calc(var(--plane-h) * 0.36 - 0.75em);
+  padding-left: clamp(18px, 3cqw, 36px);
+  font-family: inherit;
+  font-size: var(--fs-ps-item);
+  font-weight: 500;
+  letter-spacing: normal;
+  text-transform: none;
+  line-height: 1.5;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.viz-layer-name::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 0.75em;
+  width: calc(clamp(18px, 3cqw, 36px) - 10px);
+  height: 1px;
+  background: var(--v-line);
+}
+
+.viz-layer-n {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  color: var(--v-line-text);
+}
+
+/* ---- wall: a rack of camera feeds --------------------------------------- */
+
+.viz-wall-stage {
+  padding: 8px 12px 0 0;
+}
+
+.viz-wall-rack {
+  --slab-d: 16px;
+  position: relative;
+  padding: clamp(8px, 1.6svh, 14px);
+}
+
+.viz-wall-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(6px, 1.3svh, 12px);
+}
+
+.viz-cam {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border: 1px solid var(--line-strong);
+  border-radius: 0;
+  background: var(--ink-950);
+}
+
+.viz-cam-view {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.viz-cam-floor,
+.viz-cam-object {
+  fill: none;
+  stroke: var(--line-strong);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.viz-cam.is-flagged {
+  border-color: var(--v-warn);
+  box-shadow: 0 0 0 1px var(--v-warn);
+}
+
+.viz-cam.is-flagged .viz-cam-object {
+  stroke: var(--v-warn);
+  stroke-dasharray: 3 2;
+}
+
+.viz-cam-bar {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: 11%;
+  height: 1px;
+  background: var(--line-strong);
+}
+
+.viz-cam-head {
+  position: absolute;
+  top: 0;
+  width: 5px;
+  height: 5px;
+  translate: -50% -50%;
+  background: var(--text-muted);
+}
+
+.viz-cam.is-flagged .viz-cam-head {
+  background: var(--v-warn);
+}
+
+.viz-scan-wrap {
+  position: absolute;
+  inset: clamp(8px, 1.6svh, 14px);
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* ---- scan lines and record rules (wall, records) ------------------------ */
+
+.viz-scan {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 1px;
+  background: var(--v-line);
+  pointer-events: none;
+}
+
+/* ---- phone: an illustrative screen -------------------------------------- */
+
+.viz-phone-wrap {
+  display: grid;
+  place-items: center;
+  padding: 8px 12px 0 0;
+}
+
+.viz-phone-body {
+  --slab-d: 12px;
+  width: auto;
+  height: min(calc(var(--viz-h) - 110px), 30rem);
+  aspect-ratio: 9 / 17;
+  padding: clamp(6px, 1.2svh, 10px);
+  border-radius: 14px;
+  background: var(--ink-950);
+}
+
+.viz-phone-body::before {
+  left: 12px;
+  right: 2px;
+}
+
+.viz-phone-body::after {
+  top: 10px;
+  bottom: 2px;
+}
+
+.viz-phone-notch {
+  position: absolute;
+  transform: none;
+  top: clamp(10px, 2svh, 16px);
+  left: 33%;
+  width: 34%;
+  height: 4px;
+  border-radius: var(--radius-pill);
+  background: var(--ink-700);
+}
+
+.viz-phone-screen {
+  height: 100%;
+  display: grid;
+  align-content: start;
+  gap: clamp(6px, 1.3svh, 12px);
+  padding: clamp(22px, 4.5svh, 36px) clamp(8px, 1.4svh, 12px) clamp(8px, 1.4svh, 12px);
+  border-radius: 8px;
+  background: var(--ink-900);
+}
+
+.viz-phone-title {
+  font-size: var(--fs-ps-body);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.viz-phone-row {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  padding: clamp(7px, 1.4svh, 12px) 10px;
+  border: 1px solid var(--line-strong);
+  border-radius: 0;
+  background: var(--ink-950);
+  font-size: var(--fs-label);
+  color: var(--text-primary);
+}
+
+.viz-phone-status {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  color: var(--text-secondary);
+}
+
+.viz-phone-status.is-open {
+  color: var(--v-line-text);
+}
+
+/* ---- records: a printed ledger ------------------------------------------ */
+
+.viz-records-sheet {
+  --slab-d: 12px;
+  margin: 6px 11px 0 0;
+  padding: clamp(6px, 1.2svh, 12px) clamp(12px, 1.6vw, 22px);
+}
+
+.viz-records-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0;
+}
+
+/* Two classes, so the row outranks the legacy `.viz-records-list li` rule in
+   app/story.css while that file is still loaded (it goes at integration). */
+.viz-records-list > .viz-record {
+  position: relative;
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr) auto;
+  gap: 0 var(--sp-3);
+  align-items: baseline;
+  padding: clamp(9px, 1.9svh, 18px) 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+}
+
+.viz-record-rule {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--line-strong);
+}
+
+.viz-record:last-child .viz-record-rule {
+  background: color-mix(in srgb, var(--v-line) 55%, transparent);
+}
+
+.viz-rec-n {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  color: var(--v-line-text);
+}
+
+.viz-rec-name {
+  font-size: var(--fs-ps-item);
+  color: var(--text-primary);
+}
+
+.viz-rec-meta {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  color: var(--text-muted);
+  text-align: right;
+}
+
+/* ---- system: a hub and its spokes, or tools that do not talk ------------ */
+
+.viz-system-wrap {
+  --hub-w: clamp(46px, 9svh, 84px);
+  position: relative;
+  display: block;
+  min-height: 0;
+  height: clamp(180px, calc(var(--viz-h) - 96px), 380px);
+}
+
+/* Separate systems need less height than a ring. */
+.viz-system-wrap.no-hub {
+  height: clamp(170px, calc(var(--viz-h) * 0.62), 320px);
+}
+
+.viz-sys-links {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.viz-sys-links line {
+  stroke: var(--v-line);
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+}
+
+.no-hub .viz-sys-links line {
+  stroke: var(--v-warn);
+  stroke-dasharray: 4 4;
+}
+
+.viz-hub {
+  position: absolute;
+  left: calc(50% - var(--hub-w) / 2);
+  top: calc(50% - var(--hub-w) * 0.55);
+  width: var(--hub-w);
+  height: auto;
+  border: 0;
+  border-radius: 0;
+  background: none;
+}
+
+/* Two classes: these outrank the legacy `.viz-system-wrap ul/li` rules in
+   app/story.css while that file is still loaded. */
+.viz-system-wrap .viz-sys-nodes {
+  position: absolute;
+  inset: 0;
+  display: block;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Zero-size anchors (hooks); the label is centred on its anchor. */
+.viz-system-wrap .viz-sys-node {
+  position: absolute;
+  width: 0;
+  height: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+}
+
+.viz-sys-label {
+  position: absolute;
+  left: 0;
+  top: 0;
+  translate: -50% -50%;
+  width: max-content;
+  max-width: 11rem;
+  padding: clamp(6px, 1.2svh, 10px) 12px;
+  text-align: center;
+  font-size: var(--fs-ps-item);
+  line-height: 1.3;
+  color: var(--text-primary);
+}
+
+/* Without a hub: each system is a small solid over its name, centred on its
+   anchor (the `translate` is on this child, never on the hook). */
+.viz-sys-tool {
+  position: absolute;
+  left: 0;
+  top: 0;
+  translate: -50% -50%;
+  display: grid;
+  justify-items: center;
+  gap: clamp(4px, 1svh, 10px);
+  width: max-content;
+  max-width: 11rem;
+}
+
+.viz-sys-tool .viz-sys-label {
+  position: relative;
+  translate: none;
+}
+
+.viz-sys-solid {
+  width: clamp(30px, 6.5svh, 54px);
+}
+
+.no-hub .iso-box .iso-edge {
+  stroke: var(--v-warn);
+  stroke-dasharray: 3 2;
+}
+
+.no-hub .viz-sys-label {
+  border-style: dashed;
+  border-color: var(--v-warn);
+  color: var(--v-warn-text);
+}
+
+.viz-sys-break {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  translate: -50% -50%;
+}
+
+.viz-sys-break::before,
+.viz-sys-break::after {
+  content: "";
+  position: absolute;
+  left: -1px;
+  right: -1px;
+  top: calc(50% - 0.75px);
+  height: 1.5px;
+  background: var(--v-warn);
+  rotate: 45deg;
+}
+
+.viz-sys-break::after {
+  rotate: -45deg;
+}
+
+/* ---- boundary: what runs inside your infrastructure --------------------- */
+
+.viz-boundary-box {
+  position: relative;
+  margin: 12px 0 0;
+  padding: clamp(24px, 4.4svh, 44px) clamp(16px, 2.6vw, 36px) clamp(16px, 3svh, 32px);
+  background: color-mix(in srgb, var(--v-line) 4%, transparent);
+}
+
+.boundary-edge {
+  position: absolute;
+}
+
+.boundary-edge[data-edge="top"],
+.boundary-edge[data-edge="bottom"] {
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: repeating-linear-gradient(90deg, var(--v-line) 0 7px, transparent 7px 11px);
+}
+
+.boundary-edge[data-edge="top"] {
+  top: 0;
+}
+
+.boundary-edge[data-edge="bottom"] {
+  bottom: 0;
+}
+
+.boundary-edge[data-edge="left"],
+.boundary-edge[data-edge="right"] {
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: repeating-linear-gradient(180deg, var(--v-line) 0 7px, transparent 7px 11px);
+}
+
+.boundary-edge[data-edge="left"] {
+  left: 0;
+}
+
+.boundary-edge[data-edge="right"] {
+  right: 0;
+}
+
+/* A drawing title on the top edge. Its height is fixed (16 + 2·3 + 2), so it
+   centres on the edge by layout, not by a transform. */
+.boundary-caption {
+  position: absolute;
+  top: -12px;
+  left: clamp(12px, 2vw, 24px);
+  margin: 0;
+  padding: 3px 8px;
+  line-height: 16px;
+  border: 1px solid var(--v-line);
+  background: var(--ink-950);
+  color: var(--v-line-text);
+}
+
+.boundary-nodes {
+  --slab-d: 9px;
+  list-style: none;
+  margin: 0;
+  padding: 4px 8px 0 0;
+  display: grid;
+  gap: clamp(10px, 2.2svh, 20px);
+}
+
+.boundary-node {
+  padding: clamp(9px, 1.9svh, 16px) 14px;
+  font-size: var(--fs-ps-item);
+  color: var(--text-primary);
+}
+
+.boundary-node.is-core {
+  border-color: var(--v-line);
+  background: color-mix(in srgb, var(--v-line) 14%, var(--ink-900));
+  font-weight: 600;
+}
+
+/* ---- cases: use-case tiles ---------------------------------------------- */
+
+.viz-cases-list {
+  --cols: 3;
+  --slab-d: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 4px 8px 0 0;
+  display: grid;
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  gap: clamp(8px, 1.8svh, 18px) clamp(12px, 1.6vw, 22px);
+}
+
+.viz-cases-list:is([data-count="2"], [data-count="4"]) {
+  --cols: 2;
+}
+
+.viz-case {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-content: start;
+  column-gap: 10px;
+  row-gap: 3px;
+  padding: clamp(9px, 1.7svh, 16px) clamp(12px, 1.3vw, 18px);
+}
+
+.viz-case-n {
+  grid-row: 1 / span 2;
+  padding-top: 2px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  color: var(--v-line-text);
+}
+
+.viz-case-l {
+  font-size: var(--fs-ps-item);
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--text-primary);
+}
+
+.viz-case-copy {
+  grid-column: 2;
+  font-size: var(--fs-ps-item);
+  line-height: 1.4;
+  color: var(--text-secondary);
+}
+
+/* ---- ports: inputs, one core, outputs ----------------------------------- */
+
+.viz-ports-grid {
+  --g: clamp(18px, 3vw, 44px);
+  --pg: clamp(6px, 1.3svh, 12px);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.85fr) minmax(0, 1.15fr);
+  align-items: center;
+  column-gap: var(--g);
+  padding: 6px 0 0;
+}
+
+.port-ins,
+.port-outs {
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--pg);
+}
+
+.port-in,
+.port-out {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.port-label {
+  flex: 0 1 auto;
+  min-width: 0;
+  padding: clamp(4px, 0.9svh, 7px) 10px;
+  border: 1px solid var(--line-strong);
+  background: var(--ink-900);
+  font-size: var(--fs-ps-item);
+  line-height: 1.3;
+  color: var(--text-primary);
+}
+
+.port-wire {
+  flex: 1 0 12px;
+  height: 1.5px;
+  background: var(--v-line);
+}
+
+/* Outputs start together at the bus. */
+.port-out .port-wire {
+  flex: 0 0 clamp(14px, 1.6vw, 24px);
+}
+
+/* The bus: each port draws its share of the vertical line at the column's
+   inner edge, from the first port's centre to the last one's. */
+.port-in::after,
+.port-out::before {
+  content: "";
+  position: absolute;
+  top: calc(var(--pg) / -2);
+  bottom: calc(var(--pg) / -2);
+  width: 1.5px;
+  background: var(--v-line);
+}
+
+.port-in::after {
+  right: 0;
+}
+
+.port-out::before {
+  left: 0;
+}
+
+.port-in:first-child::after,
+.port-out:first-child::before {
+  top: 50%;
+}
+
+.port-in:last-child::after,
+.port-out:last-child::before {
+  bottom: 50%;
+}
+
+/* From the bus to the core, across the column gap. */
+.port-ins::after,
+.port-outs::before {
+  content: "";
+  position: absolute;
+  top: calc(50% - 0.75px);
+  height: 1.5px;
+  background: var(--v-line);
+}
+
+.port-ins::after {
+  left: 100%;
+  width: var(--g);
+}
+
+.port-outs::before {
+  right: 100%;
+  width: calc(var(--g) - 14px);
+}
+
+.port-core {
+  --slab-d: 18px;
+  margin: 0;
+  padding: clamp(14px, 3.4svh, 32px) 10px;
+  text-align: center;
+  border-color: var(--v-line);
+  background: color-mix(in srgb, var(--v-line) 14%, var(--ink-900));
+  font-size: var(--fs-ps-body);
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--text-primary);
+}
+
+/* ---- chain: ordered states, with branches ------------------------------- */
+
+.viz-chain-wrap {
+  --g: clamp(16px, 2.6vw, 36px);
+  --drop: clamp(16px, 3.4svh, 30px);
+  padding: 6px 8px 0 0;
+}
+
+.chain-nodes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(var(--n), minmax(0, 1fr));
+  column-gap: var(--g);
+}
+
+.chain-node {
+  position: relative;
+  display: flex;
+  min-width: 0;
+}
+
+.chain-label {
+  --slab-d: 8px;
+  flex: 1 1 auto;
+  display: grid;
+  place-items: center;
+  min-height: clamp(44px, 9svh, 72px);
+  padding: clamp(8px, 1.6svh, 14px) 6px;
+  text-align: center;
+  font-size: var(--fs-ps-item);
+  line-height: 1.3;
+  color: var(--text-primary);
+  /* Words break only when one cannot fit on a line of its own. */
+  overflow-wrap: break-word;
+}
+
+.chain-label .nobr {
+  white-space: nowrap;
+}
+
+/* Five or more states: tighter gaps and padding, so each label keeps whole
+   words ("Re-hash and compare", not "compar·e"). */
+.viz-chain-wrap:is([data-count="5"], [data-count="6"]) {
+  --g: clamp(12px, 1.7vw, 26px);
+}
+
+.viz-chain-wrap:is([data-count="5"], [data-count="6"]) .chain-label {
+  padding-inline: 4px;
+}
+
+/* The last state is the outcome: the line colour on its border. */
+.chain-node:last-child .chain-label {
+  border-color: var(--v-line);
+  background: color-mix(in srgb, var(--v-line) 12%, var(--ink-900));
+}
+
+.chain-edge {
+  position: absolute;
+  top: 50%;
+  right: calc(100% + 2px);
+  width: calc(var(--g) - 10px);
+  height: 1.5px;
+  background: var(--v-line);
+}
+
+.chain-edge::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: -3px;
+  width: 7px;
+  height: 7px;
+  border-top: 1.5px solid var(--v-line);
+  border-right: 1.5px solid var(--v-line);
+  rotate: 45deg;
+}
+
+/* Branches hang from the second state, on a dashed drop line. Column 2's
+   centre is 1.5 columns plus one gap in. */
+.chain-branches {
+  --bx: calc((100% - (var(--n) - 1) * var(--g)) / var(--n) * 1.5 + var(--g));
+  position: relative;
+  list-style: none;
+  margin: var(--drop) 0 0;
+  padding: 0 0 0 calc(var(--bx) + 10px);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+.chain-branches::before {
+  content: "";
+  position: absolute;
+  left: var(--bx);
+  top: calc(-1 * var(--drop));
+  height: calc(var(--drop) + 14px);
+  border-left: 1.5px dashed var(--v-warn);
+}
+
+.chain-branches li {
+  padding: 4px 10px;
+  border: 1px dashed var(--v-warn);
+  background: var(--ink-950);
+  font-size: var(--fs-label);
+  line-height: 1.4;
+  color: var(--v-warn-text);
+}
+
+
+/* ---- columns: labelled lists -------------------------------------------- */
+
+.viz-columns-grid {
+  --cols: 3;
+  --slab-d: 10px;
+  display: grid;
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  gap: clamp(12px, 1.8vw, 28px);
+  padding: 5px 9px 0 0;
+}
+
+.viz-columns-grid[data-count="2"] {
+  --cols: 2;
+}
+
+.viz-column {
+  display: grid;
+  align-content: start;
+  gap: clamp(6px, 1.2svh, 10px);
+  padding: clamp(9px, 1.8svh, 18px) clamp(12px, 1.4vw, 20px);
+}
+
+.viz-column-label {
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--sp-3);
+  padding-bottom: clamp(5px, 1svh, 9px);
+  border-bottom: 1px solid var(--v-line);
+  font-size: var(--fs-ps-body);
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--text-primary);
+}
+
+.viz-column-count {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: 400;
+  color: var(--v-line-text);
+}
+
+.viz-column ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: clamp(3px, 0.8svh, 8px);
+}
+
+.viz-column li {
+  position: relative;
+  padding-left: 16px;
+  font-size: var(--fs-ps-item);
+  line-height: 1.35;
+  color: var(--text-secondary);
+}
+
+.viz-column li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.68em;
+  width: 8px;
+  height: 1px;
+  background: var(--v-line);
+}
+
+/* ---- ribbon: the title art, a stair of words on the 30° axis ------------ */
+
+.viz-ribbon {
+  align-self: center;
+}
+
+.viz-ribbon-words {
+  --rs: clamp(1.25rem, calc(2.6 * var(--u)), 2.5rem);
+  --step: 4.5%;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+}
+
+.viz-ribbon-words:is([data-count="6"], [data-count="7"]) {
+  --rs: clamp(1.0625rem, calc(2.05 * var(--u)), 2rem);
+  --step: 3.6%;
+}
+
+.viz-ribbon-word {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-4);
+  margin-inline-start: calc(var(--k, 0) * var(--step));
+  padding-block: clamp(5px, 1.3svh, 12px);
+  border-bottom: 1px solid var(--line-strong);
+}
+
+.viz-ribbon-word:first-child {
+  border-top: 1px solid var(--v-line);
+}
+
+.viz-ribbon-n {
+  flex: 0 0 auto;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  color: var(--v-line-text);
+}
+
+.viz-ribbon-t {
+  font-size: var(--rs);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--p-fg, var(--text-primary));
+}
+
+/* ---- screens: fit to the frame, with callouts --------------------------- */
+
+.screen-box {
+  position: relative;
+  min-width: 0;
+}
+
+/* The width is definite: the media height times the file's aspect ratio
+   (`--ar`, set by ScreenFrame), capped at the column. So the box is right
+   before the image decodes, the stage's fit-content module sizes to it, and
+   the callouts drawn in the box sit on the picture. Never wider than the
+   file (figure max-width, I9). Three classes, so this holds against the
+   stage's own `.ps-mid .screen img` rule. */
+.screen.is-fit {
+  justify-items: start;
+}
+
+.screen.is-fit .screen-box {
+  width: fit-content;
+  max-width: 100%;
+}
+
+.screen.is-fit .screen-box img {
+  width: calc(var(--viz-h) * var(--ar, 1.6));
+  max-width: 100%;
+  height: auto;
+  max-height: var(--viz-h);
+  aspect-ratio: var(--ar, 1.6);
+  border-radius: var(--radius-control);
+}
+
+.callouts {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  pointer-events: none;
+}
+
+.callout {
+  --lead: clamp(24px, 4vw, 64px);
+  position: absolute;
+  left: calc(var(--x) * 100%);
+  top: calc(var(--y) * 100%);
+  width: 0;
+  height: 0;
+}
+
+.callout-ring {
+  position: absolute;
+  left: -6px;
+  top: -6px;
+  width: 12px;
+  height: 12px;
+  border: 1.5px solid var(--v-line);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--ink-950) 30%, transparent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--ink-950) 70%, transparent);
+}
+
+.callout-line {
+  position: absolute;
+  top: 0;
+  left: 6px;
+  width: var(--lead);
+  height: 1px;
+  background: var(--v-line);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--ink-950) 45%, transparent);
+}
+
+.callout[data-side="left"] .callout-line {
+  left: auto;
+  right: 6px;
+}
+
+/* The chip's first line is 16 px tall (plus 2·3 padding and 2 border), so it
+   centres on the leader by layout, not by a transform. Longer labels wrap to
+   a second line (about 11 characters a line), so a chip stays inside the
+   image on a 440 px screen. */
+.callout-label {
+  position: absolute;
+  top: -12px;
+  left: calc(6px + var(--lead));
+  width: max-content;
+  max-width: 8.75em;
+  padding: 3px 7px;
+  border: 1px solid var(--line-strong);
+  border-radius: 3px;
+  background: var(--ink-950);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 16px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+
+.callout[data-side="left"] .callout-label {
+  left: auto;
+  right: calc(6px + var(--lead));
+  text-align: right;
+}
+
+/* Short labels (≤14 characters, ScreenFrame) stay on one line: one row of
+   the screen is covered instead of two. */
+.callout[data-short] .callout-label {
+  max-width: none;
+  white-space: nowrap;
+}
+
+/* Small screens: the image is narrow, so the leader shortens. */
+@media (max-width: 767px) {
+  .callout {
+    --lead: 14px;
+  }
+}
+
+/* ---- next: the next product's page -------------------------------------- */
+
+.next-card {
+  display: grid;
+  gap: clamp(10px, 2svh, 20px);
+  justify-items: start;
+  width: 100%;
+  max-width: 44rem;
+  padding: 10px 16px 0 0;
+  color: inherit;
+  text-decoration: none;
+}
+
+.next-shot {
+  display: grid;
+  gap: var(--sp-2);
+  justify-items: start;
+  max-width: 100%;
+}
+
+.next-frame {
+  --slab-d: 16px;
+  display: block;
+  max-width: 100%;
+  line-height: 0;
+}
+
+/* Never wider than the file itself (I9): the width attribute is the cap.
+   The cap leaves room for the provenance label and the name block under the
+   image (about 150 px), inside the stage's media height (owner A's
+   --ps-media-h). Three classes, so it holds against the stage's own
+   `.ps-mid .next-shot img` rule. */
+.next-card .next-shot .next-frame img {
+  display: block;
+  width: calc((var(--viz-h) - 150px) * var(--ar, 1.6));
+  max-width: 100%;
+  height: auto;
+  max-height: calc(var(--viz-h) - 150px);
+  aspect-ratio: var(--ar, 1.6);
+}
+
+.next-meta {
+  display: grid;
+  gap: 2px;
+}
+
+.next-kicker {
+  margin-bottom: var(--sp-1);
+}
+
+.next-name {
+  font-size: var(--fs-ps-h);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.next-desc {
+  font-size: var(--fs-ps-body);
+  color: var(--text-secondary);
+}
+
+.next-go {
+  margin-top: var(--sp-2);
+  font-weight: 500;
+  color: var(--v-line-text);
+}
+
+.next-card:hover .next-name {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+  text-decoration-thickness: 1px;
+}
+
+.next-card:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 6px;
+}
+
+/* ---- compact heights (§3.1 tiers) --------------------------------------- */
+
+@media (max-height: 620px) {
+  .viz-tile {
+    min-height: 58px;
+  }
+
+  .viz-grid-list > li {
+    min-height: 40px;
+  }
+}
+
+/* ---- narrow screens (rail, §4.9) ---------------------------------------- */
+
+@media (max-width: 767px) {
+  .viz-tiles-list,
+  .viz-tiles-list:is([data-count="5"], [data-count="6"], [data-count="9"], [data-count="7"], [data-count="8"]) {
+    --cols: 2;
+  }
+
+  .viz-tiles-list[data-count="3"] {
+    --cols: 3;
+  }
+
+  .viz-cases-list,
+  .viz-columns-grid,
+  .viz-columns-grid[data-count="2"] {
+    --cols: 1;
+  }
+
+  /* Lists go to two columns from 360 px (§4.9), and every item gives up its
+     stage height, so a scene fits 100svh from 360×640. */
+  .viz-grid-list {
+    gap: var(--sp-2);
+  }
+
+  .viz-grid-list > li {
+    min-height: 0;
+    padding: 8px 10px;
+  }
+
+  /* Stations and cases run their label into the copy ("01 Mine  See every
+     path…"), which saves a line per item. */
+  .viz-stations {
+    gap: 10px;
+  }
+
+  .viz-station {
+    display: block;
+    line-height: 1.4;
+  }
+
+  .viz-station-head {
+    display: inline-flex;
+    margin-right: var(--sp-2);
+  }
+
+  .viz-station-l {
+    font-size: var(--fs-ps-item);
+  }
+
+  .viz-station-copy {
+    display: inline;
+  }
+
+  .viz-cases-list {
+    gap: var(--sp-2);
+  }
+
+  .viz-case {
+    display: block;
+    padding: 8px 10px;
+    line-height: 1.4;
+  }
+
+  .viz-case-n {
+    margin-right: var(--sp-2);
+  }
+
+  .viz-case-l {
+    margin-right: var(--sp-2);
+  }
+
+  .viz-case-copy {
+    line-height: inherit;
+  }
+
+  /* Role columns become rows: the role on the left, its actions running on
+     as a wrapped line beside it. */
+  .viz-columns-grid {
+    gap: var(--sp-2);
+  }
+
+  .viz-column {
+    grid-template-columns: 6.25rem minmax(0, 1fr);
+    align-items: start;
+    gap: 4px 10px;
+    padding: 8px 10px;
+  }
+
+  .viz-column-label {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 2px;
+    padding-bottom: 0;
+    border-bottom: 0;
+    font-size: var(--fs-ps-item);
+  }
+
+  .viz-column ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px 10px;
+  }
+
+  .viz-column li {
+    padding-left: 11px;
+  }
+
+  .viz-column li::before {
+    width: 6px;
+  }
+
+  .viz-ports-grid {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: var(--sp-3);
+  }
+
+  .port-wire,
+  .port-in::after,
+  .port-out::before,
+  .port-ins::after,
+  .port-outs::before {
+    display: none;
+  }
+
+  .port-ins,
+  .port-outs {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .viz-lanes-grid {
+    --name-w: 5rem;
+  }
+
+  /* The title ribbon runs on as one wrapped line of words under a rule, so
+     the title scene still fits a phone's first screen. */
+  .viz-ribbon-words,
+  .viz-ribbon-words:is([data-count="6"], [data-count="7"]) {
+    --rs: clamp(1.0625rem, 5vw, 1.375rem);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 18px;
+    padding-top: var(--sp-3);
+    border-top: 1px solid var(--v-line);
+  }
+
+  .viz-ribbon-word,
+  .viz-ribbon-word:first-child {
+    gap: var(--sp-2);
+    margin-inline-start: 0;
+    padding-block: 0;
+    border: 0;
+  }
+}
+
+@media (max-width: 359px) {
+  .viz-grid-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (min-width: 480px) and (max-width: 767px) {
+  .viz-cases-list,
+  .viz-columns-grid {
+    --cols: 2;
+  }
+}
+
+/* Windows high contrast: the faces and grounds drop away; hairlines stay. */
+@media (forced-colors: active) {
+  .viz-slab::before,
+  .viz-slab::after {
+    display: none;
+  }
+
+  .viz[data-viz="drawing"] .viz-art {
+    background: none;
+  }
+}

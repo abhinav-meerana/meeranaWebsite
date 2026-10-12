@@ -1,0 +1,597 @@
+/* ============================================================================
+   Hero: copy over the layered isometric room (FINAL-SPEC §7).
+
+   Tiers (mobile first; lib/breakpoints.ts MQ.heroSplit):
+     M        <600 wide       stacked, depth band clamp(220px, 34svh, 320px)
+     P        ≥600, not S     100svh, stacked: copy, then the depth band
+     L-phone  landscape ≤499  copy only
+     S        heroSplit       exactly 100svh; copy left, full-bleed room behind,
+                              framed into the column right of the copy
+     S-short  S and ≤700 tall compact moments, 44px buttons
+     S-tight  S and ≤580 tall tighter still
+
+   Every size reads the height-aware --u tokens, so the hero fits the first
+   viewport from 1024×520 to 2560×1440 by construction: no step patches.
+
+   Legibility rule: the room never sits behind text without protection. In S
+   the scrim is solid page colour across the copy column and falls away only
+   past the copy's right edge (H-04).
+   ========================================================================== */
+
+.hero-stage {
+  position: relative;
+}
+
+.hero {
+  /* 7.6em of the H1: always "We engineer / intelligence for / the real
+     world." It cannot reach four lines (needs <7.1em) or two (needs ≥12.4em). */
+  --hero-copy-w: clamp(27.5rem, calc(var(--fs-hero) * 7.6), 58rem);
+  --hero-gap-x: clamp(32px, 3.5vw, 96px);
+  --copy-l: calc((100vw - min(100vw, var(--content-max))) / 2 + var(--gutter));
+  --copy-r: calc(var(--copy-l) + var(--hero-copy-w));
+  /* Hero.tsx measures the real column and writes --room-l; this is the
+     no-JS estimate of the same edge. */
+  --room-l-auto: calc(var(--copy-r) + var(--hero-gap-x));
+  position: relative;
+  overflow: clip;
+  /* One column, so this lays nothing out: it carries the resolved
+     --hero-gap-x in px for Hero.tsx to read. */
+  column-gap: var(--hero-gap-x);
+  display: flex;
+  flex-direction: column;
+  padding-block: calc(var(--header-h) + var(--sp-fluid-s)) var(--sp-fluid-m);
+}
+
+/* ---- copy -------------------------------------------------------------- */
+
+/* Same max width and left edge as every other section; the inner wrapper
+   carries the measure. */
+.hero-copy {
+  order: 1;
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  max-width: var(--content-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.hero-copy-inner {
+  inline-size: var(--hero-copy-w);
+  max-inline-size: 100%;
+}
+
+.hero-eyebrow {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+/* A small lit dot before the eyebrow: the same cyan as the room's rim light,
+   so the copy and the scene share one light source. */
+.hero-eyebrow::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--meerana-cyan);
+  box-shadow: 0 0 12px 2px color-mix(in srgb, var(--meerana-cyan) 55%, transparent);
+}
+
+.hero-title {
+  margin: var(--sp-fluid-s) 0 0;
+  font-size: var(--fs-hero);
+  font-weight: 600;
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+  color: var(--text-primary);
+}
+
+.hero-lede {
+  margin: calc(var(--sp-fluid-s) * 0.75) 0 0;
+  font-size: var(--fs-lede);
+  max-width: 46ch;
+}
+
+/* ---- moments: a ruled row of links, no pills --------------------------- */
+
+.moments {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+  list-style: none;
+  padding: 0;
+  margin: var(--sp-fluid-s) 0 0;
+  border-top: 1px solid var(--line);
+}
+
+.moments li {
+  border-right: 1px solid var(--line);
+}
+
+.moments li:last-child {
+  border-right: 0;
+}
+
+/* Phones: a 2×2 grid. */
+@media (max-width: 599px) {
+  .moments {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .moments li:nth-child(2n) {
+    border-right: 0;
+  }
+  .moments li:nth-child(-n + 2) {
+    border-bottom: 1px solid var(--line);
+  }
+}
+
+/* Each moment is a real link into that product's story. */
+.moment {
+  display: block;
+  padding: var(--sp-4) var(--sp-4) var(--sp-3) 0;
+  text-decoration: none;
+}
+
+.moment:hover .m-label,
+.moment:focus-visible .m-label {
+  color: var(--text-accent);
+}
+
+.m-label {
+  display: block;
+  font-size: var(--fs-small);
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--text-primary);
+  transition: color var(--dur-fast) var(--ease-standard);
+}
+
+.m-product {
+  display: block;
+  margin-top: 2px;
+  font-size: var(--fs-label);
+  line-height: 1.45;
+  color: var(--text-accent);
+}
+
+/* ---- the fifth affordance and the CTA ----------------------------------- */
+
+/* "All six products": only where there is height to spare, so the CTA still
+   clears the fold at 1024×520 and on short phones. */
+.hero-all {
+  display: none;
+  margin: var(--sp-fluid-xs) 0 0;
+}
+
+.hero-all .btn-text {
+  padding-inline: 0;
+  color: var(--text-secondary);
+}
+
+.hero-all .btn-text:hover {
+  color: var(--text-accent);
+}
+
+.hero-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+  margin-top: var(--sp-fluid-s);
+}
+
+/* Phones: full-width buttons, a 48px target within thumb reach. */
+.hero-cta .btn {
+  flex: 1 1 100%;
+  justify-content: center;
+}
+
+/* The lede, moments and buttons settle in once: opacity and an 8px lift,
+   after first paint. The H1 never animates. */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-enter {
+    animation: hero-enter var(--dur-slow) var(--ease-standard) both;
+    animation-delay: calc(var(--i, 0) * 60ms + 120ms);
+  }
+}
+
+@keyframes hero-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---- the room box ------------------------------------------------------- */
+
+/* M and P: the depth band under the copy. S repositions it full-bleed. */
+.hero-room {
+  order: 2;
+  position: relative;
+  z-index: 0;
+  width: 100%;
+  max-width: var(--content-max);
+  height: clamp(220px, 34svh, 320px);
+  margin: var(--sp-fluid-m) auto 0;
+  pointer-events: none;
+}
+
+/* The canvas wrapper. Its opacity is written by the scroll exit. */
+.room {
+  position: absolute;
+  inset: 0;
+}
+
+/* Foreground provenance on the two near screens (§7.3). Positioned every
+   frame from the projected panel corner (Room.tsx), lifted clear of the
+   screen so it never sits on the capture itself. */
+.room-callout {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 7px 3px 6px;
+  border-radius: var(--radius-control);
+  background: color-mix(in srgb, var(--surface-deep) 82%, transparent);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.3;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--text-secondary);
+  /* Sits on the screen's top edge like a tab, so it reads as that screen's
+     label even where it overlaps a panel behind. */
+  translate: 0 calc(-100% - 4px);
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.room-callout::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  flex: 0 0 auto;
+  background: var(--annotation);
+}
+
+/* ---- the depth stack: three planes in CSS 3D (RoomDepth.tsx) ------------- */
+
+.hero-depth {
+  position: absolute;
+  /* M and P: inside the page gutter, like every other block. */
+  inset: 0 var(--gutter);
+  container-type: size;
+  perspective: 1100px;
+  perspective-origin: 62% 40%;
+  transform-style: preserve-3d;
+  display: grid;
+  grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+}
+
+.hero-depth > * {
+  grid-area: 1 / 1;
+  margin: 0;
+}
+
+/* Background plane: the lattice, pushed back and scaled to fill again. */
+.hd-back {
+  position: relative;
+  transform: translateZ(-120px) scale(1.12);
+}
+
+/* Midground plane: the main screen, turned to face the copy (the same yaw
+   sign as the room's right-hand panels). It turns about its right edge, so
+   the turn recedes into the band instead of pushing past the gutter. */
+.hd-mid {
+  justify-self: end;
+  align-self: center;
+  width: min(86cqw, calc(85cqh * 1.6));
+  transform: rotateY(-12deg) rotateX(5deg);
+  transform-origin: 100% 50%;
+}
+
+/* Foreground plane: a second screen lifted towards the viewer, bottom-left,
+   overlapping the main screen so the planes visibly separate.
+
+   Its top sits just above the main screen's lower edge (the main screen is
+   centred and min(53.75cqw, 85cqh) tall; this one is 27.5cqw tall, both
+   16:10), so the two always overlap, even in a tall, narrow column where
+   plain bottom alignment left a gap between them. It never drops below 5cqh
+   off the bottom. */
+.hd-front {
+  justify-self: start;
+  align-self: start;
+  width: 44cqw;
+  /* Lifting it 60px pushes it out from the perspective origin by ~6%; the
+     inline margin takes that back so it stays inside the gutter. */
+  margin: min(calc(50cqh + min(26.875cqw, 42.5cqh) - 15.125cqw), calc(95cqh - 27.5cqw)) 0 0 4cqw;
+  transform: translateZ(60px);
+}
+
+.hd-mid img,
+.hd-front img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-input);
+  background: var(--surface-deep);
+  box-shadow: var(--shadow-room);
+}
+
+.hd-front img {
+  box-shadow: var(--shadow-room), var(--shadow-panel);
+}
+
+.hd-prov {
+  justify-self: end;
+  align-self: end;
+}
+
+/* M-home-hero-05: the planes separate as the band scrolls out (CSS only, no
+   GPU scene). `translate` composes with each plane's static transform. */
+@media (prefers-reduced-motion: no-preference) {
+  .hd-front-in {
+    animation: hd-front-in var(--dur-slow) var(--ease-enter) 200ms both;
+  }
+
+  @supports (animation-timeline: view()) {
+    .hero-depth {
+      view-timeline: --hd-band block;
+    }
+    .hd-back,
+    .hd-mid,
+    .hd-front {
+      animation-duration: auto;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: --hd-band;
+      animation-range: exit 0% exit 100%;
+    }
+    .hd-back {
+      animation-name: hd-drift-back;
+    }
+    .hd-mid {
+      animation-name: hd-drift-mid;
+    }
+    .hd-front {
+      animation-name: hd-drift-front;
+    }
+  }
+}
+
+@keyframes hd-front-in {
+  from {
+    opacity: 0;
+    translate: 24px 0;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes hd-drift-back {
+  from {
+    translate: 0 0;
+  }
+  to {
+    translate: 0 12px;
+  }
+}
+
+@keyframes hd-drift-mid {
+  from {
+    translate: 0 0;
+  }
+  to {
+    translate: 0 -16px;
+  }
+}
+
+@keyframes hd-drift-front {
+  from {
+    translate: 0 0;
+  }
+  to {
+    translate: 0 -40px;
+  }
+}
+
+/* ---- P: tablets and narrow landscape ------------------------------------ */
+
+@media (min-width: 600px) {
+  .hero {
+    min-height: 100svh;
+  }
+  .hero-room {
+    flex: 1 1 auto;
+    height: auto;
+    min-height: 240px;
+    max-height: 520px;
+  }
+  .hero-cta .btn {
+    flex: 0 0 auto;
+  }
+}
+
+@media (min-width: 600px) and (min-height: 640px) {
+  .hero-all {
+    display: block;
+  }
+}
+
+/* Short phones: tighter moments so the CTA stays in the first viewport. */
+@media (max-width: 599px) and (max-height: 600px) {
+  .moment {
+    padding: 8px 8px 6px 0;
+  }
+}
+
+/* ---- L-phone: landscape phones and 200% zoom. Copy only. ---------------- */
+
+@media (orientation: landscape) and (max-height: 499px) {
+  .hero {
+    min-height: auto;
+  }
+  .hero-room {
+    display: none;
+  }
+}
+
+/* ---- S: the split. Copy left, room right, exactly one viewport. --------- */
+
+@media (min-width: 900px) and (min-aspect-ratio: 5/4) and (min-height: 500px) {
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: center;
+    height: 100svh;
+    min-height: 500px;
+    max-height: 1600px;
+    padding-block: calc(var(--header-h) + 16px) 24px;
+  }
+
+  /* The canvas is exactly the hero box; the camera, not the box, frames the
+     room into the column (room-layout.ts fitRoom). */
+  .hero-room {
+    position: absolute;
+    inset: 0;
+    width: auto;
+    max-width: none;
+    height: auto;
+    min-height: 0;
+    max-height: none;
+    margin: 0;
+  }
+
+  /* No WebGL in S: the depth stack fills the same column. */
+  .hero-depth {
+    inset: calc(var(--header-h) + 16px) clamp(16px, 2vw, 48px) 24px
+      var(--room-l, var(--room-l-auto));
+  }
+
+  .hd-back,
+  .hd-mid,
+  .hd-front {
+    animation: none;
+  }
+
+  /* The label sits just above the main screen's top edge, so it reads as
+     that screen's caption at any column height. */
+  .hd-prov {
+    align-self: start;
+    margin-top: max(0px, calc(50cqh - min(26.875cqw, 42.5cqh) - 28px));
+  }
+
+  /* With the depth stack the bottom fade only needs to soften the lattice;
+     at full height it washed out the front screen's lower row. */
+  .hero:has(.hero-depth)::after {
+    height: 10%;
+  }
+
+  /* Directional scrim: solid page colour across the copy column, 55% at half
+     the gap, clear 3vw into the column. Guarantees H1 and lede contrast over
+     a full-bleed canvas instead of hoping for it. */
+  .hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(
+      90deg,
+      var(--surface-page) 0,
+      var(--surface-page) calc(var(--room-l, var(--room-l-auto)) - var(--hero-gap-x)),
+      color-mix(in srgb, var(--surface-page) 55%, transparent)
+        calc(var(--room-l, var(--room-l-auto)) - var(--hero-gap-x) / 2),
+      transparent calc(var(--room-l, var(--room-l-auto)) + 3vw)
+    );
+  }
+
+  /* Bottom fade: the room dissolves into the gallery instead of ending at a
+     hard edge. */
+  .hero::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 22%;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      color-mix(in srgb, var(--surface-page) 92%, transparent) 78%,
+      var(--surface-page) 100%
+    );
+  }
+}
+
+/* S-short: laptops at 1280×601, 1366×657, 1536×730. */
+@media (min-width: 900px) and (min-aspect-ratio: 5/4) and (min-height: 500px) and (max-height: 700px) {
+  .hero-title {
+    margin-top: var(--sp-fluid-xs);
+  }
+  .moment {
+    padding: 10px 12px 8px 0;
+  }
+  .hero-cta .btn {
+    height: 44px;
+  }
+}
+
+/* S-tight: 1024×520, 1093×529 (1366×768 at 125%). */
+@media (min-width: 900px) and (min-aspect-ratio: 5/4) and (min-height: 500px) and (max-height: 580px) {
+  .hero-title {
+    margin-top: 0;
+  }
+  .hero-lede {
+    line-height: 1.45;
+  }
+  .moment {
+    padding: 6px 12px 5px 0;
+  }
+}
+
+/* M-home-hero-04, the hand-off (D15): the hero holds still for 40svh while
+   the gallery slides over it like a foreground sheet. A sticky stage, not a
+   pin.
+
+   The sheet is opaque from its top edge, feathered by a short shadow cast
+   above it (≤24px, so at rest it stops short of the CTA, which sits ≥16px
+   off the bottom). The spec's transparent-to-opaque 120px gradient left the
+   gallery heading at ~50% over the hero's CTA and moments, so the two sets of
+   text overlapped mid-scroll. The sheet is opaque only where it can cover the
+   hero (its first 40svh), so the page's grade stack still shows behind the
+   gallery below that. */
+@media (min-width: 900px) and (min-aspect-ratio: 5/4) and (min-height: 500px) and (prefers-reduced-motion: no-preference) {
+  .hero-stage {
+    height: calc(clamp(500px, 100svh, 1600px) + 40svh);
+  }
+  .hero {
+    position: sticky;
+    top: 0;
+  }
+  .hero-stage + .showcase {
+    margin-top: -40svh;
+    position: relative;
+    z-index: 2;
+    background: linear-gradient(
+      to bottom,
+      var(--surface-page) 0,
+      var(--surface-page) 40svh,
+      transparent calc(40svh + 160px)
+    );
+    box-shadow: 0 -24px 32px -16px var(--surface-page);
+  }
+}

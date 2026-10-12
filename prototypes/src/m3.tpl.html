@@ -1,0 +1,978 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-brand="meerana" data-surface="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Meerana · M3 Intelligent Ecosystem · homepage prototype</title>
+<meta name="description" content="Design prototype M3 (Intelligent Ecosystem) for the Meerana Technologies homepage: a 3D wall of real product screens, six products in a horizontal gallery, and one isometric 3D scene told through scroll. Internal exploration; copy proposed, sample data labelled.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* Critical paint before the Tailwind browser build compiles: page colour, font and the fixed stage only. */
+  html { background: #051326; color: #FFFFFF; font-family: "Poppins", ui-sans-serif, system-ui, sans-serif; }
+  .stage { position: fixed; inset: 0; pointer-events: none; }
+  .posters .m3p { position: absolute; opacity: 0; }
+  .posters .m3p.is-on { opacity: 1; }
+</style>
+<script>
+  /* Motion preference before first paint: OS setting or the persisted on-page toggle. */
+  (function () { var d = document.documentElement; d.classList.add('js-motion');
+    try { if (localStorage.getItem('meerana-motion') === 'reduce') d.dataset.motion = 'reduce'; } catch (e) {} })();
+</script>
+<script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.min.js" } }</script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.3"></script>
+<style type="text/tailwindcss">
+@import "tailwindcss";
+{{TOKENS_CSS}}
+
+/* ================= M3 v3 page system =================
+   One grid (12 columns, 1280 max), one spacing scale (4·8·12·16·24·32·48·64·96·128), eight type sizes, one card,
+   one button scale, one caption style, one segmented control. Glass only on the floating nav and its sheet (DD-22).
+   Cyan marks what is interactive, active or focused (plus one 3D accent). Review round: docs/M3-CHANGE-PLAN-2026-10-10.md */
+:root {
+  --margin: clamp(16px, 5.56vw, 80px);
+  --gutter: clamp(16px, 1.67vw, 24px);
+  --line: color-mix(in srgb, var(--meerana-white) 8%, transparent);
+  --line-strong: color-mix(in srgb, var(--meerana-white) 14%, transparent);
+  --fill-hover: color-mix(in srgb, var(--meerana-white) 6%, transparent);
+  --fill-selected: color-mix(in srgb, var(--meerana-white) 10%, transparent);
+  --shade: color-mix(in srgb, black 55%, transparent);
+  --fs-display: clamp(44px, 2.2rem + 2.7vw, 72px);
+  --fs-h2: clamp(32px, 1.55rem + 1.35vw, 44px);
+  --fs-h3: clamp(22px, 1.15rem + .45vw, 28px);
+  --fs-lede: clamp(17px, 1rem + .25vw, 20px);
+  --hold: 2800ms;
+  --ease-spring: cubic-bezier(0.34, 1.32, 0.64, 1);   /* DD-24: the island only */
+}
+
+@layer components {
+  .wrap { width: min(1280px, calc(100% - 2 * var(--margin))); margin-inline: auto; }
+  .grid12 { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); }
+  .c-text { grid-column: 1 / span 6; }
+  @media (max-width: 1279px) { .c-text { grid-column: 1 / -1; max-width: 640px; } }
+  .skip { position: absolute; inset-inline-start: -9999px; z-index: 60; }
+  .skip:focus { inset-inline-start: 16px; top: 16px; background: var(--action-primary-bg); color: var(--action-primary-fg); padding: 12px 16px; border-radius: var(--radius-control); }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+  /* ---- type (8 sizes) ---- */
+  .t-display { font-size: var(--fs-display); line-height: 1; letter-spacing: -0.035em; font-weight: 300; text-wrap: balance; }
+  .t-display .cont { display: block; color: var(--text-secondary); }
+  .t-h2 { font-size: var(--fs-h2); line-height: 1.1; letter-spacing: -0.025em; font-weight: 400; text-wrap: balance; }
+  .t-h3 { font-size: var(--fs-h3); line-height: 1.2; letter-spacing: -0.015em; font-weight: 400; text-wrap: balance; }
+  .t-lede { font-size: var(--fs-lede); line-height: 1.5; color: var(--text-secondary); text-wrap: pretty; }
+  .t-body { font-size: 16px; line-height: 1.6; color: var(--text-secondary); }
+  .t-ui { font-size: 14px; line-height: 1.45; }
+  .t-cap { font-size: 13px; line-height: 1.4; color: var(--text-muted); }
+  .t-data { font-family: var(--font-family-mono); font-size: 12px; line-height: 1.4; letter-spacing: .02em; font-variant-numeric: tabular-nums; color: var(--text-secondary); }
+  .eyebrow { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 500; color: var(--text-secondary); }
+  .eyebrow::before { content: ""; flex: none; width: 6px; height: 6px; border-radius: 1px; background: var(--navy-300); }
+
+  /* ---- buttons: lg 48 · md 44 · sm 32 (44 hit area); primary · secondary · ghost ---- */
+  .btn { position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border-radius: var(--radius-pill); font-weight: 500;
+    font-size: 14px; white-space: nowrap; transition: background-color var(--dur-1) var(--ease-standard), border-color var(--dur-1) var(--ease-standard), color var(--dur-1) var(--ease-standard); }
+  .btn:active { transform: scale(.98); }
+  .btn > .arr { transition: transform var(--dur-1) var(--ease-standard); }
+  .btn:hover > .arr { transform: translateX(2px); }
+  .btn-lg { height: 48px; padding-inline: 24px; }
+  .btn-md { height: 44px; padding-inline: 18px; }
+  .btn-sm { height: 32px; padding-inline: 12px; font-size: 13px; }
+  .btn-sm::after { content: ""; position: absolute; inset: -6px; }
+  .btn-primary { background: var(--action-primary-bg); color: var(--action-primary-fg); }
+  .btn-primary:hover { background: var(--action-primary-hover); }
+  .btn-secondary { border: 1px solid var(--border-control); color: var(--text-primary); }
+  .btn-secondary:hover { background: var(--fill-hover); }
+  .btn-ghost { color: var(--text-secondary); }
+  .btn-ghost:hover, .btn-ghost[aria-current] { color: var(--text-primary); background: var(--fill-hover); }
+  .btn-ghost[aria-current] { background: var(--fill-selected); }
+  .link { color: var(--text-link); font-weight: 500; text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--text-link) 40%, transparent); text-underline-offset: 4px; }
+  .link:hover { text-decoration-color: currentColor; }
+  .icon-btn { position: relative; display: inline-grid; place-items: center; flex: none; width: 44px; height: 44px; border-radius: var(--radius-pill); color: var(--text-secondary);
+    transition: background-color var(--dur-1) var(--ease-standard), color var(--dur-1) var(--ease-standard); }
+  .icon-btn:hover { color: var(--text-primary); background: var(--fill-hover); }
+  .icon-btn.bordered { border: 1px solid var(--border-control); }
+  .icon-btn svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 1.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .icon-btn .i-play { display: none; }
+  .icon-btn[aria-pressed="true"] .i-pause { display: none; }
+  .icon-btn[aria-pressed="true"] .i-play { display: block; }
+
+  /* ---- caption (the only provenance label): 13/400, sentence case, square marker ---- */
+  .cap { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; line-height: 1.4; color: var(--text-muted); }
+  .cap::before { content: ""; flex: none; width: 6px; height: 6px; border-radius: 1px; background: var(--navy-500); }
+  .cap.screen::before { background: var(--meerana-cyan); }
+
+  /* ---- card (the only surface): solid navy, 1 px line, radius 24 ---- */
+  .card { position: relative; border-radius: var(--radius-panel); background: var(--meerana-navy); border: 1px solid var(--line);
+    box-shadow: inset 0 1px 0 color-mix(in srgb, var(--meerana-white) 6%, transparent); padding: 32px; }
+  @media (max-width: 767px) { .card { padding: 24px; } }
+
+  /* ---- segmented control ---- */
+  .seg { display: inline-flex; gap: 2px; padding: 4px; max-width: 100%; overflow-x: auto; scrollbar-width: none; border-radius: var(--radius-pill);
+    background: var(--navy-950); border: 1px solid var(--line); }
+  .seg::-webkit-scrollbar { display: none; }
+  .seg button { flex: none; height: 32px; padding-inline: 12px; border-radius: var(--radius-pill); font-size: 13px; font-weight: 500; color: var(--text-secondary); white-space: nowrap;
+    transition: background-color var(--dur-1) var(--ease-standard), color var(--dur-1) var(--ease-standard); }
+  .seg button:hover { color: var(--text-primary); }
+  .seg button[aria-pressed="true"], .seg button[aria-current] { color: var(--text-primary); background: var(--navy-900); box-shadow: inset 0 0 0 1px var(--line); }
+
+  /* ---- Dynamic Island: glass (DD-22). Desktop keeps its links; a live-activity row drops below it ---- */
+  .island-wrap { position: fixed; top: 16px; inset-inline: 0; z-index: 40; display: flex; flex-direction: column; align-items: center; gap: 8px; pointer-events: none; }
+  .island-fade { position: fixed; inset-inline: 0; top: 0; height: 96px; z-index: 35; pointer-events: none;
+    background: linear-gradient(var(--navy-950) 20%, color-mix(in srgb, var(--navy-950) 0%, transparent)); }
+  .glass-nav { background: color-mix(in srgb, var(--navy-950) 92%, transparent); border: 1px solid var(--line);
+    box-shadow: inset 0 1px 0 color-mix(in srgb, var(--meerana-white) 10%, transparent), 0 12px 32px -12px color-mix(in srgb, black 50%, transparent); }
+  @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .glass-nav { background: color-mix(in srgb, var(--navy-950) 80%, transparent); -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px); }
+  }
+  @media (prefers-reduced-transparency: reduce) { .glass-nav { -webkit-backdrop-filter: none; backdrop-filter: none; background: var(--navy-950); } }
+  .island { pointer-events: auto; display: flex; align-items: center; gap: 4px; height: 56px; padding: 6px; padding-inline-start: 18px; border-radius: var(--radius-pill);
+    max-width: calc(100vw - 32px); }
+  .island .logo img { height: 20px; width: auto; }
+  .isl-links { display: flex; align-items: center; gap: 2px; margin-inline: 20px 8px; }
+  .isl-div { width: 1px; height: 24px; margin-inline: 6px; background: var(--line-strong); }
+  .isl-label { display: none; min-width: 0; margin-inline: 14px 4px; font-size: 13px; font-weight: 500; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .isl-label .tone { display: inline-block; width: 6px; height: 6px; margin-inline-end: 8px; border-radius: 1px; background: var(--navy-300); vertical-align: middle; }
+  .isl-label[data-tone="danger"] .tone { background: var(--state-danger); }
+  .isl-menu { display: none; }
+  @media (max-width: 1279px) {
+    .island { width: calc(100vw - 32px); max-width: 560px; padding-inline-start: 16px; }
+    .island .logo img { height: 18px; }
+    .isl-links, .island .isl-cta, .island .isl-div { display: none; }
+    .isl-label { display: block; flex: 1; }
+    .isl-menu { display: inline-grid; }
+  }
+  .isl-drop { pointer-events: none; display: flex; align-items: center; gap: 10px; height: 40px; padding-inline: 16px; border-radius: var(--radius-pill); font-size: 13px;
+    color: var(--text-primary); opacity: 0; transform: translateY(-6px) scale(.98); transition: opacity var(--dur-2) var(--ease-standard), transform var(--dur-3) var(--ease-spring); }
+  .isl-drop[data-on] { opacity: 1; transform: none; }
+  .isl-drop .tone { width: 8px; height: 8px; border-radius: var(--radius-pill); background: var(--meerana-cyan); }
+  .isl-drop[data-tone="danger"] .tone { background: var(--state-danger); }
+  .isl-drop .note { color: var(--text-muted); }
+  @media (max-width: 1279px) { .isl-drop { display: none; } }
+  .sheet-scrim { position: fixed; inset: 0; z-index: 38; background: color-mix(in srgb, var(--navy-950) 60%, transparent); opacity: 0; pointer-events: none; transition: opacity var(--dur-2) var(--ease-standard); }
+  .sheet-scrim[data-open] { opacity: 1; pointer-events: auto; }
+  .sheet { position: fixed; z-index: 39; inset-inline: 16px; top: 84px; max-width: 560px; margin-inline: auto; padding: 8px; border-radius: var(--radius-panel);
+    opacity: 0; transform: translateY(-8px); pointer-events: none; transition: opacity var(--dur-2) var(--ease-standard), transform var(--dur-3) var(--ease-standard); }
+  .sheet[data-open] { opacity: 1; transform: none; pointer-events: auto; }
+  .sheet a.row { display: flex; align-items: center; justify-content: space-between; min-height: 52px; padding-inline: 16px; font-size: 16px; font-weight: 500; color: var(--text-primary);
+    border-bottom: 1px solid var(--line); }
+  .sheet a.row:hover { background: var(--fill-hover); }
+  .sheet .sheet-foot { display: flex; align-items: center; gap: 8px; padding: 12px 8px 4px; }
+  .sheet .sheet-foot .btn { flex: 1; }
+  main, .site-footer { position: relative; z-index: 10; }
+
+  /* ---- the stage: ONE fixed canvas (≥1280). Hidden in the hero and during the gallery; inline posters below 1280 ---- */
+  .stage { z-index: 0; --r-top: 96px; --r-bottom: 6%; --r-left: calc(50% + var(--gutter) / 2); --r-right: 3%; transition: opacity var(--dur-3) var(--ease-standard); }
+  .rect-main { position: absolute; left: var(--r-left); top: var(--r-top); width: calc(100% - var(--r-left) - var(--r-right)); height: calc(100% - var(--r-top) - var(--r-bottom)); }
+  .rect-wide { position: absolute; left: 8%; top: 22%; width: 84%; height: 74%; }
+  .probe { visibility: hidden; }
+  body[data-scene="hero"] .stage, body[data-scene^="layer"] .stage { opacity: 0; }
+  @media (max-width: 1279px) { .stage { display: none; } }
+  .posters { transition: opacity var(--dur-2) var(--ease-standard); }
+  .posters .m3p { transition: opacity var(--dur-2) var(--ease-standard); }
+  .stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; transition: opacity var(--dur-2) var(--ease-standard); }
+  .stage.is-gl canvas { opacity: 1; }
+  .stage.is-gl .posters { opacity: 0; }
+  .beat-poster { display: none; }
+  @media (max-width: 1279px) { .beat-poster { display: block; aspect-ratio: 4 / 3; max-height: 38svh; width: 100%; margin-bottom: 24px; }
+    .beat-poster .m3p { width: 100%; height: 100%; } }
+
+  /* scene palette: tones resolve to brand tokens; the WebGL renderer reads these same computed values */
+  .m3p polygon { fill: var(--c); stroke: var(--e); stroke-opacity: var(--ea); stroke-width: 1; vector-effect: non-scaling-stroke; stroke-linejoin: round; }
+  .m3p .fx { fill: color-mix(in srgb, var(--c) 66%, black); }
+  .m3p .fz { fill: color-mix(in srgb, var(--c) 46%, black); }
+  .m3p .ln { fill: none; stroke: var(--e); stroke-opacity: calc(var(--a) * var(--ea)); stroke-width: 1; vector-effect: non-scaling-stroke; }
+  .m3p .t0  { --c: var(--navy-800); --e: var(--meerana-cyan); --ea: .34; }
+  .m3p .t1  { --c: var(--meerana-cyan); --e: var(--meerana-cyan); --ea: .95; }
+  .m3p .t2  { --c: var(--meerana-neutral); --e: var(--meerana-white); --ea: .6; }
+  .m3p .t3  { --c: var(--meerana-blue); --e: var(--meerana-cyan); --ea: .8; }
+  .m3p .t4  { --c: var(--state-error-on-dark); --e: var(--state-error-on-dark); --ea: .95; }
+  .m3p .t5  { --c: var(--navy-300); --e: var(--navy-150); --ea: .4; }
+  .m3p .t6  { --c: var(--tasree3-orange); --e: var(--tasree3-orange); --ea: .95; }
+  .m3p .t7  { --c: var(--wasel-copper); --e: var(--wasel-sand); --ea: .9; }
+  .m3p .t8  { --c: var(--mandoobee-azure); --e: var(--mandoobee-azure); --ea: .95; }
+  .m3p .t9  { --c: var(--yisbir-aqua); --e: var(--yisbir-aqua); --ea: .95; }
+  .m3p .t10 { --c: var(--navy-900); --e: var(--meerana-cyan); --ea: .13; }
+  .m3p .t11 { --c: var(--navy-900); --e: var(--state-error-on-dark); --ea: .8; }
+  .m3p .e1 { --e: var(--meerana-cyan); } .m3p .e2 { --e: var(--meerana-white); } .m3p .e3 { --e: var(--meerana-blue); }
+  .m3p .e6 { --e: var(--tasree3-orange); } .m3p .e7 { --e: var(--wasel-copper); } .m3p .e8 { --e: var(--mandoobee-azure); } .m3p .e9 { --e: var(--yisbir-aqua); }
+  .m3p .ea { --ea: .5; }
+  @media (prefers-reduced-motion: no-preference) {
+    html:not([data-motion="reduce"]) .m3p .ln.fl { stroke-dasharray: 3 9; animation: m3-flow 1.6s linear infinite; }
+  }
+  @keyframes m3-flow { to { stroke-dashoffset: -24; } }
+  .m3p:not(.m3p-probe) { --m3-shade: color-mix(in srgb, var(--navy-950) 82%, var(--meerana-blue)); }
+  .m3p:not(.m3p-probe) .t2 { --c: var(--navy-200); }
+  .m3p:not(.m3p-probe) polygon { stroke-opacity: 0; }
+  .m3p:not(.m3p-probe) polygon.rim { stroke-opacity: var(--ea); }
+  .m3p:not(.m3p-probe) .fx { fill: color-mix(in srgb, var(--c) calc(var(--ao, 1) * 64%), var(--m3-shade)); }
+  .m3p:not(.m3p-probe) .fz { fill: color-mix(in srgb, var(--c) calc(var(--ao, 1) * 49%), var(--m3-shade)); }
+  .m3p:not(.m3p-probe) .k.fx { fill: color-mix(in srgb, var(--c) calc(var(--ao, 1) * 84%), black); }
+  .m3p:not(.m3p-probe) .k.fz { fill: color-mix(in srgb, var(--c) calc(var(--ao, 1) * 78%), black); }
+  .stage { background: radial-gradient(60% 55% at var(--gx, 73%) var(--gy, 52%), color-mix(in srgb, var(--meerana-blue) 14%, var(--meerana-navy)), var(--meerana-navy) 45%, var(--navy-950)); }
+  .beat-poster { background: radial-gradient(70% 70% at 50% 50%, color-mix(in srgb, var(--meerana-blue) 12%, var(--meerana-navy)), var(--navy-950) 72%); border-radius: var(--radius-card); }
+
+  /* scene chips: solid, ≤ 2 at a time (aria-hidden duplicates of the step text) */
+  .ovl { position: absolute; inset: 0; }
+  .ovl [data-ovl] { position: absolute; left: 0; top: 0; opacity: 0; transition: opacity var(--dur-2) var(--ease-standard); }
+  .ovl [data-ovl].is-on { opacity: 1; }
+  .chip { position: absolute; left: 0; top: 0; display: inline-flex; align-items: center; gap: 8px; transform: translate(calc(var(--bw, 0) * var(--s, 40) * .5px + 16px), -50%);
+    white-space: nowrap; height: 32px; padding-inline: 12px; border-radius: var(--radius-pill); background: color-mix(in srgb, var(--navy-950) 92%, transparent);
+    border: 1px solid var(--line-strong); font-size: 13px; color: var(--text-primary); }
+  .chip.left { transform: translate(calc(-100% - 16px), -50%); }
+  .chip i { width: 6px; height: 6px; border-radius: 1px; background: var(--meerana-cyan); }
+  .chip.danger i { background: var(--state-danger); }
+  .chip b { font-weight: 500; font-family: var(--font-family-mono); font-size: 12px; }
+  .bracket { position: absolute; left: 0; top: 0; width: calc(var(--bw, 2) * var(--s, 40) * 1px); height: calc(var(--bh, 2.4) * var(--s, 40) * 1px); transform: translate(-50%, -50%) scale(1.25); opacity: 0;
+    transition: transform var(--dur-1) var(--ease-enter), opacity var(--dur-1) var(--ease-enter); }
+  [data-ovl].is-on .bracket { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  .bracket span { position: absolute; width: 14px; height: 14px; border-color: var(--meerana-cyan); border-style: solid; border-width: 0; }
+  .bracket span:nth-child(1) { left: 0; top: 0; border-left-width: 1.5px; border-top-width: 1.5px; }
+  .bracket span:nth-child(2) { right: 0; top: 0; border-right-width: 1.5px; border-top-width: 1.5px; }
+  .bracket span:nth-child(3) { left: 0; bottom: 0; border-left-width: 1.5px; border-bottom-width: 1.5px; }
+  .bracket span:nth-child(4) { right: 0; bottom: 0; border-right-width: 1.5px; border-bottom-width: 1.5px; }
+  .stage-note { position: absolute; inset-inline-end: 3%; bottom: 3%; opacity: 0; transition: opacity var(--dur-2) var(--ease-standard); }
+  body[data-scene^="story"] .stage-note { opacity: 1; }
+
+  /* ---- 01 · hero: text on the grid's left half, the 3D wall of product screens on the right ---- */
+  .hero { position: relative; min-height: 100svh; padding-top: 168px; padding-bottom: 64px; overflow: clip; }
+  @media (max-width: 1279px) { .hero { padding-top: 120px; min-height: 0; } }
+  .hero .t-lede { max-width: 34rem; }
+  .moments { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 48px; border-top: 1px solid var(--line); }
+  @media (max-width: 1279px) { .moments { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .moment { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; width: 100%; height: 100%; padding: 16px 16px 4px 0; text-align: start; }
+  .moment .m-name { font-size: 16px; font-weight: 500; color: var(--text-primary); }
+  .moment .m-prod { font-size: 14px; color: var(--text-muted); transition: color var(--dur-1) var(--ease-standard); }
+  .moment:hover .m-prod, .moment[aria-pressed="true"] .m-prod { color: var(--text-secondary); }
+  .moment .m-bar { position: absolute; inset-inline: 0 16px; top: -1px; height: 2px; background: var(--meerana-cyan); transform: scaleX(0); transform-origin: 0 50%; }
+  .moment[aria-pressed="true"] .m-bar { transform: scaleX(1); }
+  html.ap .moment[aria-pressed="true"] .m-bar { animation: m-hold var(--hold) linear both; }
+  @keyframes m-hold { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+  .hero-wall { position: absolute; top: 0; bottom: 0; inset-inline-start: calc(50% + var(--gutter) / 2); inset-inline-end: 0; perspective: 1800px;
+    -webkit-mask: linear-gradient(90deg, transparent 0, #000 12%, #000 100%), linear-gradient(transparent, #000 14%, #000 82%, transparent);
+    -webkit-mask-composite: source-in; mask: linear-gradient(90deg, transparent 0, #000 12%, #000 100%) intersect, linear-gradient(transparent, #000 14%, #000 82%, transparent); }
+  @media (max-width: 1279px) { .hero-wall { position: relative; inset: auto; height: min(52svh, 520px); margin-top: 48px; } }
+  .wall-plane { position: absolute; inset: -20% -30% -20% 2%; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px;
+    transform: rotateX(22deg) rotateY(-26deg) rotateZ(5deg); transform-style: preserve-3d; }
+  .wall-col { display: flex; flex-direction: column; gap: 20px; will-change: transform; }
+  .wall-tile { position: relative; display: block; width: 100%; aspect-ratio: 16 / 10; overflow: hidden; border-radius: 14px; background: var(--navy-950);
+    border: 1px solid var(--line-strong); box-shadow: 0 24px 48px -24px color-mix(in srgb, black 70%, transparent);
+    transition: transform var(--dur-2) var(--ease-standard), opacity var(--dur-3) var(--ease-standard), border-color var(--dur-1) var(--ease-standard); }
+  .wall-tile img { width: 100%; height: 100%; object-fit: cover; object-position: left top; }
+  .wall-tile:hover, .wall-tile:focus-visible { transform: translateZ(28px); border-color: var(--meerana-cyan); }
+  .hero-wall[data-focus] .wall-tile { opacity: .3; }
+  .hero-wall[data-focus] .wall-tile.is-focus { opacity: 1; border-color: color-mix(in srgb, var(--meerana-cyan) 60%, transparent); }
+  .wall-cap { position: absolute; inset-inline-end: 0; bottom: 24px; z-index: 2; }
+  @media (max-width: 1279px) { .wall-cap { position: static; margin-top: 12px; } }
+
+  /* proof strip: partners & clients as shown on meerana.ae (owner, 2026-10-10: "bring everything for now") */
+  .proof { padding-block: 48px 64px; border-top: 1px solid var(--line); }
+  .logos { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 32px var(--gutter); align-items: center; margin-top: 24px; }
+  @media (max-width: 1279px) { .logos { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+  @media (max-width: 479px) { .logos { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px 16px; } }
+  .logos li { display: flex; align-items: center; justify-content: center; height: 48px; }
+  .logos img { max-height: 40px; max-width: 100%; width: auto; object-fit: contain; opacity: .72; transition: opacity var(--dur-1) var(--ease-standard); }
+  .logos li:hover img { opacity: 1; }
+
+  /* ---- 02 · products: horizontal gallery (pinned 250vh ≥1280×760, native rail below) ---- */
+  .hs { position: relative; overflow-x: clip; }
+  .hs-pin { position: relative; display: flex; flex-direction: column; justify-content: center; min-height: 100svh; padding-block: 112px 32px; }
+  .hs-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px; }
+  .hs-ctrl { display: flex; align-items: center; gap: 8px; }
+  .hs-viewport { display: flex; align-items: center; margin-top: 32px; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scrollbar-width: none; }
+  .hs-viewport::-webkit-scrollbar { display: none; }
+  .hs-track { --cw: min(1120px, 78vw); display: flex; gap: 32px; padding-inline: calc((100vw - var(--cw)) / 2); padding-block: 8px; }
+  .pcard { flex: none; width: var(--cw); display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 40px; scroll-snap-align: center; overflow: hidden; }
+  .pcard::before { content: ""; position: absolute; inset-inline: 0; top: 0; height: 2px; background: var(--product-accent); }
+  @media (max-width: 1279px) { .hs-track { --cw: min(720px, 88vw); gap: 16px; } .pcard { grid-template-columns: 1fr; gap: 24px; } .pc-media { order: 2; } }
+  .hs.is-pinned .hs-viewport { overflow: visible; scroll-snap-type: none; }
+  @supports (animation-timeline: view()) { @media (prefers-reduced-motion: no-preference) {
+    html:not([data-motion="reduce"]) .hs:not(.is-pinned) .pcard { animation: card-pass linear both; animation-timeline: view(inline); } } }
+  @keyframes card-pass { 0% { opacity: .35; transform: scale(.96); } 30%, 70% { opacity: 1; transform: none; } 100% { opacity: .35; transform: scale(.96); } }
+  .pc-info { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; }
+  .pc-logo { display: flex; align-items: center; height: 40px; }
+  .pc-logo img { height: 40px; width: auto; max-width: 200px; object-fit: contain; object-position: left center; }
+  .pc-logo .word { font-size: var(--fs-h3); font-weight: 400; letter-spacing: -0.015em; color: var(--text-primary); }
+  .pc-desc { margin-top: 16px; font-size: 14px; font-weight: 500; color: var(--text-secondary); }
+  .pc-line { margin-top: 8px; font-size: 20px; line-height: 1.4; color: var(--text-primary); text-wrap: pretty; }
+  .pc-caps { margin-top: 24px; display: grid; gap: 4px; }
+  .pc-caps li { display: flex; align-items: center; gap: 10px; min-height: 28px; font-size: 14px; color: var(--text-secondary); }
+  .pc-caps li::before { content: ""; flex: none; width: 6px; height: 6px; border-radius: 1px; background: var(--product-accent); }
+  .pc-deploy { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--line); width: 100%; }
+  .pc-deploy dt { font-family: var(--font-family-mono); font-size: 12px; line-height: 1.45rem; color: var(--text-muted); }
+  .pc-deploy dd { font-size: 14px; line-height: 1.45rem; color: var(--text-secondary); }
+  .pc-cta { margin-top: 24px; }
+  .pc-media { display: flex; flex-direction: column; gap: 12px; min-width: 0; margin: 0; }
+  .pc-frame { position: relative; aspect-ratio: 16 / 10; border-radius: var(--radius-card); overflow: hidden; background: var(--navy-950); border: 1px solid var(--line); cursor: zoom-in; }
+  .pc-frame .shot { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: left top; opacity: 0; transition: opacity var(--dur-3) var(--ease-standard); }
+  .pc-frame .shot.contain { object-fit: contain; object-position: center; }
+  .pc-frame .shot.is-on { opacity: 1; }
+  .pc-frame > svg.m3p { position: absolute; inset: 8% 6%; width: 88%; height: 84%; }
+  .pc-meta { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; }
+
+  .lightbox { position: fixed; inset: 0; margin: auto; width: min(1500px, 94vw); height: fit-content; max-height: 92vh; padding: 8px; border: 1px solid var(--line);
+    border-radius: var(--radius-panel); background: var(--navy-950); color: var(--text-primary); overflow: hidden; }
+  .lightbox::backdrop { background: color-mix(in srgb, var(--navy-950) 94%, transparent); }
+  .lb-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 4px 4px 10px 12px; }
+  .lightbox img { display: block; width: 100%; height: auto; max-height: calc(92vh - 76px); object-fit: contain; border-radius: var(--radius-card); background: var(--navy-950); }
+
+  /* ---- beats ---- */
+  .beat { position: relative; display: flex; align-items: center; min-height: 80vh; }
+  .section { padding-block: 128px; }
+  @media (max-width: 1279px) { .beat { display: block; min-height: 0; padding-block: 48px; } .section { padding-block: 64px; } }
+
+  /* ---- 03 · Built in the UAE: offices table + recognition ---- */
+  .offices { margin-top: 32px; border-top: 1px solid var(--line); }
+  .offices li { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; gap: 4px 16px; padding-block: 16px; border-bottom: 1px solid var(--line); }
+  .offices .city { font-size: 20px; color: var(--text-primary); }
+  .offices .role { grid-column: 1; font-size: 14px; color: var(--text-muted); }
+  .offices .time { grid-column: 2; grid-row: 1 / span 2; align-self: center; text-align: end; }
+  .awards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); margin-top: 32px; }
+  @media (max-width: 1023px) { .awards { grid-template-columns: 1fr; } }
+  .award { display: grid; grid-template-rows: auto 1fr; overflow: hidden; padding: 0; }
+  .award img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-bottom: 1px solid var(--line); }
+  .award .award-body { padding: 20px 24px 24px; }
+  .award h4 { font-size: 16px; font-weight: 500; line-height: 1.4; color: var(--text-primary); }
+  .partners-text { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--gutter); margin-top: 32px; border-top: 1px solid var(--line); }
+  @media (max-width: 767px) { .partners-text { grid-template-columns: 1fr; } }
+  .partners-text li { display: grid; grid-template-columns: 9rem minmax(0, 1fr); gap: 4px 16px; padding-block: 14px; border-bottom: 1px solid var(--line); font-size: 14px; color: var(--text-secondary); }
+  .partners-text li b { font-weight: 500; color: var(--text-primary); }
+
+  /* ---- 04 · story: sticky rail (≥1280) + solid step cards ---- */
+  .story-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); }
+  .story-rail { grid-column: 1 / span 2; grid-row: 1 / span 5; position: sticky; top: 30vh; align-self: start; padding-top: 8px; }
+  .story-steps { grid-column: 3 / span 4; }
+  @media (max-width: 1279px) { .story-rail { display: none; } .story-steps { grid-column: 1 / -1; max-width: 640px; } }
+  .rail { position: relative; display: flex; flex-direction: column; gap: 22px; padding-inline-start: 20px; }
+  .rail::before { content: ""; position: absolute; inset-inline-start: 3px; top: 6px; bottom: 6px; width: 1px; background: var(--line-strong); }
+  .rail-fill { position: absolute; inset-inline-start: 3px; top: 6px; bottom: 6px; width: 1px; background: var(--meerana-cyan); transform-origin: 50% 0; transform: scaleY(0); transition: transform var(--dur-3) var(--ease-standard); }
+  .rail li { position: relative; font-size: 13px; font-weight: 500; color: var(--text-muted); white-space: nowrap; transition: color var(--dur-2) var(--ease-standard); }
+  .rail li::before { content: ""; position: absolute; inset-inline-start: -20px; top: .45em; width: 7px; height: 7px; border-radius: var(--radius-pill); background: var(--navy-950);
+    box-shadow: inset 0 0 0 1px var(--border-control); transition: background-color var(--dur-2) var(--ease-standard); }
+  .rail li[data-done] { color: var(--text-secondary); }
+  .rail li[data-done]::before, .rail li[aria-current]::before { background: var(--meerana-cyan); box-shadow: none; }
+  .rail li[aria-current] { color: var(--text-primary); }
+  .step { min-height: 60vh; display: flex; flex-direction: column; justify-content: center; }
+  @media (max-width: 1279px) { .step { min-height: 0; padding-block: 24px; } }
+  .step .label { font-size: 13px; font-weight: 500; color: var(--text-secondary); }
+  .step .sample { margin-top: 16px; }
+  .dash { width: 100%; margin-top: 24px; border-collapse: separate; border-spacing: 2px; font-size: 13px; }
+  .dash th { padding: 6px 4px; font-weight: 400; text-align: start; font-family: var(--font-family-mono); font-size: 12px; color: var(--text-muted); }
+  .dash thead th:not(:first-child) { text-align: center; }
+  .dash tbody th { font-family: var(--font-family-sans); font-size: 13px; color: var(--text-secondary); }
+  .dash td { height: 28px; text-align: center; border-radius: 4px; font-family: var(--font-family-mono); font-size: 12px; font-variant-numeric: tabular-nums; color: var(--text-secondary);
+    background: color-mix(in srgb, var(--meerana-white) 3%, transparent); }
+  .dash td.h1 { background: color-mix(in srgb, var(--meerana-cyan) 16%, transparent); }
+  .dash td.h2 { background: color-mix(in srgb, var(--meerana-cyan) 28%, transparent); color: var(--text-primary); }
+  .dash td.h3 { background: color-mix(in srgb, var(--meerana-cyan) 42%, transparent); color: var(--text-primary); }
+  .dash td.h0 { color: var(--navy-500); }
+  .dash td.tot { background: none; text-align: end; color: var(--text-primary); }
+  .dash tr.hot th { color: var(--text-primary); }
+  .insight { display: flex; align-items: center; gap: 10px; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--line); font-size: 14px; color: var(--text-primary); }
+  .insight::before { content: ""; flex: none; width: 6px; height: 6px; border-radius: 1px; background: var(--meerana-cyan); }
+
+  /* ---- 05 · close: no card; the mandated line over a scrim ---- */
+  .cta { position: relative; min-height: 80vh; display: flex; align-items: center; }
+  .cta::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, var(--navy-950) 30%, color-mix(in srgb, var(--navy-950) 0%, transparent) 62%); }
+  @media (max-width: 1279px) { .cta { min-height: 0; } .cta::before { display: none; } }
+
+  .site-footer { border-top: 1px solid var(--line); background: var(--navy-950); }
+  .foot-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 32px; padding-block: 64px 32px; }
+  .foot-grid .f-brand { grid-column: 1 / span 4; } .foot-grid .f-col { grid-column: span 2; } .foot-grid .f-contact { grid-column: 11 / span 2; }
+  @media (max-width: 1023px) { .foot-grid .f-brand { grid-column: 1 / -1; } .foot-grid .f-col, .foot-grid .f-contact { grid-column: span 6; } }
+  .foot-grid h5 { font-size: 13px; font-weight: 500; color: var(--text-primary); }
+  .foot-grid ul { margin-top: 12px; display: grid; gap: 8px; }
+  .foot-grid a { font-size: 14px; color: var(--text-secondary); } .foot-grid a:hover { color: var(--text-primary); }
+  .foot-base { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; padding-block: 24px 32px; border-top: 1px solid var(--line); }
+}
+</style>
+</head>
+<body class="bg-surface-deep text-fg antialiased" data-scene="hero"
+      data-audit-ok="G10" data-audit-reason="Owner decision 2026-10-10 (DD-22, revised): glass only on the floating Dynamic Island nav and its menu sheet; every card, chip and dialog is solid. Opaque fallback under prefers-reduced-transparency and without backdrop-filter.">
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- Signature motion. Purpose: shows one set of Meerana building blocks (the logo's isometric cell) becoming each operating
+     environment, and the story's cause and effect, which static layout cannot. One fixed WebGL canvas (≥1280 px);
+     below 1280 px the same shapes are drawn inline as SVG posters. Hidden in the hero (the wall of real product screens
+     leads there) and during the product gallery. Loops stop with "Pause motion" (WCAG 2.2.2). -->
+<div id="stage" class="stage" data-signature aria-hidden="true">
+  <div class="rect-main probe"></div><div class="rect-wide probe"></div>
+  <div class="posters"></div>
+  <canvas></canvas>
+  <div class="ovl" data-illustrative>
+    <div data-ovl="bay2" data-anchor="smoke" style="--bw:2.6;--bh:4.4"><div class="bracket"><span></span><span></span><span></span><span></span></div>
+      <span class="chip danger"><i></i>Smoke <b>0.94</b> · CAM-07</span></div>
+    <div data-ovl="bay3" data-anchor="smoke" style="--bw:2.6;--bh:4.4"><div class="bracket"><span></span><span></span><span></span><span></span></div></div>
+    <div data-ovl="bay3" data-anchor="phone"><span class="chip left"><i></i>Alert → duty officer</span></div>
+    <div data-ovl="bay3" data-anchor="task"><span class="chip left"><i></i>Task <b>R-0142</b> opened</span></div>
+    <div data-ovl="bars" data-anchor="peak"><span class="chip"><i></i>Bay 3 · <b>6 of 7</b> after hours</span></div>
+    <div data-ovl="bay5" data-anchor="task"><span class="chip left"><i></i><b>R-0142</b> closed · one record</span></div>
+  </div>
+  <p class="stage-note cap">Sample scenario · illustrative data</p>
+</div>
+
+<div class="island-fade" aria-hidden="true"></div>
+<header class="island-wrap">
+  <nav class="island glass-nav" aria-label="Primary" data-island>
+    <a class="logo flex shrink-0 items-center" href="#top" aria-label="Meerana Technologies — home"><img src="{{LOGO_MEERANA_H}}" width="{{LOGO_MEERANA_H_W}}" height="{{LOGO_MEERANA_H_H}}" alt=""></a>
+    <ul class="isl-links">
+      <li><a class="btn btn-ghost btn-md" href="#products" data-nav="layer">Products</a></li>
+      <li><a class="btn btn-ghost btn-md" href="#world" data-nav="world">Company</a></li>
+      <li><a class="btn btn-ghost btn-md" href="#story" data-nav="story">How it works</a></li>
+      <li><a class="btn btn-ghost btn-md" href="#contact" data-nav="next">Contact</a></li>
+    </ul>
+    <span class="isl-label" data-isl-label><span class="tone" aria-hidden="true"></span><span data-isl-text>Intelligence</span></span>
+    <span class="isl-div" aria-hidden="true"></span>
+    <button type="button" class="icon-btn" data-motion-toggle data-motion-control aria-pressed="false" aria-label="Pause motion">
+      <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6v12M15 6v12"/></svg>
+      <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5l11 7-11 7z"/></svg></button>
+    <a class="btn btn-primary btn-md isl-cta" href="#contact">Talk to Meerana <span class="arr" aria-hidden="true">→</span></a>
+    <button type="button" class="icon-btn isl-menu" data-isl-menu aria-expanded="false" aria-controls="isl-sheet" aria-label="Open navigation">
+      <svg class="i-menu" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h16M4 16h16"/></svg></button>
+  </nav>
+  <p class="isl-drop glass-nav" data-isl-drop aria-hidden="true"><span class="tone"></span><span data-drop-text></span><span class="note">Sample</span></p>
+</header>
+<div class="sheet-scrim" data-sheet-scrim></div>
+<div id="isl-sheet" class="sheet glass-nav" role="dialog" aria-modal="true" aria-label="Navigation" inert>
+  <a class="row" href="#products">Products <span aria-hidden="true">→</span></a>
+  <a class="row" href="#world">Company <span aria-hidden="true">→</span></a>
+  <a class="row" href="#story">How it works <span aria-hidden="true">→</span></a>
+  <div class="sheet-foot">
+    <a class="btn btn-primary btn-lg" href="#contact">Talk to Meerana <span class="arr" aria-hidden="true">→</span></a>
+    <button type="button" class="icon-btn bordered" data-sheet-close aria-label="Close navigation"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  </div>
+</div>
+
+<main id="main">
+  <!-- 01 · HERO ----------------------------------------------------------------------------------->
+  <section id="top" class="hero" aria-labelledby="hero-title" data-beat="hero">
+    <div class="wrap grid12">
+      <div class="c-text">
+        <p class="eyebrow"><span><span data-ev="EV-001">Meerana Technologies</span> · Dubai, UAE</span></p>
+        <h1 id="hero-title" class="t-display mt-6">We engineer intelligence <span class="cont">for the real world.</span></h1>
+        <p class="t-lede mt-6" data-ev="EV-006 EV-536">An AI-powered ecosystem of six enterprise products — for AI, automation, IoT and security.</p>
+        <div class="mt-8 flex flex-wrap items-center gap-3">
+          <a class="btn btn-primary btn-lg" href="#products">Explore the ecosystem <span class="arr" aria-hidden="true">→</span></a>
+          <a class="btn btn-secondary btn-lg" href="#story">See how it works</a>
+        </div>
+        <ol class="moments" aria-label="Four moments: AI, automation, IoT, security">
+          <li><button type="button" class="moment" data-moment="ai" aria-pressed="false" data-ev="EV-520"><span class="m-bar" aria-hidden="true"></span><span class="m-name">AI</span><span class="m-prod">AI in a Box</span></button></li>
+          <li><button type="button" class="moment" data-moment="auto" aria-pressed="false" data-ev="EV-401"><span class="m-bar" aria-hidden="true"></span><span class="m-name">Automation</span><span class="m-prod">Tasree3</span></button></li>
+          <li><button type="button" class="moment" data-moment="iot" aria-pressed="false" data-ev="EV-100"><span class="m-bar" aria-hidden="true"></span><span class="m-name">IoT</span><span class="m-prod">Wasel</span></button></li>
+          <li><button type="button" class="moment" data-moment="sec" aria-pressed="false" data-ev="EV-134 EV-138"><span class="m-bar" aria-hidden="true"></span><span class="m-name">Security</span><span class="m-prod">Yisbir</span></button></li>
+        </ol>
+      </div>
+    </div>
+    {{M3_HERO_WALL}}
+  </section>
+
+  <!-- proof as published on meerana.ae (owner 2026-10-10: "bring everything from meerana.ae for now") -->
+  <section class="proof" aria-labelledby="proof-title">
+    <div class="wrap">
+      <h2 id="proof-title" class="eyebrow">Partners &amp; clients</h2>
+      {{M3_PROOF_LOGOS}}
+    </div>
+  </section>
+
+  <!-- 02 · MEERANA INTELLIGENCE LAYER: one solid card per product, scrolled sideways ------------------>
+  <a class="skip" href="#world">Skip the products</a>
+  <section id="products" class="hs" aria-labelledby="layer-title">
+    <div class="hs-pin">
+      <div class="wrap">
+        <div class="hs-head">
+          <div>
+            <p class="eyebrow">02 · Products</p>
+            <h2 id="layer-title" class="t-h2 mt-4">Meerana Intelligence Layer</h2>
+            <p class="t-cap mt-2">Six products. Each one deploys on its own.</p>
+          </div>
+          <div class="hs-ctrl">
+            <div class="seg" role="group" aria-label="Choose a product">
+              <button type="button" data-hs-go="0">Mandoobee</button><button type="button" data-hs-go="1">Tasree3</button><button type="button" data-hs-go="2">Nazo</button>
+              <button type="button" data-hs-go="3">Yisbir</button><button type="button" data-hs-go="4">Wasel</button><button type="button" data-hs-go="5">AI in a Box</button>
+            </div>
+            <button type="button" class="icon-btn bordered" data-hs-step="-1" aria-label="Previous product"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
+            <button type="button" class="icon-btn bordered" data-hs-step="1" aria-label="Next product"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+          </div>
+        </div>
+      </div>
+      <div class="hs-viewport">
+        <ol class="hs-track" data-audit-ok="G05" aria-label="Product details">
+{{M3_CARDS}}
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 · BUILT IN THE UAE ------------------------------------------------------------------------>
+  <section id="world" class="section" aria-labelledby="world-title">
+    <div class="beat" data-beat="world">
+      <div class="wrap grid12"><div class="c-text">
+        <div class="beat-poster" data-poster="world" aria-hidden="true"></div>
+        <p class="eyebrow">03 · Where we build</p>
+        <h2 id="world-title" class="t-h2 mt-4">Built in the UAE. <span class="text-fg-secondary">Engineered for the world.</span></h2>
+        <ul class="offices" data-ev="EV-532" aria-label="Offices">
+          <li><span class="city">Dubai</span><span class="role" data-ev="EV-531">Headquarters · #1704, Blue Bay Tower, Business Bay</span><span class="time t-data"><span data-tz="Asia/Dubai">--:--</span> · <span data-tzo="Asia/Dubai">GMT+4</span></span></li>
+          <li><span class="city">London</span><span class="role">Office</span><span class="time t-data"><span data-tz="Europe/London">--:--</span> · <span data-tzo="Europe/London">GMT+1</span></span></li>
+          <li><span class="city">Egypt</span><span class="role">Office</span><span class="time t-data"><span data-tz="Africa/Cairo">--:--</span> · <span data-tzo="Africa/Cairo">GMT+3</span></span></li>
+          <li><span class="city">Chennai</span><span class="role">Office</span><span class="time t-data"><span data-tz="Asia/Kolkata">--:--</span> · <span data-tzo="Asia/Kolkata">GMT+5:30</span></span></li>
+        </ul>
+      </div></div>
+    </div>
+    <div class="wrap">
+      <h3 class="eyebrow mt-16">Recognition</h3>
+      {{M3_PROOF_AWARDS}}
+      <h3 class="eyebrow mt-16">Partnerships</h3>
+      {{M3_PROOF_PARTNERS}}
+    </div>
+  </section>
+
+  <!-- 04 · STORY: Problem → AI detects → Automation acts → Dashboard shows → Business outcome ------->
+  <section id="story" class="section" aria-labelledby="story-title">
+    <div class="wrap story-grid">
+      <div class="story-rail" aria-hidden="true">
+        <ol class="rail"><span class="rail-fill"></span>
+          <li data-tl="1">Problem</li><li data-tl="2">AI detects</li><li data-tl="3">Automation acts</li><li data-tl="4">Dashboard shows</li><li data-tl="5">Business outcome</li>
+        </ol>
+      </div>
+      <div class="story-steps">
+        <p class="eyebrow">04 · How it works</p>
+        <h2 id="story-title" class="t-h2 mt-4">From problem to business outcome.</h2>
+        <p class="t-cap mt-3">Sample scenario · illustrative data · <a class="link" href="#contact">Skip the story</a></p>
+        <ol class="mt-8" data-audit-ok="G05" aria-label="A sample scenario in five steps">
+          <li class="step" data-beat="story-1"><div class="beat-poster" data-poster="bay1" aria-hidden="true"></div><div class="card">
+            <p class="label">01 · Problem</p>
+            <h3 class="t-h3 mt-3">Smoke in a storage bay, after hours.</h3>
+            <p class="t-body mt-3">Nobody is watching that camera feed.</p></div></li>
+          <li class="step" data-beat="story-2"><div class="beat-poster" data-poster="bay2" aria-hidden="true"></div><div class="card">
+            <p class="label">02 · AI detects</p>
+            <h3 class="t-h3 mt-3" data-ev="EV-138 EV-444">Yisbir flags smoke on the existing camera.</h3>
+            <p class="sample t-data" data-illustrative>Sample — smoke · confidence 0.94 · CAM-07 · Bay&nbsp;3 · 02:14:09</p></div></li>
+          <li class="step" data-beat="story-3"><div class="beat-poster" data-poster="bay3" aria-hidden="true"></div><div class="card">
+            <p class="label">03 · Automation acts</p>
+            <h3 class="t-h3 mt-3" data-ev="EV-138 EV-534">The duty team gets the alert, the clip and a task.</h3>
+            <p class="sample t-data" data-illustrative>Sample — alert → duty officer · clip 00:30 · task <span class="whitespace-nowrap">R-0142</span> opened</p></div></li>
+          <li class="step" data-beat="story-4"><div class="beat-poster" data-poster="bars" aria-hidden="true"></div><div class="card">
+            <p class="label">04 · Dashboard shows</p>
+            <h3 class="t-h3 mt-3" data-ev="EV-138 EV-534">Every event, by zone and hour.</h3>
+            <figure data-illustrative aria-labelledby="dash-insight">
+              <table class="dash">
+                <caption class="sr-only">Sample fire and smoke events by zone and time band, last 30 days</caption>
+                {{M3_DASH_ROWS}}
+              </table>
+              <figcaption id="dash-insight" class="insight">{{M3_DASH_INSIGHT}}</figcaption>
+              <p class="t-cap mt-3">Sample data · fire &amp; smoke events, 30 days</p>
+            </figure></div></li>
+          <li class="step" data-beat="story-5"><div class="beat-poster" data-poster="bay5" aria-hidden="true"></div><div class="card">
+            <p class="label">05 · Business outcome</p>
+            <h3 class="t-h3 mt-3">A response that starts with the evidence.</h3>
+            <p class="t-body mt-3">And one record, first frame to closure, that your auditors can follow.</p></div></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 · CLOSE ------------------------------------------------------------------------------------>
+  <section id="contact" class="cta" aria-labelledby="cta-title" data-beat="next">
+    <div class="wrap grid12"><div class="c-text">
+      <div class="beat-poster" data-poster="next" aria-hidden="true"></div>
+      <p class="eyebrow">05 · What comes next</p>
+      <h2 id="cta-title" class="t-display mt-6">Together, let’s build <span class="cont">what comes next.</span></h2>
+      <div class="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
+        <a class="btn btn-primary btn-lg" href="mailto:info@meerana.ae?subject=Let%E2%80%99s%20build%20what%20comes%20next" data-ev="EV-531">Talk to Meerana <span class="arr" aria-hidden="true">→</span></a>
+        <a class="link t-ui" href="mailto:info@meerana.ae" data-ev="EV-531">info@meerana.ae</a>
+      </div>
+    </div></div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="f-brand">
+        <img src="{{LOGO_MEERANA_H}}" width="{{LOGO_MEERANA_H_W}}" height="{{LOGO_MEERANA_H_H}}" alt="Meerana Technologies" class="h-6 w-auto">
+        <p class="t-ui mt-4 text-fg-secondary" data-ev="EV-531">Meerana Technologies LLC<br>#1704, Blue Bay Tower, Business Bay, Dubai, UAE</p>
+      </div>
+      <div class="f-col"><h5>Products</h5><ul>
+        <li><a href="#products" data-hs-link="0">Mandoobee</a></li><li><a href="#products" data-hs-link="1">Tasree3</a></li><li><a href="#products" data-hs-link="2">Nazo</a></li>
+        <li><a href="#products" data-hs-link="3">Yisbir</a></li><li><a href="#products" data-hs-link="4">Wasel</a></li><li><a href="#products" data-hs-link="5">AI in a Box</a></li></ul></div>
+      <div class="f-col"><h5>Company</h5><ul><li><a href="#world">Offices</a></li><li><a href="#world">Recognition</a></li><li><a href="#story">How it works</a></li></ul></div>
+      <div class="f-col"><h5>Offices</h5><ul data-ev="EV-532"><li><a href="#world">Dubai</a></li><li><a href="#world">London</a></li><li><a href="#world">Egypt</a></li><li><a href="#world">Chennai</a></li></ul></div>
+      <div class="f-contact"><h5>Contact</h5><ul><li><a href="mailto:info@meerana.ae" data-ev="EV-531">info@meerana.ae</a></li></ul></div>
+    </div>
+    <div class="foot-base">
+      <p class="t-cap">© 2026 Meerana Technologies LLC</p>
+      <p class="t-cap">Prototype M3 · internal design exploration · copy proposed · sample data labelled</p>
+    </div>
+  </div>
+</footer>
+
+<dialog class="lightbox" aria-label="Product screens">
+  <div class="lb-bar">
+    <p class="t-ui text-fg-secondary" data-lb-cap></p>
+    <div class="flex items-center gap-1">
+      <button type="button" class="icon-btn" data-lb-step="-1" aria-label="Previous screen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
+      <button type="button" class="icon-btn" data-lb-step="1" aria-label="Next screen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+      <button type="button" class="icon-btn" data-lb-close aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+  </div>
+  <img src="" alt="">
+</dialog>
+
+<!-- colour probes: the WebGL renderer reads tone colours from these, so hex values stay in tokens.css -->
+<svg class="m3p m3p-probe" width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <polygon class="ft t0"/><polygon class="ft t1"/><polygon class="ft t2"/><polygon class="ft t3"/><polygon class="ft t4"/><polygon class="ft t5"/>
+  <polygon class="ft t6"/><polygon class="ft t7"/><polygon class="ft t8"/><polygon class="ft t9"/><polygon class="ft t10"/><polygon class="ft t11"/>
+</svg>
+
+<script>
+{{M3_SCENE_JS}}
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  'use strict';
+  var S = window.M3Scene, FM = S.formations, R = S.R, U = S.U;
+  var root = document.documentElement, body = document.body;
+  var mqReduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var mqFine = window.matchMedia('(pointer: fine)');
+  var mqDesk = window.matchMedia('(min-width: 1280px)');
+  var mqPin = window.matchMedia('(min-width: 1280px) and (min-height: 760px)');
+  function isReduced() { return mqReduce.matches || root.dataset.motion === 'reduce'; }
+  function $$(sel, el) { return Array.prototype.slice.call((el || document).querySelectorAll(sel)); }
+  // QA hooks for design review screenshots: #qa=<beat>&webgl=force|off&t=<seconds> renders that state, settled.
+  var Q = {}; location.hash.replace(/^#/, '').split('&').forEach(function (kv) { var p = kv.split('='); if (p[0]) Q[p[0]] = p.length > 1 ? decodeURIComponent(p[1]) : '1'; });
+
+  var stage = document.getElementById('stage'), posters = stage.querySelector('.posters'), canvas = stage.querySelector('canvas');
+  var probes = { main: stage.querySelector('.rect-main.probe'), wide: stage.querySelector('.rect-wide.probe') };
+  var vw = 0, vh = 0, rects = {};
+  function measure() {   // cached on resize only: never read layout inside the animation loop
+    vw = window.innerWidth; vh = window.innerHeight;
+    for (var k in probes) { var r = probes[k].getBoundingClientRect(); rects[k] = { x: r.left, y: r.top, w: r.width, h: r.height }; }
+  }
+  measure();
+  function framing(f) { var b = f.box, r = rects[f.rect] || rects.main, s = Math.min(r.w / b.w, r.h / b.h);
+    return { s: s, cx: b.cx, cy: b.cy, px: r.x + r.w / 2, py: r.y + r.h / 2 }; }
+
+  /* ---------------- overlays (glass chips pinned to scene anchors) ---------------- */
+  var ovls = $$('[data-ovl]', stage).map(function (el) { return { el: el, f: el.dataset.ovl.split(' '), a: el.dataset.anchor, on: false }; });
+  function overlaysFor(name, on) {
+    ovls.forEach(function (o) { var v = on && o.f.indexOf(name) >= 0 && !!FM[name].anchors[o.a]; o.on = v; o.el.classList.toggle('is-on', v); }); }
+  var ovlEl = stage.querySelector('.ovl'), lastS = 0;
+  function placeOverlays(name, project, s) {
+    var f = FM[name]; if (!f) return;
+    if (s && Math.abs(s - lastS) > 0.25) { lastS = s; ovlEl.style.setProperty('--s', s.toFixed(2)); }
+    ovls.forEach(function (o) { if (!o.on) return; var xy = project(f.anchors[o.a]);
+      o.el.style.transform = 'translate3d(' + xy[0].toFixed(1) + 'px,' + xy[1].toFixed(1) + 'px,0)'; });
+  }
+  function posterProject(f) { var fr = framing(f);
+    var fn = function (p) { return [fr.px + (S.dot(p, R) - fr.cx) * fr.s, fr.py - (S.dot(p, U) - fr.cy) * fr.s]; }; fn.s = fr.s; return fn; }
+
+  /* ---------------- poster mode (no WebGL, small screens): same shapes as SVG, cross-faded ---------------- */
+  var mode = 'poster', current = 'hero', GL = null;
+  function posterShow(name, instant) {
+    var f = FM[name], olds = posters.querySelectorAll('.m3p');
+    if (olds.length === 1 && olds[0].dataset.f === name) { overlaysFor(name, true); var pp = posterProject(f); placeOverlays(name, pp, pp.s); return; }
+    var tmp = document.createElement('div'); tmp.innerHTML = S.poster(f, 'rect-' + f.rect);
+    var svg = tmp.firstChild; posters.appendChild(svg); overlaysFor(name, false);
+    function swap() { svg.classList.add('is-on'); olds.forEach(function (o) { o.classList.remove('is-on'); setTimeout(function () { o.remove(); }, instant ? 0 : 260); });
+      overlaysFor(name, true); var pp = posterProject(f); placeOverlays(name, pp, pp.s); }
+    if (instant || isReduced()) swap(); else requestAnimationFrame(function () { requestAnimationFrame(swap); });
+  }
+  function show(name, instant) { if (!FM[name]) return; current = name; if (mode === 'gl') GL.go(name, instant); else posterShow(name, instant); }
+
+  /* ---------------- inline posters below 1280 px (no fixed stage on small screens) ---------------- */
+  var inlineDone = false;
+  function inlinePosters() {
+    if (mqDesk.matches || inlineDone) return; inlineDone = true;
+    $$('[data-poster]').forEach(function (el) { var f = FM[el.dataset.poster]; if (f) el.innerHTML = S.poster(f, 'inline'); });
+  }
+
+  /* ---------------- beats → scene states; chapter, island and timeline UI ---------------- */
+  var BEATS = { hero: 'hero', world: 'world', 'story-1': 'bay1', 'story-2': 'bay2', 'story-3': 'bay3', 'story-4': 'bars', 'story-5': 'bay5', next: 'next' };
+  for (var li = 0; li < 6; li++) BEATS['layer-' + li] = 'layer' + li;
+  var CH = { hero: 'Intelligence', layer: 'Products', world: 'Company', story: 'How it works', next: 'What comes next' };
+  var PRODUCTS = ['Mandoobee', 'Tasree3', 'Nazo', 'Yisbir', 'Wasel', 'AI in a Box'];
+  var ACT = { 'story-2': ['danger', 'Yisbir · smoke detected · CAM-07'], 'story-3': ['', 'Alert → duty officer · task R-0142'],
+              'story-4': ['', 'Bay 3 · 6 of 7 events after hours'], 'story-5': ['', 'R-0142 closed · one record'] };
+  var beatEls = $$('[data-beat]');
+  var navLinks = $$('[data-nav]'), tlItems = $$('[data-tl]'), tlFill = document.querySelector('.rail-fill');
+  var islText = document.querySelector('[data-isl-text]'), islLabel = document.querySelector('[data-isl-label]');
+  var drop = document.querySelector('[data-isl-drop]'), dropText = drop.querySelector('[data-drop-text]');
+  var beat = null, moment = null, chapterName = CH.hero, actTimer = 0;
+  function stagePaused(on) { if (GL && GL.pause) GL.pause(on); }
+  function setBeat(b) {
+    if (b === beat) return;
+    var prevKey = beat ? beat.split('-')[0] : '';
+    beat = b; body.dataset.scene = b;
+    if (b !== 'hero') { stopAutoplay(); setMoment(null); }
+    var key = b.split('-')[0];
+    stagePaused(key === 'hero' || key === 'layer');
+    if (key !== 'hero' && key !== 'layer') show(BEATS[b]);
+    chapterName = key === 'layer' ? 'Products · ' + PRODUCTS[+b.split('-')[1]] : CH[key] || CH.hero;
+    if (!actTimer) { islText.textContent = chapterName; islLabel.removeAttribute('data-tone'); }
+    navLinks.forEach(function (a) { if (a.dataset.nav === key) a.setAttribute('aria-current', 'location'); else a.removeAttribute('aria-current'); });
+    var step = key === 'story' ? +b.split('-')[1] : 0;
+    tlItems.forEach(function (t) { var n = +t.dataset.tl; if (n === step) t.setAttribute('aria-current', 'step'); else t.removeAttribute('aria-current');
+      if (n < step) t.setAttribute('data-done', ''); else t.removeAttribute('data-done'); });
+    if (tlFill) tlFill.style.transform = 'scaleY(' + (step > 1 ? (step - 1) / 4 : 0) + ')';
+    if (ACT[b]) activity(ACT[b][0], ACT[b][1]);
+  }
+  function activity(tone, text) {   // a live activity: ≤ 2 s (Apple HIG); desktop drops a row, compact swaps the label text
+    if (isReduced()) return;
+    clearTimeout(actTimer);
+    if (mqDesk.matches) { dropText.textContent = text; if (tone) drop.dataset.tone = tone; else drop.removeAttribute('data-tone'); drop.setAttribute('data-on', ''); }
+    else { islText.textContent = text; if (tone) islLabel.dataset.tone = tone; else islLabel.removeAttribute('data-tone'); }
+    actTimer = setTimeout(function () { actTimer = 0; drop.removeAttribute('data-on'); islText.textContent = chapterName; islLabel.removeAttribute('data-tone'); }, 2000);
+  }
+
+  /* ---------------- menu sheet (below 1280): focus trap, Esc, focus returns to the menu button ---------------- */
+  var sheet = document.getElementById('isl-sheet'), scrim = document.querySelector('[data-sheet-scrim]'), menuBtn = document.querySelector('[data-isl-menu]');
+  function openSheet(open) {
+    if (open) { sheet.setAttribute('data-open', ''); scrim.setAttribute('data-open', ''); sheet.inert = false; var f = sheet.querySelector('a, button'); if (f) f.focus(); }
+    else { if (!sheet.hasAttribute('data-open')) return; sheet.removeAttribute('data-open'); scrim.removeAttribute('data-open'); sheet.inert = true; menuBtn.focus(); }
+    menuBtn.setAttribute('aria-expanded', String(open)); menuBtn.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
+  }
+  menuBtn.addEventListener('click', function () { openSheet(!sheet.hasAttribute('data-open')); });
+  scrim.addEventListener('click', function () { openSheet(false); });
+  sheet.querySelector('[data-sheet-close]').addEventListener('click', function () { openSheet(false); });
+  $$('a', sheet).forEach(function (a) { a.addEventListener('click', function () { openSheet(false); }); });
+  sheet.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { openSheet(false); return; }
+    if (e.key !== 'Tab') return;
+    var f = $$('a, button', sheet), first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); } else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
+
+  /* ---------------- hero wall: real product screens on a tilted plane, three columns drifting in opposite directions.
+     One rAF loop, transform only, no layout reads in the loop (column heights cached on resize). Page scroll nudges
+     the drift; hover or focus holds it; "Pause motion" stops it. The moments bring one product's screens forward. ---------------- */
+  var WALL = (function () {
+    var el = document.querySelector('[data-wall]'); if (!el) return null;
+    var cols = $$('.wall-col', el), tiles = $$('.wall-tile', el), off = cols.map(function () { return 0; }), dirs = [1, -1, 1];
+    var heights = [], raf = 0, last = 0, held = false, visible = true, boost = 0, lastY = window.scrollY, BASE = 16;
+    var MAP = { ai: 'aibox', auto: 'tasree3', iot: 'wasel', sec: 'yisbir' };
+    function measureCols() { heights = cols.map(function (c) { return Math.max(1, c.scrollHeight / 2); }); }
+    function running() { return !isReduced() && visible && !document.hidden; }
+    function frame(t) {
+      raf = 0; var dt = Math.min(0.05, (t - (last || t)) / 1000); last = t;
+      var y = window.scrollY, dy = y - lastY; lastY = y; boost += (Math.min(400, Math.abs(dy) / Math.max(dt, 0.016)) - boost) * 0.08;
+      var v = held ? 0 : BASE + boost * 0.25;
+      for (var i = 0; i < cols.length; i++) { off[i] = (off[i] + dirs[i] * v * dt + heights[i]) % heights[i]; cols[i].style.transform = 'translate3d(0,' + (-off[i]).toFixed(2) + 'px,0)'; }
+      if (running()) raf = requestAnimationFrame(frame);
+    }
+    function kick() { if (!raf && running()) { last = 0; raf = requestAnimationFrame(frame); } }
+    function stop() { cancelAnimationFrame(raf); raf = 0; }
+    function motion() { if (isReduced()) { stop(); cols.forEach(function (c, i) { off[i] = 0; c.style.transform = ''; }); } else kick(); }
+    el.addEventListener('pointerenter', function () { held = true; });
+    el.addEventListener('pointerleave', function () { held = false; });
+    el.addEventListener('focusin', function () { held = true; });
+    el.addEventListener('focusout', function () { held = false; });
+    tiles.forEach(function (t) { t.addEventListener('click', function () {
+      var list = tiles.filter(function (x) { return !x.hasAttribute('aria-hidden'); }).map(function (x) {
+        var im = x.querySelector('img'); im.setAttribute('data-full', x.dataset.full); im.setAttribute('data-title', x.dataset.title); im.setAttribute('alt', x.dataset.title); return im; });
+      var me = t.hasAttribute('aria-hidden') ? tiles.filter(function (x) { return x.dataset.full === t.dataset.full && !x.hasAttribute('aria-hidden'); })[0] : t;
+      openLightbox(list, Math.max(0, list.indexOf(me.querySelector('img'))));
+    }); });
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { visible = es[0].isIntersecting; if (visible) kick(); else stop(); }).observe(el);
+    document.addEventListener('visibilitychange', function () { if (document.hidden) stop(); else kick(); });
+    window.addEventListener('resize', measureCols, { passive: true });
+    $$('img', el).forEach(function (im) { if (!im.complete) im.addEventListener('load', measureCols, { once: true }); });
+    measureCols(); kick();
+    return {
+      focus: function (m) {   // bring one product's screens forward; the others dim
+        var p = m ? MAP[m] : null;
+        if (p) el.dataset.focus = p; else el.removeAttribute('data-focus');
+        tiles.forEach(function (t) { t.classList.toggle('is-focus', !!p && t.dataset.product === p); });
+      },
+      motion: motion
+    };
+  })();
+
+  /* ---------------- hero: four rapid moments drive the wall (autoplay once, then on demand) ---------------- */
+  var SEQ = ['ai', 'auto', 'iot', 'sec'], HOLD = 2800, apTimer = 0, apIdx = -1;
+  var momentBtns = $$('[data-moment]');
+  function setMoment(m) { moment = m; momentBtns.forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.moment === m)); }); if (WALL) WALL.focus(m); }
+  function stopAutoplay() { clearTimeout(apTimer); apIdx = -1; root.classList.remove('ap'); }
+  function stepAutoplay() {
+    if (beat !== 'hero' || isReduced()) { stopAutoplay(); return; }
+    if (apIdx < SEQ.length) { root.classList.add('ap'); setMoment(SEQ[apIdx]); apIdx++; apTimer = setTimeout(stepAutoplay, HOLD); }
+    else { stopAutoplay(); setMoment(null); }
+  }
+  function autoplay(delay) { stopAutoplay(); if (isReduced() || beat !== 'hero' || Q.qa) return; apIdx = 0; apTimer = setTimeout(stepAutoplay, delay || 0); }
+  momentBtns.forEach(function (b) {
+    b.addEventListener('click', function () { stopAutoplay(); var m = b.dataset.moment; setMoment(moment === m ? null : m); });
+  });
+
+  /* ---------------- product gallery: pinned horizontal scroll with snap (≥1280×760) or native rail ---------------- */
+  var hs = document.getElementById('products'), hsPin = hs.querySelector('.hs-pin'), vp = hs.querySelector('.hs-viewport'), track = hs.querySelector('.hs-track');
+  var cards = $$('.pcard', track), hsGo = $$('[data-hs-go]', hs);
+  var hsActive = -1, hsTween = null, hsST = null, hsCardTLs = [], hsIO = null, inGallery = false;
+  function setCard(i) {
+    i = Math.max(0, Math.min(cards.length - 1, i));
+    if (i !== hsActive) {
+      hsActive = i;
+      hsGo.forEach(function (b, j) { if (j === i) b.setAttribute('aria-current', 'true'); else b.removeAttribute('aria-current'); });
+      cards.forEach(function (c, j) { if (j === i) c.setAttribute('data-active', ''); else c.removeAttribute('data-active'); c.inert = false; });
+      syncVideos();
+    }
+    if (inGallery) setBeat('layer-' + i);
+  }
+  function syncVideos() {
+    $$('video', track).forEach(function (v) {
+      var card = v.closest('.pcard'), want = !isReduced() && card.hasAttribute('data-active') && v.classList.contains('is-on') && inGallery;
+      if (want) { if (v.preload !== 'auto') v.preload = 'auto'; var p = v.play(); if (p && p.catch) p.catch(function () {}); } else if (!v.paused) v.pause();
+    });
+  }
+  function hsTeardown() {
+    if (hsST) { hsCardTLs.forEach(function (t) { if (t.scrollTrigger) t.scrollTrigger.kill(); t.kill(); }); hsCardTLs = []; hsST.kill(); hsTween.kill(); hsST = hsTween = null;
+      gsap.set(track, { clearProps: 'transform' }); gsap.set(cards, { clearProps: 'all' }); $$('.pc-frame, .pc-info > *', track).forEach(function (e) { gsap.set(e, { clearProps: 'all' }); }); }
+    if (hsIO) { hsIO.disconnect(); hsIO = null; }
+    hs.classList.remove('is-pinned');
+  }
+  function hsBuild() {
+    hsTeardown();
+    var pinned = mqPin.matches && !isReduced() && window.gsap && window.ScrollTrigger;
+    if (pinned) {
+      hs.classList.add('is-pinned');
+      var n = cards.length, dist = function () { return track.scrollWidth - vp.clientWidth; };
+      hsTween = gsap.to(track, { x: function () { return -dist(); }, ease: 'none', scrollTrigger: {
+        trigger: hs, pin: hsPin, start: 'top top', end: function () { return '+=' + Math.round(2.5 * window.innerHeight); },
+        scrub: 0.4, invalidateOnRefresh: true, refreshPriority: 1, anticipatePin: 1,
+        snap: { snapTo: 1 / (n - 1), duration: { min: 0.2, max: 0.42 }, ease: 'power2.inOut', delay: 0.06 },
+        onToggle: function (st) { inGallery = st.isActive; if (st.isActive) setCard(Math.round(st.progress * (n - 1))); syncVideos(); },
+        onUpdate: function (st) { setCard(Math.round(st.progress * (n - 1))); } } });
+      hsST = hsTween.scrollTrigger;
+      cards.forEach(function (c) {   // fade in → hold → fade out; the screen frame turns in with a short lag; text never blurs
+        var frame = c.querySelector('.pc-frame'), info = $$('.pc-info > *', c);
+        hsCardTLs.push(gsap.timeline({ scrollTrigger: { trigger: c, containerAnimation: hsTween, start: 'left right', end: 'right left', scrub: true } })
+          .fromTo(c, { opacity: 0.35, scale: 0.96 }, { opacity: 1, scale: 1, ease: 'power2.out', duration: 0.7 }, 0)
+          .fromTo(frame, { rotationY: 8, z: -60, transformPerspective: 1400 }, { rotationY: 0, z: 0, ease: 'power2.out', duration: 0.8 }, 0.1)
+          .fromTo(info, { y: 8 }, { y: 0, stagger: 0.05, ease: 'power2.out', duration: 0.5 }, 0.15)
+          .to(c, { opacity: 1, duration: 0.6 })
+          .to(c, { opacity: 0.35, scale: 0.96, ease: 'power2.in', duration: 0.7 }));
+      });
+    } else {
+      hsIO = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting && e.intersectionRatio > 0.55) setCard(+e.target.dataset.i); }); },
+        { root: vp, threshold: [0.55, 0.8] });
+      cards.forEach(function (c) { hsIO.observe(c); });
+    }
+    setCard(Math.max(0, hsActive));
+  }
+  function hsPos(i) { return hsST.start + (hsST.end - hsST.start) * i / (cards.length - 1); }
+  function hsGoTo(i) {
+    i = Math.max(0, Math.min(cards.length - 1, i));
+    if (hsST) window.scrollTo({ top: Math.min(hsST.end - 2, hsPos(i) + 1), behavior: isReduced() ? 'auto' : 'smooth' });
+    else { var c = cards[i]; hs.scrollIntoView({ block: 'start', behavior: 'auto' }); vp.scrollTo({ left: c.offsetLeft - (vp.clientWidth - c.offsetWidth) / 2, behavior: isReduced() ? 'auto' : 'smooth' }); }
+  }
+  $$('[data-hs-step]', hs).forEach(function (b) { b.addEventListener('click', function () { hsGoTo(hsActive + Number(b.dataset.hsStep)); }); });
+  hsGo.forEach(function (b) { b.addEventListener('click', function () { hsGoTo(+b.dataset.hsGo); }); });
+  $$('[data-hs-link]').forEach(function (a) { a.addEventListener('click', function (e) { e.preventDefault(); hsGoTo(+a.dataset.hsLink); }); });
+  cards.forEach(function (c, i) {   // keyboard: focus inside a card brings it to the centre
+    c.addEventListener('focusin', function () { if (i !== hsActive) { if (hsST) window.scrollTo(0, Math.min(hsST.end - 2, hsPos(i) + 1)); else setCard(i); } });
+  });
+  cards.forEach(function (c) {
+    var shots = $$('.shot', c), tabs = $$('[data-tabs] button', c);
+    function showShot(n) { shots.forEach(function (s, j) { s.classList.toggle('is-on', j === n); }); tabs.forEach(function (t, j) { t.setAttribute('aria-pressed', String(j === n)); }); syncVideos(); }
+    tabs.forEach(function (t, j) { t.addEventListener('click', function () { showShot(j); }); });
+    var frame = c.querySelector('[data-zoom]'), zoom = c.querySelector('[data-zoom-btn]');
+    function open() { var n = Math.max(0, shots.findIndex(function (s) { return s.classList.contains('is-on'); })); openLightbox(shots, n); }
+    if (frame) frame.addEventListener('click', open);
+    if (zoom) zoom.addEventListener('click', open);
+  });
+
+  /* ---------------- lightbox (solid) ---------------- */
+  var lb = document.querySelector('.lightbox'), lbImg = lb.querySelector('img'), lbCap = lb.querySelector('[data-lb-cap]'), lbShots = [], lbN = 0, lbReturn = null;
+  function lbShow(n) {
+    lbN = (n + lbShots.length) % lbShots.length; var s = lbShots[lbN];
+    lbImg.src = s.tagName === 'VIDEO' ? s.getAttribute('poster') : (s.getAttribute('data-full') || s.currentSrc || s.src);
+    lbImg.alt = s.getAttribute('alt') || s.getAttribute('aria-label') || '';
+    lbCap.textContent = (lbN + 1) + ' / ' + lbShots.length + ' · ' + (s.getAttribute('data-title') || lbImg.alt);
+  }
+  function openLightbox(list, n) { lbShots = list; if (!lbShots.length) return; lbReturn = document.activeElement; lbShow(n); var y = window.scrollY; if (lb.showModal) lb.showModal(); if (window.scrollY !== y) window.scrollTo(0, y); }
+  window.M3Lightbox = openLightbox;
+  $$('[data-lb-step]', lb).forEach(function (b) { b.addEventListener('click', function () { lbShow(lbN + Number(b.dataset.lbStep)); }); });
+  lb.querySelector('[data-lb-close]').addEventListener('click', function () { lb.close(); });
+  lb.addEventListener('close', function () { if (lbReturn && lbReturn.focus) lbReturn.focus(); });
+  lb.addEventListener('keydown', function (e) { if (e.key === 'ArrowRight') lbShow(lbN + 1); if (e.key === 'ArrowLeft') lbShow(lbN - 1); });
+  lb.addEventListener('click', function (e) { if (e.target === lb) lb.close(); });
+
+  /* ---------------- offices: live local time and UTC offset (true telemetry, updated every 30 s) ---------------- */
+  var clocks = $$('[data-tz]'), offs = $$('[data-tzo]');
+  function tickClocks() {
+    var now = new Date();
+    clocks.forEach(function (el) { try { el.textContent = new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: el.dataset.tz }).format(now); } catch (e) {} });
+    offs.forEach(function (el) { try { var p = new Intl.DateTimeFormat('en-GB', { timeZone: el.dataset.tzo, timeZoneName: 'shortOffset' }).formatToParts(now);
+      var z = p.filter(function (x) { return x.type === 'timeZoneName'; })[0]; if (z) el.textContent = z.value; } catch (e) {} });
+  }
+  tickClocks(); setInterval(tickClocks, 30000);
+
+  /* ---------------- Pause motion (WCAG 2.2.2) = on-page reduced motion, persisted ---------------- */
+  var toggles = $$('[data-motion-toggle]');
+  function syncToggle() { toggles.forEach(function (t) { t.setAttribute('aria-pressed', String(isReduced())); }); }   /* fixed label "Pause motion"; aria-pressed carries the state */
+  function motionChanged() { syncToggle(); stopAutoplay(); syncVideos(); if (WALL) WALL.motion(); if (GL) GL.kick(); if (window.ScrollTrigger) { hsBuild(); ScrollTrigger.refresh(); } }
+  toggles.forEach(function (t) { t.addEventListener('click', function () {
+    if (root.dataset.motion === 'reduce') { delete root.dataset.motion; try { localStorage.removeItem('meerana-motion'); } catch (e) {} }
+    else { root.dataset.motion = 'reduce'; try { localStorage.setItem('meerana-motion', 'reduce'); } catch (e) {} }
+    motionChanged();
+  }); });
+  mqReduce.addEventListener('change', motionChanged);
+  syncToggle();
+
+  /* ---------------- scroll: GSAP ScrollTrigger is the single owner (IntersectionObserver if the CDN fails) ---------------- */
+  function initScroll() {
+    if (window.gsap && window.ScrollTrigger) {
+      gsap.registerPlugin(ScrollTrigger);
+      hsBuild();   // the pinned gallery first: every later trigger is measured after its pin spacer exists
+      beatEls.forEach(function (el) {
+        ScrollTrigger.create({ trigger: el, start: 'top 58%', end: 'bottom 58%', onToggle: function (st) { if (st.isActive) setBeat(el.dataset.beat); } });
+      });
+      ['#story', '#contact'].forEach(function (sel) {
+        ScrollTrigger.create({ trigger: sel, start: 'top bottom', end: 'bottom top', onUpdate: function (st) { if (GL) GL.drift(st.progress - 0.5); } });
+      });
+      mqPin.addEventListener('change', function () { hsBuild(); ScrollTrigger.refresh(); });
+      ScrollTrigger.refresh();
+      if (document.fonts) document.fonts.ready.then(function () { ScrollTrigger.refresh(); });
+      window.addEventListener('load', function () { ScrollTrigger.refresh(); });
+    } else if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) setBeat(e.target.dataset.beat); }); }, { rootMargin: '-42% 0px -42% 0px' });
+      beatEls.forEach(function (el) { io.observe(el); });
+      hsBuild();
+    }
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { es.forEach(function (e) {
+      if (hsST) return; inGallery = e.isIntersecting; if (inGallery) setCard(Math.max(0, hsActive)); syncVideos(); }); }, { rootMargin: '-45% 0px -45% 0px' }).observe(hs);
+    if (!beat) setBeat('hero');
+  }
+
+{{M3_ENGINE_JS}}
+
+  function startGL() {
+    import('three').then(function (THREE) {
+      if (!THREE.WebGLRenderer) throw new Error('three');
+      GL = makeGL(THREE); mode = 'gl';
+      GL.go(current, true); GL.reveal();
+      stagePaused(beat === 'hero' || /^layer/.test(beat || ''));
+    }).catch(function () { mode = 'poster'; });
+  }
+
+  /* ---------------- boot ---------------- */
+  var idle = 'requestIdleCallback' in window ? function (cb) { window.requestIdleCallback(cb, { timeout: 1200 }); } : function (cb) { setTimeout(cb, 200); };
+  inlinePosters();
+  initScroll();
+  if (Q.qa) {   // design review: jump to a state (after the pin spacer exists, so positions are final)
+    var m = /^layer-(\d)$/.exec(Q.qa);
+    if (m && hsST) window.scrollTo(0, Math.min(hsST.end - 2, hsPos(+m[1]) + 1));
+    else if (m) { hs.scrollIntoView(); var c = cards[+m[1]]; vp.scrollLeft = c.offsetLeft - (vp.clientWidth - c.offsetWidth) / 2; setCard(+m[1]); }
+    else { var qaEl = document.querySelector('[data-beat="' + Q.qa + '"]'); if (qaEl && Q.qa !== 'hero') window.scrollTo(0, qaEl.getBoundingClientRect().top + window.scrollY - window.innerHeight * 0.3); }
+    if (SEQ.indexOf(Q.qa) >= 0) setMoment(Q.qa);
+    if (window.ScrollTrigger) ScrollTrigger.update();
+  }
+  window.addEventListener('resize', function () { measure(); if (GL) GL.resize(); else if (mqDesk.matches) posterShow(current, true); inlinePosters(); }, { passive: true });
+  window.addEventListener('pointermove', function (e) { if (GL && mqFine.matches) GL.pointer(e.clientX, e.clientY); }, { passive: true });
+  document.documentElement.addEventListener('pointerleave', function () { if (GL) GL.pointerOut(); });
+  requestAnimationFrame(function () { idle(function () { if (mqDesk.matches && wantGL()) startGL(); if (beat === 'hero' && !Q.qa) autoplay(900); }); });
+});
+</script>
+</body>
+</html>

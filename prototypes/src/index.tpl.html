@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-brand="meerana" data-surface="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hero prototypes · index</title>
+<meta name="description" content="Index of the four hero prototypes for meerana.ae and yisbir.com: two directions per brand, with verification status and notes.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>html { background: #FFFFFF; color: #071B36; font-family: "Poppins", ui-sans-serif, system-ui, sans-serif; }</style>
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.3"></script>
+<style type="text/tailwindcss">
+@import "tailwindcss";
+{{TOKENS_CSS}}
+
+@layer components {
+  .wrap { margin-inline: auto; max-width: 80rem; padding-inline: clamp(16px, 4vw, 48px); }
+  .mono-xs { font-family: var(--font-family-mono); font-size: .6875rem; line-height: 1.4; letter-spacing: .05em; text-transform: uppercase; }
+  .protos { width: 100%; border-collapse: collapse; }
+  .protos th, .protos td { padding: 22px 20px 22px 0; text-align: start; vertical-align: top; border-top: 1px solid var(--border-subtle); }
+  .protos thead th { border-top: 0; padding-block: 0 12px; }
+  .protos .shot { display: block; width: 240px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border-subtle); }
+  .protos .shot img { display: block; width: 100%; height: auto; }
+  .protos a.name { color: var(--text-primary); font-weight: 600; font-size: var(--text-heading-3); text-decoration: underline; text-decoration-color: var(--border-subtle); text-underline-offset: 4px; }
+  .protos a.name:hover { text-decoration-color: currentColor; }
+  .pill { display: inline-block; margin-top: 8px; padding: 2px 9px; border-radius: 999px; border: 1px solid var(--border-control); font: 500 .6875rem var(--font-family-mono); letter-spacing: .05em; text-transform: uppercase; color: var(--text-secondary); }
+  .pill.rec { border-color: var(--meerana-blue); color: var(--meerana-blue); }
+  .ok { color: var(--state-success); font-weight: 600; }
+  code { font-family: var(--font-family-mono); font-size: .8125rem; background: var(--surface-raised); padding: 1px 6px; border-radius: 4px; }
+  @media (max-width: 1023px) {   /* stack the table: one prototype per block */
+    .protos thead { display: none; }
+    .protos tr { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; padding: 22px 0; border-top: 1px solid var(--border-subtle); }
+    .protos th, .protos td { display: block; border-top: 0; padding: 0; }
+    .protos .shot { width: 100%; max-width: 420px; }
+  }
+}
+</style>
+</head>
+<body class="bg-surface text-fg antialiased" data-audit-ok="G09" data-audit-reason="Internal index of the prototypes, not a landing page: deliberately no signature motion">
+<main>
+  <section class="wrap pt-16 pb-10">
+    <p class="mono-xs text-fg-muted">Meerana Technologies · website revamp · Phase 4</p>
+    <h1 class="mt-4 max-w-[52rem] text-heading-1 font-semibold text-balance text-fg">Prototypes: hero directions and a 3D page</h1>
+    <p class="mt-4 max-w-[48rem] text-body text-fg-secondary">Each page is one self-contained HTML file with no build step. Open it directly in a browser; it needs an internet connection for the Tailwind CSS v4 browser build and Google Fonts. The reasoning, evidence and rejected options are in <a class="text-link underline underline-offset-4" href="../docs/DESIGN-DIRECTIONS.md">docs/DESIGN-DIRECTIONS.md</a>. The audit of the current sites is in <a class="text-link underline underline-offset-4" href="../docs/REPORT.md">docs/REPORT.md</a>.</p>
+  </section>
+
+  <section class="wrap pb-16" aria-labelledby="list-title">
+    <h2 id="list-title" class="sr-only">Prototypes</h2>
+    <table class="protos">
+      <thead><tr>
+        <th scope="col" class="mono-xs text-fg-muted">Prototype</th><th scope="col" class="mono-xs text-fg-muted">Preview</th>
+        <th scope="col" class="mono-xs text-fg-muted">Signature motion</th><th scope="col" class="mono-xs text-fg-muted">Checks</th><th scope="col" class="mono-xs text-fg-muted">Notes</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <th scope="row"><a class="name" href="meerana-m3-intelligent-ecosystem.html">M3 · Intelligent Ecosystem</a><br><span class="text-small text-fg-muted">meerana.ae · dark · full page in 3D</span><br><span class="pill">New · 2026-10-10</span></th>
+          <td><a class="shot" href="meerana-m3-intelligent-ecosystem.html" tabindex="-1" aria-hidden="true"><img src="thumbs/m3.webp" width="720" height="450" alt="" loading="lazy"></a></td>
+          <td class="text-small text-fg-secondary">One WebGL scene behind the whole page. The same isometric cells become the core, four rapid moments (AI → Automation → IoT → Security), the six-layer Intelligence Layer, the four offices, a five-step story (problem → outcome) and the closing lattice.</td>
+          <td class="text-small text-fg-secondary"><span class="ok">Audit 100 (strict)</span><br>Motion lint: 1 info (flow-line loop speed)<br>390 px verified</td>
+          <td class="text-small text-fg-secondary">Built from the reviewer comments of 2026-10-10. QA hook <code>#qa=&lt;beat&gt;&amp;webgl=force|off</code>. Below 768 px it uses the SVG posters, drawn by the same module.</td>
+        </tr>
+        <tr>
+          <th scope="row"><a class="name" href="meerana-m1-quiet-futurist.html">M1 · Quiet Futurist</a><br><span class="text-small text-fg-muted">meerana.ae · dark</span><br><span class="pill rec">Recommended</span></th>
+          <td><a class="shot" href="meerana-m1-quiet-futurist.html" tabindex="-1" aria-hidden="true"><img src="thumbs/m1.webp" width="720" height="450" alt="" loading="lazy"></a></td>
+          <td class="text-small text-fg-secondary">A node lattice draws itself once (about 2.3 s), then rests. Five zones label the five products, Nazo included, and link to the catalogue.</td>
+          <td class="text-small text-fg-secondary"><span class="ok">Audit 100</span><br>Motion lint clean<br>375 px verified</td>
+          <td class="text-small text-fg-secondary">QA hook <code>#frame=&lt;ms&gt;</code> renders one frame. Includes an on-page Reduce motion toggle.</td>
+        </tr>
+        <tr>
+          <th scope="row"><a class="name" href="meerana-m2-operating-model.html">M2 · Operating Model</a><br><span class="text-small text-fg-muted">meerana.ae · daylight</span></th>
+          <td><a class="shot" href="meerana-m2-operating-model.html" tabindex="-1" aria-hidden="true"><img src="thumbs/m2.webp" width="720" height="450" alt="" loading="lazy"></a></td>
+          <td class="text-small text-fg-secondary">An isometric site model builds once. Each zone (gate, cameras, office, processes, correspondence) maps to one product.</td>
+          <td class="text-small text-fg-secondary"><span class="ok">Audit 100</span><br>Motion lint clean<br>375 px verified</td>
+          <td class="text-small text-fg-secondary">Logo shown in the brand PDF's blue-on-white colourway via a CSS mask of the official raster (DD-09).</td>
+        </tr>
+        <tr>
+          <th scope="row"><a class="name" href="yisbir-y1-camera-chrome.html">Y1 · Camera Chrome</a><br><span class="text-small text-fg-muted">yisbir.com · dark</span></th>
+          <td><a class="shot" href="yisbir-y1-camera-chrome.html" tabindex="-1" aria-hidden="true"><img src="thumbs/y1.webp" width="720" height="450" alt="" loading="lazy"></a></td>
+          <td class="text-small text-fg-secondary">A live sample feed: pose-outline figures, lock-on brackets, a restricted zone and an event stream. A worker without a helmet walks into Zone B. A Pause feed control sits before the moving region.</td>
+          <td class="text-small text-fg-secondary"><span class="ok">Audit 100</span><br>Motion lint: 1 info (1 Hz REC dot)<br>375 px verified</td>
+          <td class="text-small text-fg-secondary">QA hook <code>#t=&lt;seconds&gt;</code>. The poster frame and the first canvas frame are generated by the same module. Below 768 px it starts paused on the poster.</td>
+        </tr>
+        <tr>
+          <th scope="row"><a class="name" href="yisbir-y2-search-index.html">Y2 · Search Is the Interface</a><br><span class="text-small text-fg-muted">yisbir.com · daylight</span><br><span class="pill rec">Recommended</span></th>
+          <td><a class="shot" href="yisbir-y2-search-index.html" tabindex="-1" aria-hidden="true"><img src="thumbs/y2.webp" width="720" height="450" alt="" loading="lazy"></a></td>
+          <td class="text-small text-fg-secondary">The query types itself once, the results resolve, and hit ticks drop onto a 24-hour index. The search field, filters and four sample searches, one of them Arabic, all work.</td>
+          <td class="text-small text-fg-secondary"><span class="ok">Audit 100</span><br>Motion lint clean<br>375 px verified</td>
+          <td class="text-small text-fg-secondary">Sample index only, with no network calls. Face and person search are left out until DL-P07 is decided.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="bg-surface-deep" aria-labelledby="notes-title">
+    <div class="wrap grid gap-10 py-16 lg:grid-cols-2">
+      <div>
+        <h2 id="notes-title" class="text-heading-2 font-semibold text-fg">How to read these pages</h2>
+        <ul class="mt-5 grid gap-3 text-small text-fg-secondary">
+          <li><b class="text-fg">Proposed copy, with sources.</b> Each claim carries <code>data-ev="EV-###"</code>, which points to <code>plan/03-evidence-register.csv</code>. Dashed "Prototype note" boxes mark open decisions.</li>
+          <li><b class="text-fg">Sample data is labelled.</b> Every number inside an "Illustrative interface" frame is sample data. No accuracy, latency or uptime figures are claimed.</li>
+          <li><b class="text-fg">Tokens under test.</b> Each page inlines <code>.claude/skills/ui-system/references/tokens.css</code>, so the prototypes also exercise the token file and its 64 verified contrast pairs.</li>
+          <li><b class="text-fg">Motion.</b> There is one signature motion per page. The OS reduced-motion setting is respected. Loops have a visible pause control (WCAG 2.2.2). Scrolling is native: no prototype needs Lenis, which DD-02 allows only on yisbir.com.</li>
+          <li><b class="text-fg">Logos.</b> Official rasters are shown at or below native size, in other colourways via CSS masks (DD-09). Swap in the vector masters when they arrive.</li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="text-heading-2 font-semibold text-fg">Rebuilding</h2>
+        <p class="mt-5 text-small text-fg-secondary">Templates and generators are in <code>prototypes/src/</code>. Run <code>python prototypes/src/build.py</code> (needs Python with Pillow, and Node). The Y1 scene (<code>y1_scene.js</code>) and the Y2 sample index (<code>y2_index.js</code>) run both in the page and at build time, so the static frames always match the live ones.</p>
+        <p class="mt-4 text-small text-fg-secondary">Checks: <code>python .claude/skills/anti-generic-audit/scripts/audit_page.py &lt;file&gt; --brand meerana|yisbir --strict</code> and <code>python .claude/skills/web-animations/scripts/motion_lint.py &lt;file&gt;</code>.</p>
+        <p class="mt-4 text-small text-fg-secondary">Production target: Next.js, Tailwind CSS v4 and shadcn/ui, following the six skills in <code>.claude/skills/</code>. These HTML files are design references, not production code.</p>
+      </div>
+    </div>
+  </section>
+</main>
+<footer class="wrap py-8 text-small text-fg-muted">Internal design exploration · not for publication.</footer>
+</body>
+</html>

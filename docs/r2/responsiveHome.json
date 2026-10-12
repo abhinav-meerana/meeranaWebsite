@@ -1,0 +1,362 @@
+{
+ "screenshotsDir": "C:/Users/abhin/AppData/Local/Temp/mrn/r2/shots",
+ "viewports": [
+  {
+   "viewport": "1920x1080",
+   "route": "/",
+   "galleryMode": "is-pinned",
+   "cardFitsViewport": true,
+   "heroCtaVisible": true,
+   "h1Lines": 3,
+   "roomOverlapsCopy": false,
+   "docHeightViewports": 8.28,
+   "issues": [
+    "The 3D room is cropped by the right edge of the viewport: the 'Command Center' and far 'Alerts' panels are cut off. The scene's focal point sits at about 91% of the viewport width, so the room reads as small thumbnails stuck in the bottom-right corner.",
+    "The copy is centred in the 1280px container (x 368–1104) but the room is anchored to the viewport edge. That leaves an empty band of about 200px between the moments row and the first panel, and the two halves do not share a grid.",
+    "There is about 230px of empty space above the eyebrow and about 180px below the CTA.",
+    "The gallery card is capped at 700px and centred in 100svh. That leaves 190px empty above it and about 115px below, plus an empty band of about 150px between the 'Meerana Intelligence Layer' heading and the card when the pin starts.",
+    "The card is one flat plane with no foreground/background depth. The next card is dimmed to 0.35 but its text is still readable and cut mid-word ('AI-native process manageme').",
+    "The first full view of 'How it works' has a large empty lattice panel on the right, because step 01 has no screen. The active timeline diamond floats about 116px above its step label.",
+    "The right half of the CTA section is empty."
+   ]
+  },
+  {
+   "viewport": "1920x937",
+   "route": "/",
+   "galleryMode": "is-pinned",
+   "cardFitsViewport": true,
+   "heroCtaVisible": true,
+   "h1Lines": 3,
+   "roomOverlapsCopy": false,
+   "docHeightViewports": 8.62,
+   "issues": [
+    "The room is cropped at the right edge, and there is an empty band of about 200px between the copy and the room (same root cause as 1920x1080).",
+    "The pinned card is 693px tall with an empty band of about 150px under the section heading as the pin begins.",
+    "The How-it-works section opens on an empty lattice."
+   ]
+  },
+  {
+   "viewport": "1680x1050",
+   "route": "/",
+   "galleryMode": "is-pinned",
+   "cardFitsViewport": true,
+   "heroCtaVisible": true,
+   "h1Lines": 3,
+   "roomOverlapsCopy": false,
+   "docHeightViewports": 8.34,
+   "issues": [
+    "The room is cropped at the right edge and sits low-right, with an empty band in the middle of the hero.",
+    "The gallery card (700px) has 175px empty above it, and the controls float about 100px below.",
+    "The How-it-works section opens on an empty lattice, and its timeline nodes are misaligned with the step labels."
+   ]
+  },
+  {
+   "viewport": "1600x900",
+   "route": "/",
+   "galleryMode": "is-pinned",
+   "cardFitsViewport": true,
+   "heroCtaVisible": true,
+   "h1Lines": 3,
+   "roomOverlapsCopy": false,
+   "docHeightViewports": 8.73,
+   "issues": [
+    "The room is cropped at the right edge, with an empty band between the copy and the room.",
+    "The pinned card is 666px tall and flat, and the neighbour's text is readable at 0.35 opacity.",
+    "The How-it-works section opens on an empty lattice."
+   ]
+  },
+  {
+   "viewport": "1536x864",
+   "route": "/",
+   "galleryMode": "is-pinned",
+   "cardFitsViewport": true,
+   "heroCtaVisible": true,
+   "h1Lines": 3,
+   "roomOverlapsCopy": false,
+   "docHeightViewports": 8.83,
+   "issues": [
+    "This is a common size (1920x1080 at 125%). The room is crammed into the right 30% and cropped: Command Center is cut, and the far Alerts panel is cut at the top-right. The empty middle band runs about x 920–1050.",
+    "The H1 jumps to 96px because of the min-height:860 rule, so the hero feels type-heavy next to a tiny room.",
+    "The pinned card is 639px tall with about 110px of top margin.",
+    "The How-it-works section opens on an empty lattice."
+   ]
+  },
+  {
+   "viewport": "1536x730",
+   "route": "/",
+   "galleryMode": "is-rail",
+   "cardFitsViewport": false,
+   "heroCtaVisible": true,
+   "h1Lines": 3,
+   "roomOverlapsCopy": false,
+   "docHeightViewports": 6.93,
+   "issues": [
+    "This is a likely client viewport (1920x1080 at 125%, minus browser chrome). The gallery is NOT pinned (the 730px height is below PIN_MIN_HEIGHT 760), so with a mouse, wheel scroll moves the page down past the rail and the products feel vertical.",
+    "The rail card is 665px tall but only 657px is available. The card bottom is cut, and the prev/next buttons and counter are entirely below the fold (y 746–838).",
+    "The neighbour card shows full-contrast text clipped mid-word ('AI-native process managem'). After scrolling the rail, three cards show at once (previous card's media at left, next card's text at right). It is busy and unpolished.",
+    "The room is cropped at the right edge, with an empty band of about 150px between the copy and the room."
+   ]
+  },
+  {
+   "viewport": "1440x900",
+   "route": "/",
+   "galleryMode": "is-pinned",
+   "cardFitsViewport": true,
+   "heroCtaVisible": true,
+   "h1Lines": 3,
+   "roomOverlapsCopy": false,
+   "docHeightViewports": 8.69,
+   "issues": [
+    "The room is cropped at the right edge, with an empty middle band.",
+    "The pinned card is flat, with large top and bottom margins.",
+    "The How-it-works section opens on an empty lattice."
+   ]
+  },
+  {
+   "viewport": "1440x789",
+   "route": "/",
+   "galleryMode": "is-pinned",
+   "cardFitsViewport": true,
+   "heroCtaVisible": true,
+   "h1Lines": 3,
+   "roomOverlapsCopy": false,
+   "docHeightViewports": 9.07,
+   "issues": [
+    "The room is cropped at the right edge: Command Center is cut, and the room sits in the bottom-right corner.",
+    "The pinned card fits (584 of 716px), but the copy is packed: the 'Explore' link is 18px from the card bottom while there is 50px above the eyebrow.",
+    "This viewport is only 29px above the pin threshold. At 1440x759 or lower it falls back to the rail."
+   ]
+  },
+  {
+   "viewport": "1366x768",
+   "route": "/",
+   "galleryMode": "is-pinned",
+   "cardFitsViewport": true,
+   "heroCtaVisible": true,
+   "h1Lines": 3,
+   "roomOverlapsCopy": false,
+   "docHeightViewports": 9.13,
+   "issues": [
+    "The room is cropped at the right edge and small.",
+    "Pinned mode works here, but a real 1366x768 laptop has an inner height of about 657px with browser chrome, which falls back to the rail (see 1366x657).",
+    "The neighbour card's text is readable at 0.35 opacity and cut at the viewport edge."
+   ]
+  },
+  {
+   "viewport": "1366x657",
+   "route": "/",
+   "galleryMode": "is-rail",
+   "cardFitsViewport": false,
+   "heroCtaVisible": true,
+   "h1Lines": 3,
+   "roomOverlapsCopy": false,
+   "docHeightViewports": 7.39,
+   "issues": [
+    "The hero is 675px tall on a 657px viewport (overflows by 18px). The CTA buttons sit 14px above the fold, and the content is crammed from the header down to the fold.",
+    "The room is reduced to a cluster of cropped thumbnails at x 970–1366: Command Center and Alerts are cut at the right edge, and the middle x 830–970 is empty.",
+    "The gallery is in rail mode: the card is 665px tall but only 584px is available. 'Explore Mandoobee' and the media caption are cut at the fold, and the counter and arrows are about 90–180px below the fold.",
+    "Mouse-wheel scroll goes vertically past the rail, so the user sees one product and then 'How it works'. This is the 'products scroll vertically' complaint.",
+    "The How-it-works section opens on an empty lattice on the right, and the active diamond is about 40px above the step label."
+   ]
+  },
+  {
+   "viewport": "1280x800",
+   "route": "/",
+   "galleryMode": "is-pinned",
+   "cardFitsViewport": true,
+   "heroCtaVisible": true,
+   "h1Lines": 3,
+   "roomOverlapsCopy": false,
+   "docHeightViewports": 8.98,
+   "issues": [
+    "The room is cropped at the right edge, with the room box starting at x 768.",
+    "The pinned card is narrower (998px), and its media is 497px wide.",
+    "The How-it-works section opens on an empty lattice."
+   ]
+  },
+  {
+   "viewport": "1280x720",
+   "route": "/",
+   "galleryMode": "is-rail",
+   "cardFitsViewport": false,
+   "heroCtaVisible": true,
+   "h1Lines": 3,
+   "roomOverlapsCopy": false,
+   "docHeightViewports": 6.9,
+   "issues": [
+    "The gallery is in rail mode (720 is below 760): the card is 665px tall but only 647px is available. The controls are below the fold, and the neighbour's text is clipped.",
+    "The room is cropped at the right edge and small."
+   ]
+  },
+  {
+   "viewport": "1280x601",
+   "route": "/",
+   "galleryMode": "is-rail",
+   "cardFitsViewport": false,
+   "heroCtaVisible": false,
+   "h1Lines": 3,
+   "roomOverlapsCopy": false,
+   "docHeightViewports": 7.9,
+   "issues": [
+    "The hero CTA buttons are cut by the fold (bottom at 643 on a 601px viewport, a 42px gap), and only their top pixels show. The hero is 675px tall with no step-down below the max-height:800 rule.",
+    "This is likely the client's viewport (1920x1080 at 150% minus chrome is about 1280x600).",
+    "The gallery is in rail mode: the card is 665px tall but only 528px is available. The 'Request briefing' button is half-cut, 'Explore' and the media caption are hidden, and the controls are 140px or more below the fold.",
+    "The room is cropped at the right edge. The near PPE panel starts about 100px from the end of the moments row and the other panels run off-screen."
+   ]
+  },
+  {
+   "viewport": "1024x768",
+   "route": "/",
+   "galleryMode": "is-rail",
+   "cardFitsViewport": true,
+   "heroCtaVisible": true,
+   "h1Lines": 3,
+   "roomOverlapsCopy": false,
+   "docHeightViewports": 7.4,
+   "issues": [
+    "The hero has no visual above the fold: below 1280 it falls back to the stacked layout with a single poster that starts at y 705, so only a 60px sliver of the 'Fire & smoke' card peeks out. The 3D separation is lost.",
+    "The moments row stretches to 942px for four short labels, which looks sparse.",
+    "The rail card is 692 of 695px, so it fits by 3px, but the controls are below the fold.",
+    "The How-it-works section opens on an empty lattice."
+   ]
+  },
+  {
+   "viewport": "1024x600",
+   "route": "/",
+   "galleryMode": "is-rail",
+   "cardFitsViewport": false,
+   "heroCtaVisible": false,
+   "h1Lines": 3,
+   "roomOverlapsCopy": false,
+   "docHeightViewports": 8.94,
+   "issues": [
+    "The hero CTAs are completely below the fold (gap -57px). The max-width:1279 block sets padding-block 128px 64px later in hero.css and overrides the max-height:800 compaction.",
+    "Nothing visual is above the fold: the first screen is just text on navy.",
+    "The rail card is 692px tall but only 527px is available. The CTA and Explore link are cut."
+   ]
+  },
+  {
+   "viewport": "820x1180",
+   "route": "/",
+   "galleryMode": "is-rail",
+   "cardFitsViewport": false,
+   "heroCtaVisible": true,
+   "h1Lines": 3,
+   "roomOverlapsCopy": false,
+   "docHeightViewports": 6.23,
+   "issues": [
+    "The product card is a vertical document: copy is on top, the media sits at y 578–1172, and the card is 1117px tall against 1107px available. The controls are below the card.",
+    "The hero is a stacked document (copy, then a poster) with no depth. That is acceptable, but nothing makes it look like 3D."
+   ]
+  },
+  {
+   "viewport": "768x1024",
+   "route": "/",
+   "galleryMode": "is-rail",
+   "cardFitsViewport": false,
+   "heroCtaVisible": true,
+   "h1Lines": 3,
+   "roomOverlapsCopy": false,
+   "docHeightViewports": 6.97,
+   "issues": [
+    "The card is 1077px tall against 951px available. The media is at the bottom and cut, and the controls are off-screen.",
+    "The 'How it works' steps stack with inline screens. That works, but the section is long (2.35 viewports)."
+   ]
+  },
+  {
+   "viewport": "414x896",
+   "route": "/",
+   "galleryMode": "is-rail",
+   "cardFitsViewport": false,
+   "heroCtaVisible": true,
+   "h1Lines": 3,
+   "roomOverlapsCopy": false,
+   "docHeightViewports": 8,
+   "issues": [
+    "The card is 922px tall against 823px available. The phone mock-up starts at y 678 and is cut, and the user has to scroll down through each product and then swipe sideways.",
+    "The next-card peek is only about 30px, which barely signals horizontal content. The arrows are below a card taller than the screen."
+   ]
+  },
+  {
+   "viewport": "390x844",
+   "route": "/",
+   "galleryMode": "is-rail",
+   "cardFitsViewport": false,
+   "heroCtaVisible": true,
+   "h1Lines": 3,
+   "roomOverlapsCopy": false,
+   "docHeightViewports": 8.51,
+   "issues": [
+    "The card is 904px tall against 771px available. The media is at the very bottom, so on first view the product looks text-only.",
+    "The swipe hint wraps to two lines, and the arrows it mentions are about 900px below.",
+    "The 'HEADQUARTERS · UNITED ARAB EMIRATES' label in the World section wraps awkwardly against 'Dubai'."
+   ]
+  },
+  {
+   "viewport": "360x740",
+   "route": "/",
+   "galleryMode": "is-rail",
+   "cardFitsViewport": false,
+   "heroCtaVisible": true,
+   "h1Lines": 3,
+   "roomOverlapsCopy": false,
+   "docHeightViewports": 9.75,
+   "issues": [
+    "The card is 907px tall against 667px available (1.23 viewports).",
+    "The hero CTA sits 36px above the fold, and the poster is entirely below it.",
+    "At 9.75 viewports, the page is the longest of all tested sizes. The product rail cards account for most of it."
+   ]
+  }
+ ],
+ "topProblems": [
+  {
+   "problem": "On most real laptop screens the product gallery does not pin. It falls back to a rail of cards taller than the screen, so mouse users scroll vertically past it. This is the client's complaint that each product scrolls vertically.",
+   "evidence": "Rail mode at 1366x657, 1536x730, 1280x720, 1280x601, 1024x768 and 1024x600. In each case the card is 665–692px tall against 527–657px available, and the counter and prev/next sit at y 745–838, below the fold. There is no wheel-to-horizontal mapping, so a mouse wheel scrolls the page down past the rail. The neighbour card shows full-contrast text clipped mid-word ('AI-native process managem'). Screenshots: 1366x657-03-gallery.png, 1280x601-03-gallery.png, 1536x730-04-gallery-card2.png.",
+   "rootCause": "lib/breakpoints.ts sets PIN_MIN_HEIGHT = 760, and MQ.pinned requires min-height:760px plus min-width:1280px. Typical laptop inner heights (601–730px) fail that check. In rail mode, showcase.css sets .showcase.is-rail .sc-card{height:100%}, which is effectively the intrinsic height with no viewport cap. --cw:min(88vw,1120px) is left-padded by the gutter, so the first card is not centred and the neighbour is half-visible. In Showcase.tsx, .sc-controls render after the track, below the card.",
+   "files": "lib/breakpoints.ts; components/sections/Showcase.tsx; app/showcase.css",
+   "fix": "1) Pin on any width of 1024px or more with a fine pointer and motion allowed, and lower the height gate to about 560px. 2) Size the stage from the viewport: .sc-card{height:clamp(440px, calc(100svh - var(--header-h) - 104px), 720px)}. Give .sc-card container-type:size and add @container (max-height:600px) rules that hide .sc-caps, line-clamp .sc-line to 2 lines and step .sc-name down to 2rem, so content never overflows. 3) Put the counter and arrows inside the 100svh stage, overlaid at the bottom of the card or at its top-right, never after the track. 4) Rail mode is for touch or reduced motion only: centre the first card (padding-inline:calc((100vw - var(--cw))/2)) and dim and scale non-current cards (opacity .3, scale .92) so neighbours read as a peek, not cropped text. 5) Optionally map vertical wheel to horizontal scroll while the rail is centred in view."
+  },
+  {
+   "problem": "At short heights the hero does not fit the screen. The CTA buttons are cut or below the fold at 1280x601 and 1024x600, and the hero is taller than the screen at 1366x657.",
+   "evidence": "1280x601: the CTA bottom is at 643, a 42px gap, and the hero is 675px tall (01-hero.png shows only the top edge of the buttons). 1366x657: the hero is 675px on a 657px viewport and the CTA is 14px from the fold. 1024x600: the CTA is 57px below the fold, with nothing visual above it.",
+   "rootCause": "hero.css changes size in fixed steps: (min-height:860px) sets a 96px H1 and (max-height:800px) sets 64px with 92/32 padding. Below 800px tall there is no further step, so the stack (3-line 64px H1, 2-line lede, 77px moments row, 48px CTA) is always about 550px plus 124px of padding, roughly 675px. The later @media (max-width:1279px) block resets .hero{padding-block:128px 64px; min-height:0}, overriding the short-height compaction at 1024–1279px.",
+   "files": "app/hero.css (lines ~185–215 and ~325–360)",
+   "fix": "Replace the step queries with height-aware fluid values: .hero-title{font-size:clamp(2.25rem, min(6vw, 9.2svh), 6rem)}; .hero-lede/.moments/.hero-cta margins clamp(10px, 2.2svh, 32px); .hero{padding-block:calc(var(--header-h) + 1.5svh) 2.5svh; min-height:100svh; max-height:none}. Add @media (max-height:680px){.moments a{padding-block:8px} .hero-eyebrow{display:none}}. Combine the short-height and narrow-width rules (max-width:1279px) and (max-height:800px) so source order no longer silently wins. Add a Playwright assertion that .hero-cta bottom <= innerHeight at 1280x600, 1366x657 and 1024x600."
+  },
+  {
+   "problem": "The 3D room is pushed off the right edge and cropped at every desktop size, which leaves a dead band in the middle of the hero. There is no real foreground/background composition.",
+   "evidence": "Every WebGL viewport (1280–1920 wide): the Command Center panel and far Alerts panel are cut by the viewport's right edge, and the room occupies only about the right 28% of the screen, low. At 1366x657 the panels sit at x 970–1366 and x 830–970 is empty. At 1920x1080 the copy ends at x 1104 and the first panel starts at about x 1300. The room never overlaps the copy: the busy-pixel check behind the H1, lede and moments was 0.000 everywhere. Screenshots: 1366x657-01b-hero-nocopy.png, 1920x1080-01-hero.png, 1536x864-01-hero.png.",
+   "rootCause": "hero.css sets .hero-room{inset:0 -22% 0 var(--room-left:60%)}, so the canvas is 62% of the viewport wide but only 40% is visible, and the left 16% of that is masked out. In room-layout.ts, LOOK_AT [11.6,0.6,-5] projects to the canvas centre, which is about 60%+31% = 91% of the viewport width, so half the scene is outside the screen. The camera has a fixed fov of 42 and z 24, with no aspect-based framing, so panels are small and their crop changes with the aspect ratio. The copy sits in a centred 1280px container while the room is anchored to the viewport edge, so the two halves never share a grid on wide screens.",
+   "files": "app/hero.css (.hero-room, .hero::before); components/room/room-layout.ts (LOOK_AT, CAMERA_POS, ROWS x offsets); components/room/Room.tsx (camera setup)",
+   "fix": "Make the canvas fully visible: .hero-room{inset:0 0 0 max(46%, calc((100vw - var(--content-max))/2 + var(--content-max)*0.5))} with no negative right inset, and shorten the mask to about 8%. In Room.tsx, fit the camera to the PANELS bounding box each time the canvas resizes: read size from useThree(), compute the distance at which the bbox fills about 88% of the canvas, and set LOOK_AT to the bbox centre (about x 11, y 1). That keeps every panel inside the frame at any aspect and makes near panels about 380–450px wide at 1366. For the requested separation into layers, move the scene's background into its own plane (lattice/fog plane at z -30 with slow parallax), keep the panels as the midground with per-row parallax on pointer and scroll, and keep the copy as the foreground with the scrim tightened to its column."
+  },
+  {
+   "problem": "At 1024–1279px wide (iPad landscape, 1280px laptops at 125%) the hero has no visual above the fold. It is text on navy, with a single poster stacked below the CTAs.",
+   "evidence": "1024x768: the poster starts at y 705, so only a 60px sliver of 'Fire & smoke' peeks out (1024x768-01-hero.png). 1024x600: nothing visual is visible and the CTA is hidden. The moments row stretches to 942px for four short labels.",
+   "rootCause": "RoomClient.tsx renders RoomPoster whenever MQ.xl (1280px or wider) fails. hero.css @media (max-width:1279px) switches .hero to a flex column with .hero-room order:2 below the copy and drops the scrim and side-by-side layout. .hero-copy-inner{max-width:none} lets the moments row span the full container.",
+   "files": "components/room/RoomClient.tsx; app/hero.css (@media max-width:1279px block)",
+   "fix": "Use a two-column hero from 1024px: grid-template-columns 6fr 6fr, copy left, visual right, visual max-height 62svh. Show the static depth collage (RoomFallback, CSS scale, blur and shadow per depth band) at 1024–1279, not the single poster, and keep the poster only below 768px. Keep .hero-copy-inner{max-width:46rem} at all widths so .moments stays compact."
+  },
+  {
+   "problem": "On phones and tablets each product card is a tall vertical document inside a horizontal rail. The media sits at the bottom, below the fold, the arrows are below the card, and the next card barely peeks out.",
+   "evidence": "Card heights against available space: 904/771 (390x844), 907/667 (360x740), 922/823 (414x896), 1077/951 (768x1024), 1117/1107 (820x1180). The media starts at y 678–703 on phones. The next-card peek is about 24–30px. The swipe hint mentions arrows that are about 900px further down. Screenshots: 390x844-03-gallery.png, 820x1180-03-gallery.png.",
+   "rootCause": "showcase.css @media (max-width:1023px) sets .showcase.is-rail .sc-card{grid-template-columns:1fr; align-content:start} with DOM order copy then ScreenFrame, and no height cap. --cw:88vw leaves almost no peek. .sc-controls come after the track in Showcase.tsx.",
+   "files": "app/showcase.css; components/sections/Showcase.tsx",
+   "fix": "Below 1024px: put the media first (.sc-shot{order:-1; max-height:32svh} with object-fit:contain) and cap the card at height:calc(100svh - var(--header-h) - 112px). Clamp the copy (.sc-line line-clamp 3, show only the first 2 caps, keep the Deploys row). Set --cw:84vw with centred padding so about 8vw of the neighbour shows, scaled to .94 and dimmed. Move the counter and arrows between the heading and the track, or overlay them on the card's bottom edge, so they are always on screen with the card."
+  },
+  {
+   "problem": "'How it works' opens on an empty right column, and its timeline nodes drift away from their step labels on taller screens.",
+   "evidence": "At every viewport of 1024px or wider, the first view of #how shows the heading and steps 01–02 on the left and an empty lattice of about 630x400px on the right (1366x657-05-how.png, 1024x768-05-how.png). The active diamond sits about 40px above its label at 1366x657 and about 116px above it at 1920x1080 (1920x1080-05-how.png).",
+   "rootCause": "In Scenario.tsx, SHOWN[0] resolves to -1 because SCENARIO[0] has no screen, so the sticky media column is empty for step 01. In sections.css, .how-step{min-height:30svh; align-content:center} vertically centres the text while .how-node is positioned at top:4px of the step box.",
+   "files": "components/sections/Scenario.tsx; content/scenario.ts; app/sections.css (.how-step, .how-node)",
+   "fix": "Give step 01 a real, evidenced visual, such as the existing Yisbir fire-and-smoke still shown before its detection overlay, labelled 'Design concept · sample data'. Alternatively show the step-02 screen from the start, dimmed. Change .how-step to align-content:start with padding-block:8svh and align .how-node to the label row (top:calc(8svh + 4px)) so the diamond always marks its title."
+  },
+  {
+   "problem": "Pinned mode (1280px or wider and at least 760px tall) works, but it looks flat and leaves dead zones. The cards are single flat surfaces, and the neighbours' text stays readable and noisy.",
+   "evidence": "At 1920x1080 the card is capped at 700px, with 190px empty above it and about 115px below before the controls (1920x1080-03-gallery.png). An empty band of about 150px separates the section heading from the card when the pin starts (1920x937-02-gallery-head.png). Neighbours at 0.35 opacity still show readable, cropped headings ('Tas', 'Tasree3').",
+   "rootCause": "showcase.css .showcase.is-pinned .sc-card{height:min(74svh,700px)} is centred inside .sc-pin{height:100svh; justify-content:center}. .sc-head sits outside the pin with padding-block 64/24. The only state change between cards is opacity on .sc-panel; there are no depth layers in .sc-card.",
+   "files": "app/showcase.css; components/sections/Showcase.tsx",
+   "fix": "Size the card to the stage, height:min(calc(100svh - var(--header-h) - 112px), 760px), aligned to the top of the stage under the header, and move the section heading into the pinned stage as a small overline. Build the depth the client asked for: a back plate (accent glow and lattice, moving at 0.3x the track speed), a mid layer (the card surface) and a front layer (the media lifted with translateZ or a shadow, moving at 1.15x, its caption offset). Animate them with separate GSAP timelines in the existing scrub. Treat non-current cards with scale .9, blur 2px and opacity .25 so they read as depth rather than cropped text."
+  }
+ ]
+}

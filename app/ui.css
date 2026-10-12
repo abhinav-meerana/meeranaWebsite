@@ -1,0 +1,548 @@
+/* ============================================================================
+   Shared UI: the annotation voice, provenance labels, screen frames, the
+   lattice field, section headers, spec lists, links and the site footer.
+
+   Everything here is used by more than one route. Page-specific layout lives in
+   hero.css, showcase.css, sections.css, story.css and pages.css.
+   ========================================================================== */
+
+/* ---- annotation voice -------------------------------------------------- */
+
+.annot,
+.prov {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1.4;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-muted);
+}
+
+/* Provenance: one per media item, never bordered (JUDGE 1.7). A small square
+   marks it as a label, not a control. */
+.prov {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.prov::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  flex: 0 0 auto;
+  background: var(--annotation);
+}
+
+/* Small text in a product accent. The raw accent can fall just under 4.5:1 on the
+   dark surface (Mandoobee's azure measures 4.48), so small accent text mixes in a
+   little white. Large text and fills use the accent as is. */
+.accent-text {
+  color: color-mix(in srgb, var(--p-accent, var(--meerana-cyan)) 80%, var(--meerana-white));
+}
+
+/* Numbers everywhere use tabular figures so columns and counters do not jitter. */
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- section header ---------------------------------------------------- */
+
+.sec-head {
+  display: grid;
+  gap: var(--sp-3);
+  max-width: 48rem;
+}
+
+.sec-head > * {
+  margin: 0;
+}
+
+.sec-caption {
+  max-width: 44ch;
+}
+
+/* ---- links and text buttons -------------------------------------------- */
+
+.link-quiet {
+  color: var(--text-secondary);
+  text-decoration: underline;
+  text-decoration-color: var(--line-strong);
+  text-underline-offset: 4px;
+  transition:
+    color var(--dur-fast) var(--ease-standard),
+    text-decoration-color var(--dur-fast) var(--ease-standard);
+}
+
+.link-quiet:hover {
+  color: var(--text-primary);
+  text-decoration-color: var(--meerana-cyan);
+}
+
+/* Text button with a trailing arrow. 44px target. */
+.btn-text {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  min-height: 44px;
+  padding-inline: var(--sp-2);
+  color: var(--text-primary);
+  font-size: var(--fs-small);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.btn-text .arrow {
+  display: inline-block;
+  transition: transform var(--dur-fast) var(--ease-standard);
+}
+
+.btn-text:hover {
+  color: var(--text-accent);
+}
+
+.btn-text:hover .arrow,
+.btn-text:focus-visible .arrow {
+  transform: translateX(3px);
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.copy-email {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.btn-copy {
+  min-height: 44px;
+  padding-inline: var(--sp-4);
+  background: transparent;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-pill);
+  color: var(--text-secondary);
+  font: inherit;
+  font-size: var(--fs-label);
+  cursor: pointer;
+  transition:
+    border-color var(--dur-fast) var(--ease-standard),
+    color var(--dur-fast) var(--ease-standard);
+}
+
+.btn-copy:hover {
+  border-color: var(--meerana-cyan);
+  color: var(--text-accent);
+}
+
+.copy-note {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-accent);
+}
+
+/* ---- screen frame ------------------------------------------------------ */
+
+.screen {
+  margin: 0;
+  width: 100%;
+  display: grid;
+  gap: var(--sp-3);
+  min-width: 0;
+}
+
+.screen img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-card);
+  border: 1px solid var(--line-strong);
+  background: var(--ink-950);
+  box-shadow: var(--shadow-room);
+}
+
+/* Cut-outs on a transparent background carry no frame of their own. */
+.screen.is-bare img {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+/* ---- the lattice field ------------------------------------------------- */
+
+.lattice {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    repeating-linear-gradient(
+      30deg,
+      var(--lattice-line) 0 1px,
+      transparent 1px var(--lattice-cell)
+    ),
+    repeating-linear-gradient(
+      -30deg,
+      var(--lattice-line) 0 1px,
+      transparent 1px var(--lattice-cell)
+    ),
+    radial-gradient(
+      60% 55% at 72% 46%,
+      color-mix(in srgb, var(--p-accent, var(--meerana-cyan)) 10%, transparent),
+      transparent 70%
+    );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    var(--mask-solid) 24%,
+    var(--mask-solid) 76%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    var(--mask-solid) 24%,
+    var(--mask-solid) 76%,
+    transparent 100%
+  );
+}
+
+/* The page's one signature motion: the lattice resolves into place, once, on
+   load. Opacity and transform only, so it runs on the compositor: an earlier
+   clip-path version repainted the gradient layer every frame and cost a
+   mid-range phone several seconds of main-thread time (Lighthouse TBT 8.7 s).
+   Content never waits for it. */
+@media (prefers-reduced-motion: no-preference) {
+  .lattice.is-assemble {
+    animation: lattice-assemble var(--dur-signature) var(--ease-enter) both;
+  }
+}
+
+@keyframes lattice-assemble {
+  from {
+    opacity: 0;
+    transform: translateY(-14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---- spec list --------------------------------------------------------- */
+
+.spec {
+  margin: 0;
+  display: grid;
+  gap: var(--sp-3);
+  padding-top: var(--sp-4);
+  border-top: 1px solid var(--line);
+}
+
+.spec dt {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.spec dd {
+  margin: var(--sp-1) 0 0;
+  font-size: var(--fs-small);
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+/* ---- solid card -------------------------------------------------------- */
+
+/* One card recipe, solid and elevated (DD-22). */
+.card {
+  position: relative;
+  background: var(--surface-deep);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-panel);
+  box-shadow: var(--shadow-panel);
+}
+
+/* ---- site footer ------------------------------------------------------- */
+
+/* Compact by height as well as width (FINAL-SPEC §9): padding, the gap above
+   the base row and the logo all read --u, and a phone gets a two-column
+   layout, so the footer stays under 720 px at 390×844 (S-03). */
+.site-footer {
+  position: relative;
+  border-top: 1px solid var(--line);
+  padding-block: clamp(40px, calc(5 * var(--u)), 64px) clamp(20px, calc(2.5 * var(--u)), 32px);
+  background: var(--surface-sunken);
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 2fr) minmax(0, 1fr);
+  gap: var(--sp-fluid-m) var(--sp-6);
+}
+
+.footer-brand {
+  display: grid;
+  gap: var(--sp-3);
+  align-content: start;
+}
+
+.footer-brand > * {
+  margin: 0;
+}
+
+.footer-logo {
+  width: clamp(120px, calc(12 * var(--u)), 168px);
+  height: auto;
+}
+
+.footer-col ul {
+  list-style: none;
+  margin: var(--sp-3) 0 0;
+  padding: 0;
+  display: grid;
+}
+
+/* Six product links read better in two columns than in one tall one. */
+.footer-col:nth-of-type(1) ul {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: var(--sp-5);
+}
+
+.footer-col a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--text-secondary);
+  font-size: var(--fs-small);
+  text-decoration: none;
+}
+
+.footer-col a:hover {
+  color: var(--text-accent);
+}
+
+.footer-base {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  margin-top: clamp(24px, calc(4 * var(--u)), 64px);
+  padding-top: var(--sp-fluid-s);
+}
+
+/* The rule sits inside the container's padding, aligned with the text. */
+.footer-base::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: var(--gutter);
+  right: var(--gutter);
+  height: 1px;
+  background: var(--line);
+}
+
+/* Wide screens: the lockup sits beside the company details instead of above
+   them, so the brand column is no taller than the product links and the
+   footer stays a band, not a second page (S-03: about 350 px at 1440×900,
+   was 422). */
+@media (min-width: 1024px) {
+  .footer-grid {
+    grid-template-columns: minmax(0, 2.4fr) minmax(0, 2fr) minmax(0, 1fr);
+  }
+  .footer-brand {
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: var(--sp-fluid-m);
+  }
+  .footer-brand > * {
+    grid-column: 2;
+  }
+  .footer-brand > .footer-logo {
+    grid-column: 1;
+    grid-row: 1 / span 3;
+    align-self: start;
+  }
+}
+
+@media (max-width: 767px) {
+  .footer-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .footer-brand {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Phones: brand and Products span both columns; the Company links sit side
+   by side, two to a row, like the product links above them. */
+@media (max-width: 479px) {
+  .footer-grid .footer-col {
+    grid-column: 1 / -1;
+  }
+  .footer-col:nth-of-type(2) ul {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--sp-5);
+  }
+}
+
+/* ---- tonal sections ---------------------------------------------------- */
+
+/* One tonal step (base -> sunken -> base), with a lattice horizon line at the
+   sunken section's top edge, so the page stops reading as one navy wash. */
+.tone-sunken {
+  position: relative;
+  background: var(--surface-sunken);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+/* The horizon: one lattice cell of the brand's ±30° geometry along the top
+   edge, fading out downward and toward both sides, so the tonal step reads as
+   a ground line rather than a hairline. Decorative (a pseudo-element carries
+   no content). It is the section's one lattice: the scenario's sticky column
+   uses a plain glow instead, to keep one lattice per viewport (plan/09 §6). */
+.tone-sunken::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: var(--lattice-cell);
+  pointer-events: none;
+  background-image:
+    repeating-linear-gradient(
+      30deg,
+      var(--lattice-line-strong) 0 1px,
+      transparent 1px var(--lattice-cell)
+    ),
+    repeating-linear-gradient(
+      -30deg,
+      var(--lattice-line-strong) 0 1px,
+      transparent 1px var(--lattice-cell)
+    );
+  -webkit-mask-image:
+    linear-gradient(to bottom, var(--mask-solid), transparent),
+    linear-gradient(to right, transparent, var(--mask-solid) 22%, var(--mask-solid) 78%, transparent);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to bottom, var(--mask-solid), transparent),
+    linear-gradient(to right, transparent, var(--mask-solid) 22%, var(--mask-solid) 78%, transparent);
+  mask-composite: intersect;
+}
+
+/* ---- shared proof lists (home, company) -------------------------------- */
+
+.awards,
+.partners {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.awards li {
+  padding: var(--sp-4) 0 var(--sp-4) var(--sp-5);
+  border-bottom: 1px solid var(--line);
+  position: relative;
+}
+
+.awards li:last-child {
+  border-bottom: 0;
+}
+
+/* A marker per award: this is a proof section, so it takes the accent. */
+.awards li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: calc(var(--sp-4) + 0.5em);
+  width: 7px;
+  height: 7px;
+  transform: rotate(45deg);
+  background: var(--text-accent);
+}
+
+.awards b {
+  display: block;
+  font-size: var(--fs-small);
+  font-weight: 600;
+}
+
+.awards span {
+  display: block;
+  margin-top: var(--sp-1);
+  font-size: var(--fs-label);
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
+.partners-head {
+  margin: var(--sp-fluid-m) 0 var(--sp-4);
+}
+
+/* 1 / 2 / 3 columns at <600 / ≥600 / ≥1024 (FINAL-SPEC §9). */
+.partners {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0 var(--sp-6);
+}
+
+@media (min-width: 600px) {
+  .partners {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .partners {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.partners li {
+  padding-block: var(--sp-3);
+  border-bottom: 1px solid var(--line);
+  font-size: var(--fs-label);
+}
+
+.partners b {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.partners span {
+  display: block;
+  margin-top: 2px;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
+/* Preview builds only. */
+.flag-unconfirmed {
+  display: inline-block;
+  margin-inline-start: var(--sp-2);
+  padding: 2px var(--sp-2);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--state-warning-on-dark);
+  border: 1px solid currentColor;
+  border-radius: var(--radius-control);
+  vertical-align: middle;
+}
+
+.cta-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-4) var(--sp-6);
+  margin-top: var(--sp-7);
+}
+
+

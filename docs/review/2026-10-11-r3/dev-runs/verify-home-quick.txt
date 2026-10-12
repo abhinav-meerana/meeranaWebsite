@@ -1,0 +1,111 @@
+
+[§3.3 resolved values (u, header, hero H1, product title, scene H2, product body)]
+  PASS  [T-3.3] 1024×520: tokens resolve per §3.3
+  PASS  [T-3.3] 1024×520: rendered header 56.0 px = --header-h 56
+  PASS  [T-3.3] 1366×657: tokens resolve per §3.3
+  PASS  [T-3.3] 1366×657: rendered header 56.0 px = --header-h 56
+  PASS  [T-3.3] 1920×937: tokens resolve per §3.3
+  PASS  [T-3.3] 1920×937: rendered header 72.0 px = --header-h 72
+  PASS  [T-3.3] 390×844 touch: tokens resolve per §3.3
+  PASS  [T-3.3] 390×844 touch: rendered header 56.0 px = --header-h 56
+
+[home 1024×520: hero, room, gallery, sections, axe]
+  PASS  [H-01] 1024×520: scrollWidth === innerWidth — +0px
+  PASS  [H-01] 1024×520: H1 is 3 lines — 3 lines: "We engineer intelligence for the real world."
+  PASS  [H-01] 1024×520: H1 50.0 px (expect 50.0)
+  PASS  [H-02] 1024×520: S tier hero height 520 = innerHeight
+  PASS  [H-02] 1024×520: hero CTA bottom 469 ≤ 512
+  FAIL  [H-03] 1024×520: WebGL room — no canvas inside .hero-room
+  PASS  [H-04] 1024×520: scrim at (copyRight − 4, H1 centre) is --surface-page — rgb(7,27,54) vs rgb(7,27,54) Δ0
+  PASS  [G-01] 1024×520: is-pinned exactly when MQ.pinned matches — MQ true, class "showcase is-pinned"
+  PASS  [G-01] 1024×520: gallery pinned (matrix: pinned)
+  PASS  [G-02] 1024×520: cards ≤ innerHeight − header − controls (408)
+  PASS  [G-02] 1024×520: card height 387 (expect 387 ±2)
+  PASS  [G-02] 1024×520: no .sc-copy overflows
+  PASS  [G-02] 1024×520: card 794×387 gets the tight variant (matrix: tight)
+  FAIL  [G-03] 1024×520: with the pin at the top, controls bottom 520 ≤ 520
+  PASS  [G-04] 1024×520: travel 1300 = 2.5 × innerHeight
+  PASS  [G-04] 1024×520: one wheel notch moves one card — card 2
+  PASS  [G-04] 1024×520: 4 × Next lands on card 5 — card 5
+  PASS  [G-04] 1024×520: name strip "Show Yisbir" settles on card 4 — card 4, aria-pressed=true
+  PASS  [G-05] 1024×520: neighbours inert at 0.35, current live at 1 — {"cur":true,"inert":false,"op":1}
+  PASS  [G-06] 1024×520: current card and media identity at rest — card true media true
+  PASS  [G-06] 1024×520: the neighbour is rotated (rotationY ≠ 0) — matrix3d(0.936423, 0, -0.0819264, 0, 0, 0.94, 0, 0, 0.0871557, 0, 0.99
+  PASS  [G-07] 1024×520: each card centred at its rest (overlay scrollbar)
+  PASS  [G-05] 1024×520: first 40 Tab stops visible, top ≥ header
+  PASS  [S-01] 1024×520: one shot shown at every step — 1,1,1,1,1
+  PASS  [S-01] 1024×520: .how-sticky 440 ≤ innerHeight − header
+  PASS  [S-02] 1024×520: CTA heading and actions on screen under the header — h2 267 actions 346 / 520
+  PASS  [S-03] 1024×520: total pin 2.90 × innerHeight (≤3)
+  PASS  [AXE] 1024×520: homepage axe serious/critical
+  PASS  [X-01] 1024×520: homepage console errors
+
+[home 1366×657: hero, room, gallery, sections, axe]
+  PASS  [H-01] 1366×657: scrollWidth === innerWidth — +0px
+  PASS  [H-01] 1366×657: H1 is 3 lines — 3 lines: "We engineer intelligence for the real world."
+  PASS  [H-01] 1366×657: H1 63.2 px (expect 63.2)
+  PASS  [H-02] 1366×657: S tier hero height 657 = innerHeight
+  PASS  [H-02] 1366×657: hero CTA bottom 602 ≤ 641
+  PASS  [H-03] 1366×657: bbox inside the column — bbox {"l":704,"t":106,"r":1254,"b":599} col {"l":619,"t":72,"r":1339,"b":633}
+  PASS  [H-03] 1366×657: column starts ≥24 px right of the copy — col.l 619 copyRight 571
+  PASS  [H-03] 1366×657: bbox.r 1254 ≤ innerWidth − 8
+  PASS  [H-03] 1366×657: near panel 296 ≥ 0.30 × column 720
+  PASS  [H-03] 1366×657: framing matches §7.4 ±3% — col 619,1339,72,633 bbox 704,106,1254,599 near 296
+  PASS  [H-04] 1366×657: scrim at (copyRight − 4, H1 centre) is --surface-page — rgb(7,27,54) vs rgb(7,27,54) Δ0
+  PASS  [G-01] 1366×657: is-pinned exactly when MQ.pinned matches — MQ true, class "showcase is-pinned"
+  PASS  [G-01] 1366×657: gallery pinned (matrix: pinned)
+  PASS  [G-02] 1366×657: cards ≤ innerHeight − header − controls (545)
+  PASS  [G-02] 1366×657: card height 519 (expect 519 ±2)
+  PASS  [G-02] 1366×657: no .sc-copy overflows
+  PASS  [G-02] 1366×657: card 1063×519 gets the compact variant (matrix: compact)
+  PASS  [G-03] 1366×657: with the pin at the top, controls bottom 657 ≤ 657
+  PASS  [G-04] 1366×657: travel 1643 = 2.5 × innerHeight
+  PASS  [G-04] 1366×657: one wheel notch moves one card — card 2
+  PASS  [G-04] 1366×657: 4 × Next lands on card 5 — card 5
+  PASS  [G-04] 1366×657: name strip "Show Yisbir" settles on card 4 — card 4, aria-pressed=true
+  PASS  [G-05] 1366×657: neighbours inert at 0.35, current live at 1 — {"cur":true,"inert":false,"op":1}
+  PASS  [G-06] 1366×657: current card and media identity at rest — card true media true
+  PASS  [G-06] 1366×657: the neighbour is rotated (rotationY ≠ 0) — matrix3d(0.936423, 0, -0.0819264, 0, 0, 0.94, 0, 0, 0.0871557, 0, 0.99
+  PASS  [G-07] 1366×657: each card centred at its rest (overlay scrollbar)
+  PASS  [G-05] 1366×657: first 40 Tab stops visible, top ≥ header
+  PASS  [S-01] 1366×657: one shot shown at every step — 1,1,1,1,1
+  PASS  [S-01] 1366×657: .how-sticky 577 ≤ innerHeight − header
+  PASS  [S-02] 1366×657: CTA heading and actions on screen under the header — h2 318 actions 404 / 657
+  PASS  [S-03] 1366×657: total pin 2.90 × innerHeight (≤3)
+  PASS  [AXE] 1366×657: homepage axe serious/critical
+  PASS  [X-01] 1366×657: homepage console errors
+
+[home 1920×937: hero, room, gallery, sections, axe]
+  FAIL  [H-01] 1920×937: load — error: page.goto: Timeout 90000ms exceeded.
+
+[home 390×844 touch: hero, room, gallery, sections, axe]
+  FAIL  [H-01] 390×844 touch: load — error: page.goto: Timeout 90000ms exceeded.
+
+[room budget and reduced motion (H-05)]
+  SKIP  [H-05] 1440×900 @2x — no canvas (WebGL unavailable or depth mode)
+  PASS  [H-05] 1366×657 reduced: data-frameloop="demand" — demand
+  PASS  [H-05] 1366×657 reduced: the room does not move with the pointer
+        viewports run: 1024x520 1366x657 1920x937 390x844t
+
+verify-home: summary by acceptance id (http://localhost:3000, dev server)
+  PASS    AXE    pass 2, fail 0, not run 0
+  PASS    G-01   pass 4, fail 0, not run 0
+  PASS    G-02   pass 8, fail 0, not run 0
+  FAIL    G-03   pass 1, fail 1, not run 0 — 1024×520: with the pin at the top, controls bottom 520 ≤ 520
+  PASS    G-04   pass 8, fail 0, not run 0
+  PASS    G-05   pass 4, fail 0, not run 0
+  PASS    G-06   pass 4, fail 0, not run 0
+  PASS    G-07   pass 2, fail 0, not run 0
+  FAIL    H-01   pass 6, fail 2, not run 0 — 1920×937: load: error: page.goto: Timeout 90000ms exceeded.
+  PASS    H-02   pass 4, fail 0, not run 0
+  FAIL    H-03   pass 5, fail 1, not run 0 — 1024×520: WebGL room: no canvas inside .hero-room
+  PASS    H-04   pass 2, fail 0, not run 0
+  PASS    H-05   pass 2, fail 0, not run 1 — not run (1440×900 @2x): no canvas (WebGL unavailable or depth mode)
+  PASS    S-01   pass 4, fail 0, not run 0
+  PASS    S-02   pass 2, fail 0, not run 0
+  PASS    S-03   pass 2, fail 0, not run 0
+  PASS    T-3.3  pass 8, fail 0, not run 0
+  PASS    X-01   pass 2, fail 0, not run 0
+
+3 acceptance id(s) FAILED.
+exit 1

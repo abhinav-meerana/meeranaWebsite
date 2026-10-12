@@ -1,0 +1,279 @@
+
+[list view toggle persists across a reload (P-01), 1366×657]
+  PASS  [P-01] 1366×657 mandoobee: List view sticks after reload — after click list, after reload list, html[data-view]=list
+        tasree3: data-mode="stage" after 1779 ms (dev server; the 1.5 s budget applies to the build)
+  FAIL  [P-01] 1366×657 tasree3: List view sticks after reload — after click list, after reload no, html[data-view]=list
+
+[rail 390×844 touch (P-01, P-13)]
+  PASS  [P-01] 390×844 touch mandoobee: data-mode — rail
+  PASS  [P-13] 390×844 touch mandoobee: track scrollWidth = N × clientWidth — 4680 vs 12×390
+  PASS  [P-13] 390×844 touch mandoobee: scroll-snap-type x mandatory — x mandatory
+  PASS  [P-13] 390×844 touch mandoobee: buttons ≥44 px — [[44,44],[44,44]]
+  PASS  [P-13] 390×844 touch mandoobee: no inner vertical scroller
+  PASS  [P-13] 390×844 touch mandoobee: no horizontal page overflow — +0px
+  FAIL  [P-13] 390×844 touch mandoobee: every scene fits 100svh — 9:940
+  PASS  [P-13] 390×844 touch mandoobee: snapping to scene 03 updates the counter — 03 / 12 · People and place
+  PASS  [P-01] 390×844 touch mandoobee: no console errors
+  PASS  [P-01] 390×844 touch tasree3: data-mode — rail
+  PASS  [P-13] 390×844 touch tasree3: track scrollWidth = N × clientWidth — 5460 vs 14×390
+  PASS  [P-13] 390×844 touch tasree3: scroll-snap-type x mandatory — x mandatory
+  PASS  [P-13] 390×844 touch tasree3: buttons ≥44 px — [[44,44],[44,44]]
+  PASS  [P-13] 390×844 touch tasree3: no inner vertical scroller
+  PASS  [P-13] 390×844 touch tasree3: no horizontal page overflow — +0px
+  FAIL  [P-13] 390×844 touch tasree3: every scene fits 100svh — 9:1026
+  PASS  [P-13] 390×844 touch tasree3: snapping to scene 03 updates the counter — 03 / 14 · People and place
+  PASS  [P-01] 390×844 touch tasree3: no console errors
+  PASS  [P-01] 390×844 touch nazo: data-mode — rail
+  PASS  [P-13] 390×844 touch nazo: track scrollWidth = N × clientWidth — 5070 vs 13×390
+  PASS  [P-13] 390×844 touch nazo: scroll-snap-type x mandatory — x mandatory
+  PASS  [P-13] 390×844 touch nazo: buttons ≥44 px — [[44,44],[44,44]]
+  PASS  [P-13] 390×844 touch nazo: no inner vertical scroller
+  PASS  [P-13] 390×844 touch nazo: no horizontal page overflow — +0px
+  FAIL  [P-13] 390×844 touch nazo: every scene fits 100svh — 10:890
+  PASS  [P-13] 390×844 touch nazo: snapping to scene 03 updates the counter — 03 / 13 · People and place
+  PASS  [P-01] 390×844 touch nazo: no console errors
+        yisbir: data-mode="rail" after 1855 ms (dev server; the 1.5 s budget applies to the build)
+  PASS  [P-01] 390×844 touch yisbir: data-mode — rail
+  PASS  [P-13] 390×844 touch yisbir: track scrollWidth = N × clientWidth — 5460 vs 14×390
+  PASS  [P-13] 390×844 touch yisbir: scroll-snap-type x mandatory — x mandatory
+  PASS  [P-13] 390×844 touch yisbir: buttons ≥44 px — [[44,44],[44,44]]
+  PASS  [P-13] 390×844 touch yisbir: no inner vertical scroller
+  PASS  [P-13] 390×844 touch yisbir: no horizontal page overflow — +0px
+  PASS  [P-13] 390×844 touch yisbir: every scene fits 100svh
+  PASS  [P-13] 390×844 touch yisbir: snapping to scene 03 updates the counter — 03 / 14 · People and place
+  PASS  [P-01] 390×844 touch yisbir: no console errors
+  PASS  [P-01] 390×844 touch wasel: data-mode — rail
+  PASS  [P-13] 390×844 touch wasel: track scrollWidth = N × clientWidth — 4680 vs 12×390
+  PASS  [P-13] 390×844 touch wasel: scroll-snap-type x mandatory — x mandatory
+  PASS  [P-13] 390×844 touch wasel: buttons ≥44 px — [[44,44],[44,44]]
+  PASS  [P-13] 390×844 touch wasel: no inner vertical scroller
+  PASS  [P-13] 390×844 touch wasel: no horizontal page overflow — +0px
+  FAIL  [P-13] 390×844 touch wasel: every scene fits 100svh — 9:916
+  PASS  [P-13] 390×844 touch wasel: snapping to scene 03 updates the counter — 03 / 12 · People and place
+  PASS  [P-01] 390×844 touch wasel: no console errors
+        ai-in-a-box: data-mode="rail" after 3499 ms (dev server; the 1.5 s budget applies to the build)
+  PASS  [P-01] 390×844 touch ai-in-a-box: data-mode — rail
+  PASS  [P-13] 390×844 touch ai-in-a-box: track scrollWidth = N × clientWidth — 3900 vs 10×390
+  PASS  [P-13] 390×844 touch ai-in-a-box: scroll-snap-type x mandatory — x mandatory
+  PASS  [P-13] 390×844 touch ai-in-a-box: buttons ≥44 px — [[44,44],[44,44]]
+  PASS  [P-13] 390×844 touch ai-in-a-box: no inner vertical scroller
+  PASS  [P-13] 390×844 touch ai-in-a-box: no horizontal page overflow — +0px
+  PASS  [P-13] 390×844 touch ai-in-a-box: every scene fits 100svh
+  PASS  [P-13] 390×844 touch ai-in-a-box: snapping to scene 03 updates the counter — 03 / 10 · People and place
+  PASS  [P-01] 390×844 touch ai-in-a-box: no console errors
+
+[list 844×390 touch (P-01, P-14)]
+  PASS  [P-01] 844×390 touch mandoobee: data-mode — list
+  PASS  [P-14] 844×390 touch mandoobee: stacked, no horizontal overflow — stacked=true track 844/844 page +0
+  PASS  [P-01] 844×390 touch tasree3: data-mode — list
+  PASS  [P-14] 844×390 touch tasree3: stacked, no horizontal overflow — stacked=true track 844/844 page +0
+  PASS  [P-01] 844×390 touch nazo: data-mode — list
+  PASS  [P-14] 844×390 touch nazo: stacked, no horizontal overflow — stacked=true track 844/844 page +0
+  PASS  [P-01] 844×390 touch yisbir: data-mode — list
+  PASS  [P-14] 844×390 touch yisbir: stacked, no horizontal overflow — stacked=true track 844/844 page +0
+        wasel: data-mode="list" after 7386 ms (dev server; the 1.5 s budget applies to the build)
+  PASS  [P-01] 844×390 touch wasel: data-mode — list
+  PASS  [P-14] 844×390 touch wasel: stacked, no horizontal overflow — stacked=true track 844/844 page +0
+        ai-in-a-box: data-mode="list" after 7934 ms (dev server; the 1.5 s budget applies to the build)
+  PASS  [P-01] 844×390 touch ai-in-a-box: data-mode — list
+  PASS  [P-14] 844×390 touch ai-in-a-box: stacked, no horizontal overflow — stacked=true track 844/844 page +0
+
+[list 1280×480 (P-01, P-14)]
+  PASS  [P-01] 1280×480 mandoobee: data-mode — list
+  PASS  [P-14] 1280×480 mandoobee: stacked, no horizontal overflow — stacked=true track 1280/1280 page +0
+  PASS  [P-01] 1280×480 tasree3: data-mode — list
+  PASS  [P-14] 1280×480 tasree3: stacked, no horizontal overflow — stacked=true track 1280/1280 page +0
+        nazo: data-mode="list" after 1565 ms (dev server; the 1.5 s budget applies to the build)
+  PASS  [P-01] 1280×480 nazo: data-mode — list
+  PASS  [P-14] 1280×480 nazo: stacked, no horizontal overflow — stacked=true track 1280/1280 page +0
+  PASS  [P-01] 1280×480 yisbir: data-mode — list
+  PASS  [P-14] 1280×480 yisbir: stacked, no horizontal overflow — stacked=true track 1280/1280 page +0
+        wasel: data-mode="list" after 3036 ms (dev server; the 1.5 s budget applies to the build)
+  PASS  [P-01] 1280×480 wasel: data-mode — list
+  PASS  [P-14] 1280×480 wasel: stacked, no horizontal overflow — stacked=true track 1280/1280 page +0
+  PASS  [P-01] 1280×480 ai-in-a-box: data-mode — list
+  PASS  [P-14] 1280×480 ai-in-a-box: stacked, no horizontal overflow — stacked=true track 1280/1280 page +0
+
+[static rail 1366×657 reduced (P-12)]
+  PASS  [P-12] 1366×657 reduced mandoobee: no GSAP chunk requested
+  PASS  [P-12] 1366×657 reduced mandoobee: rail with data-static — rail static=true
+  PASS  [P-01] 1366×657 reduced mandoobee: --ps-content-h 517.5 (expect 517)
+  PASS  [P-12] 1366×657 reduced mandoobee: no inline transforms in .ps
+  PASS  [P-12] 1366×657 reduced mandoobee: scroll-snap-type x mandatory — x mandatory
+  PASS  [P-12] 1366×657 reduced mandoobee: document.getAnimations() is empty — 0
+  PASS  [P-12] 1366×657 reduced mandoobee: every text node opacity 1
+  PASS  [P-12] 1366×657 reduced mandoobee: Next jumps instantly — scrollLeft 1366 after 60 ms (expect 1366)
+  PASS  [P-12] 1366×657 reduced tasree3: no GSAP chunk requested
+  PASS  [P-12] 1366×657 reduced tasree3: rail with data-static — rail static=true
+  PASS  [P-01] 1366×657 reduced tasree3: --ps-content-h 517.5 (expect 517)
+  PASS  [P-12] 1366×657 reduced tasree3: no inline transforms in .ps
+  PASS  [P-12] 1366×657 reduced tasree3: scroll-snap-type x mandatory — x mandatory
+  PASS  [P-12] 1366×657 reduced tasree3: document.getAnimations() is empty — 0
+  PASS  [P-12] 1366×657 reduced tasree3: every text node opacity 1
+  PASS  [P-12] 1366×657 reduced tasree3: Next jumps instantly — scrollLeft 1366 after 60 ms (expect 1366)
+  PASS  [P-12] 1366×657 reduced nazo: no GSAP chunk requested
+  PASS  [P-12] 1366×657 reduced nazo: rail with data-static — rail static=true
+  PASS  [P-01] 1366×657 reduced nazo: --ps-content-h 517.5 (expect 517)
+  PASS  [P-12] 1366×657 reduced nazo: no inline transforms in .ps
+  PASS  [P-12] 1366×657 reduced nazo: scroll-snap-type x mandatory — x mandatory
+  PASS  [P-12] 1366×657 reduced nazo: document.getAnimations() is empty — 0
+  PASS  [P-12] 1366×657 reduced nazo: every text node opacity 1
+  PASS  [P-12] 1366×657 reduced nazo: Next jumps instantly — scrollLeft 1366 after 60 ms (expect 1366)
+  PASS  [P-12] 1366×657 reduced yisbir: no GSAP chunk requested
+  PASS  [P-12] 1366×657 reduced yisbir: rail with data-static — rail static=true
+  PASS  [P-01] 1366×657 reduced yisbir: --ps-content-h 517.5 (expect 517)
+  PASS  [P-12] 1366×657 reduced yisbir: no inline transforms in .ps
+  PASS  [P-12] 1366×657 reduced yisbir: scroll-snap-type x mandatory — x mandatory
+  PASS  [P-12] 1366×657 reduced yisbir: document.getAnimations() is empty — 0
+  PASS  [P-12] 1366×657 reduced yisbir: every text node opacity 1
+  PASS  [P-12] 1366×657 reduced yisbir: Next jumps instantly — scrollLeft 1366 after 60 ms (expect 1366)
+  PASS  [P-12] 1366×657 reduced wasel: no GSAP chunk requested
+  PASS  [P-12] 1366×657 reduced wasel: rail with data-static — rail static=true
+  PASS  [P-01] 1366×657 reduced wasel: --ps-content-h 517.5 (expect 517)
+  PASS  [P-12] 1366×657 reduced wasel: no inline transforms in .ps
+  PASS  [P-12] 1366×657 reduced wasel: scroll-snap-type x mandatory — x mandatory
+  PASS  [P-12] 1366×657 reduced wasel: document.getAnimations() is empty — 0
+  PASS  [P-12] 1366×657 reduced wasel: every text node opacity 1
+  PASS  [P-12] 1366×657 reduced wasel: Next jumps instantly — scrollLeft 1366 after 60 ms (expect 1366)
+        ai-in-a-box: data-mode="rail" after 1851 ms (dev server; the 1.5 s budget applies to the build)
+  PASS  [P-12] 1366×657 reduced ai-in-a-box: no GSAP chunk requested
+  PASS  [P-12] 1366×657 reduced ai-in-a-box: rail with data-static — rail static=true
+  PASS  [P-01] 1366×657 reduced ai-in-a-box: --ps-content-h 517.5 (expect 517)
+  PASS  [P-12] 1366×657 reduced ai-in-a-box: no inline transforms in .ps
+  PASS  [P-12] 1366×657 reduced ai-in-a-box: scroll-snap-type x mandatory — x mandatory
+  PASS  [P-12] 1366×657 reduced ai-in-a-box: document.getAnimations() is empty — 0
+  PASS  [P-12] 1366×657 reduced ai-in-a-box: every text node opacity 1
+  PASS  [P-12] 1366×657 reduced ai-in-a-box: Next jumps instantly — scrollLeft 1366 after 60 ms (expect 1366)
+
+[no JavaScript 1366×657 no-JS (P-15)]
+  PASS  [P-15] 1366×657 no-JS mandoobee: title H1 in the first frame — [91,203 679×112]
+  PASS  [P-15] 1366×657 no-JS mandoobee: all 12 scenes in the DOM — 12
+  PASS  [P-15] 1366×657 no-JS mandoobee: scenes run off to the right inside the rail — last scene x 15026
+  PASS  [P-15] 1366×657 no-JS mandoobee: the rail scrolls horizontally — scene 01 x -1366
+  PASS  [P-15] 1366×657 no-JS tasree3: title H1 in the first frame — [91,193 679×112]
+  PASS  [P-15] 1366×657 no-JS tasree3: all 14 scenes in the DOM — 14
+  PASS  [P-15] 1366×657 no-JS tasree3: scenes run off to the right inside the rail — last scene x 17758
+  PASS  [P-15] 1366×657 no-JS tasree3: the rail scrolls horizontally — scene 01 x -1366
+  PASS  [P-15] 1366×657 no-JS nazo: title H1 in the first frame — [91,216 679×112]
+  PASS  [P-15] 1366×657 no-JS nazo: all 13 scenes in the DOM — 13
+  PASS  [P-15] 1366×657 no-JS nazo: scenes run off to the right inside the rail — last scene x 16392
+  PASS  [P-15] 1366×657 no-JS nazo: the rail scrolls horizontally — scene 01 x -1366
+  PASS  [P-15] 1366×657 no-JS yisbir: title H1 in the first frame — [91,180 679×112]
+  PASS  [P-15] 1366×657 no-JS yisbir: all 14 scenes in the DOM — 14
+  PASS  [P-15] 1366×657 no-JS yisbir: scenes run off to the right inside the rail — last scene x 17758
+  PASS  [P-15] 1366×657 no-JS yisbir: the rail scrolls horizontally — scene 01 x -1366
+  PASS  [P-15] 1366×657 no-JS wasel: title H1 in the first frame — [91,188 679×168]
+  PASS  [P-15] 1366×657 no-JS wasel: all 12 scenes in the DOM — 12
+  PASS  [P-15] 1366×657 no-JS wasel: scenes run off to the right inside the rail — last scene x 15026
+  PASS  [P-15] 1366×657 no-JS wasel: the rail scrolls horizontally — scene 01 x -1366
+  PASS  [P-15] 1366×657 no-JS ai-in-a-box: title H1 in the first frame — [91,244 679×56]
+  PASS  [P-15] 1366×657 no-JS ai-in-a-box: all 10 scenes in the DOM — 10
+  PASS  [P-15] 1366×657 no-JS ai-in-a-box: scenes run off to the right inside the rail — last scene x 12294
+  PASS  [P-15] 1366×657 no-JS ai-in-a-box: the rail scrolls horizontally — scene 01 x -1366
+
+[content (P-16)]
+  PASS  [P-16] content-check passes
+  PASS  [P-16] content-check lists EV-520 as OWNER-PENDING — EV-521 is not cited
+        4 PREVIEW-only strings read from content/storyboards.ts
+  PASS  [P-16] mandoobee: no banned string in the HTML
+  PASS  [P-16] mandoobee: no PREVIEW-only item in the HTML
+  PASS  [P-16] mandoobee: each screen appears once
+  PASS  [P-16] tasree3: no banned string in the HTML
+  PASS  [P-16] tasree3: no PREVIEW-only item in the HTML
+  PASS  [P-16] tasree3: each screen appears once
+  PASS  [P-16] nazo: no banned string in the HTML
+  PASS  [P-16] nazo: no PREVIEW-only item in the HTML
+  PASS  [P-16] nazo: each screen appears once
+  PASS  [P-16] yisbir: no banned string in the HTML
+  FAIL  [P-16] yisbir: no PREVIEW-only item in the HTML — Headcount attendance | Count people by room or shift, with nobody identified.
+  PASS  [P-16] yisbir: each screen appears once
+  PASS  [P-16] wasel: no banned string in the HTML
+  PASS  [P-16] wasel: no PREVIEW-only item in the HTML
+  PASS  [P-16] wasel: each screen appears once
+  PASS  [P-16] ai-in-a-box: no banned string in the HTML
+  PASS  [P-16] ai-in-a-box: no PREVIEW-only item in the HTML
+  PASS  [P-16] ai-in-a-box: each screen appears once
+
+[axe and contrast (P-17)]
+  PASS  [P-17] 1366×657 mandoobee: exactly one H1 — 1
+  PASS  [P-17] 1366×657 mandoobee stage scene 01: axe serious/critical
+  PASS  [P-17] 1366×657 mandoobee scene 1: .ps-body contrast over its worst background pixel — 6.84
+  PASS  [P-17] 1366×657 mandoobee stage scene 06: axe serious/critical
+  PASS  [P-17] 1366×657 mandoobee scene 6: .ps-body contrast over its worst background pixel — 6.19
+  PASS  [P-17] 1366×657 mandoobee stage scene 11: axe serious/critical
+  PASS  [P-17] 390×844 touch mandoobee rail: axe serious/critical
+  PASS  [P-17] 1280×480 mandoobee list: axe serious/critical
+  PASS  [P-17] 1366×657 reduced mandoobee static rail: axe serious/critical
+  PASS  [P-17] 1366×657 tasree3: exactly one H1 — 1
+  PASS  [P-17] 1366×657 tasree3 stage scene 01: axe serious/critical
+  PASS  [P-17] 1366×657 tasree3 scene 1: .ps-body contrast over its worst background pixel — 8.59
+  PASS  [P-17] 1366×657 tasree3 stage scene 06: axe serious/critical
+  PASS  [P-17] 1366×657 tasree3 scene 6: .ps-body contrast over its worst background pixel — 7.78
+  PASS  [P-17] 1366×657 tasree3 stage scene 13: axe serious/critical
+  PASS  [P-17] 390×844 touch tasree3 rail: axe serious/critical
+  PASS  [P-17] 1280×480 tasree3 list: axe serious/critical
+  PASS  [P-17] 1366×657 reduced tasree3 static rail: axe serious/critical
+        nazo: data-mode="stage" after 2500 ms (dev server; the 1.5 s budget applies to the build)
+  PASS  [P-17] 1366×657 nazo: exactly one H1 — 1
+  PASS  [P-17] 1366×657 nazo stage scene 01: axe serious/critical
+  PASS  [P-17] 1366×657 nazo scene 1: .ps-body contrast over its worst background pixel — 8.75
+  PASS  [P-17] 1366×657 nazo stage scene 06: axe serious/critical
+  PASS  [P-17] 1366×657 nazo scene 6: .ps-body contrast over its worst background pixel — 7.63
+  PASS  [P-17] 1366×657 nazo stage scene 12: axe serious/critical
+  PASS  [P-17] 390×844 touch nazo rail: axe serious/critical
+  PASS  [P-17] 1280×480 nazo list: axe serious/critical
+  PASS  [P-17] 1366×657 reduced nazo static rail: axe serious/critical
+  PASS  [P-17] 1366×657 yisbir: exactly one H1 — 1
+  PASS  [P-17] 1366×657 yisbir stage scene 01: axe serious/critical
+  PASS  [P-17] 1366×657 yisbir scene 1: .ps-body contrast over its worst background pixel — 8.67
+  PASS  [P-17] 1366×657 yisbir stage scene 06: axe serious/critical
+  PASS  [P-17] 1366×657 yisbir scene 6: .ps-body contrast over its worst background pixel — 8.34
+  PASS  [P-17] 1366×657 yisbir stage scene 13: axe serious/critical
+  PASS  [P-17] 390×844 touch yisbir rail: axe serious/critical
+  FAIL  [P-17] 1280×480 yisbir list: axe serious/critical — color-contrast(1) .boundary-caption
+  FAIL  [P-17] 1366×657 reduced yisbir static rail: axe serious/critical — color-contrast(1) .boundary-caption
+  PASS  [P-17] 1366×657 wasel: exactly one H1 — 1
+  PASS  [P-17] 1366×657 wasel stage scene 01: axe serious/critical
+  PASS  [P-17] 1366×657 wasel scene 1: .ps-body contrast over its worst background pixel — 6.86
+  PASS  [P-17] 1366×657 wasel stage scene 06: axe serious/critical
+  PASS  [P-17] 1366×657 wasel scene 6: .ps-body contrast over its worst background pixel — 5.73
+  PASS  [P-17] 1366×657 wasel stage scene 11: axe serious/critical
+  PASS  [P-17] 390×844 touch wasel rail: axe serious/critical
+        wasel: data-mode="list" after 2083 ms (dev server; the 1.5 s budget applies to the build)
+  PASS  [P-17] 1280×480 wasel list: axe serious/critical
+        wasel: data-mode="rail" after 2239 ms (dev server; the 1.5 s budget applies to the build)
+  PASS  [P-17] 1366×657 reduced wasel static rail: axe serious/critical
+        ai-in-a-box: data-mode="stage" after 5339 ms (dev server; the 1.5 s budget applies to the build)
+  PASS  [P-17] 1366×657 ai-in-a-box: exactly one H1 — 1
+  PASS  [P-17] 1366×657 ai-in-a-box stage scene 01: axe serious/critical
+  PASS  [P-17] 1366×657 ai-in-a-box scene 1: .ps-body contrast over its worst background pixel — 8.67
+  PASS  [P-17] 1366×657 ai-in-a-box stage scene 06: axe serious/critical
+  PASS  [P-17] 1366×657 ai-in-a-box scene 6: .ps-body contrast over its worst background pixel — 7.66
+  PASS  [P-17] 1366×657 ai-in-a-box stage scene 09: axe serious/critical
+  PASS  [P-17] 1366×657 ai-in-a-box scene 9: .ps-body contrast over its worst background pixel — 7.32
+  PASS  [P-17] 390×844 touch ai-in-a-box rail: axe serious/critical
+        ai-in-a-box: data-mode="list" after 6772 ms (dev server; the 1.5 s budget applies to the build)
+  PASS  [P-17] 1280×480 ai-in-a-box list: axe serious/critical
+        ai-in-a-box: data-mode="rail" after 12449 ms (dev server; the 1.5 s budget applies to the build)
+  PASS  [P-17] 1366×657 reduced ai-in-a-box static rail: axe serious/critical
+
+[choreography dev assertions (P-22)]
+  PASS  [P-22] A's selftest-choreo.mjs passes
+  PASS  [P-22] an entrance ending after 0.4601 throws
+  PASS  [P-22] an exit starting before 0.5399 throws
+  PASS  [P-22] a layer wrapper as a choreography target throws
+  PASS  [P-22] fading a heading throws (I2)
+  PASS  [P-22] a legal entrance does not throw
+
+verify-stage: summary by acceptance id (http://localhost:3000, dev server, interaction time budgets ×3)
+  FAIL    P-01   pass 31, fail 1, not run 0 — 1366×657 tasree3: List view sticks after reload: after click list, after reload no, html[data-view]=list
+  PASS    P-12   pass 42, fail 0, not run 0
+  FAIL    P-13   pass 38, fail 4, not run 0 — 390×844 touch mandoobee: every scene fits 100svh: 9:940
+  PASS    P-14   pass 12, fail 0, not run 0
+  PASS    P-15   pass 24, fail 0, not run 0
+  FAIL    P-16   pass 19, fail 1, not run 0 — yisbir: no PREVIEW-only item in the HTML: Headcount attendance | Count people by room or shift, with nobody identified.
+  FAIL    P-17   pass 53, fail 2, not run 0 — 1280×480 yisbir list: axe serious/critical: color-contrast(1) .boundary-caption
+  PASS    P-22   pass 6, fail 0, not run 0
+
+4 acceptance id(s) FAILED.
+exit 1

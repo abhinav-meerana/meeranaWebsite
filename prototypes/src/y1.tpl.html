@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-brand="yisbir" data-surface="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>YISBIR · Y1 Camera Chrome · hero prototype</title>
+<meta name="description" content="Design prototype Y1 (Camera Chrome) for YISBIR site safety. Internal exploration: illustrative interface with simulated detections; copy pending evidence sign-off.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* Critical paint before the Tailwind browser build compiles: page colour and font only. */
+  html { background: #00132D; color: #FFFFFF; font-family: "Montserrat", ui-sans-serif, system-ui, sans-serif; }
+</style>
+<script>
+  (function () { var d = document.documentElement;
+    try { if (localStorage.getItem('yisbir-motion') === 'reduce') d.dataset.motion = 'reduce'; } catch (e) {} })();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.3"></script>
+<style type="text/tailwindcss">
+@import "tailwindcss";
+{{TOKENS_CSS}}
+
+@layer components {
+  .wrap { margin-inline: auto; max-width: 80rem; padding-inline: clamp(16px, 4vw, 48px); }
+  .skip { position: absolute; inset-inline-start: -9999px; }
+  .skip:focus { inset-inline-start: 16px; top: 16px; z-index: 50; background: var(--action-primary-bg); color: var(--action-primary-fg); padding: 10px 14px; border-radius: var(--radius-control); }
+  .btn-primary { display: inline-flex; align-items: center; min-height: 44px; padding-inline: 20px; border-radius: var(--radius-control);
+    background: var(--action-primary-bg); color: var(--action-primary-fg); font-weight: 600; font-size: var(--text-ui);
+    transition: background-color var(--dur-1) var(--ease-standard); }
+  .btn-primary:hover { background: var(--action-primary-hover); }
+  .link-arrow { display: inline-flex; align-items: center; gap: .45em; min-height: 44px; color: var(--text-link); font-weight: 500; font-size: var(--text-ui); }
+  .link-arrow > span { transition: transform var(--dur-1) var(--ease-standard); }
+  .link-arrow:hover > span { transform: translateX(3px); }
+  .mono { font-family: var(--font-family-mono); letter-spacing: .04em; text-transform: uppercase; }
+  .mono-xs { font-family: var(--font-family-mono); font-size: .6875rem; line-height: 1.3; letter-spacing: .04em; text-transform: uppercase; }
+
+  /* pause control: constant label, aria-pressed carries the state (APG); glyph is decorative */
+  .mono-btn { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding-inline: 16px; border-radius: var(--radius-pill);
+    border: 1px solid var(--border-control); color: var(--text-secondary);
+    font: 500 .75rem/1 var(--font-family-mono); letter-spacing: .04em; text-transform: uppercase;
+    transition: background-color var(--dur-1) var(--ease-standard), color var(--dur-1) var(--ease-standard); }
+  .mono-btn:hover { color: var(--text-primary); }
+  .mono-btn .glyph { width: 9px; height: 10px; border-inline: 3px solid currentColor; }
+  .mono-btn[aria-pressed="true"] { background: var(--surface-raised); color: var(--text-primary); border-color: var(--text-accent); }
+
+  /* camera console */
+  .console { border: 1px solid var(--border-control); border-radius: 14px; overflow: hidden; background: var(--surface-deep); }
+  .console-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; padding: 6px 8px 6px 16px; border-bottom: 1px solid var(--border-subtle); }
+  .console-grid { display: grid; grid-template-columns: minmax(0, 1fr); }
+  @media (min-width: 1024px) { .console-grid { grid-template-columns: minmax(0, 1fr) 300px; } }
+  .cam { position: relative; aspect-ratio: 16 / 9; margin: 0; background: var(--abyss-950); }
+  /* layers: static site backdrop (SVG) · t = 0 poster overlay (SVG) · transparent live canvas */
+  .cam .scene, .cam .poster, .cam canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .cam canvas { visibility: hidden; }
+  .cam.is-live canvas { visibility: visible; }
+  .cam.is-live .poster { visibility: hidden; }
+  .cam svg .chip text { font: 500 22px var(--font-family-mono); }
+  /* < 640 px the 22-unit labels would render at ~5 px: brackets and colour carry the state, the event list carries the text */
+  @media (max-width: 639px) { .cam svg .chip { display: none; } }
+  @media (max-width: 1023px) { [data-events] li:nth-child(n+4) { display: none; } }
+  .cam .scene .zone { transition: fill-opacity var(--dur-2) var(--ease-standard); }
+  .cam .scene.zone-hot .zone { fill-opacity: .16; }
+  .chrome { position: absolute; display: flex; align-items: center; gap: 8px; padding: 6px 9px; border-radius: 6px;
+    background: rgb(0 13 32 / .8); color: var(--abyss-200); font: 500 .6875rem/1 var(--font-family-mono); letter-spacing: .04em; text-transform: uppercase; white-space: nowrap; }
+  .chrome.tl { top: 10px; inset-inline-start: 10px; } .chrome.tr { top: 10px; inset-inline-end: 10px; }
+  .chrome.bl { bottom: 10px; inset-inline-start: 10px; } .chrome.br { bottom: 10px; inset-inline-end: 10px; }
+  @media (max-width: 639px) { .chrome.bl, .chrome.br { display: none; } }
+  .rec { width: 8px; height: 8px; border-radius: 50%; background: var(--state-error-on-dark); }
+  .cam.is-paused .rec { background: var(--abyss-300); }
+  @media (prefers-reduced-motion: no-preference) {
+    html:not([data-motion="reduce"]) .cam.is-live:not(.is-paused) .rec { animation: rec-blink 1s steps(2, jump-none) infinite; }  /* 1 Hz, stops with Pause (WCAG 2.2.2, 2.3.1) */
+  }
+  @keyframes rec-blink { 50% { opacity: .25; } }
+
+  .events { border-top: 1px solid var(--border-subtle); min-width: 0; }
+  @media (min-width: 1024px) { .events { border-top: 0; border-inline-start: 1px solid var(--border-subtle); } }
+  .event { display: grid; grid-template-columns: 4.4rem minmax(0, 1fr); gap: 3px 10px; padding: 11px 16px; border-bottom: 1px solid var(--border-subtle); }
+  .event[data-new] { animation: event-in var(--dur-2) var(--ease-enter) both; }
+  @keyframes event-in { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+  .lvl-danger { color: var(--state-error-on-dark); } .lvl-warning { color: var(--state-warning-on-dark); } .lvl-info { color: var(--yisbir-aqua); }
+
+  /* chapter dividers: the page reads like an indexed video */
+  .chapter { display: flex; align-items: center; gap: 14px; color: var(--text-muted); font: 500 .75rem var(--font-family-mono); letter-spacing: .06em; text-transform: uppercase; }
+  .chapter::after { content: ""; flex: 1; height: 1px; background: var(--border-subtle); }
+  .chapter b { color: var(--text-accent); font-weight: 500; }
+
+  .classes { display: grid; gap: 0 40px; grid-template-columns: minmax(0, 1fr); }
+  @media (min-width: 768px) { .classes { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .classes > div { padding: 18px 0 20px; border-top: 1px solid var(--border-subtle); }
+  .classes dt { display: flex; align-items: center; gap: 12px; font-weight: 600; font-size: var(--text-heading-3); line-height: 1.3; }
+  .classes dt::before { content: ""; width: 18px; height: 14px; flex: none;   /* a detection bracket, not an icon */
+    background: linear-gradient(var(--yisbir-aqua), var(--yisbir-aqua)) left top / 6px 1.5px no-repeat,
+                linear-gradient(var(--yisbir-aqua), var(--yisbir-aqua)) left top / 1.5px 6px no-repeat,
+                linear-gradient(var(--yisbir-aqua), var(--yisbir-aqua)) right bottom / 6px 1.5px no-repeat,
+                linear-gradient(var(--yisbir-aqua), var(--yisbir-aqua)) right bottom / 1.5px 6px no-repeat; }
+  .classes dd { margin: 6px 0 0 30px; color: var(--text-secondary); }
+  .query { display: inline-flex; align-items: center; min-height: 32px; padding-inline: 12px; border-radius: var(--radius-control);
+    border: 1px solid var(--border-control); background: var(--surface-raised); color: var(--text-primary); font: 500 .75rem var(--font-family-mono); letter-spacing: .02em; }
+  .query b { color: var(--text-accent); font-weight: 500; margin-inline-end: 6px; }
+  .proto-note { border: 1px dashed var(--border-control); border-radius: 8px; padding: 10px 14px; color: var(--text-muted);
+    font: 400 .75rem/1.5 var(--font-family-mono); letter-spacing: .02em; }
+  .proto-note b { color: var(--text-secondary); font-weight: 500; text-transform: uppercase; letter-spacing: .06em; }
+}
+</style>
+</head>
+<body class="bg-surface text-fg antialiased">
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="border-b border-line">
+  <div class="wrap flex h-[72px] items-center justify-between gap-6">
+    <a href="#top" class="flex items-center">
+      <img src="{{LOGO_YISBIR}}" width="{{LOGO_YISBIR_W}}" height="{{LOGO_YISBIR_H}}" alt="YISBIR home" class="h-7 w-auto">
+    </a>
+    <nav aria-label="Primary" class="hidden md:block">
+      <ul class="flex items-center gap-8 text-ui text-fg-secondary">
+        <li><a class="hover:text-fg" href="#detects">Site safety</a></li>
+        <li><a class="hover:text-fg" href="yisbir-y2-search-index.html">Video search</a></li>
+        <li><a class="hover:text-fg" href="#runs">Deployment</a></li>
+      </ul>
+    </nav>
+    <div class="flex items-center gap-5">
+      <span class="mono-xs hidden text-fg-muted lg:inline" data-ev="EV-441">A Meerana product</span>
+      <a class="btn-primary" href="#contact">Request a demo</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section id="top" data-surface="dark" aria-labelledby="hero-title">
+    <div class="wrap pt-12 pb-16 lg:pt-14">
+      <div class="grid grid-cols-12 gap-x-6 gap-y-6">
+        <div class="col-span-12 min-w-0 lg:col-span-8">
+          <p class="mono text-mono text-fg-muted"><span data-ev="EV-131">Operational intelligence</span> · <span data-ev="EV-133">Construction &amp; infrastructure</span></p>
+          <h1 id="hero-title" class="mt-4 font-semibold text-display-xl text-balance text-fg">Safer sites from the cameras you already have.</h1>
+        </div>
+        <div class="col-span-12 min-w-0 flex flex-col justify-end lg:col-span-4">
+          <p class="text-body text-fg-secondary" data-ev="EV-133 EV-134 EV-136 EV-443 EV-444">YISBIR watches your existing CCTV for missing PPE, restricted-zone entry and falls, and alerts your team in real time. It works with the cameras you have and can run fully on your own servers.</p>
+          <div class="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2">
+            <a class="btn-primary" href="#contact">Request a demo</a>
+            <a class="link-arrow" href="yisbir-y2-search-index.html">See video search <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Signature motion (one per page). Purpose: shows the model's actual output — classes, confidence,
+           track IDs, zone alerts — on an existing camera, which a static claim cannot. Continuous loop ⇒ the
+           Pause control sits before the moving region (WCAG 2.2.2). Reduced motion, < 768 px or a stored pause
+           ⇒ the annotated poster frame. Sample data only (modern-ai-company rules 1–3). -->
+      <div class="console mt-9" data-illustrative>
+        <div class="console-bar">
+          <p class="mono-xs text-fg-muted">Illustrative interface · simulated detections</p>
+          <button type="button" class="mono-btn" data-motion-control aria-pressed="false" aria-controls="cam"><span class="glyph" aria-hidden="true"></span>Pause feed</button>
+        </div>
+        <div class="console-grid">
+          <figure id="cam" class="cam" data-signature aria-labelledby="cam-desc">
+            {{Y1_STATIC_SVG}}{{Y1_POSTER_SVG}}
+            <canvas aria-hidden="true"></canvas>
+            <span class="chrome tl">CAM-03<span class="hidden sm:inline">&nbsp;· Gate 2 — North entrance</span></span>
+            <span class="chrome tr"><span class="rec" aria-hidden="true"></span><span data-rec-label>Rec</span> <time data-timecode>07:42:00</time></span>
+            <span class="chrome bl" data-ev="EV-443">Local node · on-prem</span>
+            <span class="chrome br">Sample feed</span>
+            <figcaption id="cam-desc" class="sr-only">Illustrative sample feed from a site gate camera: outline figures with person detections and confidence scores, a worker flagged for a missing helmet, and a worker inside restricted Zone B. When playing, a vehicle enters through the gate and new events are added to the list beside the feed.</figcaption>
+          </figure>
+          <aside class="events" aria-label="Sample event stream">
+            <div class="flex items-center justify-between gap-3 border-b border-line px-4 py-3">
+              <span class="mono-xs text-fg-muted">Events · sample</span>
+              <span class="mono-xs text-fg-muted"><span class="text-fg" data-count="zone">{{Y1_COUNT_ZONE}}</span> in zone B · <span class="text-fg" data-count="ppe">{{Y1_COUNT_PPE}}</span> PPE</span>
+            </div>
+            <ol class="max-h-[22rem] overflow-hidden" aria-live="off" data-events>{{Y1_EVENTS_DEFAULT}}</ol>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section data-surface="dark" aria-labelledby="problem-title" class="bg-surface-deep">
+    <div class="wrap py-20 lg:py-24">
+      <p class="chapter"><b>CH 01</b> 00:00 · The problem</p>
+      <div class="mt-10 grid grid-cols-12 gap-6">
+        <h2 id="problem-title" class="col-span-12 min-w-0 font-semibold text-display-2 text-balance text-fg lg:col-span-6">Hours of footage. One minute that matters.</h2>
+        <p class="col-span-12 min-w-0 text-lede text-fg-secondary lg:col-span-5 lg:col-start-8" data-ev="EV-136 EV-440">YISBIR flags the moments your team needs to see while they happen, and indexes the rest so any minute can be found later.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="detects" data-surface="dark" aria-labelledby="detects-title">
+    <div class="wrap py-20 lg:py-24">
+      <p class="chapter"><b>CH 02</b> 00:42 · What it watches for</p>
+      <h2 id="detects-title" class="mt-10 max-w-[44rem] font-semibold text-display-2 text-balance text-fg">Six site-safety detections, on the cameras you have.</h2>
+      <dl class="classes mt-10" data-audit-ok="G05" data-ev="EV-134">
+        <div><dt>Missing helmet</dt><dd>Workers without the required head protection.</dd></div>
+        <div><dt>Missing vest</dt><dd>PPE violations in active work zones.</dd></div>
+        <div><dt>Unsafe work practices</dt><dd>Risky behaviour and unsafe activity on site.</dd></div>
+        <div><dt>Restricted-zone entry</dt><dd>An alert when someone enters a hazardous area.</dd></div>
+        <div><dt>Falls and incidents</dt><dd>Falls, accidents and emergencies.</dd></div>
+        <div><dt>Workers in hazardous areas</dt><dd>People working near hazards and danger zones.</dd></div>
+      </dl>
+      <p class="proto-note mt-10 max-w-[52rem]"><b>Prototype note ·</b> The six classes are EV-134 verbatim. The live site's security list (after-hours intrusion, perimeter breaches, vehicle movement anomalies) is in research/sources/live-site-extract.md but not yet in the evidence register. Faces, gender and plates are not shown (DL-P07).</p>
+    </div>
+  </section>
+
+  <section data-surface="dark" aria-labelledby="investigate-title" class="bg-surface-deep">
+    <div class="wrap py-20 lg:py-24">
+      <p class="chapter"><b>CH 03</b> 01:30 · Investigate</p>
+      <div class="mt-10 grid grid-cols-12 gap-6">
+        <h2 id="investigate-title" class="col-span-12 min-w-0 font-semibold text-display-2 text-balance text-fg lg:col-span-6">Search by what you saw.</h2>
+        <div class="col-span-12 min-w-0 lg:col-span-5 lg:col-start-8">
+          <p class="text-lede text-fg-secondary" data-ev="EV-135">Filter live and recorded footage by clothing, helmet or vest colour, by zone, gate or camera, and by date and time.</p>
+          <div class="mt-6" data-illustrative>
+            <p class="mono-xs text-fg-muted">Sample query</p>
+            <p class="mt-3 flex flex-wrap gap-2">
+              <span class="query"><b>helmet</b>white</span><span class="query"><b>vest</b>orange</span><span class="query"><b>zone</b>B</span><span class="query"><b>camera</b>CAM-03</span><span class="query"><b>time</b>07:00–08:00</span>
+            </p>
+          </div>
+          <a class="link-arrow mt-6" href="yisbir-y2-search-index.html">See video search <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="runs" data-surface="dark" aria-labelledby="runs-title">
+    <div class="wrap py-20 lg:py-24">
+      <p class="chapter"><b>CH 04</b> 02:05 · Deployment</p>
+      <h2 id="runs-title" class="mt-10 font-semibold text-display-2 text-balance text-fg">Runs where your footage lives.</h2>
+      <dl class="mt-10 grid gap-8 md:grid-cols-3" data-audit-ok="G05">
+        <div class="border-t border-line-strong pt-5"><dt class="mono text-mono text-fg-muted">Deployment</dt><dd class="mt-3 text-heading-3 text-fg" data-ev="EV-444">Cloud, on-premises or hybrid</dd></div>
+        <div class="border-t border-line-strong pt-5"><dt class="mono text-mono text-fg-muted">Cameras</dt><dd class="mt-3 text-heading-3 text-fg" data-ev="EV-444">Works with your existing infrastructure, with no hardware changes</dd></div>
+        <div class="border-t border-line-strong pt-5"><dt class="mono text-mono text-fg-muted">Data</dt><dd class="mt-3 text-heading-3 text-fg" data-ev="EV-443">Can run fully on-premises, with no public cloud connection</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section id="contact" data-surface="dark" aria-labelledby="contact-title" class="bg-surface-deep">
+    <div class="wrap grid grid-cols-12 gap-6 py-20 lg:py-24">
+      <h2 id="contact-title" class="col-span-12 min-w-0 font-semibold text-display-2 text-balance text-fg lg:col-span-7">Put your cameras to work.</h2>
+      <div class="col-span-12 min-w-0 flex flex-col items-start justify-end gap-4 lg:col-span-5">
+        <div class="flex flex-wrap items-center gap-x-6 gap-y-2">
+          <a class="btn-primary" href="mailto:info@meerana.ae?subject=YISBIR%20demo">Request a demo</a>
+          <a class="link-arrow" href="yisbir-y2-search-index.html">See video search <span aria-hidden="true">→</span></a>
+        </div>
+        <p class="text-small text-fg-muted" data-ev="EV-441">YISBIR is developed by Meerana Technologies.</p>
+        <p class="proto-note"><b>Prototype note ·</b> Enquiries go to info@meerana.ae (EV-004) until info@yisbir.ai is fixed (EV-448, DL-T08).</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="border-t border-line">
+  <div class="wrap flex flex-wrap items-center justify-between gap-4 py-8 text-small text-fg-muted">
+    <p>Prototype Y1 · Camera Chrome · internal design exploration with sample data and simulated detections.</p>
+    <p class="mono-xs">Official raster logo at ≤ native size · vector master pending</p>
+  </div>
+</footer>
+
+<script>
+{{Y1_SCENE_JS}}
+</script>
+<script>
+(function () {
+  'use strict';
+  var Y1 = window.Y1, root = document.documentElement;
+  var mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+  function isReduced() { return mq.matches || root.dataset.motion === 'reduce'; }
+
+  var cam = document.getElementById('cam');
+  var scene = cam.querySelector('.scene');
+  var canvas = cam.querySelector('canvas');
+  var ctx = canvas.getContext('2d');
+  var btn = document.querySelector('[data-motion-control]');
+  var tcEl = cam.querySelector('[data-timecode]');
+  var recLabel = cam.querySelector('[data-rec-label]');
+  var list = document.querySelector('[data-events]');
+  var cZone = document.querySelector('[data-count="zone"]');
+  var cPpe = document.querySelector('[data-count="ppe"]');
+
+  var sim = null, simT = 0, last = 0, running = false, raf = 0, mounted = false, visible = true;
+
+  function resize() {
+    var r = cam.getBoundingClientRect(), dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    canvas.width = Math.round(r.width * dpr); canvas.height = Math.round(r.height * dpr);
+    var k = r.width / Y1.W; ctx.setTransform(dpr * k, 0, 0, dpr * k, 0, 0);
+  }
+  function pushEvent(html) {
+    var tpl = document.createElement('template'); tpl.innerHTML = html;
+    var li = tpl.content.firstChild; li.setAttribute('data-new', '');
+    list.insertBefore(li, list.firstChild);
+    while (list.children.length > 6) list.removeChild(list.lastChild);
+    setTimeout(function () { li.removeAttribute('data-new'); }, 300);
+  }
+  function frame(t, now) {
+    var out = sim.step(t, now);
+    ctx.clearRect(0, 0, Y1.W, Y1.H);
+    Y1.draw(ctx, out.prims, cam.clientWidth < 640);
+    for (var i = 0; i < out.events.length; i++) pushEvent(Y1.eventHTML(out.events[i]));
+    cZone.textContent = String(out.inZone); cPpe.textContent = String(out.ppe);
+    scene.classList.toggle('zone-hot', out.inZone > 0);
+    tcEl.textContent = Y1.tc(t);
+  }
+  function loop(now) {
+    if (!last) last = now;
+    simT += Math.min(0.1, (now - last) / 1000); last = now;
+    frame(simT, now);
+    raf = requestAnimationFrame(loop);
+  }
+  function play() { if (running || !visible || document.hidden) return; running = true; last = 0; raf = requestAnimationFrame(loop); }
+  function halt() { running = false; cancelAnimationFrame(raf); }
+  function mount() {   // same history as the build-time poster, so the hand-over is seamless
+    if (mounted) return; mounted = true;
+    sim = Y1.createSim(); simT = 0;
+    var hist = sim.prime(); list.textContent = '';
+    for (var i = 0; i < hist.length; i++) list.insertAdjacentHTML('afterbegin', Y1.eventHTML(hist[i]));
+    resize(); frame(0, performance.now()); cam.classList.add('is-live');
+  }
+  function setPaused(p, persist) {
+    btn.setAttribute('aria-pressed', String(p));
+    cam.classList.toggle('is-paused', p); recLabel.textContent = p ? 'Paused' : 'Rec';
+    if (persist) { try { localStorage.setItem('yisbir-feed', p ? 'paused' : 'playing'); } catch (e) {} }
+    if (p) { halt(); } else { mount(); play(); }
+  }
+  // Canvas text needs the mono face before the first frame; never wait more than 1.5 s for it.
+  var fontsReady = Promise.race([
+    document.fonts && document.fonts.load ? document.fonts.load(Y1.FONT).catch(function () {}) : Promise.resolve(),
+    new Promise(function (r) { setTimeout(r, 1500); })]);
+
+  var stored = null; try { stored = localStorage.getItem('yisbir-feed'); } catch (e) {}
+  var qa = /[#&]t=(\d+(?:\.\d+)?)/.exec(location.hash);   // QA hook: #t=<seconds> renders that frame, paused
+  btn.addEventListener('click', function () { setPaused(btn.getAttribute('aria-pressed') !== 'true', true); });
+  if (qa) {
+    fontsReady.then(function () {
+      mount(); var T = Number(qa[1]);
+      for (var s = 0.25; s <= T + 1e-9; s += 0.25) { simT = s; frame(s, 1000 + s * 1000); }
+      setPaused(true, false);
+    });
+  } else if (isReduced() || stored === 'paused' || window.innerWidth < 768) {
+    btn.setAttribute('aria-pressed', 'true'); cam.classList.add('is-paused'); recLabel.textContent = 'Paused';   // poster frame; Play is an explicit opt-in
+  } else {
+    var idle = 'requestIdleCallback' in window ? function (cb) { window.requestIdleCallback(cb, { timeout: 1200 }); } : function (cb) { setTimeout(cb, 200); };
+    requestAnimationFrame(function () { idle(function () { fontsReady.then(function () {   // after first paint: LCP stays the H1
+      if (btn.getAttribute('aria-pressed') === 'false') setPaused(false, false); }); }); });
+  }
+  mq.addEventListener('change', function (e) { if (e.matches) setPaused(true, false); });
+  if ('IntersectionObserver' in window) new IntersectionObserver(function (es) {
+    visible = es[0].isIntersecting;
+    if (!visible) halt(); else if (mounted && btn.getAttribute('aria-pressed') === 'false') play();
+  }).observe(cam);
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) halt(); else if (mounted && btn.getAttribute('aria-pressed') === 'false') play(); });
+  if ('ResizeObserver' in window) new ResizeObserver(function () {
+    if (!mounted) return; resize(); if (!running) { ctx.clearRect(0, 0, Y1.W, Y1.H); Y1.draw(ctx, sim.step(simT, performance.now() + 1e6).prims, cam.clientWidth < 640); }
+  }).observe(cam);
+})();
+</script>
+</body>
+</html>

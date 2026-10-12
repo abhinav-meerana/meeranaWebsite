@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-brand="yisbir" data-surface="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>YISBIR · Y2 Search Is the Interface · hero prototype</title>
+<meta name="description" content="Design prototype Y2 (Search Is the Interface) for YISBIR video search. Internal exploration with a sample index; copy pending evidence sign-off.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Montserrat:wght@400;500;600&family=Tajawal:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* Critical paint before the Tailwind browser build compiles: page colour and font only. */
+  html { background: #FFFFFF; color: #00132D; font-family: "Montserrat", ui-sans-serif, system-ui, sans-serif; }
+</style>
+<script>
+  // Signature intro (type the query, then reveal) only when motion is allowed. The class hides the
+  // pre-rendered query text and results until the intro runs; a 3 s safety net removes it if scripts fail.
+  (function () { var d = document.documentElement, reduce = false;
+    try { reduce = localStorage.getItem('yisbir-motion') === 'reduce'; } catch (e) {}
+    if (reduce) d.dataset.motion = 'reduce';
+    if (!reduce && !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+      d.classList.add('y2-intro', 'y2-qhide'); window.__y2safety = setTimeout(function () { d.classList.remove('y2-intro', 'y2-qhide'); }, 3000); } })();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.3"></script>
+<style type="text/tailwindcss">
+@import "tailwindcss";
+{{TOKENS_CSS}}
+
+@layer components {
+  .wrap { margin-inline: auto; max-width: 80rem; padding-inline: clamp(16px, 4vw, 48px); }
+  .skip { position: absolute; inset-inline-start: -9999px; }
+  .skip:focus { inset-inline-start: 16px; top: 16px; z-index: 50; background: var(--action-primary-bg); color: var(--action-primary-fg); padding: 10px 14px; border-radius: var(--radius-control); }
+  /* Official white raster in the blue colourway via CSS mask (DD-09). Replace with the vector master. */
+  .logo-mask { display: block; height: 26px; aspect-ratio: {{LOGO_YISBIR_W}} / {{LOGO_YISBIR_H}}; background: var(--yisbir-blue);
+    -webkit-mask: var(--logo) left center / contain no-repeat; mask: var(--logo) left center / contain no-repeat; }
+  .logo-mask.meerana { height: 30px; aspect-ratio: {{LOGO_MEERANA_H_W}} / {{LOGO_MEERANA_H_H}}; background: var(--meerana-navy); }
+  .btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding-inline: 20px; border-radius: var(--radius-control);
+    background: var(--action-primary-bg); color: var(--action-primary-fg); font-weight: 600; font-size: var(--text-ui);
+    transition: background-color var(--dur-1) var(--ease-standard); }
+  .btn-primary:hover { background: var(--action-primary-hover); }
+  .btn-outline { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding-inline: 18px; border-radius: var(--radius-control);
+    border: 1px solid var(--action-secondary-border); color: var(--action-secondary-fg); font-weight: 600; font-size: var(--text-ui);
+    transition: background-color var(--dur-1) var(--ease-standard); }
+  .btn-outline:hover { background: var(--surface-raised); }
+  .link-arrow { display: inline-flex; align-items: center; gap: .45em; min-height: 44px; color: var(--text-link); font-weight: 600; font-size: var(--text-ui); }
+  .link-arrow svg { transition: transform var(--dur-1) var(--ease-standard); }
+  .link-arrow:hover svg { transform: translate(2px, -2px); }
+  .mono-xs { font-family: var(--font-family-mono); font-size: .6875rem; line-height: 1.35; letter-spacing: .05em; text-transform: uppercase; }
+  .proto-note { border: 1px dashed var(--border-control); border-radius: 8px; padding: 10px 14px; color: var(--text-muted);
+    font: 400 .75rem/1.5 var(--font-family-mono); letter-spacing: .02em; }
+  .proto-note b { color: var(--text-secondary); font-weight: 500; text-transform: uppercase; letter-spacing: .06em; }
+
+  /* ---- search console: the product is the hero ---- */
+  .console { border: 1px solid var(--border-subtle); border-radius: var(--radius-card); background: var(--surface-page); box-shadow: var(--shadow-md); }
+  .console-bar { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 16px; padding: 12px 20px; border-bottom: 1px solid var(--border-subtle); color: var(--text-muted); }
+  .field { display: flex; align-items: center; gap: 12px; padding: 8px 8px 8px 18px; border: 1px solid var(--border-control); border-radius: 12px; background: var(--surface-page);
+    transition: border-color var(--dur-1) var(--ease-standard); }   /* the focus ring itself appears instantly (never animate box-shadow) */
+  .field:focus-within { border-color: var(--yisbir-blue); box-shadow: 0 0 0 3px var(--ybl-050); }
+  .field svg { flex: none; color: var(--text-muted); }
+  .field input { flex: 1; min-width: 0; height: 44px; border: 0; outline: 0; background: transparent; color: var(--text-primary);
+    font: 500 clamp(1.125rem, 1rem + .6vw, 1.5rem) var(--font-family-sans); letter-spacing: -0.01em; }
+  .field input:focus-visible { outline: 0; }
+  .field input::-webkit-search-cancel-button { display: none; }
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; }
+  .filter { display: inline-flex; align-items: center; gap: 8px; min-height: 36px; padding-inline: 14px; border-radius: var(--radius-pill);
+    border: 1px solid var(--border-subtle); color: var(--text-secondary); font-size: var(--text-ui); font-weight: 500;
+    transition: background-color var(--dur-1) var(--ease-standard), border-color var(--dur-1) var(--ease-standard); }
+  .filter:hover:not(:disabled) { border-color: var(--border-control); }
+  .filter[aria-pressed="true"] { background: var(--abyss-050); border-color: var(--text-primary); color: var(--text-primary); }
+  .filter:disabled { color: var(--text-muted); border-style: dashed; cursor: default; }
+  .filter .n { font-family: var(--font-family-mono); font-size: .75rem; color: var(--text-muted); }
+
+  .results { min-height: 21.5rem; transition: opacity var(--dur-2) var(--ease-standard); }
+  .result { display: grid; grid-template-columns: 128px minmax(0, 1fr); gap: 16px; padding: 14px 0; border-top: 1px solid var(--border-subtle); }
+  .result[hidden] { display: none; }
+  .thumb { position: relative; width: 128px; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 6px; background: var(--abyss-950); }
+  .thumb svg { display: block; width: 100%; height: 100%; }
+  .result-meta { font: 400 .75rem/1.4 var(--font-family-mono); color: var(--text-muted); letter-spacing: .02em; }
+  .result-meta .tc { color: var(--text-primary); font-weight: 500; }
+  .badge { display: inline-block; padding: 1px 7px; border-radius: 4px; border: 1px solid var(--border-subtle); color: var(--text-secondary); text-transform: uppercase; font-size: .6875rem; letter-spacing: .05em; }
+  .snippet { margin-top: 6px; color: var(--text-primary); font-size: var(--text-body); line-height: 1.5; }
+  .snippet[dir="rtl"] { text-align: right; font-size: 1.125rem; }
+  .result-sub { margin-top: 4px; color: var(--text-muted); font-size: .8125rem; }
+  mark { background: var(--aqua-050); color: var(--text-primary); font-weight: 600; border-radius: 2px; padding-inline: 2px; box-shadow: inset 0 -0.42em 0 rgb(67 218 254 / .32); }
+  .empty { padding: 28px 0; border-top: 1px solid var(--border-subtle); color: var(--text-secondary); }
+
+  .try { display: flex; flex-direction: column; gap: 4px; }
+  .try button { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; padding-inline: 14px; border-radius: 8px;
+    color: var(--text-link); font-weight: 500; text-align: start; transition: background-color var(--dur-1) var(--ease-standard); }
+  .try button:hover { background: var(--ybl-050); }
+  .try button[aria-current="true"] { background: var(--abyss-050); color: var(--text-primary); }
+  .try button[lang="ar"] { font-size: 1.0625rem; }
+
+  /* 24-hour index: the seismograph */
+  .timeline { position: relative; height: 78px; }
+  .tl-title { position: absolute; top: 0; left: 0; }
+  .tl-track { position: absolute; inset: 28px 0 22px; border-bottom: 1px solid var(--border-control);
+    background: repeating-linear-gradient(to right, var(--border-subtle) 0 1px, transparent 1px calc(100% / 24)); }
+  .tl-labels { position: absolute; inset: auto 0 0; display: flex; justify-content: space-between; }
+  .tl-ticks { position: absolute; inset: 14px 0 22px; }
+  .tick { position: absolute; left: var(--x); bottom: 0; width: 3px; height: 30px; margin-left: -1px; border-radius: 2px 2px 0 0; background: var(--yisbir-blue);
+    transition: transform var(--dur-3) var(--ease-enter) calc(var(--i) * 30ms + 80ms), opacity var(--dur-2) var(--ease-standard) calc(var(--i) * 30ms + 80ms), height var(--dur-1) var(--ease-standard); }
+  .tick::before { content: ""; position: absolute; left: 50%; top: -4px; width: 9px; height: 9px; margin-left: -4.5px; border-radius: 50%; background: inherit; }
+  .tick.is-hot { height: 40px; }
+  .tick[hidden] { display: none; }
+  html.y2-qhide #q { color: transparent; }
+  html.y2-intro .results { opacity: 0; }
+  html.y2-intro .tick, .tl-ticks.pre .tick { transform: translateY(-18px); opacity: 0; transition: none; }
+
+  /* sections */
+  .ruler { display: flex; align-items: center; gap: 14px; color: var(--text-muted); font: 500 .75rem var(--font-family-mono); letter-spacing: .06em; text-transform: uppercase; }
+  .ruler::after { content: ""; flex: 1; height: 8px; border-bottom: 1px solid var(--border-subtle);
+    background: repeating-linear-gradient(to right, var(--border-subtle) 0 1px, transparent 1px 48px) bottom / 100% 8px no-repeat; }
+  .ruler b { color: var(--text-accent); font-weight: 500; }
+  .steps { display: grid; gap: 28px; grid-template-columns: minmax(0, 1fr); counter-reset: step; }
+  @media (min-width: 768px) { .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (min-width: 1024px) { .steps { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; } }
+  .steps li { position: relative; padding: 22px 24px 0 0; border-top: 1px solid var(--border-control); }
+  .steps li::before { content: ""; position: absolute; top: -2px; left: 0; width: 28px; height: 3px; background: var(--yisbir-blue); }
+  .types { width: 100%; border-collapse: collapse; }
+  .types th, .types td { padding: 16px 16px 16px 0; text-align: start; vertical-align: top; border-top: 1px solid var(--border-subtle); }
+  .types thead th { border-top: 0; padding-block: 0 10px; }
+  .types .ex { font: 400 .8125rem var(--font-family-mono); color: var(--text-secondary); }
+  @media (max-width: 639px) {   /* stack each row: name, what it finds, example */
+    .types thead { display: none; }
+    .types tr { display: block; padding: 14px 0; border-top: 1px solid var(--border-subtle); }
+    .types th, .types td { display: block; border-top: 0; padding: 3px 0; }
+  }
+  .run { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding-inline: 12px; border-radius: var(--radius-pill); border: 1px solid var(--border-control);
+    color: var(--text-link); font-size: .8125rem; font-weight: 600; white-space: nowrap; transition: background-color var(--dur-1) var(--ease-standard); }
+  .run:hover { background: var(--ybl-050); }
+  .live-card { border-radius: var(--radius-panel); overflow: hidden; }
+  .live-thumb { position: relative; aspect-ratio: 16 / 9; border-radius: 10px; overflow: hidden; border: 1px solid var(--border-control); }
+  .live-thumb svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .live-thumb .chip { display: none; }   /* 22-unit labels are illegible at thumbnail size */
+}
+</style>
+</head>
+<body class="bg-surface text-fg antialiased">
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="border-b border-line">
+  <div class="wrap flex h-[72px] items-center justify-between gap-6">
+    <a href="#top"><span class="logo-mask" role="img" aria-label="YISBIR home" style="--logo:url('{{LOGO_YISBIR}}')"></span></a>
+    <nav aria-label="Primary" class="hidden md:block">
+      <ul class="flex items-center gap-8 text-ui text-fg-secondary">
+        <li><a class="hover:text-fg" href="#search">Video search</a></li>
+        <li><a class="hover:text-fg" href="#how">How it works</a></li>
+        <li><a class="hover:text-fg" href="#deploy">Deployment</a></li>
+        <li><a class="hover:text-fg" href="yisbir-y1-camera-chrome.html">Site safety</a></li>
+      </ul>
+    </nav>
+    <div class="flex items-center gap-5">
+      <span class="mono-xs hidden text-fg-muted lg:inline" data-ev="EV-441">A Meerana product</span>
+      <a class="btn-primary" href="#contact">Request a demo</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section id="top" aria-labelledby="hero-title">
+    <div class="wrap pt-12 pb-16 lg:pt-14 lg:pb-20">
+      <div class="grid grid-cols-12 gap-x-6 gap-y-6">
+        <div class="col-span-12 min-w-0 lg:col-span-8">
+          <p class="mono-xs text-fg-muted"><span data-ev="EV-131">Operational intelligence</span> · <span data-ev="EV-440">AI video index</span></p>
+          <h1 id="hero-title" class="mt-4 font-medium text-display-xl text-balance text-fg">Search hours of video like a document.</h1>
+        </div>
+        <div class="col-span-12 min-w-0 flex flex-col justify-end lg:col-span-4">
+          <p class="text-body text-fg-secondary" data-ev="EV-440 EV-442 EV-443">YISBIR indexes what is said in more than 50 languages, the text that appears on screen and what happens in frame. It can run entirely on your own servers.</p>
+          <div class="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3">
+            <a class="btn-primary" href="#search" data-focus-search>Try a sample search</a>
+            <a class="btn-outline" href="#contact">Request a demo</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Signature motion (one per page): the query types itself once (≤ 1.2 s), results resolve, hit ticks drop
+           onto the 24-hour index. No loop, so no pause control; "Replay" re-runs it. Reduced motion: the finished
+           state. Every interaction is a local DOM swap over sample data (no network). -->
+      <div id="search" class="console mt-10 scroll-mt-6" data-signature data-illustrative>
+        <div class="console-bar">
+          <p class="mono-xs">Sample index · 24 h · 4 cameras · 1 archive</p>
+          <p class="mono-xs">Illustrative interface · sample data</p>
+        </div>
+        <div class="grid grid-cols-1 gap-y-6 p-4 sm:p-5 lg:grid-cols-12 lg:gap-x-8 lg:p-6">
+          <div class="min-w-0 lg:col-span-8">
+            <form role="search" data-form>
+              <label for="q" class="mono-xs text-fg-muted">Search the sample index</label>
+              <div class="field mt-2">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.34-4.34"/></svg>
+                <input id="q" name="q" type="search" value="{{Y2_QUERY}}" autocomplete="off" spellcheck="false" enterkeyhint="search">
+                <button type="submit" class="btn-primary">Search</button>
+              </div>
+            </form>
+            <div class="mt-4 flex flex-wrap items-center justify-between gap-3">
+              <div class="filters" role="group" aria-label="Filter by match type">
+                <button type="button" class="filter" data-filter="ALL" aria-pressed="true">All <span class="n">{{Y2_N_ALL}}</span></button>
+                <button type="button" class="filter" data-filter="TRANSCRIPT" aria-pressed="false">Transcript <span class="n">{{Y2_N_TRANSCRIPT}}</span></button>
+                <button type="button" class="filter" data-filter="ON-SCREEN TEXT" aria-pressed="false">On-screen text <span class="n">{{Y2_N_OCR}}</span></button>
+                <button type="button" class="filter" data-filter="OBJECT" aria-pressed="false">Objects <span class="n">{{Y2_N_OBJECT}}</span></button>
+              </div>
+            </div>
+            <p class="mt-4 text-small text-fg-muted" role="status" data-status>{{Y2_STATUS_DEFAULT}}</p>
+            <div class="timeline mt-3" aria-hidden="true">
+              <p class="tl-title mono-xs text-fg-muted">Where the hits fall · 24-hour index</p>
+              <div class="tl-track"></div>
+              <div class="tl-ticks" data-ticks>{{Y2_TICKS_DEFAULT}}</div>
+              <div class="tl-labels mono-xs text-fg-muted"><span>00:00</span><span>06:00</span><span>12:00</span><span>18:00</span><span>24:00</span></div>
+            </div>
+            <ol class="results mt-2" aria-label="Results" data-results>{{Y2_RESULTS_DEFAULT}}</ol>
+          </div>
+          <aside class="min-w-0 lg:col-span-4" aria-labelledby="try-title">
+            <p id="try-title" class="mono-xs text-fg-muted">Try a sample search</p>
+            <div class="try mt-2" data-try></div>
+            <button type="button" class="link-arrow mt-3" data-replay>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+              Replay the search
+            </button>
+            <p class="proto-note mt-5"><b>Prototype note ·</b> Four sample searches over invented footage. Face and person search are not shown (DL-P07).</p>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="how" data-surface="light" aria-labelledby="how-title" class="bg-surface-deep">
+    <div class="wrap py-20 lg:py-24">
+      <p class="ruler"><b>01</b> How the index is built</p>
+      <h2 id="how-title" class="mt-10 max-w-[48rem] font-medium text-display-2 text-balance text-fg">From raw footage to a searchable record.</h2>
+      <ol class="steps mt-12" data-ev="EV-442 EV-136 EV-444" data-audit-ok="G05">
+        <li><p class="mono-xs text-fg-muted">01 · Upload</p><h3 class="mt-3 text-heading-3 font-semibold text-fg">Upload content</h3><p class="mt-2 text-small text-fg-secondary">Footage from your cameras and archives, on your infrastructure.</p></li>
+        <li><p class="mono-xs text-fg-muted">02 · Process</p><h3 class="mt-3 text-heading-3 font-semibold text-fg">AI processing</h3><p class="mt-2 text-small text-fg-secondary">Speech is transcribed by speaker, text in frame is read, and objects are indexed.</p></li>
+        <li><p class="mono-xs text-fg-muted">03 · Search</p><h3 class="mt-3 text-heading-3 font-semibold text-fg">Search and discover</h3><p class="mt-2 text-small text-fg-secondary">Find the moment by phrase, on-screen text, object or metadata.</p></li>
+        <li><p class="mono-xs text-fg-muted">04 · Export</p><h3 class="mt-3 text-heading-3 font-semibold text-fg">Export and share</h3><p class="mt-2 text-small text-fg-secondary">Secure downloads, behind access control.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="types" aria-labelledby="types-title">
+    <div class="wrap py-20 lg:py-24">
+      <p class="ruler"><b>02</b> Search the way you think</p>
+      <div class="mt-10 grid grid-cols-12 gap-6">
+        <h2 id="types-title" class="col-span-12 min-w-0 font-medium text-display-2 text-balance text-fg lg:col-span-5">Seven ways to find one moment.</h2>
+        <div class="col-span-12 min-w-0 lg:col-span-7">
+          <table class="types" data-ev="EV-442 EV-136">
+            <thead><tr><th scope="col" class="mono-xs text-fg-muted">Search</th><th scope="col" class="mono-xs text-fg-muted">Finds</th><th scope="col" class="mono-xs text-fg-muted">Example</th></tr></thead>
+            <tbody>
+              <tr><th scope="row" class="font-semibold">Phrase</th><td class="text-fg-secondary">Exact words in transcripts, in more than 50 languages.</td><td><button type="button" class="run" data-run="permit approved">“permit approved”</button></td></tr>
+              <tr><th scope="row" class="font-semibold">On-screen text</th><td class="text-fg-secondary">Words on signs, boards and documents in frame.</td><td><button type="button" class="run" data-run="gate 2 shift b">GATE 2 · SHIFT B</button></td></tr>
+              <tr><th scope="row" class="font-semibold">Objects</th><td class="text-fg-secondary">Things the model detects in frame.</td><td><button type="button" class="run" data-run="excavator">excavator</button></td></tr>
+              <tr><th scope="row" class="font-semibold">Metadata</th><td class="text-fg-secondary">Camera, location, date and time.</td><td class="ex">CAM-04 · 06:00–08:00</td></tr>
+              <tr><th scope="row" class="font-semibold">Similarity</th><td class="text-fg-secondary">Moments that resemble one you pick.</td><td class="ex">more like 09:31:52</td></tr>
+              <tr><th scope="row" class="font-semibold">Fuzzy and synonym</th><td class="text-fg-secondary">Close spellings and related words still match.</td><td class="ex">“permit aproved”</td></tr>
+              <tr><th scope="row" class="font-semibold">Vector</th><td class="text-fg-secondary">Meaning rather than exact wording.</td><td class="ex">“crew briefing on hot work”</td></tr>
+            </tbody>
+          </table>
+          <p class="proto-note mt-6"><b>Prototype note ·</b> Phrase, metadata, similarity, fuzzy and synonym, and vector are EV-442's search types; face search is left out (DL-P07). On-screen text comes from EV-442's document scanning with OCR, and objects from EV-136 object detection. The descriptions paraphrase those names, so confirm the wording with the product team. Only the first three run in this sample.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="live-title" class="pb-20 lg:pb-24">
+    <div class="wrap">
+      <div class="live-card grid grid-cols-1 items-center gap-8 p-6 md:p-10 lg:grid-cols-12" data-surface="dark">
+        <div class="min-w-0 lg:col-span-5">
+          <p class="mono-xs text-fg-muted">Also live</p>
+          <h2 id="live-title" class="mt-4 font-semibold text-heading-1 text-balance text-fg">The same platform also watches live cameras.</h2>
+          <p class="mt-4 text-body text-fg-secondary" data-ev="EV-133 EV-134 EV-136">For site safety, missing PPE, restricted-zone entry and falls raise an alert as they happen, on the CCTV you already run.</p>
+          <a class="link-arrow mt-4" href="yisbir-y1-camera-chrome.html">See the real-time module <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
+        </div>
+        <div class="min-w-0 lg:col-span-7">
+          <div class="live-thumb" data-illustrative role="img" aria-label="Still from the illustrative real-time camera view: outline figures with detection brackets and a restricted zone">{{Y1_THUMB_SVG}}</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="deploy" data-surface="light" aria-labelledby="deploy-title" class="bg-surface-deep">
+    <div class="wrap py-20 lg:py-24">
+      <p class="ruler"><b>03</b> On your infrastructure</p>
+      <h2 id="deploy-title" class="mt-10 max-w-[48rem] font-medium text-display-2 text-balance text-fg">Your servers, your rules.</h2>
+      <div class="mt-12 grid gap-10 lg:grid-cols-2">
+        <dl class="grid gap-6" data-audit-ok="G05">
+          <div class="border-t border-line-strong pt-4"><dt class="mono-xs text-fg-muted">Deployment</dt><dd class="mt-2 text-heading-3 text-fg" data-ev="EV-444">Cloud, on-premises or hybrid</dd></div>
+          <div class="border-t border-line-strong pt-4"><dt class="mono-xs text-fg-muted">Cameras</dt><dd class="mt-2 text-heading-3 text-fg" data-ev="EV-444">Works with your existing infrastructure, with no hardware changes</dd></div>
+          <div class="border-t border-line-strong pt-4"><dt class="mono-xs text-fg-muted">Data</dt><dd class="mt-2 text-heading-3 text-fg" data-ev="EV-443">Can run fully on-premises, with no public cloud connection</dd></div>
+        </dl>
+        <dl class="grid gap-6" data-audit-ok="G05">
+          <div class="border-t border-line-strong pt-4"><dt class="mono-xs text-fg-muted">Access</dt><dd class="mt-2 text-heading-3 text-fg" data-ev="EV-442">Access control</dd></div>
+          <div class="border-t border-line-strong pt-4"><dt class="mono-xs text-fg-muted">Exports</dt><dd class="mt-2 text-heading-3 text-fg" data-ev="EV-442">Secure downloads</dd></div>
+          <div class="border-t border-line-strong pt-4"><dt class="mono-xs text-fg-muted">Integration</dt><dd class="mt-2 text-heading-3 text-fg" data-ev="EV-442">API integration with your systems</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="maker-title">
+    <div class="wrap grid grid-cols-12 items-center gap-6 py-16">
+      <div class="col-span-12 md:col-span-4"><span class="logo-mask meerana" role="img" aria-label="Meerana Technologies" style="--logo:url('{{LOGO_MEERANA_H}}')"></span></div>
+      <div class="col-span-12 min-w-0 md:col-span-8">
+        <h2 id="maker-title" class="sr-only">Built by Meerana</h2>
+        <p class="text-lede text-fg-secondary"><span data-ev="EV-441">YISBIR is developed by Meerana Technologies,</span> <span data-ev="EV-020">founded in Dubai in 2022.</span></p>
+        <a class="link-arrow mt-2" href="https://meerana.ae" rel="noopener">meerana.ae <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" data-surface="dark" aria-labelledby="contact-title">
+    <div class="wrap grid grid-cols-12 gap-6 py-20 lg:py-24">
+      <h2 id="contact-title" class="col-span-12 min-w-0 font-medium text-display-2 text-balance text-fg lg:col-span-7">Search your own footage.</h2>
+      <div class="col-span-12 min-w-0 flex flex-col items-start justify-end gap-4 lg:col-span-5">
+        <div class="flex flex-wrap items-center gap-x-6 gap-y-2">
+          <a class="btn-primary" href="mailto:info@meerana.ae?subject=YISBIR%20demo">Request a demo</a>
+          <a class="link-arrow" href="#search" data-focus-search>Try a sample search</a>
+        </div>
+        <p class="proto-note"><b>Prototype note ·</b> Enquiries go to info@meerana.ae (EV-004) until info@yisbir.ai is fixed (EV-448, DL-T08).</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="border-t border-line">
+  <div class="wrap flex flex-wrap items-center justify-between gap-4 py-8 text-small text-fg-muted">
+    <p>Prototype Y2 · Search Is the Interface · internal design exploration with a sample index.</p>
+    <p class="mono-xs">Logo colourway via CSS mask of the official raster (DD-09) · vector master pending</p>
+  </div>
+</footer>
+
+<script>
+{{Y2_INDEX_JS}}
+</script>
+<script>
+(function () {
+  'use strict';
+  var Y2 = window.Y2, root = document.documentElement;
+  var mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+  function isReduced() { return mq.matches || root.dataset.motion === 'reduce'; }
+
+  var form = document.querySelector('[data-form]'), input = document.getElementById('q');
+  var results = document.querySelector('[data-results]'), ticks = document.querySelector('[data-ticks]');
+  var status = document.querySelector('[data-status]'), tryBox = document.querySelector('[data-try]');
+  var filters = [].slice.call(document.querySelectorAll('[data-filter]'));
+  var current = { q: input.value, hits: Y2.search(input.value), filter: 'ALL' };
+
+  // sample-query list (Arabic set in Tajawal, right to left)
+  Y2.QUERIES.forEach(function (q) {
+    var b = document.createElement('button'); b.type = 'button'; b.dataset.q = q;
+    if (/[؀-ۿ]/.test(q)) { b.lang = 'ar'; b.dir = 'rtl'; }
+    b.textContent = q;
+    tryBox.appendChild(b);
+  });
+
+  function applyFilter(f) {
+    current.filter = f;
+    filters.forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.filter === f)); });
+    var shown = 0;
+    [].forEach.call(results.querySelectorAll('.result'), function (li) { var on = f === 'ALL' || li.dataset.type === f; li.hidden = !on; if (on) shown++;
+      var t = ticks.querySelector('.tick[data-i="' + li.dataset.i + '"]'); if (t) t.hidden = !on; });
+    var name = { TRANSCRIPT: 'transcripts', 'ON-SCREEN TEXT': 'on-screen text', OBJECT: 'objects' }[f];
+    if (current.hits && f !== 'ALL') status.textContent = shown + ' of ' + current.hits.length + ' results for “' + current.q + '”, showing ' + name + ' only';
+    else status.textContent = Y2.statusText(current.q, current.hits);
+  }
+  function dropTicks() {   // re-run the tick drop: start state, flush, then transition (no-op under reduced motion)
+    if (isReduced()) return;
+    ticks.classList.add('pre'); void ticks.offsetWidth; ticks.classList.remove('pre');
+  }
+  function run(q, opts) {
+    q = String(q).trim(); current.q = q; current.hits = Y2.search(q);
+    var c = current.hits ? Y2.counts(current.hits) : { ALL: 0, TRANSCRIPT: 0, 'ON-SCREEN TEXT': 0, OBJECT: 0 };
+    filters.forEach(function (b) { b.querySelector('.n').textContent = c[b.dataset.filter]; b.disabled = b.dataset.filter !== 'ALL' && !c[b.dataset.filter]; });
+    if (current.hits) { results.innerHTML = Y2.resultsHTML(current.hits); ticks.innerHTML = Y2.ticksHTML(current.hits); }
+    else {
+      results.innerHTML = '<li class="empty">No matches in this sample index. It holds four sample searches: pick one from the list.</li>';
+      ticks.innerHTML = '';
+    }
+    applyFilter('ALL');
+    [].forEach.call(tryBox.children, function (b) { b.setAttribute('aria-current', String(!!current.hits && b.dataset.q === q.toLowerCase().replace(/\s+/g, ' '))); });
+    if (!(opts && opts.silent)) dropTicks();
+  }
+
+  // the signature: type the query once (≤ 1.2 s), then reveal results and drop the ticks
+  var typing = null;
+  function reveal() { clearTimeout(window.__y2safety); root.classList.remove('y2-intro', 'y2-qhide'); }
+  function finishTyping(q) { if (!typing) return; clearTimeout(typing); typing = null; input.value = q; reveal(); }
+  function intro(q) {
+    if (isReduced()) { input.value = q; run(q, { silent: true }); reveal(); return; }
+    root.classList.add('y2-intro'); run(q, { silent: true });
+    input.value = ''; root.classList.remove('y2-qhide');   // empty field, then type
+    var i = 0, per = Math.min(70, 1200 / q.length);
+    (function next() {
+      input.value = q.slice(0, ++i);
+      if (i < q.length) typing = setTimeout(next, per); else { typing = null; setTimeout(reveal, 120); }
+    })();
+  }
+  ['focus', 'pointerdown', 'keydown'].forEach(function (ev) { input.addEventListener(ev, function () { finishTyping(current.q); }); });
+
+  form.addEventListener('submit', function (e) { e.preventDefault(); finishTyping(current.q); run(input.value); });
+  tryBox.addEventListener('click', function (e) { var b = e.target.closest('button'); if (!b) return; finishTyping(current.q); input.value = b.dataset.q; run(b.dataset.q); });
+  filters.forEach(function (b) { b.addEventListener('click', function () { applyFilter(b.dataset.filter); }); });
+  document.querySelector('[data-replay]').addEventListener('click', function () { finishTyping(current.q); intro(current.hits ? current.q : Y2.DEFAULT_Q); });
+  [].forEach.call(document.querySelectorAll('[data-run]'), function (b) { b.addEventListener('click', function () {
+    finishTyping(current.q); input.value = b.dataset.run; run(b.dataset.run);
+    document.getElementById('search').scrollIntoView({ behavior: isReduced() ? 'auto' : 'smooth', block: 'start' });
+  }); });
+  [].forEach.call(document.querySelectorAll('[data-focus-search]'), function (a) { a.addEventListener('click', function () { setTimeout(function () { input.focus({ preventScroll: true }); input.select(); }, 0); }); });
+
+  // result ↔ tick: hovering a result raises its tick on the index
+  results.addEventListener('mouseover', function (e) { var li = e.target.closest('.result');
+    [].forEach.call(ticks.children, function (t) { t.classList.toggle('is-hot', !!li && t.dataset.i === li.dataset.i); }); });
+  results.addEventListener('mouseleave', function () { [].forEach.call(ticks.children, function (t) { t.classList.remove('is-hot'); }); });
+
+  mq.addEventListener('change', function (e) { if (e.matches) { finishTyping(current.q); reveal(); } });
+  run(current.q, { silent: true });
+  if (root.classList.contains('y2-intro')) {   // after first paint, so the H1 stays the LCP element
+    requestAnimationFrame(function () { setTimeout(function () { intro(current.q); }, 250); });
+  }
+})();
+</script>
+</body>
+</html>

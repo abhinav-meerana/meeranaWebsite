@@ -1,0 +1,528 @@
+/* ============================================================================
+   Sections below the gallery: how it works, where we build, the closing CTA.
+
+   One system: the same solid card, the same annotation voice, one tonal step
+   (base -> sunken -> base) instead of a single undifferentiated navy wash.
+
+   Every vertical measure reads the height-aware fluid tokens (--section-py,
+   --sp-fluid-*, --header-h; FINAL-SPEC §3.2, §9), so a short laptop viewport
+   (1366×657, 1280×601) gets proportionally less air instead of a scenario
+   screen that overflows, or a CTA whose buttons fall below the fold.
+   ========================================================================== */
+
+.section {
+  position: relative;
+  padding-block: var(--section-py);
+}
+
+.section + .section {
+  border-top: 1px solid var(--line-faint);
+}
+
+/* ----------------------------------------------------------------------------
+   How it works: a connected sequence
+   -------------------------------------------------------------------------- */
+
+/* The heading leads the step column (Scenario.tsx), so the grid starts at the
+   section's content top and the sticky screen can open level with it. */
+.how-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--sp-fluid-l);
+}
+
+.how-main {
+  min-width: 0;
+}
+
+.how-steps {
+  /* Indent of the step text from the path, and the space between steps. The
+     path segments below are sized from these, so they always run node to node. */
+  --how-indent: var(--sp-7);
+  --how-gap: var(--sp-8);
+  /* Where the node sits in its step: on the first text row. */
+  --how-node-y: 4px;
+  position: relative;
+  list-style: none;
+  margin: var(--sp-fluid-m) 0 0;
+  padding: 0 0 0 var(--how-indent);
+  display: grid;
+  gap: var(--how-gap);
+}
+
+.how-step {
+  position: relative;
+  display: grid;
+  gap: var(--sp-2);
+  align-content: start;
+}
+
+.how-step > * {
+  margin: 0;
+}
+
+/* The path linking the steps, drawn as one segment per step, from its node to
+   the next step's node: a hairline, plus an accent fill that runs down each
+   segment the reader has passed. Per-step segments always meet the nodes
+   exactly, whatever each step's height. */
+.how-step:not(:last-child)::before,
+.how-step:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  left: calc(var(--how-indent) * -1 + 7px);
+  top: calc(var(--how-node-y) + 7px);
+  width: 1px;
+  height: calc(100% + var(--how-gap));
+}
+
+.how-step::before {
+  background: var(--line-strong);
+}
+
+.how-step::after {
+  background: var(--meerana-cyan);
+  transform-origin: top;
+  transform: scaleY(0);
+  transition: transform var(--dur-slow) var(--ease-standard);
+}
+
+.how-step.is-past::after {
+  transform: scaleY(1);
+}
+
+/* A lattice-cell node on the path: a small rotated square. */
+.how-node {
+  position: absolute;
+  z-index: 1;
+  left: calc(var(--how-indent) * -1 + 1px);
+  top: var(--how-node-y);
+  width: 13px;
+  height: 13px;
+  background: var(--surface-sunken);
+  border: 1px solid var(--line-strong);
+  transform: rotate(45deg) scale(0.8);
+  transition:
+    border-color var(--dur-base) var(--ease-standard),
+    background-color var(--dur-base) var(--ease-standard);
+}
+
+.how-step.is-past .how-node {
+  border-color: var(--meerana-cyan);
+}
+
+.how-step.is-active .how-node {
+  border-color: var(--meerana-cyan);
+  background: var(--meerana-cyan);
+}
+
+.how-copy {
+  max-width: 34rem;
+  color: var(--text-secondary);
+  font-size: var(--fs-body);
+  line-height: 1.6;
+}
+
+.how-step .annot {
+  color: var(--text-muted);
+}
+
+.how-step.is-active .annot {
+  color: var(--text-accent);
+}
+
+/* Below 1024px each step shows its own screen; the sticky column is hidden.
+   The screen is capped by height, so a phone sees the step text and its whole
+   screen together. */
+.how-inline {
+  margin-top: var(--sp-4);
+}
+
+/* The frame's width is definite before the lazy image arrives: as wide as
+   42svh of height allows at the file's aspect ratio (--ar, set by
+   ScreenFrame), capped at the column and, by ScreenFrame's inline max-width,
+   at the file's own width. So the screen loads into a box already its size
+   instead of growing from nothing and pushing the next step down (CLS). */
+.how-inline .screen {
+  width: min(100%, calc(42svh * var(--ar, 1.6)));
+}
+
+.how-inline .screen img {
+  width: 100%;
+  max-height: 42svh;
+}
+
+.how-media {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .how-grid {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  }
+
+  /* Steps are tall enough for each screen to hold, and their text starts at a
+     fixed offset (8svh), so the node can mark the first text row instead of
+     drifting against vertically centred copy. */
+  .how-steps {
+    --how-gap: 0px;
+    --how-node-y: calc(8svh + 4px);
+    margin-top: var(--sp-fluid-l);
+    /* With the media column's runway below, this keeps the whole screen
+       clear of the header while the last step sits mid-viewport. Short
+       viewports leave the screen less free space in its sticky box, so they
+       need more: about 54 px at 601 tall, nothing from about 940 up. */
+    padding-bottom: clamp(0px, calc(150px - 16svh), 56px);
+  }
+
+  .how-step {
+    min-height: max(160px, 28svh);
+    padding-block: 8svh;
+  }
+
+  /* Step 01 follows the heading, which already sets the column's top margin
+     (the steps start --sp-fluid-l under it), so it drops the 8svh lead-in and
+     the same from its minimum height. Its node and path segment are offset to
+     match, so the path still runs node to node. */
+  .how-step:first-child {
+    --how-node-y: 4px;
+    min-height: calc(max(160px, 28svh) - 8svh);
+    padding-top: 0;
+  }
+
+  .how-step:first-child::before,
+  .how-step:first-child::after {
+    height: calc(100% + 8svh);
+  }
+
+  .how-inline {
+    display: none;
+  }
+
+  .how-media {
+    display: block;
+    /* Lead-in: the column starts in the section's top padding, 12 px below
+       the section edge, so when the section arrives under the header (or a
+       link jumps to #how) the screen is already where it will stick: centred
+       in the space under the header, beside the heading and step 01, with
+       its provenance in view at 1024×520.
+       Runway: it also reaches into the bottom padding, so the sticky screen
+       stays fully in view while the last step is read, instead of riding up
+       under the header. */
+    margin-top: calc(12px - var(--section-py));
+    margin-bottom: calc(var(--section-py) * -1);
+  }
+
+  /* CSS sticky: no pin, no scroll hijack. Sized to the space under the
+     header, so the screen and its provenance always fit (S-01). */
+  .how-sticky {
+    position: sticky;
+    top: calc(var(--header-h) + 12px);
+    height: calc(100svh - var(--header-h) - 24px);
+    display: grid;
+    align-items: center;
+    justify-items: center;
+  }
+
+  /* A soft accent glow behind the screen gives the column depth. Not a
+     lattice: the section's horizon already is one (ui.css, .tone-sunken). */
+  .how-sticky::before {
+    content: "";
+    grid-area: 1 / 1;
+    align-self: stretch;
+    justify-self: stretch;
+    pointer-events: none;
+    background: radial-gradient(
+      55% 50% at 60% 50%,
+      color-mix(in srgb, var(--meerana-cyan) 9%, transparent),
+      transparent 70%
+    );
+  }
+
+  /* The outgoing screen clears fast and the incoming one starts just after
+     it, so two dense dashboards never sit on top of each other mid-fade (a
+     symmetric cross-fade read as one muddy picture for 420 ms). */
+  .how-shot {
+    grid-area: 1 / 1;
+    justify-self: stretch;
+    position: relative;
+    z-index: 1;
+    max-width: 100%;
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(12px);
+    transition:
+      opacity var(--dur-fast) var(--ease-exit),
+      transform var(--dur-fast) var(--ease-exit),
+      visibility 0s linear var(--dur-fast);
+  }
+
+  .how-shot.is-shown,
+  .how-shot.is-pre {
+    visibility: visible;
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity var(--dur-slow) var(--ease-enter) var(--dur-instant),
+      transform var(--dur-slow) var(--ease-enter) var(--dur-instant),
+      visibility 0s;
+  }
+
+  /* The frame is sized before its image decodes: the largest the sticky
+     box allows at the file's aspect ratio (--ar, from ScreenFrame), capped at
+     the column and, by ScreenFrame's inline max-width, at the file's own
+     width. A screen that arrives late lands in a box already its size, so
+     the caption never jumps and the stage is never a collapsed frame. The
+     image box (ScreenFrame's `.screen-box`) holds the pre-state veil below,
+     so the veil covers the picture and nothing else. */
+  .how-shot .screen {
+    width: min(100%, calc((100svh - var(--header-h) - 64px) * var(--ar, 1.6)));
+    margin-inline: auto;
+  }
+
+  .how-shot .screen-box {
+    position: relative;
+  }
+
+  .how-shot .screen img {
+    width: 100%;
+    max-height: calc(100svh - var(--header-h) - 64px);
+    object-fit: contain;
+  }
+
+  /* Pre-state (step 01): the first screen waits behind a 55% veil of the page
+     surface. Only the veil's opacity changes. It sits on the image box, not
+     on the figure, so the provenance label below stays fully legible (an
+     earlier version on the figure grid also veiled the caption row). */
+  .how-shot .screen-box::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-card);
+    background: var(--surface-page);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--dur-slow) var(--ease-standard);
+  }
+
+  .how-shot.is-pre .screen-box::after {
+    opacity: 0.55;
+  }
+}
+
+/* With reduced motion every step is fully visible and screens simply swap. */
+@media (prefers-reduced-motion: reduce) {
+  .how-step::after,
+  .how-node,
+  .how-shot,
+  .how-shot .screen-box::after {
+    transition: none;
+  }
+}
+
+/* ----------------------------------------------------------------------------
+   World: offices beside the press, then recognition and partnerships on one
+   three-column rhythm. The company link sits in the heading row, so the
+   section ends on proof rather than on a lone link.
+   -------------------------------------------------------------------------- */
+
+.world-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--sp-3) var(--sp-6);
+}
+
+.world-more {
+  padding-inline: 0;
+}
+
+.world-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--sp-fluid-l) var(--sp-fluid-m);
+  margin-top: var(--sp-fluid-m);
+}
+
+.world-col {
+  display: grid;
+  gap: var(--sp-fluid-m);
+  align-content: start;
+  min-width: 0;
+}
+
+.world-offices {
+  padding: var(--sp-fluid-s) var(--sp-fluid-m);
+}
+
+.world-col h3 {
+  margin: 0 0 var(--sp-4);
+}
+
+.world-news {
+  display: block;
+}
+
+.offices {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.offices li {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--sp-1) var(--sp-4);
+  padding-block: var(--sp-3);
+  border-bottom: 1px solid var(--line);
+}
+
+.offices li:last-child {
+  border-bottom: 0;
+}
+
+.off-city {
+  font-size: var(--fs-small);
+}
+
+/* "In the news": one ruled list, each row a single outbound link. */
+.press {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+
+.press li {
+  border-bottom: 1px solid var(--line);
+}
+
+.press a {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: var(--sp-1) var(--sp-4);
+  min-height: 44px;
+  padding: var(--sp-3) var(--sp-2) var(--sp-3) 0;
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.press-meta {
+  grid-column: 1;
+}
+
+.press-title {
+  grid-column: 1;
+  font-size: var(--fs-small);
+  font-weight: 500;
+  line-height: 1.45;
+  text-wrap: pretty;
+  transition: color var(--dur-fast) var(--ease-standard);
+}
+
+.press .arrow {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  align-self: center;
+  color: var(--text-muted);
+  transition:
+    color var(--dur-fast) var(--ease-standard),
+    transform var(--dur-fast) var(--ease-standard);
+}
+
+.press a:hover .press-title {
+  color: var(--text-accent);
+}
+
+.press a:hover .arrow,
+.press a:focus-visible .arrow {
+  color: var(--text-accent);
+  transform: translate(2px, -2px);
+}
+
+/* The Dubai Chambers feature: one line, a link out (no embed, no third-party
+   script). The text wraps as text beside the play mark in a narrow column. */
+.world-feature {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: var(--sp-3);
+  margin: 0;
+  font-size: var(--fs-small);
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+/* A small play mark (inline SVG in currentColor, so no raw colour). */
+.world-play {
+  width: 28px;
+  height: 28px;
+  color: var(--text-accent);
+}
+
+.world-feature cite {
+  font-style: italic;
+}
+
+/* Recognition as a row of three, ruled like the partnerships below it. */
+.awards-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0 var(--sp-6);
+}
+
+.awards-row li,
+.awards-row li:last-child {
+  border-bottom: 1px solid var(--line);
+}
+
+@media (min-width: 600px) {
+  .awards-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ----------------------------------------------------------------------------
+   Closing CTA
+   -------------------------------------------------------------------------- */
+
+/* The headline and both actions fit in the space under the header from
+   1024×520 up (S-02): the padding and the display size both read --u. */
+.cta {
+  padding-block: clamp(56px, calc(9 * var(--u)), 160px) clamp(48px, calc(7 * var(--u)), 128px);
+}
+
+.cta .annot {
+  margin-bottom: var(--sp-fluid-s);
+}
+
+.cta .t-display {
+  margin: 0;
+  max-width: 18ch;
+}
+
+.cta .cta-actions {
+  margin-top: var(--sp-fluid-m);
+}
+
+/* ----------------------------------------------------------------------------
+   Responsive
+   -------------------------------------------------------------------------- */
+
+@media (min-width: 1024px) {
+  .world-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
+  }
+  .awards-row {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 767px) {
+  .how-steps {
+    --how-indent: var(--sp-6);
+  }
+}

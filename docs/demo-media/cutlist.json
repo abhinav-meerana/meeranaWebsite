@@ -1,0 +1,29 @@
+{
+  "_about": "Candidate stills and loops cut from the four demo recordings (docs/DEMO-MEDIA-PLAN.md). status: clean = verified frame-by-frame free of real organisations, real people, bugs and private data; blocked = see the plan's blocker list. Times are source seconds. crop = [x, y, w, h] in source pixels. Render with: python docs/demo-media/render.py",
+  "sources": {
+    "agentic": "C:/Users/abhin/Desktop/demo_video/demoAgenticAi.mov",
+    "nazo": "C:/Users/abhin/Desktop/demo_video/nazo.mp4",
+    "tasree3": "C:/Users/abhin/Desktop/demo_video/tashree_demo_v4.mp4",
+    "indexing": "C:/Users/abhin/Desktop/demo_video/Vide4oIndexingDemo_ready.mp4"
+  },
+  "stills": [
+    {"id": "aibox-01-assistant-home", "src": "agentic", "t": 9.0, "crop": [0, 84, 1920, 912], "status": "clean", "shows": "Assistant home with the Context & Intelligence panel: files, citations, execution trail"},
+    {"id": "aibox-02-schedule-conflict", "src": "agentic", "t": 44.0, "crop": [0, 84, 1920, 912], "status": "clean", "shows": "Scheduling the legal team, then a calendar conflict found and resolved"},
+    {"id": "aibox-03-contract-review", "src": "agentic", "t": 58.0, "crop": [0, 84, 1920, 912], "status": "clean", "shows": "Contract review: liability cap and data-residency clauses flagged, with fixes"},
+    {"id": "aibox-04-voice", "src": "agentic", "t": 126.0, "crop": [0, 84, 1920, 912], "status": "clean", "shows": "Voice mode: 'What is the status of the vendor contract?'"},
+    {"id": "aibox-05-agent-matrix", "src": "agentic", "t": 191.0, "crop": [0, 84, 1920, 912], "status": "clean", "shows": "Active Agent Matrix: Legal, Finance, Research, HR and IT Security agents"},
+    {"id": "aibox-06-governance", "src": "agentic", "t": 212.0, "crop": [0, 84, 1920, 912], "status": "clean", "shows": "Governance: today's actions, approvals, reviews and the activity trail"},
+    {"id": "aibox-07-integrations", "src": "agentic", "t": 222.0, "crop": [0, 84, 1920, 912], "status": "clean-pending-claims", "shows": "Integrations (third-party product names): publish only once each integration is confirmed"},
+    {"id": "aibox-08-arabic", "src": "agentic", "t": 252.0, "crop": [0, 84, 1920, 912], "status": "clean", "shows": "The same assistant in Arabic, right to left"},
+    {"id": "nazo-01-template-generator", "src": "nazo", "t": 106.0, "crop": [0, 0, 1920, 1080], "status": "clean", "shows": "AI Template Generator and template library (zoomed)"},
+    {"id": "nazo-02-templates-page", "src": "nazo", "t": 130.0, "crop": [190, 110, 1540, 864], "status": "clean", "shows": "Templates page, full app window"},
+    {"id": "tasree3-01-command-center", "src": "tasree3", "t": 20.5, "crop": [96, 156, 1728, 844], "status": "clean", "shows": "Command Center dashboard (browser chrome cropped)"},
+    {"id": "tasree3-02-text-to-bpmn", "src": "tasree3", "t": 28.0, "crop": [96, 160, 1728, 840], "status": "clean", "shows": "BPMN diagram generated from a plain-language prompt, ready to add to the canvas"}
+  ],
+  "loops": [
+    {"id": "aibox-loop-contract-review", "src": "agentic", "segments": [[48.0, 61.5]], "crop": [0, 84, 1920, 912], "status": "clean", "shows": "Ask about a contract; the assistant reviews it and proposes fixes"},
+    {"id": "aibox-loop-languages", "src": "agentic", "segments": [[233.0, 239.0], [245.0, 252.0]], "crop": [0, 84, 1920, 912], "status": "clean", "shows": "English, then German, then Arabic (right to left)"},
+    {"id": "aibox-loop-agent-matrix", "src": "agentic", "segments": [[189.5, 199.5]], "crop": [0, 84, 1920, 912], "status": "clean", "shows": "Agent Matrix: select an agent and see what it is doing"},
+    {"id": "nazo-loop-ai-drafting", "src": "nazo", "segments": [[125.0, 135.0]], "crop": [0, 0, 1920, 1080], "status": "clean", "shows": "Describe a document; the AI drafts it"}
+  ]
+}

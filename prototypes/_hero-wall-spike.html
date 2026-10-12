@@ -1,0 +1,1131 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hero Dashboard Wall</title>
+<meta name="description" content="Spike: the M3 hero left column with a 3D wall of product dashboards on the right. Internal exploration; product screens show demo data; Wasel tiles are illustrations.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script>
+  /* Motion preference before first paint: the persisted on-page "Pause motion" toggle (same key as M3). */
+  (function () { try { if (localStorage.getItem('meerana-motion') === 'reduce') document.documentElement.dataset.motion = 'reduce'; } catch (e) {} })();
+</script>
+<style>
+/* =====================================================================================
+   TOKENS (subset of .claude/skills/ui-system/references/tokens.css; brand PDF values)
+   ===================================================================================== */
+:root {
+  --meerana-blue: #0D3BFF; --meerana-navy: #071B36; --meerana-cyan: #3FD0FF; --meerana-white: #FFFFFF;
+  --navy-950: #051326; --navy-900: #1B2D46; --navy-800: #2C3D54; --navy-600: #515F72; --navy-500: #778290;
+  --navy-300: #9CA4AF; --navy-200: #B5BBC3; --navy-050: #F5F6F7;
+  --wasel-copper: #C58A52; --wasel-sand: #D9C1A3;
+
+  --surface-page: var(--navy-950);
+  --surface-raised: var(--navy-900);
+  --text-primary: var(--meerana-white);
+  --text-secondary: var(--navy-200);
+  --text-muted: var(--navy-300);
+  --text-accent: var(--meerana-cyan);
+  --border-subtle: var(--navy-800);
+  --border-control: var(--navy-500);
+  --focus-ring: var(--meerana-cyan);
+  --action-primary-bg: var(--meerana-white);
+  --action-primary-fg: var(--meerana-navy);
+  --action-primary-hover: var(--navy-050);
+
+  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-enter: cubic-bezier(0, 0, 0, 1);
+  --dur-1: 160ms; --dur-2: 240ms; --dur-3: 420ms;
+  --radius-pill: 999px;
+
+  /* 12-column grid (matches M3 .wrap: max 80rem, gutter 24px) */
+  --wrap-max: 80rem;
+  --pad: clamp(16px, 4vw, 48px);
+  --gutter: 24px;
+}
+@media (prefers-reduced-motion: reduce) { :root { --dur-1: 0ms; --dur-2: 0ms; --dur-3: 0ms; } }
+html[data-motion="reduce"] { --dur-1: 0ms; --dur-2: 0ms; --dur-3: 0ms; }
+
+*, *::before, *::after { box-sizing: border-box; }
+html { background: var(--surface-page); color: var(--text-primary); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; text-size-adjust: 100%; }
+body { margin: 0; background: var(--surface-page); overflow-x: clip; }
+img { display: block; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; margin: 0; cursor: pointer; }
+:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 3px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.wrap { margin-inline: auto; max-width: var(--wrap-max); padding-inline: var(--pad); }
+
+/* ---- nav stand-in (the real page keeps its Dynamic Island; solid here because this spike has no glass) ---- */
+.nav { position: fixed; top: 14px; inset-inline: 0; z-index: 40; display: flex; justify-content: center; pointer-events: none; padding-inline: 12px; }
+.nav-in { pointer-events: auto; display: flex; align-items: center; gap: 4px; width: min(860px, 100%); height: 56px; padding: 0 8px 0 20px; border-radius: 28px;
+  background: var(--navy-900); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--meerana-white) 8%, transparent), 0 24px 48px -28px rgb(0 0 0 / .8); }
+.logo { display: block; width: 118px; height: 22px; overflow: hidden; flex: none; }
+.logo img { width: 155px; height: auto; max-width: none; margin: -5.7px 0 0 -13.4px; }
+.nav-links { display: flex; gap: 2px; margin-inline: auto; }
+.nav-links a { display: inline-flex; align-items: center; min-height: 44px; padding-inline: 14px; font-size: .875rem; color: var(--text-secondary); border-radius: var(--radius-pill); transition: color var(--dur-1) var(--ease-standard); }
+.nav-links a:hover { color: var(--text-primary); }
+.icon-btn { display: inline-grid; place-items: center; width: 44px; height: 44px; border-radius: var(--radius-pill); color: var(--text-secondary); transition: color var(--dur-1) var(--ease-standard); }
+.icon-btn:hover, .icon-btn[aria-pressed="true"] { color: var(--text-accent); }
+.icon-btn svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 1.6; fill: none; stroke-linecap: round; }
+.icon-btn .i-play, .icon-btn[aria-pressed="true"] .i-pause { display: none; }
+.icon-btn[aria-pressed="true"] .i-play { display: inline; stroke-linejoin: round; }
+.nav-cta { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding-inline: 16px; border-radius: var(--radius-pill); background: var(--action-primary-bg); color: var(--action-primary-fg); font-size: .875rem; font-weight: 500; }
+@media (max-width: 899px) { .nav-links { display: none; } .nav-in { justify-content: space-between; } }
+@media (max-width: 559px) { .nav-cta { display: none; } .nav-in { padding-inline-end: 6px; } }
+
+/* =====================================================================================
+   HERO — left column (spec 2.2: eyebrow 13/500 no pill · H1 72/300 · lede 20/400 · 2 CTAs · ruled moments)
+   ===================================================================================== */
+.hero { position: relative; isolation: isolate; min-height: max(100svh, 720px); }
+.hero-copy { position: relative; z-index: 2; padding-top: clamp(112px, 19vh, 176px); padding-bottom: 56px; }
+.hero-text { max-width: 34rem; }
+.eyebrow { margin: 0; font-size: .8125rem; font-weight: 500; line-height: 1.4; letter-spacing: .01em; color: var(--text-secondary); }
+.h1 { margin: 20px 0 0; font-weight: 300; font-size: clamp(2.5rem, 1.6rem + 3.6vw, 4.5rem); line-height: 1.02; letter-spacing: -0.035em; text-wrap: balance; }
+.h1 .cont { display: block; color: var(--text-secondary); }
+.lede { margin: 24px 0 0; max-width: 34rem; font-size: clamp(1.0625rem, .95rem + .4vw, 1.25rem); line-height: 1.5; color: var(--text-secondary); text-wrap: pretty; }
+.ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
+.btn-primary { display: inline-flex; align-items: center; gap: 10px; min-height: 52px; padding-inline: 24px; border-radius: var(--radius-pill); background: var(--action-primary-bg); color: var(--action-primary-fg);
+  font-weight: 500; font-size: .9375rem; transition: background-color var(--dur-1) var(--ease-standard), transform var(--dur-1) var(--ease-standard); }
+.btn-primary:hover { background: var(--action-primary-hover); transform: translateY(-1px); }
+.btn-secondary { display: inline-flex; align-items: center; gap: 8px; min-height: 52px; padding-inline: 22px; border-radius: var(--radius-pill); color: var(--text-primary); font-weight: 500; font-size: .9375rem;
+  border: 1px solid var(--border-control); transition: border-color var(--dur-1) var(--ease-standard); }
+.btn-secondary:hover { border-color: var(--text-accent); }
+.btn-primary > span, .btn-secondary > span { transition: transform var(--dur-1) var(--ease-standard); }
+.btn-secondary > span { color: var(--text-accent); }
+.btn-primary:hover > span, .btn-secondary:hover > span { transform: translateX(3px); }
+
+/* the four moments as a ruled row: 1 px rules, category 16/500, product 14 navy-300, cyan progress rule */
+.moments { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 48px 0 0; padding: 0; list-style: none; border-top: 1px solid var(--border-subtle); max-width: 36rem; }
+.moments li { display: flex; }
+.moment { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; width: 100%; min-height: 72px; padding: 16px 12px 8px 16px; text-align: start;
+  border-inline-start: 1px solid var(--border-subtle); transition: background-color var(--dur-1) var(--ease-standard); }
+.moments li:first-child .moment { border-inline-start: 0; padding-inline-start: 0; }
+.moment .m-name { font-size: 1rem; font-weight: 500; line-height: 1.3; color: var(--text-primary); }
+.moment .m-prod { font-size: .875rem; line-height: 1.35; color: var(--text-muted); transition: color var(--dur-1) var(--ease-standard); }
+.moment:hover .m-prod, .moment[aria-pressed="true"] .m-prod { color: var(--text-accent); }
+.moment .m-rule { position: absolute; top: -1px; inset-inline: 0; height: 2px; background: var(--text-accent); transform: scaleX(0); transform-origin: 0 50%;
+  transition: transform var(--dur-2) var(--ease-standard); }
+.moments li:first-child .m-rule { inset-inline-start: 0; }
+.moment[aria-pressed="true"] .m-rule { transform: scaleX(1); }
+.moments.is-autoplay .moment[aria-pressed="true"] .m-rule { transition: transform var(--hold, 2800ms) linear; }
+.moment:focus-visible { outline-offset: -2px; border-radius: 4px; }
+
+/* desktop grid: copy spans columns 1–6, the wall starts at column 7 and bleeds off right + bottom */
+@media (min-width: 1280px) {
+  /* .hero-copy stays unpositioned so the wall's containing block is .hero (full viewport width) */
+  .hero-copy { position: static; min-height: max(100svh, 720px); display: flex; flex-direction: column; justify-content: center; padding-top: 104px; padding-bottom: 48px; }
+  .hero-text { width: calc((min(100vw, var(--wrap-max)) - 2 * var(--pad) - 11 * var(--gutter)) / 12 * 6 + 5 * var(--gutter)); max-width: none; }
+  .hero-text > :not(.hero-wall) { position: relative; z-index: 2; }
+  .hero-text > .eyebrow, .hero-text > .lede { max-width: 34rem; }
+}
+
+/* ===== HERO WALL CSS: BEGIN ===== */
+/* =====================================================================================
+   THE WALL — solid tiles on a tilted 3D plane. Only .wall-track moves (transform, one rAF).
+   Structure: .hero-wall > .wall-stage (perspective, clip, edge masks) > .wall-plane (rotate, preserve-3d)
+              > .wall-col > .wall-track (translateY) > .wall-tile (button) — clones are aria-hidden.
+   Tile state is driven by custom properties, so a moment change is one attribute on .hero-wall (data-focus):
+     --hw-scrim  opacity of the tile's solid navy-950 scrim (rest / dim / front / hover values per tone, below)
+     --hw-on     0 | 1: the tag and the brighter hairline (hover, keyboard focus, front)
+   ===================================================================================== */
+.hero-wall { --hw-tile: 336px; --hw-gap: 22px; --hw-persp: 1600px; --hw-fade-l: 96px; --hw-fade-t: 112px; --hw-fade-b: 72px; position: relative; z-index: 1; }
+.wall-stage { position: absolute; inset: 0; overflow: clip; perspective: var(--hw-persp); perspective-origin: 50% 50%; touch-action: pan-y;
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 var(--hw-fade-l)), linear-gradient(to bottom, transparent 0, #000 var(--hw-fade-t), #000 calc(100% - var(--hw-fade-b)), transparent 100%);
+  -webkit-mask-composite: source-in; mask-image: linear-gradient(to right, transparent 0, #000 var(--hw-fade-l)), linear-gradient(to bottom, transparent 0, #000 var(--hw-fade-t), #000 calc(100% - var(--hw-fade-b)), transparent 100%);
+  mask-composite: intersect; }
+.wall-stage.is-dragging { cursor: grabbing; }
+.wall-stage { transition: opacity var(--dur-3) var(--ease-enter); }
+/* Entrance, only once the engine runs (.is-live, set by HeroWall.create): the stage fades in when the first tiles have decoded (the
+   H1 stays the LCP) while every tile's scrim eases from solid to its resting value, so the screens surface out of the dark.
+   Without JS the class is never set, nothing is hidden and the <noscript> fallback grid shows. */
+.hero-wall.is-live:not(.is-ready) .wall-stage { opacity: 0; }
+.hero-wall.is-live:not(.is-ready) .wall-tile { --hw-scrim: 1; }
+.wall-plane { position: absolute; top: 0; left: 0; transform-style: preserve-3d; transform-origin: 50% 50%; }
+.wall-plane::before { /* the "drafting mat": a faint fixed grid the tiles glide over — reads as an architectural model, matches the isometric brand */
+  content: ""; position: absolute; inset: -60% -12%; pointer-events: none; opacity: .5;
+  background-image: linear-gradient(to right, color-mix(in srgb, var(--navy-800) 70%, transparent) 1px, transparent 1px),
+                    linear-gradient(to bottom, color-mix(in srgb, var(--navy-800) 70%, transparent) 1px, transparent 1px);
+  background-size: calc((var(--hw-tile) + var(--hw-gap)) / 4) calc((var(--hw-tile) + var(--hw-gap)) / 4); background-position: calc(var(--hw-gap) / -2) 0;
+  -webkit-mask-image: radial-gradient(closest-side, #000 30%, transparent); mask-image: radial-gradient(closest-side, #000 30%, transparent); }
+.wall-col { position: absolute; top: 0; width: var(--hw-tile); transform-style: preserve-3d; }
+.wall-track { display: flex; flex-direction: column; gap: var(--hw-gap); transform-style: preserve-3d; will-change: transform; }
+/* Hit testing: in one preserve-3d context the plane, columns and tracks are coplanar with the tiles (z = 0), and Chrome
+   resolves the depth tie to the container about a third of the time (measured: 3 of 8 tile centres hit .wall-col).
+   Containers are therefore transparent to the pointer; only tiles are hit-testable. The stage keeps its listeners. */
+.wall-plane, .wall-col, .wall-track { pointer-events: none; }
+.wall-plane .wall-tile { pointer-events: auto; }
+
+/* One surface family: every tile is a solid navy-900 card; its content sits under a solid navy-950 scrim whose opacity is the
+   only thing that changes. Light UIs (data-tone="light": Tasree3, Nazo) are held darker at every state so they never outshine
+   the H1 or the dark dashboards next to them. Dimmed tiles stay opaque: the tile itself never fades (the card is solid, only its
+   content recedes under the scrim). Measured against fading the whole tile and against filter: brightness(), the scrim was the
+   cheapest of the three (HERO-WALL-SPEC.md §9). */
+.wall-tile { --s-rest: .14; --s-dim: .66; --s-front: 0; --s-hover: 0; --hw-scrim: var(--s-rest); --hw-on: 0;
+  position: relative; display: block; flex: none; width: var(--hw-tile); aspect-ratio: 16 / 10; border-radius: 14px; background: var(--navy-900);
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--meerana-white) 4%, transparent), 0 28px 48px -24px rgb(0 0 0 / .72);
+  transition: transform var(--dur-3) var(--ease-standard); }
+.wall-tile[data-tone="light"] { --s-rest: .55; --s-dim: .8; --s-front: .3; --s-hover: .3; }
+.wall-media { position: absolute; inset: 0; overflow: hidden; border-radius: inherit; background: var(--hw-tile-bg, var(--navy-950)); }
+.wall-media img { position: absolute; max-width: none; height: auto; user-select: none; -webkit-user-drag: none; }
+.wall-media img.cover { inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.wall-scrim { position: absolute; inset: 0; border-radius: inherit; background: var(--navy-950); opacity: var(--hw-scrim); pointer-events: none; transition: opacity var(--dur-3) var(--ease-standard); }
+/* hairline: switched, never animated (box-shadow is a paint property) */
+.wall-tile::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / calc(.08 + .14 * var(--hw-on))), inset 0 1px 0 rgb(255 255 255 / calc(.06 + .06 * var(--hw-on))); }
+.wall-tag { position: absolute; left: 10px; bottom: 10px; display: inline-flex; align-items: center; gap: 8px; height: 24px; padding-inline: 9px; border-radius: 6px;
+  background: var(--navy-950); color: var(--text-secondary); font: 500 10.5px/1 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; white-space: nowrap;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--meerana-white) 10%, transparent); opacity: var(--hw-on); transform: translateY(calc(4px - 4px * var(--hw-on)));
+  transition: opacity var(--dur-2) var(--ease-standard), transform var(--dur-2) var(--ease-standard); }
+.wall-tag b { font-weight: 600; color: var(--text-primary); }
+.wall-tag i { width: 1px; height: 10px; background: var(--navy-600); }
+
+/* moments API: one attribute on the wall (data-focus="ai|auto|iot|sec"); that product's tiles come to the front, the rest recede */
+.hero-wall[data-focus] .wall-tile { --hw-scrim: var(--s-dim); }
+.hero-wall[data-focus="ai"] .wall-tile[data-wall-moment="ai"], .hero-wall[data-focus="auto"] .wall-tile[data-wall-moment="auto"],
+.hero-wall[data-focus="iot"] .wall-tile[data-wall-moment="iot"], .hero-wall[data-focus="sec"] .wall-tile[data-wall-moment="sec"] { --hw-scrim: var(--s-front); --hw-on: 1; }
+/* no translateZ on front tiles: lifting 3–5 tiles at once layerizes them mid-ease (measured 50–80 ms hitches) */
+
+/* hover / keyboard focus: lift toward the viewer and brighten (wins over the moment state) */
+@media (hover: hover) { .hero-wall .wall-tile:hover { --hw-scrim: var(--s-hover); --hw-on: 1; transform: translateZ(36px); } }
+.hero-wall .wall-tile:focus-visible { --hw-scrim: var(--s-hover); --hw-on: 1; outline: 2px solid var(--focus-ring); outline-offset: 4px; transform: translateZ(36px); }
+
+/* flat legend (outside the 3D plane, always legible): the engine writes the provenance of what is in front (or of everything) */
+.wall-legend { position: absolute; z-index: 3; right: var(--pad); bottom: 24px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; margin: 0;
+  max-width: calc(100% - 2 * var(--pad)); padding: 8px 12px; border-radius: 8px; background: var(--navy-950); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--meerana-white) 8%, transparent);
+  font: 500 11px/14px var(--font-mono); letter-spacing: .05em; text-transform: uppercase; color: var(--text-muted); }
+.wall-legend b { font-weight: 600; color: var(--text-secondary); white-space: nowrap; }
+.wall-legend span { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
+.wall-legend span::before { content: ""; flex: none; width: 4px; height: 4px; border-radius: 50%; background: var(--navy-500); }   /* a bullet, so a wrapped line never starts or ends on a stray divider */
+
+/* desktop ≥ 1280: absolute, from grid column 7 to the right viewport edge, full hero height */
+@media (min-width: 1280px) {
+  .hero-wall { position: absolute; top: 0; bottom: 0; right: 0;
+    left: calc(50% + var(--gutter) / 2); }   /* = left edge of grid column 7 for any centred 12-column wrap (same as M3's .hero-wall) */
+  .wall-legend { right: auto; left: 96px; bottom: 28px; max-width: min(600px, calc(100% - 96px - var(--pad))); }
+}
+/* 1280–1439: the H1's last line ends ≈ 38 px before column 7, so the left fade is wider: the first tile pixel at ≥ 25 % opacity
+   sits ≥ 80 px from "world." (measured 81 px at 1280; the legend keeps its 96 px inset) */
+@media (min-width: 1280px) and (max-width: 1439px) { .hero-wall { --hw-fade-l: 170px; } }
+/* tablet 768–1279: under the text, full bleed, two columns */
+@media (min-width: 768px) and (max-width: 1279px) {
+  .hero-wall { height: clamp(400px, 60svh, 620px); margin-top: 40px; margin-inline: calc(-1 * var(--pad)); --hw-fade-l: 0px; --hw-fade-t: 56px; --hw-fade-b: 96px; }
+  .wall-legend { right: var(--pad); bottom: 20px; }
+}
+/* phone < 768: one tilted horizontal strip under the CTAs, native scroll-snap, ≤ 40svh */
+.hero-wall[data-mode="strip"] { height: auto; margin: 32px calc(-1 * var(--pad)) 0; }
+.hero-wall[data-mode="strip"] .wall-stage { position: relative; inset: auto; overflow-x: clip; overflow-y: visible; -webkit-mask-image: none; mask-image: none; perspective: 1100px; perspective-origin: 0 50%; touch-action: auto; }
+.wall-strip { display: flex; gap: 14px; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scroll-padding-inline: var(--pad); padding: 18px var(--pad) 26px;
+  scrollbar-width: none; transform: rotateY(-16deg) rotateX(7deg); transform-origin: 0 50%; }
+.wall-strip::-webkit-scrollbar { display: none; }
+.wall-strip .wall-tile { --hw-tile: min(72vw, calc(40svh * 1.6 - 64px)); scroll-snap-align: start; }
+.hero-wall[data-mode="strip"] .wall-legend { position: static; max-width: none; margin: 0 var(--pad); }
+.hero-wall[data-mode="strip"] .wall-tile { --hw-on: 1; }   /* touch has no hover: the product name is always on */
+.hero-wall[data-mode="strip"] .wall-tag i, .hero-wall[data-mode="strip"] .wall-tag .prov { display: none; }   /* provenance lives in the legend below */
+
+/* no-JS fallback: a plain grid of the first six screens (the engine clears it on its first layout) */
+.wall-fallback { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-content: center; height: 100%; margin: 0;
+  padding: var(--hw-fade-t) var(--pad) var(--hw-fade-b) var(--hw-fade-l); list-style: none; }
+.wall-fallback li { overflow: hidden; border-radius: 14px; background: var(--navy-900); box-shadow: 0 0 0 1px color-mix(in srgb, var(--meerana-white) 8%, transparent); }
+.wall-fallback img { width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; }
+@media (max-width: 767px) {
+  .hero-wall:not(.is-live) { margin: 32px calc(-1 * var(--pad)) 0; }
+  .hero-wall:not(.is-live) .wall-stage { position: relative; -webkit-mask-image: none; mask-image: none; }
+  .wall-fallback { display: flex; gap: 14px; height: auto; overflow-x: auto; scroll-snap-type: x mandatory; padding: 16px var(--pad) 24px; }
+  .wall-fallback li { flex: none; width: 72vw; scroll-snap-align: start; }
+  .hero-wall:not(.is-live) .wall-legend { position: static; max-width: none; margin: 0 var(--pad); }
+}
+
+/* reduced motion / Pause motion: everything static, focus changes instant */
+@media (prefers-reduced-motion: reduce) { .wall-tile, .wall-scrim, .wall-tag, .wall-stage, .moment .m-rule { transition: none !important; } }
+html[data-motion="reduce"] .wall-tile, html[data-motion="reduce"] .wall-scrim, html[data-motion="reduce"] .wall-tag, html[data-motion="reduce"] .wall-stage, html[data-motion="reduce"] .moment .m-rule { transition: none !important; }
+.hero-wall[data-low-power] .wall-tile, .hero-wall[data-low-power] .wall-scrim, .hero-wall[data-low-power] .wall-tag { transition: none !important; }   /* set by the frame guard */
+/* ===== HERO WALL CSS: END ===== */
+
+/* tablet 768–1279 (host page): the copy column loses its cap so the wall under it can run full bleed; the text keeps it */
+@media (min-width: 768px) and (max-width: 1279px) {
+  .hero-text { max-width: none; }
+  .hero-text > .eyebrow, .hero-text > .h1, .hero-text > .lede { max-width: 40rem; }
+}
+
+/* phone layout of the copy (spec 5.3): H1 → lede → CTA → strip → moments 2×2 */
+@media (max-width: 767px) {
+  .hero { min-height: 0; }
+  .hero-copy { padding-top: 104px; padding-bottom: 40px; }
+  .h1 { margin-top: 16px; }
+  .lede { margin-top: 16px; }
+  .ctas { margin-top: 24px; }
+  .moments { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 28px; }
+  .moments li:nth-child(3) .moment { border-inline-start: 0; padding-inline-start: 0; }
+  .moments li:nth-child(n+3) { border-top: 1px solid var(--border-subtle); }
+}
+
+/* =====================================================================================
+   LIGHTBOX (simple dialog for the spike; solid surface)
+   ===================================================================================== */
+.lb { width: min(1120px, calc(100vw - 32px)); max-height: calc(100svh - 32px); padding: 0; border: 0; border-radius: 20px; background: var(--navy-900); color: var(--text-primary);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--meerana-white) 10%, transparent), 0 40px 120px -40px #000; overflow: hidden; }
+.lb::backdrop { background: color-mix(in srgb, var(--navy-950) 88%, transparent); }
+.lb figure { margin: 0; }
+.lb-media { position: relative; aspect-ratio: 16 / 10; max-height: calc(100svh - 140px); overflow: hidden; background: var(--hw-tile-bg, var(--navy-950)); }
+.lb-media img { position: absolute; max-width: none; height: auto; }
+.lb-media img.cover { inset: 0; width: 100%; height: 100%; object-fit: contain; }
+.lb-bar { display: flex; align-items: center; gap: 16px; min-height: 64px; padding: 10px 10px 10px 20px; }
+.lb-bar figcaption { flex: 1; min-width: 0; font-size: .875rem; line-height: 1.4; color: var(--text-secondary); }
+.lb-bar figcaption b { font-weight: 500; color: var(--text-primary); }
+.lb-bar figcaption span { display: block; margin-top: 2px; font: 500 11px/1.3 var(--font-mono); letter-spacing: .05em; text-transform: uppercase; color: var(--text-muted); }
+.lb-btn { display: inline-grid; place-items: center; width: 44px; height: 44px; border-radius: var(--radius-pill); color: var(--text-primary); box-shadow: inset 0 0 0 1px var(--border-subtle);
+  transition: box-shadow var(--dur-1) var(--ease-standard), color var(--dur-1) var(--ease-standard); }
+.lb-btn:hover { color: var(--text-accent); box-shadow: inset 0 0 0 1px var(--text-accent); }
+.lb-btn svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 1.6; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+/* placeholder for the next chapter, to test the scroll coupling and the hero's bottom edge */
+.next { position: relative; z-index: 2; padding-block: 120px 160px; border-top: 1px solid var(--border-subtle); background: var(--surface-page); }
+.next p { margin: 0; font: 500 12px/1.4 var(--font-mono); letter-spacing: .05em; text-transform: uppercase; color: var(--text-muted); }
+.next h2 { margin: 16px 0 0; max-width: 28ch; font-weight: 300; font-size: clamp(2rem, 1.4rem + 2vw, 3rem); line-height: 1.1; letter-spacing: -.02em; }
+</style>
+</head>
+<body>
+<header class="nav">
+  <nav class="nav-in" aria-label="Primary">
+    <a class="logo" href="#top" aria-label="Meerana Technologies, home"><img src="../research/recovered/figma-make-v17/public-meerana-assets/MEERANA-Logo-final-transparent-white-08.png" width="1579" height="333" alt=""></a>
+    <div class="nav-links"><a href="#products">Products</a><a href="#world">Offices</a><a href="#story">How it works</a><a href="#contact">Contact</a></div>
+    <button type="button" class="icon-btn" data-motion-toggle aria-pressed="false" aria-label="Pause motion">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path class="i-pause" d="M9 6v12M15 6v12"/><path class="i-play" d="M8 5.5v13l10.5-6.5z"/></svg></button>
+    <a class="nav-cta" href="#contact">Talk to Meerana <span aria-hidden="true">→</span></a>
+  </nav>
+</header>
+
+<main id="main">
+  <section id="top" class="hero" aria-labelledby="hero-title">
+    <div class="hero-copy wrap">
+      <div class="hero-text">
+        <p class="eyebrow">Meerana Technologies · Dubai, UAE</p>
+        <h1 id="hero-title" class="h1">We engineer intelligence <span class="cont">for the real world.</span></h1>
+        <p class="lede">An AI-powered ecosystem of six enterprise products — for AI, automation, IoT and security.</p>
+        <div class="ctas">
+          <a class="btn-primary" href="#products">Explore the ecosystem <span aria-hidden="true">→</span></a>
+          <a class="btn-secondary" href="#story">See how it works <span aria-hidden="true">→</span></a>
+        </div>
+
+        <!-- THE WALL. Desktop: absolutely positioned against .hero (column 7 → right edge). Tablet/phone: in flow here. -->
+        <div class="hero-wall" id="wall" data-wall role="region" aria-roledescription="gallery" aria-label="Product screens" aria-describedby="wall-help">
+          <p id="wall-help" class="sr-only">Arrow keys move between screens. Enter opens a screen larger. The wall stops moving while you browse it.</p>
+          <div class="wall-stage" data-wall-stage><noscript><ul class="wall-fallback">
+            <li><img src="media/m3/v3/wall-01-yisbir-ppe-compliance.webp" alt="PPE compliance at 94.2% with helmet and vest rates beside a warehouse camera feed" width="1200" height="750" loading="lazy" decoding="async"></li>
+            <li><img src="media/m3/v3/wall-04-aibox-contract-review.webp" alt="AI in a Box review note flagging a liability clause and a data-residency clause with fixes" width="1200" height="750" loading="lazy" decoding="async"></li>
+            <li><img src="media/m3/v3/wall-14-tasree3-bpmn.webp" alt="BPMN diagram generated by Tasree3: validate reading, gateway, invalid reading and calculate bill" width="1200" height="750" loading="lazy" decoding="async"></li>
+            <li><img src="media/m3/v3/wall-07-yisbir-campus-headcount.webp" alt="Headcount of 3,037 people on campus by building, with 90.7% lecture attendance" width="1200" height="750" loading="lazy" decoding="async"></li>
+            <li><img src="media/m3/v3/wall-12-aibox-governance.webp" alt="AI in a Box governance summary: 29 actions, 6 approvals reviewed by a person, activity trail" width="1200" height="750" loading="lazy" decoding="async"></li>
+            <li><img src="media/m3/v3/wall-08-mandoobee-app.webp" alt="Three Mandoobee phone screens: services, home with clock-in, and the attendance dashboard" width="1200" height="750" loading="lazy" decoding="async"></li>
+          </ul></noscript></div>
+          <p class="wall-legend" data-wall-legend aria-hidden="true"><b>All products</b><span>Product screens · demo data</span><span>Design concepts · sample data</span><span>App mock-up</span><span>Illustrations</span></p>
+        </div>
+
+        <ol class="moments" aria-label="Four moments: AI, automation, IoT, security">
+          <li><button type="button" class="moment" data-moment="ai" aria-pressed="false" aria-controls="wall"><span class="m-rule" aria-hidden="true"></span><span class="m-name">AI</span><span class="m-prod">AI in a Box</span></button></li>
+          <li><button type="button" class="moment" data-moment="auto" aria-pressed="false" aria-controls="wall"><span class="m-rule" aria-hidden="true"></span><span class="m-name">Automation</span><span class="m-prod">Tasree3</span></button></li>
+          <li><button type="button" class="moment" data-moment="iot" aria-pressed="false" aria-controls="wall"><span class="m-rule" aria-hidden="true"></span><span class="m-name">IoT</span><span class="m-prod">Wasel</span></button></li>
+          <li><button type="button" class="moment" data-moment="sec" aria-pressed="false" aria-controls="wall"><span class="m-rule" aria-hidden="true"></span><span class="m-name">Security</span><span class="m-prod">Yisbir</span></button></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section id="products" class="next">
+    <div class="wrap">
+      <p>02 · Spike placeholder</p>
+      <h2>The product gallery continues here in the real page.</h2>
+    </div>
+  </section>
+  <section id="story" class="next"><div class="wrap"><p>04 · Spike placeholder</p><h2>How it works.</h2></div></section>
+</main>
+
+<dialog class="lb" id="lb" aria-labelledby="lb-title">
+  <figure>
+    <div class="lb-media" data-lb-media></div>
+    <div class="lb-bar">
+      <figcaption><b id="lb-title" data-lb-title></b> — <span data-lb-caption style="display:inline;font:inherit;letter-spacing:0;text-transform:none;color:inherit"></span><span data-lb-prov></span></figcaption>
+      <button type="button" class="lb-btn" data-lb-prev aria-label="Previous screen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <button type="button" class="lb-btn" data-lb-next aria-label="Next screen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+      <button type="button" class="lb-btn" data-lb-close aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+  </figure>
+</dialog>
+
+<script>
+/* =====================================================================================
+   HERO WALL ILLUSTRATIONS: BEGIN · 0. WASEL ILLUSTRATIONS — Wasel has no product screens, so its two tiles are isometric
+      hairline drawings (navy board, copper accents) in the same layout as the v3 concept tiles, returned as SVG strings and
+      used as data-URI images (WALL_ITEMS[].svg). In M3 ship the exported files instead (hero-wall/wall-wasel-*.svg → media/m3/v3/).
+   ===================================================================================== */
+const ILLUSTRATIONS = (function () {
+  /* Wasel tiles are illustrations (no product screens exist yet). They follow the v3 concept-tile layout so the wall stays one
+     surface family: title, subtitle and pill on the #00122B board, content in rounded inset panels. Board 1200×750 = the v3 wall
+     size; shown at ≈ 300–420 px on the wall and up to 1120 px in the lightbox. Text uses system font stacks, because an SVG used as
+     an <img> cannot load web fonts (Poppins where installed, otherwise Segoe UI / Helvetica Neue; mono for indices). */
+  const C = { bg: '#00122B', glow: '#06275A', panel: '#03193A', panelEdge: '#123660', grid: '#1A3D66', road: '#06213F', edge: '#335478', dash: '#8094AE',
+    text: '#FFFFFF', sub: '#A3B3C8', muted: '#7D8FA8', rule: '#173B64', pill: '#06244A', pillEdge: '#21477A',
+    cu: '#C58A52', sand: '#D9C1A3', top: '#24497D', left: '#183863', right: '#0F2B50', ink: '#AFC0D5', screen: '#021431', slab: '#0A2A52', slabTop: '#0D3363' };
+  const SANS = `font-family="Poppins, 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif"`;
+  const MONO = `font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace"`;
+  const C30 = Math.cos(Math.PI / 6), r1 = n => Math.round(n * 10) / 10;
+  const iso = (S, cx, cy) => (x, y, z = 0) => [r1(cx + (x - y) * C30 * S), r1(cy + (x + y) * .5 * S - z * S)];
+  function fit(pts3, [x0, y0, x1, y1]) {             // scale + centre a set of 3D key points into a screen box
+    const xy = pts3.map(p => [(p[0] - p[1]) * C30, (p[0] + p[1]) * .5 - (p[2] || 0)]);
+    const minx = Math.min(...xy.map(p => p[0])), maxx = Math.max(...xy.map(p => p[0])), miny = Math.min(...xy.map(p => p[1])), maxy = Math.max(...xy.map(p => p[1]));
+    const S = Math.min((x1 - x0) / (maxx - minx), (y1 - y0) / (maxy - miny));
+    return iso(S, (x0 + x1) / 2 - S * (minx + maxx) / 2, (y0 + y1) / 2 - S * (miny + maxy) / 2);
+  }
+  const pts = (P, a) => a.map(p => P(p[0], p[1], p[2] || 0).join(',')).join(' ');
+  const poly = (P, a, attr) => `<polygon points="${pts(P, a)}" ${attr}/>`;
+  const ln = (P, a, b, attr) => { const [x1, y1] = P(...a), [x2, y2] = P(...b); return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" ${attr}/>`; };
+  const quad = (x0, x1, y0, y1, z) => [[x0, y0, z], [x1, y0, z], [x1, y1, z], [x0, y1, z]];
+  function box(P, [x0, x1], [y0, y1], [z0, z1], s = C.ink, w = 2.4, f = [C.right, C.left, C.top]) {   // visible faces: +x (right), +y (left), top
+    const st = `stroke="${s}" stroke-width="${w}" stroke-linejoin="round"`;
+    return poly(P, [[x1, y0, z0], [x1, y1, z0], [x1, y1, z1], [x1, y0, z1]], `fill="${f[0]}" ${st}`) +
+           poly(P, [[x0, y1, z0], [x1, y1, z0], [x1, y1, z1], [x0, y1, z1]], `fill="${f[1]}" ${st}`) +
+           poly(P, quad(x0, x1, y0, y1, z1), `fill="${f[2]}" ${st}`);
+  }
+  function grid(P, x0, x1, y0, y1, step = 1) {
+    let g = '';
+    for (let x = x0; x <= x1 + 1e-6; x += step) g += ln(P, [x, y0], [x, y1], '');
+    for (let y = y0; y <= y1 + 1e-6; y += step) g += ln(P, [x0, y], [x1, y], '');
+    return `<g stroke="${C.grid}" stroke-width="1.4" opacity=".75">${g}</g>`;
+  }
+  const text = (x, y, s, size, fill, extra = '') => `<text x="${r1(x)}" y="${r1(y)}" ${SANS} font-size="${size}" fill="${fill}" ${extra}>${s}</text>`;
+  const mono = (x, y, s, size, fill, extra = '') => `<text x="${r1(x)}" y="${r1(y)}" ${MONO} font-size="${size}" fill="${fill}" letter-spacing="1" ${extra}>${s}</text>`;
+  function board(title, sub, body, defs = '') {                    // the v3 concept-tile frame
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" width="1200" height="750">` +
+      `<defs><radialGradient id="glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(0 0) scale(900 620)">` +
+      `<stop offset="0" stop-color="${C.glow}"/><stop offset="1" stop-color="${C.bg}" stop-opacity="0"/></radialGradient>` +
+      `<clipPath id="pc"><rect x="64" y="214" width="1072" height="472" rx="26"/></clipPath>${defs}</defs>` +
+      `<rect width="1200" height="750" fill="${C.bg}"/><rect width="1200" height="750" fill="url(#glow)"/>` +
+      text(64, 112, title, 50, C.text, 'font-weight="600" letter-spacing="-0.5"') + text(64, 162, sub, 31, C.sub) +
+      `<rect x="882" y="62" width="254" height="60" rx="30" fill="${C.pill}" stroke="${C.pillEdge}" stroke-width="2"/>` +
+      `<circle cx="918" cy="92" r="8" fill="${C.cu}"/>` + text(940, 102, 'Illustration', 28, C.text, 'font-weight="500"') +
+      body + `</svg>`;
+  }
+  // a barrier arm raised by `deg`, pivoting at (px,py,pz), pointing toward −y; copper / navy stripes
+  function arm(P, px, py, pz, len, deg, t = .16) {
+    const a = deg * Math.PI / 180, dy = -Math.cos(a), dz = Math.sin(a), seg = 8;
+    let s = '';
+    for (let i = 0; i < seg; i++) {
+      const u0 = len * i / seg, u1 = len * (i + 1) / seg;
+      const A = [px + .08, py + dy * u0, pz + dz * u0], B = [px + .08, py + dy * u1, pz + dz * u1];
+      s += poly(P, [A, B, [B[0], B[1], B[2] + t], [A[0], A[1], A[2] + t]], `fill="${i % 2 ? C.right : C.cu}" stroke="${C.cu}" stroke-width="2" stroke-linejoin="round"`);
+    }
+    const E = [px - .08, py + dy * len, pz + dz * len + t], E2 = [px + .08, py + dy * len, pz + dz * len + t];
+    return s + ln(P, [px - .08, py, pz + t], E, `stroke="${C.cu}" stroke-width="2"`) + ln(P, E, E2, `stroke="${C.cu}" stroke-width="2"`);
+  }
+  function housing(P, x0, y0, z0, w = .62, d = .62, h = 1.15) {
+    let s = box(P, [x0, x0 + w], [y0, y0 + d], [z0, z0 + h], C.cu, 2.4);
+    s += poly(P, [[x0, y0 + d, z0 + h * .72], [x0 + w, y0 + d, z0 + h * .72], [x0 + w, y0 + d, z0 + h * .84], [x0, y0 + d, z0 + h * .84]], `fill="${C.cu}"`);
+    return s;
+  }
+  function controller(P, x0, y0, z0, w = .7, d = .5, h = 1.05) {
+    let s = box(P, [x0, x0 + w], [y0, y0 + d], [z0, z0 + h], C.ink, 2.4);
+    s += poly(P, [[x0 + .1, y0 + d, z0 + h * .5], [x0 + w - .1, y0 + d, z0 + h * .5], [x0 + w - .1, y0 + d, z0 + h * .86], [x0 + .1, y0 + d, z0 + h * .86]], `fill="${C.screen}" stroke="${C.muted}" stroke-width="1.6"`);
+    [.22, .36, .5].forEach((u, i) => { const [lx, ly] = P(x0 + u, y0 + d, z0 + h * .28); s += `<circle cx="${lx}" cy="${ly}" r="5" fill="${i ? C.edge : C.cu}"/>`; });
+    s += ln(P, [x0 + w - .14, y0 + .14, z0 + h], [x0 + w - .14, y0 + .14, z0 + h + .55], `stroke="${C.ink}" stroke-width="2.6" stroke-linecap="round"`);
+    const [ax, ay] = P(x0 + w - .14, y0 + .14, z0 + h + .55); s += `<circle cx="${ax}" cy="${ay}" r="5" fill="${C.bg}" stroke="${C.ink}" stroke-width="2.4"/>`;
+    return s;
+  }
+  function phone(P, x0, y0, z0, w = .62, h = 1.15) {   // standing phone, screen on the +y face
+    const d = .09;
+    let s = box(P, [x0, x0 + w], [y0, y0 + d], [z0, z0 + h], C.ink, 2.2);
+    const f = (u0, u1, v0, v1) => [[x0 + u0, y0 + d, z0 + v0], [x0 + u1, y0 + d, z0 + v0], [x0 + u1, y0 + d, z0 + v1], [x0 + u0, y0 + d, z0 + v1]];
+    s += poly(P, f(.06, w - .06, .08, h - .08), `fill="${C.screen}" stroke="${C.muted}" stroke-width="1.4"`);
+    s += poly(P, f(.12, w - .12, h - .3, h - .2), `fill="${C.edge}"`);
+    s += poly(P, f(.12, w - .3, h - .42, h - .36), `fill="${C.edge}" opacity=".7"`);
+    s += poly(P, f(.12, w - .12, .2, .42), `fill="${C.cu}"`);
+    return s;
+  }
+  function waves(cx, cy, angDeg, rs = [24, 42, 60], w = 3.2) {   // signal arcs in screen space, opening toward angDeg
+    let s = ''; const a = angDeg * Math.PI / 180, span = .55;
+    rs.forEach((r, i) => {
+      const x1 = cx + r * Math.cos(a - span), y1 = cy + r * Math.sin(a - span), x2 = cx + r * Math.cos(a + span), y2 = cy + r * Math.sin(a + span);
+      s += `<path d="M${r1(x1)} ${r1(y1)} A${r} ${r} 0 0 1 ${r1(x2)} ${r1(y2)}" fill="none" stroke="${C.cu}" stroke-width="${w}" stroke-linecap="round" opacity="${1 - i * .25}"/>`;
+    });
+    return s;
+  }
+  function slab(P, [x0, x1], [y0, y1], h = .14) { return box(P, [x0, x1], [y0, y1], [0, h], C.panelEdge, 1.6, [C.slab, C.slab, C.slabTop]); }
+  function steps(x, y, rows, w) {                       // the right-hand list: index, name, note, hairline rules
+    let s = '';
+    rows.forEach(([n, name, note], i) => {
+      const t = y + i * 157;
+      s += mono(x, t + 36, n, 24, C.cu) + text(x + 58, t + 38, name, 34, C.text, 'font-weight="500"') + text(x + 58, t + 80, note, 25, C.muted);
+      if (i < rows.length - 1) s += `<line x1="${x}" y1="${t + 128}" x2="${x + w}" y2="${t + 128}" stroke="${C.rule}" stroke-width="2"/>`;
+    });
+    return s;
+  }
+  return {
+    waselGate() {
+      const panel = `<rect x="64" y="214" width="690" height="472" rx="26" fill="${C.panel}" stroke="${C.panelEdge}" stroke-width="2"/>`;
+      const P = fit([[-3.15, .35, 0], [-2.55, .5, 1.75], [-.9, .3, 1.3], [-.3, .9, 0], [1.3, 2.1, .9], [1.9, 2.2, 2.05], [1.35, 3.2, 0], [-1.6, -.9, 0]], [96, 262, 722, 650]);
+      let s = `<g clip-path="url(#lp)">`;
+      s += grid(P, -9, 9, -9, 9, 1);
+      s += poly(P, quad(-12, 12, -3.4, 0, 0), `fill="${C.road}"`);                                   // two lanes
+      s += ln(P, [-12, -3.4], [12, -3.4], `stroke="${C.edge}" stroke-width="2"`) + ln(P, [-12, -1.7], [12, -1.7], `stroke="${C.dash}" stroke-width="2.4" stroke-dasharray="16 18" opacity=".8"`);
+      s += ln(P, [.2, -3.4], [.2, 0], `stroke="${C.ink}" stroke-width="5" opacity=".45"`);            // stop line
+      s += poly(P, [[2.4, -2.9], [3.6, -2.9], [3.6, -3.1], [4.0, -2.55], [3.6, -2.0], [3.6, -2.2], [2.4, -2.2]], `fill="${C.dash}" opacity=".35"`);   // lane arrow
+      s += slab(P, [-4.6, 2.6], [0, 1.5], .16);                                                     // kerb island
+      s += ln(P, [-2.4, .9, .16], [-.9, .9, .16], `stroke="${C.cu}" stroke-width="2.4" stroke-dasharray="7 7"`);   // conduit
+      s += controller(P, -3.1, .35, .16);
+      s += arm(P, -.6, .3, 1.02, 3.6, 28);
+      s += housing(P, -.9, .3, .16);
+      [[1.1, .55], [1.9, .55]].forEach(([x, y]) => { s += box(P, [x, x + .2], [y, y + .2], [.16, .72], C.ink, 2, [C.right, C.left, C.cu]); });   // bollards
+      s += phone(P, 1.3, 2.1, .9);
+      const ph = P(1.3, 2.2, 1.7); s += waves(ph[0] - 10, ph[1] - 14, -158);
+      s += `</g>`;
+      return board('Gate access', 'Wasel · opened from the app', panel + s + steps(808, 232, [['01', 'App', 'Tap to open the gate'], ['02', 'Controller', 'Meerana’s own hardware'], ['03', 'Barrier', 'The arm lifts']], 328), '<clipPath id="lp"><rect x="64" y="214" width="690" height="472" rx="26"/></clipPath>');
+    },
+    waselFlow() {
+      const panel = `<rect x="64" y="214" width="1072" height="472" rx="26" fill="${C.panel}" stroke="${C.panelEdge}" stroke-width="2"/>`;
+      const P = fit([[-3.4, 2.2, 0], [-1.6, 3.4, 0], [3.4, -2.2, 0], [1.6, -3.4, 0], [3.0, -3.0, 2.6], [2.7, -3.85, 2.65], [-2.2, 2.6, 1.6]], [150, 262, 1050, 560]);
+      let s = `<g clip-path="url(#pc)">` + grid(P, -9, 9, -9, 9, 1);
+      const pads = [[-2.6, 2.6], [0, 0], [2.6, -2.6]];
+      // signal path between the pads, drawn under the objects
+      const path = [[-2.0, 2.0, .15], [-.65, .65, .15], [.65, -.65, .15], [2.0, -2.0, .15]];
+      s += `<polyline points="${pts(P, path)}" fill="none" stroke="${C.cu}" stroke-width="3" stroke-dasharray="12 12" stroke-linecap="round"/>`;
+      pads.forEach(([x, y]) => { s += slab(P, [x - .8, x + .8], [y - .8, y + .8], .14); });
+      s += `<polygon points="${pts(P, quad(-2.9, -2.1, 2.55, 2.85, .14))}" fill="#000" opacity=".3"/>`;
+      s += phone(P, -2.95, 2.5, .14, .7, 1.3);
+      s += controller(P, -.4, -.25, .14, .8, .55, 1.15);
+      s += arm(P, 2.6, -2.35, 1.0, 2.1, 46);
+      s += housing(P, 2.3, -2.35, .14, .62, .62, 1.1);
+      const w1 = P(-2.2, 2.6, 1.55); s += waves(w1[0] + 22, w1[1] - 6, -28, [22, 38, 54], 3);
+      const w2 = P(.25, -.1, 1.95); s += waves(w2[0] + 14, w2[1] - 4, -28, [20, 34, 48], 3);
+      s += `</g>`;
+      // step labels on the panel floor
+      [['01', 'Phone'], ['02', 'Controller'], ['03', 'Gate']].forEach(([n, t], i) => {
+        const [x] = P(pads[i][0] + .2, pads[i][1] + .2, 0);
+        s += mono(x - 70, 652, n, 24, C.cu) + text(x - 30, 653, t, 30, C.text, 'font-weight="500"');
+      });
+      return board('Phone to gate', 'Wasel · how the gate opens', panel + s);
+    },
+  };
+})();
+/* ===== HERO WALL ILLUSTRATIONS: END ===== */
+</script>
+<script>
+/* =====================================================================================
+   HERO WALL DATA: BEGIN · 1. DATA CONTRACT — the final v3 crops (media/m3/v3/wall-<nn>-<product>-<topic>.webp, 1200×750) plus the
+   two Wasel illustrations. In M3 build.py emits this same array from m3_media.json (HERO-WALL-SPEC.md §4).
+   { src | svg, product, caption, alt,        required (caption = a short title of what the screen shows; provenance comes from kind)
+     kind: 'screen'|'mock'|'concept'|'illustration'   → provenance caption (default 'screen')
+     w, h: source pixel size                   → width/height attributes (default 1200×750)
+     tone: 'light'                             → light UI: held darker at every state (one surface family)
+     crop: [x, y, width] (optional)            → a 16:10 window into a wider board, in source px; omit for 16:10 files
+     bg (optional)                             → colour under the image }
+   Order = priority: each product's first tiles go to the most visible columns. At most 18 items.
+   Compliance (applies to anything a viewer sees): every file below was checked at full size — no personal names, no identifiable
+   faces (people are softened or counted only), no plates, no weapons/VIP/K9/drone panels, no "Sovereignty in Your Hands",
+   no government-tenant templates in the Nazo capture, no client wordmarks. Not on the wall: wall-02 (Tasree3 Command Center): the
+   sparsest light screen, and its greeting names the demo tenant ("Welcome back, Electricity & Water"), which reads as a real utility.
+   ===================================================================================== */
+const V3 = 'media/m3/v3/';
+const WALL_ITEMS = [
+  { src: V3 + 'wall-01-yisbir-ppe-compliance.webp', product: 'yisbir', kind: 'concept',
+    caption: 'PPE compliance in a warehouse bay', alt: 'PPE compliance at 94.2% with helmet and vest rates beside a warehouse camera feed' },
+  { src: V3 + 'wall-04-aibox-contract-review.webp', product: 'aibox', kind: 'screen',
+    caption: 'Contract review with clause-level fixes', alt: 'AI in a Box review note flagging a liability clause and a data-residency clause with fixes' },
+  { src: V3 + 'wall-14-tasree3-bpmn.webp', product: 'tasree3', kind: 'screen', tone: 'light',
+    caption: 'A billing process drafted as BPMN', alt: 'BPMN diagram generated by Tasree3: validate reading, gateway, invalid reading and calculate bill' },
+  { svg: 'waselGate', product: 'wasel', kind: 'illustration',
+    caption: 'Gate access, opened from the app', alt: 'Illustration: an isometric barrier gate with the Wasel controller beside it, opened by a signal from a phone; steps app, controller, barrier' },
+  { src: V3 + 'wall-07-yisbir-campus-headcount.webp', product: 'yisbir', kind: 'concept',
+    caption: 'People on campus, counted not identified', alt: 'Headcount of 3,037 people on campus by building, with 90.7% lecture attendance' },
+  { src: V3 + 'wall-12-aibox-governance.webp', product: 'aibox', kind: 'screen',
+    caption: 'Governance: actions, approvals and the activity trail', alt: 'AI in a Box governance summary: 29 actions, 6 approvals reviewed by a person, activity trail' },
+  { src: V3 + 'wall-08-mandoobee-app.webp', product: 'mandoobee', kind: 'mock',
+    caption: 'Smart office app: services, clock-in and attendance', alt: 'Three Mandoobee phone screens: services, home with clock-in, and the attendance dashboard' },
+  { src: V3 + 'wall-09-yisbir-camera-matrix.webp', product: 'yisbir', kind: 'concept',
+    caption: 'Live cameras with analytics overlays', alt: 'Four live camera tiles: classroom headcount, warehouse PPE, no-entry zone and crowd density' },
+  { svg: 'waselFlow', product: 'wasel', kind: 'illustration',
+    caption: 'Phone to controller to gate', alt: 'Illustration: a phone, the Wasel controller and a barrier gate on three pads, linked by a signal path' },
+  { src: V3 + 'wall-11-yisbir-fire-smoke.webp', product: 'yisbir', kind: 'concept',
+    caption: 'Smoke detected, with the alert timeline', alt: 'Smoke detected on a warehouse camera with the alert timeline: detected, alerted, acknowledged' },
+  { src: V3 + 'wall-10-tasree3-conformance.webp', product: 'tasree3', kind: 'screen', tone: 'light',
+    caption: 'Conformance Center: fitness, compliance, deviations', alt: 'Tasree3 Conformance Center: global fitness 45.8%, compliance 54.3%, risk and deviations' },
+  { src: V3 + 'wall-13-yisbir-room-occupancy.webp', product: 'yisbir', kind: 'concept',
+    caption: 'Room occupancy across a teaching block', alt: 'Grid of ten classrooms with live occupancy; two rooms above 90% are highlighted' },
+  { src: V3 + 'wall-06-nazo-template-generator.webp', product: 'nazo', kind: 'screen', tone: 'light',
+    caption: 'AI Template Generator: from prompt to draft', alt: 'Nazo AI Template Generator with a prompt for a public-holiday announcement' },
+  { src: V3 + 'wall-15-yisbir-alerts.webp', product: 'yisbir', kind: 'concept',
+    caption: 'Alerts by severity, last four hours', alt: 'Stacked bar chart of 76 alerts by severity over four hours, with counts by type' },
+  { src: V3 + 'wall-16-yisbir-restricted-zone.webp', product: 'yisbir', kind: 'concept',
+    caption: 'Restricted-zone entries by area', alt: 'Overhead camera with a no-entry zone, beside 23 restricted-zone entries by area' },
+  { src: V3 + 'wall-03-yisbir-classroom-heatmap.webp', product: 'yisbir', kind: 'concept',
+    caption: 'Classroom heatmap on a 3D floor plan', alt: 'Classroom occupancy heatmap on a 3D floor plan, 28 of 41 seats in use' },
+  { src: V3 + 'wall-17-yisbir-store-footfall.webp', product: 'yisbir', kind: 'concept',
+    caption: 'Store footfall by hour', alt: 'Mall footfall of 34,847 visitors by hour with an overhead crowd heatmap' },
+  { src: V3 + 'wall-05-yisbir-occupancy-trend.webp', product: 'yisbir', kind: 'concept',
+    caption: 'Occupancy through the day against capacity', alt: 'Line chart of classroom occupancy through the day, peaking at 38 against a capacity of 41' },
+];
+/* ===== HERO WALL DATA: END ===== */
+</script>
+<script>
+/* ===== HERO WALL ENGINE: BEGIN ===================================================================
+   HeroWall.create(el, items, opts) — vanilla, no dependencies, one rAF loop, transform/opacity only.
+     el     the .hero-wall element; it must contain [data-wall-stage] and may contain [data-wall-legend]
+     items  WALL_ITEMS (data contract in HERO-WALL-SPEC.md §4)
+     opts   isReduced()           page motion preference (default: prefers-reduced-motion or html[data-motion="reduce"])
+            onOpen(index, tileEl) open the page's lightbox for items[index]; tileEl is always an original tile (focus return)
+            onUserInput()         the visitor used the wall directly (drag, wheel, touch, click): stop the hero autoplay
+            onReady()             the entrance has finished (start the hero autoplay after this, not before)
+            illustrations         { name: () => svgString } for items that carry `svg` instead of `src`
+            dev                   URLSearchParams of QA overrides (comp, rx, ry, rz, persp, tile, gap, cx, cy, fx, fy, cols, phase, noguard)
+   returns { focusProduct(m, {instant}), motion(), pause(reason), resume(reason), items, ready (Promise), debug(), perf(ms) }
+   ================================================================================================ */
+window.HeroWall = (function () {
+  'use strict';
+  const PRODUCTS = {
+    aibox: { name: 'AI in a Box', moment: 'ai' }, tasree3: { name: 'Tasree3', moment: 'auto' }, wasel: { name: 'Wasel', moment: 'iot' },
+    yisbir: { name: 'Yisbir', moment: 'sec' }, mandoobee: { name: 'Mandoobee', moment: null }, nazo: { name: 'Nazo', moment: null },
+  };
+  const MOMENT_NAME = { ai: 'AI in a Box', auto: 'Tasree3', iot: 'Wasel', sec: 'Yisbir' };
+  const PROVENANCE = { screen: 'Product screen · demo data', mock: 'App mock-up', concept: 'Design concept · sample data', illustration: 'Illustration' };
+  const LEGEND = { screen: 'Product screens · demo data', concept: 'Design concepts · sample data', mock: 'App mock-ups', illustration: 'Illustrations' };   // plural forms
+  const KIND_ORDER = ['screen', 'concept', 'mock', 'illustration'];
+
+  /* Compositions. rx/ry/rz: plane rotation (deg). persp: perspective (px). tile/gap: px.
+     cx/cy: plane centre in the stage (0–1). fx/fy: focal point ("the front") in the stage (0–1). */
+  const PRESETS = {
+    lay:    { rx: 38, ry: -6,  rz: -24, persp: 2400, tile: 336, gap: 26, cx: .56, cy: .50, fx: .42, fy: .52, cols: 4 },   // chosen
+    iso:    { rx: 54, ry: 0,   rz: -38, persp: 3600, tile: 330, gap: 26, cx: .58, cy: .50, fx: .40, fy: .52, cols: 4 },   // near-isometric
+    tilt:   { rx: 20, ry: -26, rz: 6,   persp: 1500, tile: 336, gap: 22, cx: .52, cy: .46, fx: .34, fy: .5,  cols: 4 },   // tilted showcase
+    tablet: { rx: 34, ry: -4,  rz: -18, persp: 2200, tile: 380, gap: 24, cx: .52, cy: .46, fx: .46, fy: .46, cols: 2 },
+  };
+  const BASE_SPEED = 24;                    // px/s along the plane, inside the 20–30 brief
+  const COL_SPEED = [1, .84, 1.1, .92];     // per-column variance so rows never line up
+  const FOCUS_SPEED = .2;                   // drift while a product is in front
+  const EASE_TAU = .32;                     // s — exponential approach for focus moves (≈ 1 s to settle)
+  const SPEED_TAU = .35;                    // s — hover pause / resume ease
+  const GUARD = { window: 2000, min: 60, limit: 34, recheck: 8000 };   // frame guard: ≥ 60 samples over ≥ 2 s, median > 34 ms → static; one re-check
+
+  /* one tile's media. `crop` ([x, y, width] in source px, 16:10) positions a wide board inside the tile; without it, object-fit: cover */
+  function mediaHTML(it, eager) {
+    const load = eager ? 'loading="eager"' : 'loading="lazy"';
+    if (!it.crop) return `<img class="cover" src="${it.src}" width="${it.w}" height="${it.h}" alt="" decoding="async" ${load} draggable="false">`;
+    const [x, y, cw] = it.crop, ch = cw * 10 / 16;
+    const st = `width:${(it.w / cw * 100).toFixed(3)}%;left:${(-x / cw * 100).toFixed(3)}%;top:${(-y / ch * 100).toFixed(3)}%`;
+    return `<img src="${it.src}" width="${it.w}" height="${it.h}" alt="" decoding="async" ${load} draggable="false" style="${st}">`;
+  }
+
+  function create(wall, WALL_ITEMS, opts) {
+    opts = opts || {};
+    const Q = opts.dev || new URLSearchParams();
+    const root = document.documentElement;
+    const stage = wall.querySelector('[data-wall-stage]');
+    const legend = wall.querySelector('[data-wall-legend]');
+    const mqReduce = matchMedia('(prefers-reduced-motion: reduce)');
+    const mqDesk = matchMedia('(min-width: 1280px)');
+    const mqTab = matchMedia('(min-width: 768px)');
+    const isReduced = opts.isReduced || (() => mqReduce.matches || root.dataset.motion === 'reduce');
+    const onOpen = opts.onOpen || (() => {});
+    const userInput = opts.onUserInput || (() => {});
+    const ILL = opts.illustrations || {};
+    let lowPower = false, ready = false;      // lowPower: set by the frame guard on machines without GPU compositing (VDI, thin clients)
+    const still = () => isReduced() || lowPower;
+    const guard = { on: !Q.has('noguard'), t0: 0, prev: 0, s: [], checks: 0, timer: 0 };
+    const items = WALL_ITEMS.map((it, i) => Object.assign({ kind: 'screen', w: 1200, h: 750 }, it, { i, moment: (PRODUCTS[it.product] || {}).moment || null }));   // 1200×750 = the v3 wall size
+    items.forEach(it => { if (it.svg && ILL[it.svg]) it.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(ILL[it.svg]()); });
+    let readyResolve; const readyP = new Promise(r => (readyResolve = r));
+    wall.classList.add('is-live');            // JS owns the entrance from here; without JS the fallback stays visible
+
+    /* ---------- state ---------- */
+    let mode = null, preset = null, cols = [], primaryCol = 0, h1Col = -1, th = 0, pitch = 0;
+    let focus = null, speedMul = 1, boost = 0, scrollAcc = 0, lastScrollY = scrollY;
+    let raf = 0, last = 0, inView = true, docVisible = !document.hidden, roveClock = 0, entry = null;
+    const hold = new Set();                   // 'hover' | 'focus' | 'dialog' | 'api' | any reason passed to pause()
+    const drag = { id: null, x: 0, y: 0, moved: false, pending: 0, vel: 0, t: 0, ax: 0, ay: 1, scale: 1, quietUntil: 0 };
+    let inertia = 0;
+    const probe = { on: false, frames: [], loop: [], lastT: 0 };
+
+    /* ---------- a. one tile (button). Clones: aria-hidden + tabindex -1 (the mouse still works on them). ---------- */
+    function tileEl(it, isClone, eager) {
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'wall-tile'; b.dataset.i = it.i; b.tabIndex = -1;
+      if (it.moment) b.dataset.wallMoment = it.moment;
+      if (it.tone) b.dataset.tone = it.tone;
+      if (it.bg) b.style.setProperty('--hw-tile-bg', it.bg);
+      const p = PRODUCTS[it.product] || { name: it.product };
+      if (isClone) b.setAttribute('aria-hidden', 'true');
+      else b.setAttribute('aria-label', `${p.name}: ${it.caption}. ${PROVENANCE[it.kind]}. Opens larger.`);
+      b.innerHTML = `<span class="wall-media">${mediaHTML(it, eager)}</span><span class="wall-scrim"></span>` +
+        `<span class="wall-tag" aria-hidden="true"><b>${p.name}</b><i></i><span class="prov">${PROVENANCE[it.kind]}</span></span>`;
+      b.querySelector('img').alt = isClone ? '' : it.alt;
+      return b;
+    }
+
+    /* ---------- b. distribute items over columns, most visible columns first ----------
+       Every product deals its tiles (in data order = priority) one per column, starting with the most visible column,
+       so each moment has a tile in the best-placed columns. Tiles only ever travel along their own column, so the column decides
+       where a tile can appear. Light UIs (tone 'light') use `rankLight` instead (built in layout): never the column beside the H1
+       when another column is left, so the brightest surfaces stay off the headline side of the wall. Leftovers go to the
+       shortest column (light leftovers: the shortest of their first n − 1 columns). Then interleave. */
+    function distribute(n, rank, rankLight) {
+      const groups = {};
+      items.forEach(it => (groups[it.product] = groups[it.product] || []).push(it));
+      const out = Array.from({ length: n }, () => []), spill = [];
+      Object.values(groups).forEach(g => g.forEach((it, k) => (k < n ? out[(it.tone === 'light' ? rankLight : rank)[k]].push(it) : spill.push(it))));
+      spill.forEach(it => {
+        const r = it.tone === 'light' ? rankLight.slice(0, Math.max(1, n - 1)) : rank;
+        let best = r[0]; r.forEach(c => { if (out[c].length < out[best].length) best = c; }); out[best].push(it);
+      });
+      return out.map(list => {                                    // round-robin by product so neighbours differ
+        const by = {}; list.forEach(it => (by[it.product] = by[it.product] || []).push(it));
+        const qs = Object.values(by).sort((x, y) => y.length - x.length), r = [];
+        while (qs.some(q => q.length)) qs.forEach(q => q.length && r.push(q.shift()));
+        return r;
+      });
+    }
+
+    /* ---------- c. projection model of the CSS 3D transform (layout time only, never per frame) ---------- */
+    function projector(P, W, H, PW, PH) {
+      const m = new DOMMatrix(`rotateX(${P.rx}deg) rotateY(${P.ry}deg) rotateZ(${P.rz}deg)`);
+      const pcx = P.cx * W, pcy = P.cy * H, ox = W / 2, oy = H / 2, d = P.persp;
+      return (x, y) => {
+        const q = m.transformPoint(new DOMPoint(x - PW / 2, y - PH / 2, 0));
+        const k = d / (d - q.z);
+        return [ox + (q.x + pcx - ox) * k, oy + (q.y + pcy - oy) * k];
+      };
+    }
+
+    /* ---------- d. layout: measure once per resize/mode change, rebuild DOM only when the structure changes ---------- */
+    function layout() {
+      const m = mqDesk.matches ? 'desk' : mqTab.matches ? 'tab' : 'strip';
+      if (m === 'strip') return buildStrip();
+      const W = stage.clientWidth, H = stage.clientHeight;
+      if (!W || !H) return;
+      const comp = Q.get('comp');
+      const P = Object.assign({}, m === 'desk' ? PRESETS[PRESETS[comp] && comp !== 'tablet' ? comp : 'lay'] : PRESETS.tablet);
+      ['rx', 'ry', 'rz', 'persp', 'tile', 'gap', 'cx', 'cy', 'fx', 'fy', 'cols'].forEach(k => { if (Q.has(k)) P[k] = +Q.get(k); });   // dev overrides
+      if (m === 'tab') P.tile = Math.min(P.tile, Math.round((W * .86 - P.gap) / 2));
+      else if (!Q.has('tile')) P.tile = Math.round(Math.min(420, Math.max(300, W * .47)));        // desktop: tile scales with the stage (336 at 1440)
+      const n = P.cols, tile = P.tile, gap = P.gap;
+      th = tile * 10 / 16; pitch = th + gap;
+      const PW = n * tile + (n - 1) * gap, PH = H;
+      const proj = projector(P, W, H, PW, PH);
+      const F = [P.fx * W, P.fy * H], M = 60;
+      // "comfortably visible" box for a tile centre: clear of the edge fades (read from the CSS, so they cannot drift apart) and the legend
+      const cs = getComputedStyle(wall), px = (k, d) => parseFloat(cs.getPropertyValue(k)) || d;
+      const fade = [px('--hw-fade-l', 0), px('--hw-fade-t', 0), px('--hw-fade-b', 0)];
+      // right edge: a tilted tile's screen box reaches ≈ 0.6 tile either side of its centre, so a front tile inside `box` is fully on
+      // screen with its focus ring. A column that never enters `box` (the outermost one) takes its front from the looser `box2`.
+      const box = [fade[0] + tile * .22, fade[1] + th * .3, W - tile * .62, H - fade[2] - th * .45];
+      const box2 = [box[0], box[1], W - tile * .2, box[3]];
+      const prev = cols;
+      // pass 1 — geometry per column: visible plane-y range, the "front" (focal) and a visibility score
+      const geo = Array.from({ length: n }, (_, c) => {
+        const x0 = c * (tile + gap), xs = [x0 + 2, x0 + tile / 2, x0 + tile - 2];
+        let V0 = Infinity, V1 = -Infinity, focal = 0, best = Infinity, focal2 = 0, best2 = Infinity, focalAny = 0, bestAny = Infinity, vis = 0;
+        const inBox = (b, sx, sy) => sx > b[0] && sx < b[2] && sy > b[1] && sy < b[3];
+        for (let y = -6000; y <= 6000; y += 12) {
+          for (const x of xs) {
+            const [sx, sy] = proj(x, y);
+            if (sx > -M && sx < W + M && sy > -M && sy < H + M) { if (y < V0) V0 = y; if (y > V1) V1 = y; }
+          }
+          const [sx, sy] = proj(xs[1], y), dd = (sx - F[0]) ** 2 + (sy - F[1]) ** 2, ok = inBox(box, sx, sy), ok2 = inBox(box2, sx, sy);
+          if (ok2) vis++;
+          if (dd < bestAny) { bestAny = dd; focalAny = y; }
+          if (ok && dd < best) { best = dd; focal = y; }
+          if (ok2 && dd < best2) { best2 = dd; focal2 = y; }
+        }
+        if (best === Infinity) focal = best2 < Infinity ? focal2 : focalAny;
+        if (V0 === Infinity) { V0 = 0; V1 = th; }
+        return { V0: V0 - th / 2, V1: V1 + th / 2, focal, vis, fscreen: proj(xs[1], focal) };   // ± th/2: the hover lift shows a sliver more
+      });
+      const rank = geo.map((g, c) => c).sort((x, y) => geo[y].vis - geo[x].vis || x - y);
+      // Columns that never reach the comfortable box (vis 0) are edge bands: mostly faded or cut, never a good front.
+      // h1Col: the frontable column whose front sits nearest the copy (desktop only; on tablet the copy is above the wall).
+      const front = rank.filter(c => geo[c].vis > 0);
+      h1Col = m === 'desk' && front.length > 1 ? front.reduce((b, c) => (geo[c].fscreen[0] < geo[b].fscreen[0] ? c : b)) : -1;
+      // light UIs: frontable columns away from the H1 (most visible first), then edge bands (rightmost first), the H1 column last
+      const edges = rank.filter(c => geo[c].vis === 0).sort((x, y) => geo[y].fscreen[0] - geo[x].fscreen[0]);
+      const rankLight = front.filter(c => c !== h1Col).concat(edges, h1Col >= 0 ? [h1Col] : []);
+      const lists = distribute(n, rank, rankLight);
+      // pass 2 — loop length, copies and the copy that holds the originals
+      const next = lists.map((list, c) => {
+        const { V0, V1, focal, vis, fscreen } = geo[c];
+        const cnt = list.length, L = cnt * pitch;
+        if (!cnt) return { c, list, cnt, L: 0, K: 0, mid: 0, V0, V1, focal, vis, lo: 0, rLo: 0, rHi: 0, dir: 1, speed: 0, phase: 0, pos: 0, drawn: NaN, target: null, pinned: false, dom: [], fscreen };
+        // K copies so the track always covers [V0, V1]; originals sit in copy `mid` so every original can reach the focal line
+        let K = Math.ceil((V1 - V0 + gap) / L) + 1, mid = 0;
+        for (; K < 12; K++) {
+          const lo = V1 - K * L + gap, hi = V0, mmin = Math.ceil((focal - th / 2 - hi) / L), mmax = Math.floor((focal - th / 2 - (cnt - 1) * pitch - lo) / L);
+          if (hi - lo >= L && mmin <= mmax) { mid = Math.max(0, mmin); break; }
+        }
+        const rLo = V1 - K * L + gap, rHi = V0, lo = rLo + (rHi - rLo - L) / 2;
+        return { c, list, cnt, L, K, mid, V0, V1, focal, vis, lo, rLo, rHi, dir: c % 2 ? 1 : -1, speed: COL_SPEED[c % 4],
+          phase: prev[c] && prev[c].L ? (prev[c].pos - prev[c].lo) / prev[c].L : ((c * .618 + .2) % 1), pos: 0, drawn: NaN, target: null, pinned: false, dom: [], fscreen };
+      });
+      // primary column: the one whose focal point is nearest the stage focal point (roving tab entry)
+      let bd = Infinity; next.forEach(col => { const d = (col.fscreen[0] - F[0]) ** 2 + (col.fscreen[1] - F[1]) ** 2; if (d < bd) { bd = d; primaryCol = col.c; } });
+      // drag mapping: unit screen direction of the plane's +y axis, and px-on-screen per px-on-plane
+      const a = proj(PW / 2, PH / 2), b = proj(PW / 2, PH / 2 + 100), vx = b[0] - a[0], vy = b[1] - a[1], vl = Math.hypot(vx, vy) || 1;
+      drag.ax = vx / vl; drag.ay = vy / vl; drag.scale = 100 / vl;
+
+      const sig = [m, n, tile, P.rx, P.ry, P.rz].join('|') + next.map(c => c.K + ':' + c.list.map(it => it.i).join('.')).join(',');
+      if (sig !== wall.dataset.sig) {
+        wall.dataset.sig = sig; wall.dataset.mode = m;
+        stage.textContent = ''; entry = null;
+        const plane = document.createElement('div'); plane.className = 'wall-plane';
+        let eager = 0;
+        next.forEach(col => {
+          const ce = document.createElement('div'); ce.className = 'wall-col'; ce.style.left = col.c * (tile + gap) + 'px';
+          const tr = document.createElement('div'); tr.className = 'wall-track';
+          for (let k = 0; k < col.K; k++) col.list.forEach(it => {
+            const el = tileEl(it, k !== col.mid, k === col.mid && eager++ < 6);
+            tr.appendChild(el); col.dom.push({ el, it, orig: k === col.mid, j: col.dom.length });
+          });
+          ce.appendChild(tr); plane.appendChild(ce); col.track = tr;
+        });
+        stage.appendChild(plane);
+        reveal();
+      } else {
+        next.forEach((col, c) => { col.track = prev[c].track; col.dom = prev[c].dom; });
+      }
+      const plane = stage.firstElementChild;
+      wall.style.setProperty('--hw-tile', tile + 'px'); wall.style.setProperty('--hw-gap', gap + 'px'); wall.style.setProperty('--hw-persp', P.persp + 'px');
+      plane.style.width = PW + 'px'; plane.style.height = PH + 'px';
+      plane.style.left = (P.cx * W - PW / 2) + 'px'; plane.style.top = (P.cy * H - PH / 2) + 'px';
+      plane.style.transform = `rotateX(${P.rx}deg) rotateY(${P.ry}deg) rotateZ(${P.rz}deg)`;
+      cols = next; mode = m; preset = P;
+      cols.forEach(col => { col.pos = col.lo + col.phase * col.L; if (Q.has('phase')) col.pos = col.lo + (+Q.get('phase')) * col.L; write(col); });
+      rove(true);
+      if (focus) focusProduct(focus, { instant: true });
+      kick();
+    }
+
+    /* phone: one native horizontal strip, no clones, no auto-scroll */
+    function buildStrip() {
+      if (wall.dataset.sig === 'strip') return;
+      wall.dataset.sig = 'strip'; wall.dataset.mode = 'strip'; mode = 'strip'; cols = []; h1Col = -1;
+      stage.textContent = '';
+      const s = document.createElement('div'); s.className = 'wall-strip';
+      // deal in moment order (AI, Automation, IoT, Security, then the rest) so neighbours differ and each moment is near the start
+      const ORDER = ['ai', 'auto', 'iot', 'sec', null], qs = ORDER.map(mo => items.filter(it => it.moment === mo)), dealt = [];
+      while (qs.some(q => q.length)) qs.forEach(q => q.length && dealt.push(q.shift()));
+      dealt.forEach((it, k) => { const el = tileEl(it, false, k < 3); el.tabIndex = 0; s.appendChild(el); });
+      stage.appendChild(s);
+      reveal();
+    }
+    function reveal() {                                       // fade the stage in when the eager tiles have decoded (≤ 600 ms)
+      if (wall.classList.contains('is-ready')) return;
+      const imgs = [...stage.querySelectorAll('img[loading="eager"]')];
+      Promise.race([Promise.all(imgs.map(i => i.decode().catch(() => {}))), new Promise(r => setTimeout(r, 600))])
+        .then(() => requestAnimationFrame(() => {
+          wall.classList.add('is-ready');
+          setTimeout(() => { ready = true; guard.t0 = 0; guard.prev = 0; readyResolve(); if (opts.onReady) opts.onReady(); }, still() ? 0 : 520);
+        }));
+    }
+
+    function write(col) {
+      if (Math.abs(col.pos - col.drawn) < .01) return;
+      col.track.style.transform = `translate3d(0,${col.pos.toFixed(2)}px,0)`;
+      col.drawn = col.pos;
+    }
+
+    /* ---------- e. the single rAF loop: drift + scroll boost + drag inertia + focus easing. No layout reads. ----------
+       It runs only while the wall is on screen and the tab is visible (IntersectionObserver + visibilitychange cancel it),
+       and it sleeps when nothing moves (held, reduced, settled); input wakes it with kick(). */
+    function kick() {
+      if (!raf && mode !== 'strip' && inView && docVisible) { last = 0; guard.prev = 0; raf = requestAnimationFrame(frame); }
+    }
+    function sleep() { if (raf) cancelAnimationFrame(raf); raf = 0; last = 0; guard.prev = 0; }
+    function sampleGuard(now, moving) {   // frame guard: decides once from ≥ 60 drifting frames over ≥ 2 s, re-checks once after the page settles
+      if (!guard.on || !ready || hold.size || probe.on || !moving) { guard.prev = 0; return; }
+      if (guard.prev) guard.s.push(now - guard.prev);          // a restart (kick) resets prev, so idle gaps never become samples
+      guard.prev = now; if (!guard.t0) guard.t0 = now;
+      if (guard.s.length < GUARD.min || now - guard.t0 < GUARD.window) return;
+      const s = guard.s.slice().sort((x, y) => x - y), med = s[(s.length - 1) >> 1];
+      guard.checks++; guard.s = []; guard.t0 = 0; guard.prev = 0;
+      if (med > GUARD.limit) { lowPower = true; wall.dataset.lowPower = Math.round(med); motion(); }
+      if (guard.checks >= 2 || !lowPower) { guard.on = false; return; }
+      guard.timer = setTimeout(() => { lowPower = false; delete wall.dataset.lowPower; kick(); }, GUARD.recheck);   // one more 2 s window, then final
+    }
+    function frame(now) {
+      raf = 0;
+      if (!inView || !docVisible) { last = 0; guard.prev = 0; return; }   // never runs off-screen (belt and braces: the observers also cancel)
+      const t0 = performance.now();
+      const dt = last ? Math.min(.05, (now - last) / 1000) : 1 / 60; last = now;
+      const reduced = still();
+      const want = reduced || hold.size ? 0 : focus ? FOCUS_SPEED : 1;
+      speedMul = (reduced || hold.has('focus') || hold.has('dialog')) ? want : speedMul + (want - speedMul) * (1 - Math.exp(-dt / SPEED_TAU));
+      if (Math.abs(speedMul - want) < .002) speedMul = want;
+      boost = reduced || hold.size ? 0 : Math.min(520, boost * Math.exp(-dt / .45) + Math.min(Math.abs(scrollAcc), 220) * 1.1);
+      if (boost < .5) boost = 0;
+      scrollAcc = 0;
+      sampleGuard(now, speedMul > 0 || boost > 0);
+      let shift = 0;
+      if (drag.id !== null) { shift = drag.pending; drag.pending = 0; }
+      else if (inertia) { shift = inertia * dt; inertia *= Math.exp(-dt / .3); if (Math.abs(inertia) < 4) inertia = 0; }
+      const k = 1 - Math.exp(-dt / EASE_TAU);
+      let busy = speedMul > 0 || boost > 0 || drag.id !== null || inertia !== 0;
+      for (let c = 0; c < cols.length; c++) {
+        const col = cols[c];
+        if (!col.L) continue;                              // an empty column (more columns than items) never moves
+        const v = col.dir * (BASE_SPEED * col.speed * speedMul + boost);
+        let p = col.pos + v * dt + shift;
+        if (col.target !== null) {
+          col.target += v * dt + shift;
+          const d = col.target - p;
+          if (Math.abs(d) < .3) { p = col.target; col.target = null; } else { p += d * k; busy = true; }
+        }
+        if (!col.pinned) {
+          while (p < col.lo) { p += col.L; if (col.target !== null) col.target += col.L; }
+          while (p >= col.lo + col.L) { p -= col.L; if (col.target !== null) col.target -= col.L; }
+        }
+        col.pos = p; write(col);
+      }
+      if ((roveClock += dt) > .3) { roveClock = 0; rove(); }
+      if (probe.on) { probe.loop.push(performance.now() - t0); if (probe.lastT) probe.frames.push(now - probe.lastT); probe.lastT = now; busy = true; }
+      if (busy && !raf) raf = requestAnimationFrame(frame);   // !raf: the guard's motion() may already have re-queued
+    }
+
+    /* ---------- f. roving tabindex: one tab stop, the original tile nearest the front ---------- */
+    function rove(force) {
+      if (mode === 'strip' || !cols.length || (!force && hold.has('focus'))) return;
+      const col = cols[primaryCol]; let best = null, bd = Infinity;
+      col.dom.forEach(t => { if (!t.orig) return; const d = Math.abs(col.pos + t.j * pitch + th / 2 - col.focal); if (d < bd) { bd = d; best = t; } });
+      if (best && best.el !== entry) { if (entry) entry.tabIndex = -1; entry = best.el; entry.tabIndex = 0; }
+    }
+    function moveTo(col, t, instant) {                // bring one tile to the column's focal line
+      const target = col.focal - t.j * pitch - th / 2;
+      if (instant || still()) { col.pos = target; col.target = null; write(col); } else { col.target = target; kick(); }
+    }
+    function focusTile(col, t) {
+      if (entry && entry !== t.el) entry.tabIndex = -1;
+      entry = t.el; entry.tabIndex = 0;
+      cols.forEach(c => c.pinned = c === col);
+      moveTo(col, t);
+      t.el.focus({ preventScroll: true });
+    }
+    stage.addEventListener('keydown', e => {
+      if (mode === 'strip') return;
+      const el = e.target.closest('.wall-tile'); if (!el) return;
+      const col = cols.find(c => c.dom.some(t => t.el === el)); if (!col) return;
+      const cur = col.dom.find(t => t.el === el), origs = col.dom.filter(t => t.orig), idx = origs.indexOf(cur);
+      let go = null;
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') go = [col, origs[(idx + (e.key === 'ArrowDown' ? 1 : -1) + origs.length) % origs.length]];
+      else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+        const nc = cols[(col.c + (e.key === 'ArrowRight' ? 1 : -1) + cols.length) % cols.length];
+        let best = null, bd = Infinity;
+        nc.dom.forEach(t => { if (!t.orig) return; const d = Math.abs(nc.pos + t.j * pitch + th / 2 - nc.focal); if (d < bd) { bd = d; best = t; } });
+        go = [nc, best];
+      } else if (e.key === 'Home' || e.key === 'End') go = [col, origs[e.key === 'Home' ? 0 : origs.length - 1]];
+      if (go && go[1]) { e.preventDefault(); focusTile(go[0], go[1]); }
+    });
+    stage.addEventListener('focusin', e => {
+      const el = e.target.closest('.wall-tile'); if (!el || mode === 'strip' || !el.matches(':focus-visible')) return;   // keyboard focus only; a mouse click does not freeze the wall
+      hold.add('focus'); speedMul = 0;
+      const col = cols.find(c => c.dom.some(t => t.el === el)), t = col && col.dom.find(x => x.el === el);
+      if (t && !col.pinned) { cols.forEach(c => c.pinned = c === col); moveTo(col, t); }
+    });
+    stage.addEventListener('focusout', e => {
+      if (stage.contains(e.relatedTarget) || hold.has('dialog')) return;
+      hold.delete('focus'); cols.forEach(c => c.pinned = false); kick();
+    });
+    stage.addEventListener('pointerdown', e => { if (e.target.closest('.wall-tile[aria-hidden]')) e.preventDefault(); }); // clones never take focus
+    ['pointerdown', 'wheel', 'touchstart'].forEach(t => stage.addEventListener(t, () => userInput(), { passive: true }));   // any direct use of the wall ends the autoplay
+
+    /* ---------- g. hover pause (mouse only) and drag-to-scrub (mouse / pen; never wheel, never touch) ---------- */
+    stage.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') { hold.add('hover'); kick(); } });
+    stage.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') { hold.delete('hover'); kick(); } });
+    stage.addEventListener('pointerdown', e => {
+      if (mode === 'strip' || e.pointerType === 'touch' || e.button !== 0) return;
+      drag.id = e.pointerId; drag.x = e.clientX; drag.y = e.clientY; drag.moved = false; drag.vel = 0; drag.t = e.timeStamp; inertia = 0;
+    });
+    stage.addEventListener('pointermove', e => {
+      if (e.pointerId !== drag.id) return;
+      const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+      if (!drag.moved && Math.hypot(dx, dy) < 6) return;
+      if (!drag.moved) { drag.moved = true; stage.setPointerCapture(e.pointerId); stage.classList.add('is-dragging'); userInput(); }
+      const along = (dx * drag.ax + dy * drag.ay) * drag.scale;          // screen drag → plane px along the columns
+      const dtm = Math.max(1, e.timeStamp - drag.t);
+      drag.pending += along; drag.vel = drag.vel * .7 + (along / dtm * 1000) * .3;
+      drag.x = e.clientX; drag.y = e.clientY; drag.t = e.timeStamp;
+      cols.forEach(c => c.target = null); kick();
+    });
+    function endDrag(e) {
+      if (e.pointerId !== drag.id) return;
+      if (drag.moved) { inertia = still() ? 0 : Math.max(-1800, Math.min(1800, drag.vel)); stage.classList.remove('is-dragging'); drag.quietUntil = performance.now() + 80; }
+      drag.id = null; drag.moved = false; kick();
+    }
+    stage.addEventListener('pointerup', endDrag); stage.addEventListener('pointercancel', endDrag);
+    stage.addEventListener('click', e => {
+      const el = e.target.closest('.wall-tile'); if (!el) return;
+      if (e.detail && performance.now() < drag.quietUntil) { e.preventDefault(); return; }   // the click that ends a drag is not a click (keyboard clicks have detail 0)
+      userInput();
+      const i = +el.dataset.i, orig = el.getAttribute('aria-hidden') ? (stage.querySelector(`.wall-tile[data-i="${i}"]:not([aria-hidden])`) || el) : el;
+      onOpen(i, orig);
+    });
+
+    /* ---------- h. page scroll nudges the columns (read scrollY in the passive handler, consume in the loop) ---------- */
+    addEventListener('scroll', () => { const y = scrollY; scrollAcc += y - lastScrollY; lastScrollY = y; if (scrollAcc) kick(); }, { passive: true });
+    new IntersectionObserver(es => { inView = es[es.length - 1].isIntersecting; if (inView) kick(); else { sleep(); scrollAcc = 0; } }).observe(wall);
+    document.addEventListener('visibilitychange', () => { docVisible = !document.hidden; if (docVisible) kick(); else sleep(); });
+
+    /* ---------- i. MOMENTS API ---------- */
+    function renderLegend() {             // provenance of what is in front (or of everything), built from the items, never hard-coded
+      if (!legend) return;
+      const list = focus ? items.filter(it => it.moment === focus) : items, n = {};
+      list.forEach(it => { n[it.kind] = (n[it.kind] || 0) + 1; });
+      const label = k => (n[k] > 1 ? LEGEND[k] : PROVENANCE[k]);
+      legend.innerHTML = `<b>${focus ? MOMENT_NAME[focus] : 'All products'}</b>` + KIND_ORDER.filter(k => n[k]).map(k => `<span>${label(k)}</span>`).join('');
+    }
+    function focusProduct(m, o) {
+      focus = MOMENT_NAME[m] && items.some(it => it.moment === m) ? m : null;   // a moment with no tiles leaves the wall at rest
+      const instant = (o && o.instant) || still();
+      if (focus) wall.dataset.focus = focus; else delete wall.dataset.focus;   // one attribute: CSS does the rest (§11.2)
+      renderLegend();
+      if (mode === 'strip') {
+        const el = focus && stage.querySelector(`.wall-tile[data-wall-moment="${focus}"]`), sc = stage.firstElementChild;
+        if (el && sc) sc.scrollTo({ left: el.offsetLeft - sc.firstElementChild.offsetLeft, behavior: instant ? 'auto' : 'smooth' });
+        return;
+      }
+      if (focus) aim(instant);
+      kick();
+    }
+    function aim(instant) {                   // each column eases its nearest tile of the focused product to its front line
+      cols.forEach(col => {
+        let best = null;
+        col.list.forEach((it, i) => {
+          if (it.moment !== focus) return;
+          let d = col.focal - (col.pos + i * pitch + th / 2);
+          d = ((d % col.L) + col.L * 1.5) % col.L - col.L / 2;              // shortest way round the loop
+          if (best === null || Math.abs(d) < Math.abs(best)) best = d;
+        });
+        if (best === null) return;
+        if (instant) { col.pos += best; col.target = null; write(col); } else col.target = col.pos + best;
+      });
+      if (instant) rove(true);
+    }
+
+    /* ---------- j. motion preference changed (the page's Pause motion toggle, the OS setting, or the frame guard) ---------- */
+    function motion() {
+      if (still()) { inertia = 0; cols.forEach(c => { if (c.target !== null) { c.pos = c.target; c.target = null; write(c); } }); }
+      kick();
+    }
+    mqReduce.addEventListener('change', motion);
+    function pause(reason) { reason = reason || 'api'; hold.add(reason); if (reason === 'dialog') speedMul = 0; kick(); }
+    function resume(reason) {
+      reason = reason || 'api'; hold.delete(reason);
+      if (reason === 'dialog' && !stage.contains(document.activeElement)) { hold.delete('focus'); cols.forEach(c => c.pinned = false); }
+      kick();
+    }
+
+    /* ---------- k. boot + resize ---------- */
+    let rz = 0;
+    new ResizeObserver(() => { cancelAnimationFrame(rz); rz = requestAnimationFrame(layout); }).observe(wall);
+    [mqDesk, mqTab].forEach(q => q.addEventListener('change', layout));
+    renderLegend();
+    layout();
+
+    /* ---------- public API (+ dev probes) ---------- */
+    return {
+      focusProduct, motion, pause, resume, items, ready: readyP,
+      debug() { return { mode, preset, primaryCol, h1Col, lowPower, guard: { on: guard.on, checks: guard.checks, samples: guard.s.length }, raf: !!raf, inView, focus,
+        cols: cols.map(c => ({ c: c.c, vis: c.vis, items: c.list.map(it => it.product + ':' + it.i), K: c.K, mid: c.mid, L: Math.round(c.L), V: [Math.round(c.V0), Math.round(c.V1)], focal: Math.round(c.focal), fscreen: c.fscreen.map(Math.round), pos: Math.round(c.pos) })) }; },
+      perf(ms = 3000) {       // frame-time probe: frames (rAF deltas) and JS cost of one loop iteration
+        probe.on = true; probe.frames = []; probe.loop = []; probe.lastT = 0; kick();
+        return new Promise(res => setTimeout(() => {
+          probe.on = false;
+          const s = a => a.slice().sort((x, y) => x - y), q = (a, p) => a.length ? a[Math.min(a.length - 1, Math.floor(a.length * p))] : 0;
+          const f = s(probe.frames), l = s(probe.loop), avg = a => a.reduce((x, y) => x + y, 0) / (a.length || 1);
+          res({ frames: f.length, frameMs: { avg: +avg(f).toFixed(2), p50: +q(f, .5).toFixed(2), p95: +q(f, .95).toFixed(2), max: +(f[f.length - 1] || 0).toFixed(2) },
+            loopMs: { avg: +avg(l).toFixed(3), p95: +q(l, .95).toFixed(3), max: +(l[l.length - 1] || 0).toFixed(3) },
+            tiles: { unique: items.length, dom: wall.querySelectorAll('.wall-tile').length, perColumn: cols.map(c => c.cnt + '×' + c.K) }, mode, comp: Q.get('comp') || 'lay', lowPower });
+        }, ms));
+      },
+    };
+  }
+  return { create, mediaHTML, PRODUCTS, MOMENT_NAME, PROVENANCE, LEGEND, KIND_ORDER, PRESETS };
+})();
+/* ===== HERO WALL ENGINE: END ===== */
+</script>
+<script>
+/* ===== SPIKE PAGE GLUE: BEGIN =====================================================================
+   What the host page provides around the engine: lightbox, hero autoplay, moment buttons, Pause motion.
+   In M3 these already exist in the page controller (openLightbox, setMoment/autoplay, motionChanged) — see the
+   adapter in HERO-WALL-SPEC.md §10; this block is the stand-alone equivalent for the spike.
+   ================================================================================================ */
+(function () {
+  'use strict';
+  const Q = new URLSearchParams(location.hash.slice(1));
+  const root = document.documentElement;
+  const mqReduce = matchMedia('(prefers-reduced-motion: reduce)');
+  const isReduced = () => mqReduce.matches || root.dataset.motion === 'reduce';
+
+  /* ---------- lightbox (simple dialog) ---------- */
+  const lb = document.getElementById('lb'), lbMedia = lb.querySelector('[data-lb-media]');
+  let lbIndex = 0, lbReturn = null, wall = null;
+  function renderLightbox() {
+    const it = wall.items[lbIndex], p = HeroWall.PRODUCTS[it.product] || { name: it.product };
+    lbMedia.style.setProperty('--hw-tile-bg', it.bg || (it.tone === 'light' ? '#FFFFFF' : 'var(--navy-950)'));
+    lbMedia.innerHTML = HeroWall.mediaHTML(it, true);
+    lbMedia.querySelector('img').alt = it.alt;
+    lb.querySelector('[data-lb-title]').textContent = p.name;
+    lb.querySelector('[data-lb-caption]').textContent = it.caption;
+    lb.querySelector('[data-lb-prov]').textContent = HeroWall.PROVENANCE[it.kind];
+  }
+  function openLightbox(i, tileEl) { lbIndex = i; lbReturn = tileEl; renderLightbox(); wall.pause('dialog'); lb.showModal(); }
+  lb.addEventListener('close', () => { if (lbReturn) lbReturn.focus({ preventScroll: true }); wall.resume('dialog'); });
+  lb.addEventListener('click', e => { if (e.target === lb) lb.close(); });
+  lb.querySelector('[data-lb-close]').addEventListener('click', () => lb.close());
+  const step = d => { lbIndex = (lbIndex + d + wall.items.length) % wall.items.length; renderLightbox(); };
+  lb.querySelector('[data-lb-prev]').addEventListener('click', () => step(-1));
+  lb.querySelector('[data-lb-next]').addEventListener('click', () => step(1));
+  lb.addEventListener('keydown', e => { if (e.key === 'ArrowLeft') step(-1); else if (e.key === 'ArrowRight') step(1); });
+
+  /* ---------- hero autoplay AI → Automation → IoT → Security (once), moment buttons ----------
+     It starts only after the wall's entrance has finished (wall.ready), never during it, and never again once the visitor
+     has taken over (a moment click, any direct use of the wall, Pause motion). */
+  const SEQ = ['ai', 'auto', 'iot', 'sec'], HOLD = 2800;
+  const momentsEl = document.querySelector('.moments'), momentBtns = [...document.querySelectorAll('.moment[data-moment]')];
+  let apTimer = 0, apIdx = -1, apDone = false;
+  momentsEl.style.setProperty('--hold', HOLD + 'ms');
+  function setMoment(m) { momentBtns.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.moment === m))); wall.focusProduct(m); }
+  function stopAutoplay() { clearTimeout(apTimer); apTimer = 0; apIdx = -1; apDone = true; momentsEl.classList.remove('is-autoplay'); }
+  function stepAutoplay() {
+    if (isReduced()) return stopAutoplay();
+    if (apIdx < SEQ.length) { setMoment(SEQ[apIdx++]); apTimer = setTimeout(stepAutoplay, HOLD); }
+    else { stopAutoplay(); setMoment(null); }
+  }
+  function autoplay(delay) { if (apDone || apTimer || isReduced() || Q.has('qa') || Q.has('noauto')) return; momentsEl.classList.add('is-autoplay'); apIdx = 0; apTimer = setTimeout(stepAutoplay, delay); }
+  momentBtns.forEach(b => b.addEventListener('click', () => {
+    stopAutoplay(); setMoment(b.getAttribute('aria-pressed') === 'true' ? null : b.dataset.moment);
+  }));
+
+  /* ---------- Pause motion (persisted; same key as M3) ---------- */
+  const toggles = [...document.querySelectorAll('[data-motion-toggle]')];
+  function syncToggle() { toggles.forEach(t => { t.setAttribute('aria-pressed', String(isReduced())); t.setAttribute('aria-label', isReduced() ? 'Resume motion' : 'Pause motion'); }); }
+  toggles.forEach(t => t.addEventListener('click', () => {
+    if (root.dataset.motion === 'reduce') { delete root.dataset.motion; try { localStorage.removeItem('meerana-motion'); } catch (e) {} }
+    else { root.dataset.motion = 'reduce'; try { localStorage.setItem('meerana-motion', 'reduce'); } catch (e) {} stopAutoplay(); }
+    syncToggle(); wall.motion();
+  }));
+  mqReduce.addEventListener('change', () => { syncToggle(); if (isReduced()) stopAutoplay(); });
+
+  /* ---------- boot ---------- */
+  const t0 = performance.now();
+  wall = HeroWall.create(document.getElementById('wall'), WALL_ITEMS, {
+    isReduced, illustrations: ILLUSTRATIONS, dev: Q, onOpen: openLightbox, onUserInput: stopAutoplay,
+  });
+  window.MeeranaWall = wall;                       // QA handle (perf probe, debug); not needed in production
+  syncToggle();
+  const qa = Q.get('qa');
+  if (HeroWall.MOMENT_NAME[qa]) { momentBtns.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.moment === qa))); wall.focusProduct(qa, { instant: true }); }
+  else wall.ready.then(() => autoplay(Math.max(700, 1200 - (performance.now() - t0))));   // ≥ 0.7 s after the entrance, ≥ 1.2 s after boot
+})();
+/* ===== SPIKE PAGE GLUE: END ===== */
+</script>
+</body>
+</html>

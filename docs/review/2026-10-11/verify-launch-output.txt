@@ -1,0 +1,92 @@
+
+[honesty: no internal notes, placeholders or unsourced numbers in out/]
+  PASS  no banned strings across 75 exported files
+  PASS  no stats counter on the homepage
+  PASS  public/media/proof (client and government marks) is not in the export
+  PASS  uncleared demo videos are not in the export
+
+[links: every internal link in the export resolves]
+  PASS  20 distinct internal links, 0 broken
+  PASS  every #anchor on / has a target
+  PASS  /sitemap.xml is served — 200
+  PASS  /robots.txt is served — 200
+  PASS  /icon.png is served — 200
+  PASS  /apple-icon.png is served — 200
+  PASS  /opengraph-image.png is served — 200
+  PASS  OG image, site name, canonical and icon on sampled routes
+  PASS  10 distinct page titles — 10 unique
+
+[console: zero errors, per route and viewport]
+  PASS  1440px: 11 routes
+  PASS  1024px: 11 routes
+  PASS  390px: 11 routes
+
+[overflow: no horizontal page scroll at any width]
+  PASS  320px
+  PASS  390px
+  PASS  768px
+  PASS  1024px
+  PASS  1280px
+  PASS  1440px
+  PASS  1920px
+
+[keyboard: focus stays visible (inside the viewport, below the header)]
+  PASS  1440×900: first 40 Tab stops all visible
+  PASS  1024×768: first 40 Tab stops all visible
+
+[reduced motion: nothing animates, everything is visible]
+  PASS  H1 opacity 1, no transform or filter in 28 samples over 3 s — ""
+  PASS  gallery is a rail (no pin) — showcase is-rail
+  PASS  hero entrance animation is off — none
+  PASS  no gallery card is dimmed — 1,1,1,1,1,1
+
+[menus: focus moves in, cycles, and returns]
+  PASS  Enter opens the products panel
+  PASS  panel lists six products plus 'All six products' — 7
+  PASS  ArrowDown moves focus inside the panel
+  PASS  Escape closes the panel and returns focus to its button
+  PASS  opening the sheet moves focus inside it
+  PASS  Tab cycles within the sheet (10 stops, 13 presses)
+  PASS  Shift+Tab stays inside the sheet
+  PASS  Escape closes the sheet and returns focus to the toggle
+  PASS  aria-controls resolves while the sheet is closed
+
+[motion budget: gallery pin and page length]
+  PASS  1440×900: pinned, scroll distance 2250px ≤ 2250px (2.5 × viewport)
+  PASS  1440×900: page is 8.7 viewports (≤ 8.75; the gallery pin alone is 3.5)
+  PASS  1280×720: no pin (rail) — is-rail, spacer=false
+  PASS  1024×768: no pin (rail) — is-rail, spacer=false
+  PASS  4 × Next lands on card 5 with its call to action on screen — {"l":209,"r":486,"t":630,"b":678,"w":1440,"h":900,"counter":"5 / 6 · Wasel","inertOthers":true,"currentInert":false}
+  PASS  the dimmed neighbours are inert, the current card is not
+  PASS  one wheel notch moves exactly one card — 2 / 6 · Tasree3
+
+[3D room: loaded only where it should be]
+  PASS  desktop 1440px: 3D canvas rendered — canvas=true poster=false chunks>600KB=1
+  PASS  tablet 768px: poster only, no three.js chunk — canvas=false poster=true chunks>600KB=0
+  PASS  phone 390px: poster only, no three.js chunk — canvas=false poster=true chunks>600KB=0
+  PASS  Save-Data on a wide screen: no 3D canvas
+  PASS  3D frames in 1.5 s: 7 with the hero in view, 0 after scrolling past it (all frame loops: 129)
+
+[axe: no serious or critical violations]
+  PASS  1440px /
+  PASS  1440px /products/mandoobee/
+  PASS  1440px /products/tasree3/
+  PASS  1440px /products/nazo/
+  PASS  1440px /products/yisbir/
+  PASS  1440px /products/wasel/
+  PASS  1440px /products/ai-in-a-box/
+  PASS  1440px /company/
+  PASS  1440px /services/
+  PASS  1440px /contact/
+  PASS  390px /
+  PASS  390px /products/mandoobee/
+  PASS  390px /products/tasree3/
+  PASS  390px /products/nazo/
+  PASS  390px /products/yisbir/
+  PASS  390px /products/wasel/
+  PASS  390px /products/ai-in-a-box/
+  PASS  390px /company/
+  PASS  390px /services/
+  PASS  390px /contact/
+
+All checks passed.

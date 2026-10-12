@@ -1,0 +1,547 @@
+{
+ "_about": "M3 v3 product media (media agent, 2026-10-10; fixer pass same day). Files live in prototypes/media/m3/v3/. use: wall = hero wall tile 1200x750; card = product-card tab 1920x1200; loop = H.264 MP4 1280x800 (AV1 twin in \"av1\", WebP poster in \"poster\"); still = high-res still of a loop's end state (same view as its poster), not a separate tab; mobile = 4:3 single tile 1200x900; cutout = transparent RGBA WebP for compositing. Captions are provenance labels. Yisbir panels are design concepts with sample data; full Figma boards stay internal until permission.",
+ "items": [
+  {
+   "file": "wall-01-yisbir-ppe-compliance.webp",
+   "product": "yisbir",
+   "use": "wall",
+   "caption": "Design concept · sample data",
+   "alt": "PPE compliance at 94.2% with helmet and vest rates and compliance for six warehouse zones",
+   "source": "Re-typeset in the Yisbir palette from the Yisbir Figma dashboard boards (campus, security, retail, ops); numbers are sample data",
+   "redactions": [
+    "no client wordmark, tenant or personal names in frame (board header and side panels not used)"
+   ],
+   "w": 1200,
+   "h": 750
+  },
+  {
+   "file": "wall-02-tasree3-command-center.webp",
+   "product": "tasree3",
+   "use": "wall",
+   "caption": "Product screen · demo data",
+   "alt": "Tasree3 Command Center: 16 processes in the catalogue, 11 in progress",
+   "source": "Tasree3 demo recording \"Dashboard And Admin Panels\" (app.tasree3.ae, sample tenant), t = 5 s",
+   "redactions": [
+    "browser chrome and sidebar cropped out",
+    "demo-tenant greeting line painted out with the page gradient; \"Command Center\" title moved up",
+    "next card's edge filled with the page gradient"
+   ],
+   "w": 1200,
+   "h": 750
+  },
+  {
+   "file": "wall-03-yisbir-classroom-heatmap.webp",
+   "product": "yisbir",
+   "use": "wall",
+   "caption": "Design concept · sample data",
+   "alt": "Classroom occupancy heatmap on a 3D floor plan, 28 of 41 seats in use",
+   "source": "Re-typeset in the Yisbir palette from the Yisbir Figma dashboard boards (campus, security, retail, ops); numbers are sample data; 3D classroom render from the campus board",
+   "redactions": [
+    "floor-plan render only (no people)",
+    "no client wordmark, tenant or personal names in frame (board header and side panels not used)"
+   ],
+   "w": 1200,
+   "h": 750
+  },
+  {
+   "file": "wall-04-aibox-contract-review.webp",
+   "product": "aibox",
+   "use": "wall",
+   "caption": "Product screen · demo data",
+   "alt": "AI in a Box review note: liability cap below the procurement minimum, with the fix to renegotiate it",
+   "source": "AI in a Box demo recording (demoAgenticAi.mov), t = 54.5-57.7 s",
+   "redactions": [
+    "sidebar logo tagline cropped out",
+    "header date and version string cropped out",
+    "footer tagline cropped out",
+    "sample clause wording neutralised from the same glyphs: \"below the procurement minimum\", \"in a foreign region\"",
+    "one clause re-flowed into a narrower column (same pixels, line breaks at word gaps)",
+    "navy-950 matte added"
+   ],
+   "w": 1200,
+   "h": 750
+  },
+  {
+   "file": "wall-05-yisbir-occupancy-trend.webp",
+   "product": "yisbir",
+   "use": "wall",
+   "caption": "Design concept · sample data",
+   "alt": "Line chart of classroom occupancy today, peaking at 38 against a capacity of 41",
+   "source": "Re-typeset in the Yisbir palette from the Yisbir Figma dashboard boards (campus, security, retail, ops); numbers are sample data",
+   "redactions": [
+    "no client wordmark, tenant or personal names in frame (board header and side panels not used)"
+   ],
+   "w": 1200,
+   "h": 750
+  },
+  {
+   "file": "wall-06-nazo-ai-draft.webp",
+   "product": "nazo",
+   "use": "wall",
+   "caption": "Product screen · demo data",
+   "alt": "Nazo AI draft of a holiday announcement with typed variables: holiday date, name and sectors",
+   "source": "Nazo demo recording (demo_video/nazo.mp4), generated draft, t = 180.5-181.5 s (median of 32 frames)",
+   "redactions": [
+    "draft body only: letterhead, footer and workflow panel (tenant names) cropped out",
+    "pointer removed (median of 32 frames)",
+    "first sentence of the Details paragraph re-flowed at word gaps (same pixels)"
+   ],
+   "w": 1200,
+   "h": 750
+  },
+  {
+   "file": "wall-07-yisbir-campus-headcount.webp",
+   "product": "yisbir",
+   "use": "wall",
+   "caption": "Design concept · sample data",
+   "alt": "Headcount of 3,037 people on campus by building, with 90.7% lecture attendance",
+   "source": "Re-typeset in the Yisbir palette from the Yisbir Figma dashboard boards (campus, security, retail, ops); numbers are sample data",
+   "redactions": [
+    "headcount mode only: nobody identified",
+    "no client wordmark, tenant or personal names in frame (board header and side panels not used)"
+   ],
+   "w": 1200,
+   "h": 750
+  },
+  {
+   "file": "wall-08-mandoobee-app.webp",
+   "product": "mandoobee",
+   "use": "wall",
+   "caption": "App mock-up",
+   "alt": "Mandoobee home screen: working hours, swipe to clock in and the attendance donut",
+   "source": "Official Mandoobee phone render from meerana.ae (Figma Make v17 public assets: smart-office-app.png)",
+   "redactions": [
+    "single phone at 2.5x; greeting, avatar and employee list out of frame",
+    "navy-950 backdrop"
+   ],
+   "w": 1200,
+   "h": 750
+  },
+  {
+   "file": "wall-09-yisbir-camera-matrix.webp",
+   "product": "yisbir",
+   "use": "wall",
+   "caption": "Design concept · sample data",
+   "alt": "Four live camera tiles: classroom headcount, warehouse PPE, no-entry zone and crowd density",
+   "source": "Re-typeset in the Yisbir palette from the Yisbir Figma dashboard boards (campus, security, retail, ops); numbers are sample data; camera inserts from the campus and ops boards and the Yisbir promo on meerana.ae",
+   "redactions": [
+    "classroom faces blurred (Gaussian) until unrecognisable",
+    "PPE camera: board detection boxes (they framed floor areas, not people) inpainted out; one green box drawn per visible worker (all six wear helmet and vest)",
+    "burned-in camera OSD (camera ID, timestamp) cropped off",
+    "promo \"No Entry Zone\" text inpainted off the floor and redrawn as a clean chip inside the zone",
+    "figures softened (Gaussian) so no face is recognisable",
+    "no number-plate, weapon or face-recognition panels"
+   ],
+   "w": 1200,
+   "h": 750
+  },
+  {
+   "file": "wall-10-tasree3-conformance.webp",
+   "product": "tasree3",
+   "use": "wall",
+   "caption": "Product screen · demo data",
+   "alt": "Tasree3 Conformance Center: global fitness 45.8%, compliance 54.3%, risk and deviations",
+   "source": "Tasree3 demo recording \"Process Mining\", Conformance Center, t = 30.2 s",
+   "redactions": [
+    "browser chrome and page heading cropped out",
+    "empty right half of each KPI card removed (card edge kept)"
+   ],
+   "w": 1200,
+   "h": 750
+  },
+  {
+   "file": "wall-11-yisbir-fire-smoke.webp",
+   "product": "yisbir",
+   "use": "wall",
+   "caption": "Design concept · sample data",
+   "alt": "Smoke detected on a warehouse camera with the alert timeline: detected, alerted, acknowledged",
+   "source": "Re-typeset in the Yisbir palette from the Yisbir Figma dashboard boards (campus, security, retail, ops); numbers are sample data; smoke frame from Yisbir promo on meerana.ae (research/live-site/media/yisbir.mp4)",
+   "redactions": [
+    "smoke column (promo t = 52.58 s) composited onto a clean background frame of the same camera (t = 50.7 s): promo alert marker, title text and yellow box removed without inpainting the aisle",
+    "promo box lines crossing the smoke inpainted",
+    "one detection box with a label chip drawn around the column",
+    "promo subtitles and title card cropped out",
+    "no people in frame"
+   ],
+   "w": 1200,
+   "h": 750
+  },
+  {
+   "file": "wall-12-aibox-governance.webp",
+   "product": "aibox",
+   "use": "wall",
+   "caption": "Product screen · demo data",
+   "alt": "AI in a Box governance: 29 actions today, 6 approvals all reviewed by a person",
+   "source": "AI in a Box demo recording (demoAgenticAi.mov), Governance, t = 211 s",
+   "redactions": [
+    "sidebar logo tagline cropped out",
+    "header date and version string cropped out",
+    "footer tagline cropped out",
+    "two KPI cards narrowed (empty right half removed) and the first activity row kept",
+    "navy-950 matte added"
+   ],
+   "w": 1200,
+   "h": 750
+  },
+  {
+   "file": "wall-13-yisbir-room-occupancy.webp",
+   "product": "yisbir",
+   "use": "wall",
+   "caption": "Design concept · sample data",
+   "alt": "Grid of ten classrooms with live occupancy; two rooms above 90% are highlighted",
+   "source": "Re-typeset in the Yisbir palette from the Yisbir Figma dashboard boards (campus, security, retail, ops); numbers are sample data",
+   "redactions": [
+    "no client wordmark, tenant or personal names in frame (board header and side panels not used)"
+   ],
+   "w": 1200,
+   "h": 750
+  },
+  {
+   "file": "wall-14-tasree3-bpmn.webp",
+   "product": "tasree3",
+   "use": "wall",
+   "caption": "Product screen · demo data",
+   "alt": "Tasree3 BPMN gateway: is the reading valid? No ends as invalid, Yes goes to calculate bill",
+   "source": "Tasree3 demo recording \"BPMN Video Creation\", t = 9-12 s",
+   "redactions": [
+    "browser chrome, editor toolbar and floating actions cropped out"
+   ],
+   "w": 1200,
+   "h": 750
+  },
+  {
+   "file": "wall-15-yisbir-alerts.webp",
+   "product": "yisbir",
+   "use": "wall",
+   "caption": "Design concept · sample data",
+   "alt": "Stacked bar chart of 76 alerts by severity over four hours, with counts by type",
+   "source": "Re-typeset in the Yisbir palette from the Yisbir Figma dashboard boards (campus, security, retail, ops); numbers are sample data",
+   "redactions": [
+    "alert types limited to PPE, restricted zone, crowd density, falls and smoke (no weapons, number-plate or face-match alerts)"
+   ],
+   "w": 1200,
+   "h": 750
+  },
+  {
+   "file": "wall-16-yisbir-restricted-zone.webp",
+   "product": "yisbir",
+   "use": "wall",
+   "caption": "Design concept · sample data",
+   "alt": "Overhead camera with a no-entry zone, beside 23 restricted-zone entries by area",
+   "source": "Re-typeset in the Yisbir palette from the Yisbir Figma dashboard boards (campus, security, retail, ops); numbers are sample data; overhead frame from Yisbir promo on meerana.ae (research/live-site/media/yisbir.mp4) (t = 54 s)",
+   "redactions": [
+    "promo \"No Entry Zone\" text inpainted off the floor and redrawn as a clean chip inside the zone",
+    "figures softened (Gaussian) so no face is recognisable",
+    "promo label and subtitles cropped out"
+   ],
+   "w": 1200,
+   "h": 750
+  },
+  {
+   "file": "wall-17-yisbir-store-footfall.webp",
+   "product": "yisbir",
+   "use": "wall",
+   "caption": "Design concept · sample data",
+   "alt": "Mall footfall of 34,847 visitors by hour, with live occupancy for six mall zones",
+   "source": "Re-typeset in the Yisbir palette from the Yisbir Figma dashboard boards (campus, security, retail, ops); numbers are sample data",
+   "redactions": [
+    "vector zone grid (no camera image)"
+   ],
+   "w": 1200,
+   "h": 750
+  },
+  {
+   "file": "card-mandoobee-app.webp",
+   "product": "mandoobee",
+   "use": "card",
+   "tab_label": "App",
+   "caption": "App mock-up",
+   "alt": "Mandoobee home with clock-in and attendance donut beside the CEO dashboard with 25 of 35 staff in",
+   "source": "Official Mandoobee phone render from meerana.ae (Figma Make v17 public assets: smart-office-app.png)",
+   "redactions": [
+    "greeting avatar photo blurred (Gaussian, inside the avatar circle)",
+    "first name in the greeting masked",
+    "employee list names and photos blurred",
+    "white backdrop keyed out",
+    "window on the centre phone and the CEO dashboard so phone labels stay legible"
+   ],
+   "w": 1920,
+   "h": 1200
+  },
+  {
+   "file": "card-tasree3-command-center.webp",
+   "product": "tasree3",
+   "use": "card",
+   "tab_label": "Command Center",
+   "caption": "Product screen · demo data",
+   "alt": "Tasree3 Command Center: processes, reports, work in progress and configuration health",
+   "source": "Tasree3 demo recording \"Dashboard And Admin Panels\" (app.tasree3.ae, sample tenant), t = 5 s",
+   "redactions": [
+    "browser chrome and sidebar cropped out",
+    "demo-tenant greeting line painted out with the page gradient; \"Command Center\" title moved up"
+   ],
+   "w": 1920,
+   "h": 1200
+  },
+  {
+   "file": "card-tasree3-text-to-bpmn.webp",
+   "product": "tasree3",
+   "use": "card",
+   "tab_label": "Text to BPMN",
+   "caption": "Product screen · demo data",
+   "alt": "A plain-language prompt in Tasree3 and the BPMN it generated: validity gateway, calculate and generate bill",
+   "source": "Tasree3 demo recording \"BPMN Video Creation\", t = 9-12 s",
+   "redactions": [
+    "browser chrome cropped out",
+    "mouse pointer removed",
+    "process tail hidden under the chat panel and the empty canvas below the lane removed (diagram ends at Generate Bill)"
+   ],
+   "w": 1920,
+   "h": 1200
+  },
+  {
+   "file": "nazo-loop-ai-drafting.mp4",
+   "product": "nazo",
+   "use": "loop",
+   "tab_label": "AI drafting",
+   "caption": "Product screen · demo data",
+   "alt": "Nazo AI Template Generator: a holiday announcement prompt is typed, then the generated draft with typed variables",
+   "source": "Nazo demo recording (demo_video/nazo.mp4), AI Template Generator, t = 116.6-128.8 s (typing at 1.5x) and t = 180.5-181.5 s (generated draft)",
+   "redactions": [
+    "template library (tenant templates), sidebar and signed-in user cropped out",
+    "pointer removed",
+    "draft body only: letterhead, footer and workflow panel (tenant names) cropped out",
+    "typing slip cut (identical frames either side)",
+    "prompt-to-draft and loop seam are dissolves"
+   ],
+   "poster": "nazo-loop-ai-drafting.poster.webp",
+   "w": 1280,
+   "h": 800,
+   "av1": "nazo-loop-ai-drafting.av1.mp4"
+  },
+  {
+   "file": "card-nazo-ai-draft.webp",
+   "product": "nazo",
+   "use": "still",
+   "tab_label": "AI drafting",
+   "caption": "Product screen · demo data",
+   "alt": "Nazo AI draft of a public-holiday announcement with typed variables for date, name and sectors",
+   "source": "Nazo demo recording (demo_video/nazo.mp4), generated draft, t = 180.5-181.5 s (median of 32 frames)",
+   "redactions": [
+    "draft body only: letterhead, footer and workflow panel (tenant names) cropped out",
+    "pointer removed (median of 32 frames)",
+    "padded with page white to 16:10 (no partial paragraph at the frame edge)"
+   ],
+   "note": "Same view as the loop poster (the generated draft); use instead of the loop when video is not wanted.",
+   "w": 1920,
+   "h": 1200
+  },
+  {
+   "file": "card-yisbir-ppe.webp",
+   "product": "yisbir",
+   "use": "card",
+   "tab_label": "PPE",
+   "caption": "Design concept · sample data",
+   "alt": "PPE compliance by warehouse zone and by hour, 94.2% fully compliant, six workers checked on camera",
+   "source": "Re-typeset in the Yisbir palette from the Yisbir Figma dashboard boards (campus, security, retail, ops); numbers are sample data",
+   "redactions": [
+    "PPE camera: board detection boxes (they framed floor areas, not people) inpainted out; one green box drawn per visible worker (all six wear helmet and vest)",
+    "burned-in camera OSD (camera ID, timestamp) cropped off",
+    "workers about 10 px tall in the source: no face visible",
+    "no client wordmark, tenant or personal names in frame (board header and side panels not used)"
+   ],
+   "w": 1920,
+   "h": 1200
+  },
+  {
+   "file": "card-yisbir-attendance.webp",
+   "product": "yisbir",
+   "use": "card",
+   "tab_label": "Attendance",
+   "caption": "Design concept · sample data",
+   "alt": "Campus attendance in headcount mode: classroom heatmap, occupancy trend and people by building",
+   "source": "Re-typeset in the Yisbir palette from the Yisbir Figma dashboard boards (campus, security, retail, ops); numbers are sample data",
+   "redactions": [
+    "3D classroom render only (no people)",
+    "headcount mode: nobody identified",
+    "no client wordmark, tenant or personal names in frame (board header and side panels not used)"
+   ],
+   "w": 1920,
+   "h": 1200
+  },
+  {
+   "file": "card-yisbir-fire-smoke.webp",
+   "product": "yisbir",
+   "use": "card",
+   "tab_label": "Fire & smoke",
+   "caption": "Design concept · sample data",
+   "alt": "Smoke detected in a warehouse aisle, with the alert timeline and 30-day event counts",
+   "source": "Re-typeset in the Yisbir palette from the Yisbir Figma dashboard boards (campus, security, retail, ops); numbers are sample data; smoke frame from Yisbir promo on meerana.ae (research/live-site/media/yisbir.mp4)",
+   "redactions": [
+    "smoke column (promo t = 52.58 s) composited onto a clean background frame of the same camera (t = 50.7 s): promo alert marker, title text and yellow box removed without inpainting the aisle",
+    "promo box lines crossing the smoke inpainted",
+    "one detection box with a label chip drawn around the column",
+    "promo subtitles and title card cropped out",
+    "no people in frame"
+   ],
+   "w": 1920,
+   "h": 1200
+  },
+  {
+   "file": "aibox-loop-contract-review.mp4",
+   "product": "aibox",
+   "use": "loop",
+   "tab_label": "Contract review",
+   "caption": "Product screen · demo data",
+   "alt": "AI in a Box flags two contract clauses; a person approves and a review note with fixes is saved",
+   "source": "AI in a Box demo recording (demoAgenticAi.mov), t = 49-57.7 s (rebuilt from clean frames)",
+   "redactions": [
+    "sidebar logo tagline cropped out",
+    "header date and version string cropped out",
+    "footer tagline cropped out",
+    "sample clause wording neutralised from the same glyphs: \"below the procurement minimum\", \"in a foreign region\"",
+    "operator pointer removed from every frame (temporal-median clean frames; fade frames patched from a two-frame model)",
+    "approval shown as a pressed tint on the product's own 'Yes' button (added)",
+    "empty middle of the review panel removed (no content)",
+    "loop seam: note fades out and the clauses fade back in"
+   ],
+   "poster": "aibox-loop-contract-review.poster.webp",
+   "w": 1280,
+   "h": 800,
+   "av1": "aibox-loop-contract-review.av1.mp4"
+  },
+  {
+   "file": "card-aibox-contract-review.webp",
+   "product": "aibox",
+   "use": "still",
+   "tab_label": "Contract review",
+   "caption": "Product screen · demo data",
+   "alt": "AI in a Box review note flagging a liability clause and a data-residency clause, each with a fix",
+   "source": "AI in a Box demo recording (demoAgenticAi.mov), t = 54.5-57.7 s",
+   "redactions": [
+    "sidebar logo tagline cropped out",
+    "header date and version string cropped out",
+    "footer tagline cropped out",
+    "sample clause wording neutralised from the same glyphs: \"below the procurement minimum\", \"in a foreign region\"",
+    "pointer removed (temporal median)",
+    "empty middle of the review panel removed (no content)"
+   ],
+   "note": "Same frame as the loop poster; use instead of the loop when video is not wanted.",
+   "w": 1920,
+   "h": 1200
+  },
+  {
+   "file": "card-aibox-agent-matrix.webp",
+   "product": "aibox",
+   "use": "card",
+   "tab_label": "Agent matrix",
+   "caption": "Product screen · demo data",
+   "alt": "AI in a Box agent matrix: legal, finance, research, HR and IT security agents linked in a live topology",
+   "source": "AI in a Box demo recording (demoAgenticAi.mov), Agent Matrix, t = 191 s",
+   "redactions": [
+    "sidebar logo tagline cropped out",
+    "header date and version string cropped out",
+    "footer tagline cropped out",
+    "mouse pointer removed",
+    "agent detail side panel cropped out",
+    "topology compacted so card text stays legible: the five agent cards (pixels unchanged) moved closer in the same arrangement, connectors redrawn in the product line styles"
+   ],
+   "w": 1920,
+   "h": 1200
+  },
+  {
+   "file": "mobile-mandoobee-app.webp",
+   "product": "mandoobee",
+   "use": "mobile",
+   "caption": "App mock-up",
+   "alt": "Mandoobee home screen: working hours, swipe to clock in and attendance status",
+   "source": "Official Mandoobee phone render from meerana.ae (Figma Make v17 public assets: smart-office-app.png)",
+   "redactions": [
+    "greeting avatar photo blurred (Gaussian, inside the avatar circle)",
+    "first name in the greeting masked",
+    "single phone at 2.5x, greeting to Total Workforce"
+   ],
+   "w": 1200,
+   "h": 900
+  },
+  {
+   "file": "mobile-tasree3-command-center.webp",
+   "product": "tasree3",
+   "use": "mobile",
+   "caption": "Product screen · demo data",
+   "alt": "Tasree3 Command Center: 16 processes, 11 in progress, 11 drafts",
+   "source": "Tasree3 demo recording \"Dashboard And Admin Panels\" (app.tasree3.ae, sample tenant), t = 5 s",
+   "redactions": [
+    "browser chrome and sidebar cropped out",
+    "demo-tenant greeting line painted out with the page gradient; \"Command Center\" title moved up"
+   ],
+   "w": 1200,
+   "h": 900
+  },
+  {
+   "file": "mobile-nazo-ai-draft.webp",
+   "product": "nazo",
+   "use": "mobile",
+   "caption": "Product screen · demo data",
+   "alt": "Nazo AI draft of a holiday announcement with typed variables: holiday date, name and sectors",
+   "source": "Nazo demo recording (demo_video/nazo.mp4), generated draft, t = 180.5-181.5 s (median of 32 frames)",
+   "redactions": [
+    "draft body only: letterhead, footer and workflow panel (tenant names) cropped out",
+    "pointer removed (median of 32 frames)",
+    "first sentence of the Details paragraph re-flowed at word gaps (same pixels)"
+   ],
+   "w": 1200,
+   "h": 900
+  },
+  {
+   "file": "mobile-yisbir-classroom-heatmap.webp",
+   "product": "yisbir",
+   "use": "mobile",
+   "caption": "Design concept · sample data",
+   "alt": "Classroom occupancy heatmap on a 3D floor plan, 28 of 41 seats in use",
+   "source": "Re-typeset in the Yisbir palette from the Yisbir Figma dashboard boards (campus, security, retail, ops); numbers are sample data",
+   "redactions": [
+    "3D classroom render only (no people)",
+    "no client wordmark, tenant or personal names in frame (board header and side panels not used)"
+   ],
+   "w": 1200,
+   "h": 900
+  },
+  {
+   "file": "mobile-aibox-contract-review.webp",
+   "product": "aibox",
+   "use": "mobile",
+   "caption": "Product screen · demo data",
+   "alt": "AI in a Box review note: liability cap below the procurement minimum, with the fix",
+   "source": "AI in a Box demo recording (demoAgenticAi.mov), t = 54.5-57.7 s",
+   "redactions": [
+    "sidebar logo tagline cropped out",
+    "header date and version string cropped out",
+    "footer tagline cropped out",
+    "sample clause wording neutralised from the same glyphs: \"below the procurement minimum\", \"in a foreign region\"",
+    "one clause re-flowed into a narrower column (same pixels)",
+    "navy-950 matte added"
+   ],
+   "w": 1200,
+   "h": 900
+  },
+  {
+   "file": "mandoobee-phones-cutout.webp",
+   "product": "mandoobee",
+   "use": "cutout",
+   "caption": "App mock-up",
+   "alt": "Three Mandoobee phone screens: services, home with clock-in, and the CEO attendance dashboard",
+   "source": "Official Mandoobee phone render from meerana.ae (Figma Make v17 public assets: smart-office-app.png)",
+   "redactions": [
+    "greeting avatar photo blurred (Gaussian, inside the avatar circle)",
+    "first name in the greeting masked",
+    "employee list names and photos blurred",
+    "white backdrop keyed out",
+    "floor-shadow line removed",
+    "2x, 14 px transparent padding"
+   ],
+   "w": 1556,
+   "h": 1284
+  }
+ ]
+}

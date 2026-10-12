@@ -1,0 +1,51 @@
+
+[lint: @media values are shared breakpoints; raw colours only in tokens.css]
+  FAIL  @media values across 11 stylesheets — viz.css:1881 max-width: 359px
+  PASS  no raw colour outside app/tokens.css
+
+[links: every internal link resolves; sitemap, icons and per-product OG images (X-01)]
+  PASS  21 distinct internal links, 0 broken
+  PASS  every #anchor on / has a target
+  PASS  every #anchor on /products/ has a target
+  PASS  every #anchor on /products/mandoobee/ has a target
+  PASS  every #anchor on /products/tasree3/ has a target
+  PASS  every #anchor on /products/nazo/ has a target
+  PASS  every #anchor on /products/yisbir/ has a target
+  PASS  every #anchor on /products/wasel/ has a target
+  PASS  every #anchor on /products/ai-in-a-box/ has a target
+  PASS  /sitemap.xml is served — 200
+  PASS  /robots.txt is served — 200
+  PASS  /icon.png is served — 200
+  PASS  /apple-icon.png is served — 200
+  PASS  /opengraph-image.png is served — 200
+  PASS  /products/ is in the sitemap
+  PASS  all six product pages are in the sitemap
+  PASS  OG image, site name, canonical and icon on every route
+  PASS  11 distinct page titles — 11 unique
+  PASS  og:image is unique per product (X-01) — products/mandoobee/og.png products/tasree3/og.png products/nazo/og.png products/yisbir/og.png products/wasel/og.png products/ai-in-a-box/og.png
+  PASS  /products/mandoobee/og.png is a 1200×630 PNG served as image/png — 200 image/png 1200×630 181350 bytes
+  PASS  /products/tasree3/og.png is a 1200×630 PNG served as image/png — 200 image/png 1200×630 173894 bytes
+  PASS  /products/nazo/og.png is a 1200×630 PNG served as image/png — 200 image/png 1200×630 295274 bytes
+  PASS  /products/yisbir/og.png is a 1200×630 PNG served as image/png — 200 image/png 1200×630 376672 bytes
+  PASS  /products/wasel/og.png is a 1200×630 PNG served as image/png — 200 image/png 1200×630 144833 bytes
+  PASS  /products/ai-in-a-box/og.png is a 1200×630 PNG served as image/png — 200 image/png 1200×630 144179 bytes
+
+[external: store and press links resolve (FINAL-SPEC §5.4 Mandoobee deploy, EV-420; company press)]
+  PASS  Mandoobee links to the App Store and Google Play — https://apps.apple.com/app/id6473241950 https://play.google.com/store/apps/details?id=ae.meerana.mandoobee
+  FAIL  7 external links resolve — https://securitymea.com/2024/10/17/commvault-and-meerana-to-enhance-cyber-resilience-in-the-uae/ (from /company/) → error apiRequestContext.get: getaddrinfo ENOTFOUND securitymea.com
+
+[menus: focus moves in, cycles, and returns]
+  PASS  Enter opens the products panel
+  PASS  panel lists six products plus 'All six products' — 7
+  PASS  'All six products' points to /products/ — /products/
+  PASS  ArrowDown moves focus inside the panel
+  PASS  Escape closes the panel and returns focus to its button
+  PASS  opening the sheet moves focus inside it
+  PASS  Tab cycles within the sheet (11 stops, 14 presses)
+  PASS  Shift+Tab stays inside the sheet
+  PASS  Escape closes the sheet and returns focus to the toggle
+  PASS  aria-controls resolves while the sheet is closed
+
+2 check(s) FAILED.
+exit 1
+ALLDONE

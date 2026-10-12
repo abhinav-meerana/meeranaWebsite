@@ -1,0 +1,472 @@
+{
+ "items": [
+  {
+   "auditSection": "User feedback + H#2, G5, J4, DD-23",
+   "criticism": "The product gallery only scrolls horizontally on screens at least 1280x760 with a mouse. On typical laptop windows (1366x657, 1536x730, 1280x601, 1280x720, and 1366x768 at 125% scaling, which is 1093x529) it becomes a sideways swipe rail, and scrolling the page just moves vertically past it. This is the client's complaint: 'each product is vertically scrolling, make it horizontal'.",
+   "status": "not-fixed",
+   "evidence": "lib/breakpoints.ts:24 MQ.pinned = min-width 1280 + min-height 760 + hover + pointer:fine + no-preference. Measured on :4173: 'showcase is-rail' at 1366x657, 1536x730, 1280x601, 1280x720, 1093x529; pinned only at 1440x789, 1440x900, 1536x864, 1920x937. scripts/verify-launch.mjs records '1280x720: no pin (rail)' as a PASS, so the suite locks in the disliked behaviour.",
+   "files": "lib/breakpoints.ts, components/sections/Showcase.tsx, app/showcase.css, scripts/verify-launch.mjs, docs/DESIGN-DIRECTIONS.md",
+   "fixSpec": "Add one shared gate to lib/breakpoints.ts: MQ.horizontal = '(min-width: 1024px) and (min-height: 520px) and (pointer: fine) and (prefers-reduced-motion: no-preference)'. Showcase.tsx:47 and the new product-page engine both use it. Drop the hover term. Pin length = (N-1) x 0.45 x innerHeight (2.25vh for six cards). Keep the custom settle and focus sync (Showcase.tsx:122-173, 249-256). Record the client override of DD-23's 1280x760 gate as a new DD-26 in docs/DESIGN-DIRECTIONS.md. Touch devices, widths under 1024 and reduced motion keep the native rail. In verify-launch.mjs, assert a pin at 1366x657, 1280x601, 1536x730 and 1920x937, and a rail at 768x1024, 390x844 and under reduced motion.",
+   "priority": "P0"
+  },
+  {
+   "auditSection": "User feedback (responsive) + G5 rail spec",
+   "criticism": "In rail mode on short desktop screens a gallery card is taller than the screen. The previous/next buttons sit below the card, off screen. The peeking next card shows copy cut off mid-word, and the hint tells mouse users to 'Swipe'.",
+   "status": "not-fixed",
+   "evidence": "Rail cards are 665px tall at 1366x657 and 1280x601, and 667px at 1093x529 (showcase.css:284 --cw min(88vw,1120px), :292-295 height 100%). Controls sit at y 665-757 in the pin, below the fold. Screenshot at 1366x657 shows the neighbour cut as 'Tasre', 'AI-native p'. Showcase.tsx:283-287 hint text; :313-342 controls render after the track.",
+   "files": "components/sections/Showcase.tsx, app/showcase.css",
+   "fixSpec": "At 1024px and wider, move .sc-controls into the .sc-head row, aligned to the end, so the arrows and the '1 / 6' counter sit above the rail. Size cards from the viewport height: height = min(calc(100svh - var(--header-h) - 160px), 640px). Media gets max-height:100% with object-fit:contain. Clamp .sc-line to 3 lines. Hide .sc-caps and SpecList at max-height:700px; those facts stay on the product page. Mask the track edges (mask-image linear-gradient, about 12vw fade) so the neighbour reads as a deliberate peek. Pick the hint by pointer: fine pointer gets 'Use the arrows or scroll sideways', coarse gets 'Swipe'. Acceptance: at 1366x657, 1280x601 and 1093x529, card bottom ≤ innerHeight and the controls are visible.",
+   "priority": "P0"
+  },
+  {
+   "auditSection": "G5 / K (no clipped content)",
+   "criticism": "In pinned mode the card has a fixed height of min(74svh, 700px), and longer product copy spills out of the card border.",
+   "status": "not-fixed",
+   "evidence": "showcase.css:242-244. At 1440x789, card 4 (Yisbir) overflows by 11px and card 5 (Wasel) by 33px (scrollHeight > clientHeight). Screenshot shows 'Explore Wasel →' drawn outside the card border.",
+   "files": "app/showcase.css, components/sections/Showcase.tsx",
+   "fixSpec": "Use height:auto; max-height: calc(100svh - var(--header-h) - 120px) and let the media shrink: .sc-shot img {max-height: calc(100svh - 300px); width:auto; object-fit:contain}. Add an @media (max-height: 820px) tier that reduces .sc-copy gap to --sp-3, drops the third capability, and moves 'Explore' beside the CTA. Add a test that every .sc-card has scrollHeight ≤ clientHeight+1 at 1440x789, 1366x657, 1280x601 and 1920x937.",
+   "priority": "P0"
+  },
+  {
+   "auditSection": "User feedback + G13 (story stage) + J11",
+   "criticism": "Each product page is a vertical scroll of 8 full-height beats, 10.6 to 12.1 viewports long. The client explicitly wants each product to scroll horizontally.",
+   "status": "not-fixed",
+   "evidence": "components/story/Story.tsx:151-169 renders vertical .beats. app/story.css:244 .beat {min-height:100svh}; :123-131 sticky stage. Measured length: 10.6-11 viewports at 1366x657, 9.7-9.9 at 1920x937, 11.6-12.1 at 1093x529.",
+   "files": "components/story/Story.tsx, app/story.css, new components/motion/HorizontalTrack.tsx, lib/breakpoints.ts, content/storyboards.ts",
+   "fixSpec": "Extract the pin, settle, focus-sync and prev/next logic from Showcase.tsx into a reusable HorizontalTrack (props: items, gate MQ.horizontal, stepVh ≈ 0.6, onActive). On product pages at MQ.horizontal, pin .story-body and lay the chapters out as a flex row of 100vw panels. Each panel uses the 12-column grid: copy in columns 1-5, visual in 7-12, plus a front annotation layer. Animate gsap.to(track, {x: -(scrollWidth - innerWidth), ease: 'none'}), with scrub 0.6, pin true, invalidateOnRefresh, and the custom settle snapping one chapter per gesture. The chapter rail becomes a horizontal progress bar of real #beat-NN links with aria-current. On focusin, scroll the window to that chapter's offset, as in Showcase.tsx:249-256. Show visible prev/next buttons and an 'NN / total' counter with aria-live polite. Below 1024px, on touch, and under reduced motion, keep the existing static vertical layout (Story.tsx:85-102, is-static). Keep one H1 and h2 per chapter. Update verify-launch with the horizontal pin, keyboard visibility over 40 Tabs, and reduced motion fully static.",
+   "priority": "P0"
+  },
+  {
+   "auditSection": "User feedback ('3D: separate background/foreground') + E option 1 + J12",
+   "criticism": "Depth is only a slow vertical parallax of the lattice behind the product-page stage. There is no real foreground plane and no perspective. The homepage gallery has one static lattice behind the cards.",
+   "status": "partly",
+   "evidence": "Story.tsx:30-31 BG_RATE 0.14 and MID_RATE 0.2 animate y only (:198-219). Showcase.tsx:290 has one LatticeField with no motion. No CSS perspective or translateZ anywhere in app/*.css.",
+   "files": "new components/motion/DepthStage.tsx, components/ui/LatticeField.tsx, components/story/Story.tsx, components/sections/Showcase.tsx, app/story.css, app/showcase.css, app/ui.css",
+   "fixSpec": "Build DepthStage with three planes inside the horizontal pin, with perspective:1200px and transform-style:preserve-3d on the pin. (1) Back: LatticeField tinted with the product accent plus a soft accent radial; it moves at 0.25x of track x and sits at translateZ(-200px) scale(1.17). (2) Mid: the product media or diagram at 1.0x; on activation rotateY 8°→0 and translateZ -40→0. (3) Front: aria-hidden mono annotation chips (step index, provenance, short callouts copied from beat data) at 1.2x, which gives parallax ahead of the copy. Drive all of it with ScrollTrigger containerAnimation, transform and opacity only. Text never sits on media: copy stays in its own columns, solid. Under reduced motion or below 1024px, flatten to a single plane with no transforms. Reuse the same component for the gallery cards.",
+   "priority": "P0"
+  },
+  {
+   "auditSection": "User feedback ('separate cinematic animations') + J5, J11",
+   "criticism": "Every beat and every product uses the same 420ms cross-fade, and gallery cards only toggle opacity. Nothing is choreographed per beat or per product. The audit's gallery tilt (J5) and diagram line-draws (J11) were never built.",
+   "status": "not-fixed",
+   "evidence": "story.css:154-174 has one shared .stage-visual fade. showcase.css:247-254 only toggles opacity 0.35↔1. No GSAP timeline exists beyond the pin and parallax (Story.tsx:183-263, Showcase.tsx:84-195).",
+   "files": "new components/story/motion.ts, components/story/BeatVisual.tsx, components/sections/Showcase.tsx, app/tokens.css",
+   "fixSpec": "Add a registry mapping each viz kind to a gsap timeline factory, run inside gsap.matchMedia('(prefers-reduced-motion: no-preference)'). Each timeline plays once per chapter activation via containerAnimation onEnter, takes 600-900ms, and is replayable on revisit:\n- split: the right chain nodes slide out of line and the warn nodes drop in.\n- lanes: the path stroke-dashoffset draws across the lanes.\n- tiles: tiles assemble along the ±30° lattice axes.\n- flow: edges draw, then boxes pop with a 40ms stagger, then the rework detour dashes in.\n- steps: underlines draw in sequence.\n- screen: slides in from depth (z -60→0, rotateY 8°→0) with a one-pass highlight sweep.\n- records: rows type in.\n- system: no-hub nodes drift apart, or hub spokes draw.\nGive the gallery a per-product intro: Mandoobee's three phones fan out, Tasree3's screen tilts in, the Wasel SVG line-draws, and the AI in a Box matrix cells stagger. Add a --dur-cinematic: 900ms token. Under reduced motion everything renders in its final state.",
+   "priority": "P0"
+  },
+  {
+   "auditSection": "User feedback ('more contents') + I, N5",
+   "criticism": "Product pages are thin: 8 short beats, one of them now empty. Usable evidence and real screens already in the repo go unused.",
+   "status": "partly",
+   "evidence": "34 product evidence items marked ok-to-use or use-with-edit are cited in no content file. Examples: Tasree3 EV-124, EV-551 to EV-557; Mandoobee EV-114, EV-115, EV-420; Nazo EV-542, EV-545, EV-546; Yisbir EV-135, EV-137, EV-441, EV-445, EV-537; Wasel EV-104; AI in a Box EV-573. Real screens held in media-src/held/unreferenced/media/v3 contain no people: card-tasree3-text-to-bpmn, wall-14-tasree3-bpmn, card-yisbir-attendance, wall-03, wall-05, wall-07, wall-13 and wall-17 (Yisbir). wall-12-aibox-governance is public but used only in the room.",
+   "files": "content/storyboards.ts, content/media.ts, components/story/Story.tsx, components/ui/SpecList.tsx, public/media/v3/",
+   "fixSpec": "Extend ProductStory with specs[], industries[], modules[], gallery: Screen[], related[] and next, each item EV-tagged. Add four horizontal chapters per product:\n- 'Specs': SpecList rows for Deploys (omit when unconfirmed), Languages, Sign-in (EV-551), Data in (EV-552), Platforms (EV-420).\n- 'Inside the product': modules (EV-114/115, EV-553 to EV-557, EV-542/545/546).\n- 'Where it is used': EV-124, EV-137 edited, EV-104 edited.\n- 'More screens': 2-3 real screens with depth layering.\nAfter a face review, move the cleared screens back to public/ with their provenance ('Product screen · demo data' for Tasree3, 'Design concept · sample data' for Yisbir). Keep wall-09 and wall-16 out (people). Use EV-135 without licence-plate or gender attributes (non-negotiable). Mark any edited wording PROVISIONAL.",
+   "priority": "P0"
+  },
+  {
+   "auditSection": "G14 / M ('no BeatVisual renders...'): regression",
+   "criticism": "Beat 06 ('Built for…') renders no visual and no feature list on all six product pages.",
+   "status": "not-fixed",
+   "evidence": "In content/storyboards.ts, all six features beats have viz:{kind:'grid'} and no provenance (Tasree3 at :200-216, the others likewise). components/story/BeatVisual.tsx:38 then returns fail(), which is null in production. Story.tsx:299 suppresses the features text list when viz.kind is 'grid'. Measured: stage visual height 0 at index 5 for all six slugs, and beat-visual-inline 0px at 390px. verify-launch did not catch it.",
+   "files": "content/storyboards.ts, components/story/BeatVisual.tsx, components/story/Story.tsx, scripts/verify-launch.mjs",
+   "fixSpec": "A feature list is not a diagram. Make 'grid' bypass the provenance requirement: render the list with no provenance label, or add provenance: 'Illustrative diagram' to the six beats. Change Story.tsx:299 so features show in the text whenever the visual does not render them. Make the Viz union require provenance for diagram kinds at the type level, so this fails tsc. Add a verify check: every .stage-visual and .beat-visual-inline has height > 0 and at least one text node.",
+   "priority": "P0"
+  },
+  {
+   "auditSection": "User feedback ('landing page bad at my resolution') + H#1, G2, G3, K viewports",
+   "criticism": "The hero is composed only for 1280px and wider. On short or scaled laptop screens the CTAs fall below the fold. The 1024-1279px range stacks the poster under the CTAs and leaves the right half empty. At 1366x657 the room is pushed into the bottom-right corner with panels cut by the screen edge.",
+   "status": "not-fixed",
+   "evidence": "At 1093x529, CTA bottom is 666px against a 529px viewport and the hero is 989px tall (1.87 viewports), with a 337px-wide poster below. At 1024x768 the hero is 1076px with an empty right half (screenshot). At 1366x657 the CTA bottom is 643/657, room panels are clipped at the right edge, and there is a large dead zone. In app/hero.css, :322 max-width:1279px stacks the layout, :177 and :190 are the only height rules (860/800), and :75 sets min-height 100svh with fixed padding.",
+   "files": "app/hero.css, components/sections/Hero.tsx, components/room/RoomClient.tsx, components/room/Room.tsx (CameraRig), lib/breakpoints.ts",
+   "fixSpec": "From 1024px wide, lay the hero out as a grid: copy 7fr and visual 5fr, min-height 100svh, padding-block calc(var(--header-h) + clamp(12px, 3svh, 40px)) clamp(12px, 3svh, 40px). Size the H1 by width and height: clamp(2.25rem, min(5.4vw, 8.6svh), 6rem). At max-height:640px, hide the eyebrow, tighten the moments (padding 8px) and set the lede in body size. In the 1024-1279px range, put the collage or poster in the right column (contain, max-height 70svh) instead of below; optionally allow WebGL from 1024px. In CameraRig, fit the panel cluster's bounding box into the visible column from size.width/size.height (adjust fov or distance and the LOOK_AT x-shift) so no near panel is clipped. Acceptance at 1093x529, 1280x601, 1366x657, 1536x730, 1536x864 and 1920x937: CTA bottom ≤ innerHeight-16, H1 at most 3 lines, room panels at least 90% inside the viewport.",
+   "priority": "P0"
+  },
+  {
+   "auditSection": "M (acceptance/testing)",
+   "criticism": "The verification suite only tests 1440x900, 1024x768 and the mobile widths. It cannot see the client's resolution, empty beat visuals, card overflow or below-the-fold CTAs, so '70 of 70 pass' coexists with all of the defects above.",
+   "status": "not-fixed",
+   "evidence": "scripts/verify-launch.mjs: the motion-budget group asserts the rail at 1280x720. There are no checks for short viewports, visual presence or overflow. Rerun on :4173: 'All checks passed.'",
+   "files": "scripts/verify-launch.mjs, scripts/shoot-routes.mjs",
+   "fixSpec": "Add a 'laptops' group covering 1093x529, 1280x601, 1366x657, 1536x730, 1536x864 and 1920x937. For each viewport check:\n- hero CTA is within the fold;\n- gallery is pinned and every card fits (scrollHeight ≤ clientHeight, card bottom ≤ innerHeight);\n- product hero CTA is within the fold;\n- stage visual ≤ innerHeight - header;\n- every beat visual has height > 0;\n- the horizontal story pin exists;\n- the first 40 Tab stops are visible;\n- screenshots are saved to docs/review/<date>/laptops/.\nKeep the existing reduced-motion, axe and console groups.",
+   "priority": "P0"
+  },
+  {
+   "auditSection": "G12 (product hero) + K viewports",
+   "criticism": "On short screens the product-page hero CTA falls below the fold.",
+   "status": "not-fixed",
+   "evidence": "Measured hero action box: Tasree3 682-730 at 1366x657 and 645-753 at 1093x529; Yisbir 715-763 at 1366x657; Tasree3 674-722 at 1280x601. app/story.css:23-29 sets min-height 78svh with padding 148/72; :57 sizes the title by width only.",
+   "files": "app/story.css, components/story/Story.tsx",
+   "fixSpec": ".story-hero {min-height:100svh; padding-block: calc(var(--header-h) + 3svh) 4svh}. Title clamp(2.25rem, min(4.6vw, 7.5svh), 4.25rem). Hero screen max-height 60svh with object-fit contain. At max-height:700px, fold the Arabic name moment into the annotation row. Test CTA ≤ innerHeight-16 at the six laptop viewports.",
+   "priority": "P1"
+  },
+  {
+   "auditSection": "G13 / K",
+   "criticism": "On short screens some stage visuals are taller than the space available and get clipped under the header.",
+   "status": "not-fixed",
+   "evidence": "Tasree3 split visual is 514px and Wasel phone visual 537px, against 457px available at 1093x529. Wasel 537px exceeds the space at 1280x601. app/story.css:154-167 has no height cap; :698-699 phone uses aspect-ratio 9/16 at width min(15rem,62%).",
+   "files": "app/story.css, components/story/BeatVisual.tsx",
+   "fixSpec": ".stage-visual {max-height: calc(100svh - var(--header-h) - 64px)}. Make diagrams size from container query units (container-type:size on the visual column). Size the phone viz by height: height min(70svh, 32rem) with aspect-ratio 9/16. Screens get max-height:100% with object-fit contain.",
+   "priority": "P1"
+  },
+  {
+   "auditSection": "G7 (How it works) + H#3",
+   "criticism": "When the scenario section enters, step 01 has no screen, so the sticky media column is an empty lattice box beside the text. Steps are only 30svh tall, so screens change quickly.",
+   "status": "partly",
+   "evidence": "components/sections/Scenario.tsx:22-25 maps step 01 to -1 (nothing shown). Screenshot at 1366x657 shows an empty right half. app/sections.css:125-128 sets .how-step min-height 30svh. The real Yisbir screens, the vertical path, provenance and the inline mobile layout are done.",
+   "files": "components/sections/Scenario.tsx, content/scenario.ts, app/sections.css",
+   "fixSpec": "Give step 01 its own visual: an isometric camera-wall line drawing with an 'unwatched' annotation, labelled 'Illustrative diagram', or a dimmed fire-smoke poster with that annotation (no new claim). Raise .how-step min-height to 55svh at 1024px and wider so each screen holds. Replace the CSS scaleY line (sections.css:39-58) with an SVG path whose stroke-dashoffset follows the step progress (J6). Optionally make the sequence horizontal at MQ.horizontal to match the new direction.",
+   "priority": "P1"
+  },
+  {
+   "auditSection": "G3 (hero room legibility) + M composition",
+   "criticism": "The two nearest room panels are not both near-fully legible. The near Tasree3 panel is dimmed by a 42% scrim, and at common widths the near panels are cut off by the right edge of the screen.",
+   "status": "partly",
+   "evidence": "components/room/room-layout.ts:118 sets lightUI:true on the near-row Tasree3 panel; components/room/Room.tsx:74-75 then multiplies brightness by 0.58. Screenshots at 1366x657 and 1440x789 show 'Command Center' cropped at the viewport edge. Already done: room on the right only, 6 panels, haze by depth.",
+   "files": "components/room/room-layout.ts, components/room/Room.tsx",
+   "fixSpec": "Put dark-UI screens in the near row (wall-11 fire-smoke, wall-12 aibox-governance) and move light-UI captures to the mid row. Alternatively, limit the scrim to 0.2 for near panels. Use the aspect-aware camera fit from the hero item so both near panels are fully inside the canvas's visible area (the right column minus the 16% mask). Add a test that projects panel corners with camera.project and requires near panels 100% on screen at 1280-1920px widths.",
+   "priority": "P1"
+  },
+  {
+   "auditSection": "G3 + E ('lattice 3D floor')",
+   "criticism": "The 3D floor is still a square gridHelper, not the brand's isometric lattice.",
+   "status": "not-fixed",
+   "evidence": "components/room/Room.tsx:154-157 uses <gridHelper args={[size,80,'#16405f','#0a1e33']}/>. The implementation report admits this ('still gridHelper').",
+   "files": "components/room/Room.tsx, new lib/scene-colors.ts",
+   "fixSpec": "Replace it with a THREE.LineSegments built from two line families at +30° and -30°, plus a third family on the floor's x axis if needed to read as isometric. Cell = 56px-equivalent world units. Use vertex-colour alpha that fades with distance, or fog. Take colours from lib/scene-colors.ts, which mirrors tokens. Optionally draw the lines in (drawRange 0→N over 720ms) as the homepage signature motion. Keep it under about 150 segments per family.",
+   "priority": "P2"
+  },
+  {
+   "auditSection": "J#1 (signature motion: lattice assembly on /)",
+   "criticism": "The homepage has no signature motion. The lattice 'assembly' exists only on product heroes, and there it is an opacity and 14px fade, not a line draw.",
+   "status": "not-fixed",
+   "evidence": "LatticeField assemble is used only at components/story/Story.tsx:313. app/ui.css:220-235 animates opacity and translateY. The homepage hero has no lattice at all (components/sections/Hero.tsx).",
+   "files": "components/sections/Hero.tsx, new components/ui/LatticeAssemble.tsx (SVG), app/hero.css",
+   "fixSpec": "Add an inline SVG lattice behind the room or poster: under 150 paths in 30° and -30° groups. Animate stroke-dashoffset from 100% to 0 over --dur-signature (720ms) with a 30ms stagger per group, starting from requestIdleCallback after first paint. Play it once per session, with sessionStorage reads and writes wrapped in try/catch. Show it static under reduced motion. It must not delay the H1 or LCP.",
+   "priority": "P1"
+  },
+  {
+   "auditSection": "E (graphic language) + G14 ('redraw archetypes in isometric line language')",
+   "criticism": "Product-page diagrams are flat DOM pills, boxes and a flat SVG flow, not the isometric line drawings the chosen direction calls for. Only Wasel's supplied SVG uses that language.",
+   "status": "not-fixed",
+   "evidence": "components/story/BeatVisual.tsx: Split (:85-114), Tiles (:144-155), Records (:317-329), System (:333-344) are list markup; Flow (:164-230) is a flat 2D SVG; Wall (:284-292) is six empty striped tiles. The report says 'restyled, not redrawn'. public/media/v3/wasel-gate-access.svg is the reference.",
+   "files": "components/story/BeatVisual.tsx, new components/story/iso.ts and IsoCanvas.tsx, app/story.css",
+   "fixSpec": "Add an iso(x,y,z) projection helper: X=(x-y)·cos30°, Y=(x+y)·sin30°-z. Draw nodes as stroke-only isometric slabs (top face plus two side faces, with the accent on the front edge) and edges along the lattice axes. Labels are HTML overlaid at the projected points, at least 12px and at least 4.5:1. Redraw split (two isometric conveyor rows, loops rising), lanes (stacked isometric floors), flow, system (hub as a raised slab with spokes) and wall (an isometric camera rack, no footage) the same way. Keep the 'Illustrative diagram' provenance. Expose stroke paths for the line-draw timelines.",
+   "priority": "P1"
+  },
+  {
+   "auditSection": "G5 (composition variants per product) + J5 (tilt)",
+   "criticism": "All six gallery cards use one identical grid; only the image file changes. The specified variants (phone pair, wide screen, document plus panel, isometric illustration, agent matrix) and the activation tilt were not built.",
+   "status": "partly",
+   "evidence": "components/sections/Showcase.tsx:371-403 renders one Panel layout. app/showcase.css:61-73 has a single grid. Only Mandoobee differs, via a bare cut-out (content/media.ts:43).",
+   "files": "content/showcase.ts, components/sections/Showcase.tsx, app/showcase.css",
+   "fixSpec": "Add layout: 'phones'|'wide'|'document'|'iso'|'matrix' to ShowcasePanel.\n- phones (Mandoobee): the cut-out breaks out of the card top; copy 4fr.\n- wide (Tasree3, Yisbir): the screen bleeds off the card's right edge at 7fr, with a second smaller real screen offset in depth.\n- document (Nazo): nazoDraft plus a solid side panel listing three AI actions (EV-542).\n- iso (Wasel): the SVG with its line-draw.\n- matrix (AI in a Box): agent matrix and contract review stacked with a translateZ offset.\nAdd the J5 tilt on activation: rotateY 6°→0 and translateZ -20→0 over 420ms, transform only. No tilt under reduced motion.",
+   "priority": "P1"
+  },
+  {
+   "auditSection": "G5 / G12 ('provenance once')",
+   "criticism": "Wasel's illustration shows its provenance twice: the SVG has its own 'Illustration' pill and the frame adds an 'ILLUSTRATION' caption.",
+   "status": "partly",
+   "evidence": "Screenshot pin-1440x789 card 5. The badge is inside public/media/v3/wasel-gate-access.svg; components/ui/ScreenFrame.tsx:39-41 always adds a figcaption.",
+   "files": "content/media.ts, components/ui/ScreenFrame.tsx",
+   "fixSpec": "Add labelInAsset?: boolean to Screen. When it is true, ScreenFrame renders the provenance as sr-only text instead of a visible caption. Set it for waselGateAccess and waselPhoneToGate.",
+   "priority": "P2"
+  },
+  {
+   "auditSection": "G5 (mobile)",
+   "criticism": "On phones and tablets the gallery card stacks long copy above the media, so the product image sits below the fold of a card taller than the screen.",
+   "status": "partly",
+   "evidence": "Card height is 904px at 390x844 (media starts at y+597) and 1077px at 768x1024. app/showcase.css:299-307 puts copy first in a single column.",
+   "files": "app/showcase.css, components/sections/Showcase.tsx",
+   "fixSpec": "Below 1024px: media first (order:-1, max-height 38svh), then name, descriptor, line, CTA and 'Explore'. Put capabilities and Deploys in a <details> or leave them to the product page. Target card height ≤ 85svh at 390x844 and 768x1024.",
+   "priority": "P1"
+  },
+  {
+   "auditSection": "G1 (header logo) + brand rules",
+   "criticism": "The header puts the official symbol next to 'MEERANA' typed in Poppins. The real wordmark uses a custom 'Λ', so the header shows a recreated, inaccurate wordmark.",
+   "status": "not-fixed",
+   "evidence": "components/site/Header.tsx:152-159 is the symbol image plus <span class='hdr-word'>MEERANA</span>, styled at app/header.css:62-66. .claude/skills/meerana-brand/references/brand-reference.md:29 describes the custom Λ. An official horizontal white lockup exists at research/recovered/figma-make-v17/public-meerana-assets/MEERANA-Logo-final-transparent-white-08.png (1579x333).",
+   "files": "components/site/Header.tsx, app/header.css, public/brand/",
+   "fixSpec": "Copy the official horizontal white lockup to public/brand/meerana-lockup-horizontal-white.png, after checking it against the brand PDF, and render it at about 28px height with alt='' inside the existing aria-labelled link. Remove .hdr-word. If the owner rejects that file, show the symbol only with sr-only text. Vector masters remain DL-B02.",
+   "priority": "P1"
+  },
+  {
+   "auditSection": "G1 / DD-24 / J10 (Dynamic Island)",
+   "criticism": "The Dynamic Island nav was not built. The header is a conventional full-width bar.",
+   "status": "not-fixed",
+   "evidence": "components/site/Header.tsx and app/header.css implement a fixed full-width bar. Report: 'Not built… Dynamic Island'. The spec is in docs/MOTION-RESEARCH-2026-10-10.md:63-68 and docs/M3-CHANGE-PLAN-2026-10-10.md:63.",
+   "files": "components/site/Header.tsx, app/header.css, app/tokens.css",
+   "fixSpec": "Make the nav a centred pill; glass is allowed here by DD-22, with a solid fallback under prefers-reduced-transparency. States:\n- expanded at the top, all links visible at 1280px and wider;\n- compact after 80px: symbol, current section or product chapter name, menu;\n- contextual: a chapter label row for at most 2s when a horizontal chapter changes, with no aria-live;\n- open: the router panel grows out of the pill.\nMorph with transform or clip-path (GSAP Flip with scale:true), never by tweening width or height. Add --ease-spring: cubic-bezier(0.34,1.32,0.64,1) to tokens.css, used only here. Below 1280px use the compact pill. Keep the existing focus trap, Escape and focus return. Under reduced motion, switch states instantly.",
+   "priority": "P2"
+  },
+  {
+   "auditSection": "I (/products/ index) + G1 router 'All products'",
+   "criticism": "There is no /products/ index page. 'All six products' links everywhere point back to /#products.",
+   "status": "not-fixed",
+   "evidence": "out/products/ contains only the six slug folders and no index.html. Header.tsx:200, Story.tsx:368 and app/contact/page.tsx:176 link to /#products. app/sitemap.ts:223-229 has no /products/.",
+   "files": "new app/products/page.tsx, app/pages.css, app/sitemap.ts, components/site/Header.tsx, components/story/Story.tsx, app/contact/page.tsx",
+   "fixSpec": "Build a server-rendered index of six rows, not an identical card grid. Each row has name, descriptor, one-liner, Deploys if confirmed, a small ScreenFrame (srcset), 'Explore' and 'Request a briefing' links, and the product accent tick. At MQ.horizontal it can reuse HorizontalTrack and DepthStage; otherwise it is a static list. Use pageMeta with a unique title, add it to sitemap.ts, and point every 'All six products' link at /products/.",
+   "priority": "P1"
+  },
+  {
+   "auditSection": "K SEO (OG images, one per product)",
+   "criticism": "Every product page shares the site-wide Open Graph image.",
+   "status": "not-fixed",
+   "evidence": "out/products/tasree3/index.html has og:image https://meerana.ae/opengraph-image.png. lib/seo.ts:9-16 hard-codes OG_IMAGE ('one per product is a later step').",
+   "files": "new app/products/[slug]/opengraph-image.tsx, lib/seo.ts, app/products/[slug]/page.tsx",
+   "fixSpec": "Add opengraph-image.tsx with export const dynamic='force-static', generateStaticParams from STORIES, and an ImageResponse at 1200x630. Content: navy ground, lattice lines, the official white symbol (read from public/brand), product name in Poppins 600 loaded via fs, descriptor, a product-accent bar, and a cropped real screen labelled with its provenance in small mono. Let pageMeta take an image override for product routes. Verify the og:image differs on each of the six routes.",
+   "priority": "P2"
+  },
+  {
+   "auditSection": "F#3 (type roles) + C typography score",
+   "criticism": "Type roles are not a single system. Several headings use their own sizes outside the token scale, the uppercase mono annotation style is used everywhere, and the H1 weight decision is still open.",
+   "status": "partly",
+   "evidence": "Off-scale sizes: app/story.css:57 (product hero title clamp 2.5-4.25rem), :272 (beat heading), :402 (close title); app/showcase.css:89 (sc-name); app/hero.css:177-195 overrides. .annot is uppercase for all uses (app/ui.css:11-21). app/layout.tsx:15 loads only 400/500/600, no 300 (JUDGE §3g). Done: mono annotation voice and tabular numerals.",
+   "files": "app/tokens.css, app/globals.css, app/story.css, app/showcase.css, app/hero.css",
+   "fixSpec": "Define role tokens --fs-display, --fs-h1-product, --fs-h2, --fs-h3-card, --fs-lede, --fs-body, --fs-annot, each a clamp using min(vw, svh) so short screens scale down. Map every heading class to a role and remove the ad-hoc clamps. Keep uppercase for index and provenance annotations only, and set spec labels in sentence case. Show the owner a Poppins 300 versus 600 comparison on the redesigned hero before changing the weight (blocked on owner).",
+   "priority": "P2"
+  },
+  {
+   "auditSection": "F#2 (breakpoints)",
+   "criticism": "Breakpoint values are now consistent, but the CSS is still desktop-first (max-width), and there is no height tier. The height thresholds 760, 800 and 860 are scattered between JS and CSS, which is the root of the short-screen failures.",
+   "status": "partly",
+   "evidence": "lib/breakpoints.ts:14-25 defines BP 480/768/1024/1280 and PIN_MIN_HEIGHT 760. app/*.css contains 7x max-width:767px, 5x 1023px, 3x 1279px, plus ad-hoc max-height:800px and min-height:860px in hero.css:177 and :190.",
+   "files": "lib/breakpoints.ts, app/*.css",
+   "fixSpec": "Add height tiers to lib/breakpoints.ts (short ≤ 640, compact ≤ 780) and MQ.horizontal. Mirror them as documented CSS tiers. Convert the page CSS to min-width (mobile-first) one file at a time. Replace hero.css:177 and :190 with the shared tiers. Have a script grep app/*.css for any @media value not in the set.",
+   "priority": "P1"
+  },
+  {
+   "auditSection": "K performance (LCP ≤ 2.5s)",
+   "criticism": "Mobile LCP is still over budget. The LCP element is the H1, which first paints at 0.9s but is reported at 2.2-3.0s, and below-the-fold images compete with the fonts.",
+   "status": "partly",
+   "evidence": "docs/review/2026-10-11/lighthouse-mobile-home.json: LCP 3.0s, FCP 0.9s, LCP element h1#hero-title. Network log: three Poppins weights at High priority, alongside mandoobee-phones-cutout.webp (117KB) requested at load on mobile because the first card is eager (Showcase.tsx:308) though it sits about 1.6 viewports down. Four product route prefetches run during load.",
+   "files": "app/layout.tsx, components/sections/Showcase.tsx, components/room/RoomPoster.tsx, components/ui/ScreenFrame.tsx",
+   "fixSpec": "Load two Poppins weights (500 and 600) and keep adjustFontFallback. Make the first gallery card eager only when the gallery starts inside the first viewport, never on screens under 1024px wide, and add fetchpriority='low'. Give the hero poster fetchpriority='low' and loading='lazy' under 1024px, since it sits below the CTAs. Set prefetch={false} on below-the-fold product Links. Re-measure with 5 Lighthouse mobile runs (median) and on the real host.",
+   "priority": "P1"
+  },
+  {
+   "auditSection": "K performance (one image size per viewport, lazy after two)",
+   "criticism": "No responsive srcset: phones and small slots download 1920px screens. In pinned mode all six gallery images load eagerly.",
+   "status": "partly",
+   "evidence": "components/ui/ScreenFrame.tsx:30-38 has a single src. card-*.webp files are 1920x1200, 100-145KB, displayed at 293-568px wide. Showcase.tsx:308 is eager when pinned. The double-plate download was removed (the plates are gone).",
+   "files": "components/ui/ScreenFrame.tsx, content/media.ts, new scripts/make-variants.mjs, components/sections/Showcase.tsx",
+   "fixSpec": "Generate 640, 960, 1280 and native-width webp variants at build time (the held mobile-* crops can serve small slots). Add srcSet and sizes to Screen and ScreenFrame. In pinned mode, load the current card and the next one eagerly, and preload card i+1 on activation instead of eager-loading all six.",
+   "priority": "P2"
+  },
+  {
+   "auditSection": "G13 ('Interface beat shows a real screen')",
+   "criticism": "Only 3 of 6 product pages show a real screen in the Interface beat. Three pages reuse the hero screen in a later beat instead of adding new evidence.",
+   "status": "partly",
+   "evidence": "Beat 04: Tasree3 uses a flow diagram (content/storyboards.ts:172) and Yisbir a records diagram, although real screens exist (held text-to-BPMN; attendance/occupancy). The same screen appears in hero and beat on Mandoobee (:392 and :432), Nazo (:654 and :702) and AI in a Box (:783 and :826). Wasel has no real screen (blocked).",
+   "files": "content/storyboards.ts, content/media.ts, public/media/v3/",
+   "fixSpec": "Tasree3 beat 04 → card-tasree3-text-to-bpmn ('Product screen · demo data', EV-554) after review. Yisbir 04 → card-yisbir-attendance or wall-05 ('Design concept · sample data'). AI in a Box hero → agent matrix, with contract review in beat 04 (beat 03 becomes the wall-12 governance screen, EV-573). Mandoobee and Nazo: use detail crops (mobile-* variants) in beat 04 as zoomed evidence, or keep the hero as an isometric lattice composition. No screen may appear twice on one page.",
+   "priority": "P1"
+  },
+  {
+   "auditSection": "G14 / K (diagram label legibility)",
+   "criticism": "Flow-diagram labels are SVG text that scales with the viewBox and become about 8.5px on phones.",
+   "status": "not-fixed",
+   "evidence": "app/story.css:572-577 sets .viz-text at 10px inside a 400-wide viewBox (BeatVisual.tsx:175). At 390px the rendered text box is 11px tall (Tasree3 and Nazo flow beats).",
+   "files": "components/story/BeatVisual.tsx, app/story.css",
+   "fixSpec": "Draw labels as HTML positioned over the SVG at projected coordinates, or recompute the viewBox to the container width with a ResizeObserver so text stays at least 12px. Add the contrast and size check to verify-launch.",
+   "priority": "P2"
+  },
+  {
+   "auditSection": "G14 (mobile caps ≤ 1.2 viewports)",
+   "criticism": "On mobile the walkthrough beat lists its steps twice (text list and visual), making the beat about 1.6 screens long.",
+   "status": "partly",
+   "evidence": "Mobile beat 05 is 1339-1413px tall at 390x844 (text 779-853px plus visual 335px). Story.tsx:285-295 renders the steps in the text, and BeatVisual Steps (:234-245) renders them again.",
+   "files": "components/story/Story.tsx, components/story/BeatVisual.tsx, app/story.css",
+   "fixSpec": "Below 1024px, hide the Steps visual for walkthrough beats, since it duplicates the list, or keep the visual and drop the step copy. Target ≤ 1.2 viewports per beat.",
+   "priority": "P2"
+  },
+  {
+   "auditSection": "G15 (story close)",
+   "criticism": "Product pages end in a dead end: no next-product continuation, and 'All six products' goes back to the homepage anchor.",
+   "status": "partly",
+   "evidence": "components/story/Story.tsx:358-374. Per-product closingLine is done (PROVISIONAL). The CTA goes to /contact/?interest=.",
+   "files": "components/story/Story.tsx, content/storyboards.ts, app/story.css",
+   "fixSpec": "Add a final horizontal chapter 'Next: {product}' showing the next product's real screen, descriptor and accent, linking to /products/<next>/, plus 'All six products' → /products/. Keep the briefing CTA primary.",
+   "priority": "P1"
+  },
+  {
+   "auditSection": "H rhythm / F#6 (tonal step with lattice horizon line)",
+   "criticism": "The sunken scenario section has only hairline borders. The specified lattice horizon line at its top edge is missing.",
+   "status": "partly",
+   "evidence": "app/ui.css:369-373 .tone-sunken has a background plus border-top and border-bottom only.",
+   "files": "app/ui.css",
+   "fixSpec": ".tone-sunken::before: a strip one lattice cell tall (56px) using the LatticeField gradients, masked to fade on both sides, aria-hidden. Count it toward the one-lattice-per-viewport rule.",
+   "priority": "P3"
+  },
+  {
+   "auditSection": "H (≈8 viewports) / M ('≤ 8.5 x innerHeight')",
+   "criticism": "The homepage is still longer than the target.",
+   "status": "partly",
+   "evidence": "Measured 8.69x at 1440x900 and 9.07x at 1440x789. The suite loosened the threshold to 8.75 (verify-launch output). It was 13.7 before.",
+   "files": "app/sections.css, app/showcase.css, scripts/verify-launch.mjs",
+   "fixSpec": "After the gallery and hero changes, size section padding by height: padding-block clamp(var(--sp-7), 9svh, var(--sp-9)). Shorten the pin to 0.45vh per card. Restore the ≤ 8.5 assertion.",
+   "priority": "P2"
+  },
+  {
+   "auditSection": "D global / F#1 (raw hex outside tokens)",
+   "criticism": "Raw colours remain in the WebGL scene and the viewport theme colour.",
+   "status": "partly",
+   "evidence": "components/room/Room.tsx has 8 literals at :148, :155, :166, :224, :237, :242, :246, :320. app/layout.tsx:50 has themeColor '#071b36'. The CSS hex values moved into tokens (only #000 mask stops remain).",
+   "files": "new lib/scene-colors.ts, components/room/Room.tsx, app/layout.tsx",
+   "fixSpec": "Export the scene colours from lib/scene-colors.ts with a comment that maps each to its token in app/tokens.css. Add a node check that the values match tokens.css. Import them in Room.tsx and layout.tsx.",
+   "priority": "P3"
+  },
+  {
+   "auditSection": "F#1 token decision (DD-14 #1B2D46) / F#6 solid cards",
+   "criticism": "The raised-surface value is undecided, and cards do not use --surface-raised at all.",
+   "status": "blocked-on-owner",
+   "evidence": "app/tokens.css:66-70 sets --surface-raised: var(--navy-800) (#2c3d54) with an open-decision note. app/ui.css:265-271 .card and showcase.css:69 .sc-card use --surface-deep.",
+   "files": "app/tokens.css, app/ui.css, app/showcase.css",
+   "fixSpec": "Get an owner ruling on #1B2D46. Then set --surface-raised to it and apply it to .card, .sc-card and .viz for one solid card recipe.",
+   "priority": "P3"
+  },
+  {
+   "auditSection": "F#4 shared components (Button)",
+   "criticism": "There is no shared Button component. Buttons are CSS classes repeated across files.",
+   "status": "partly",
+   "evidence": "app/globals.css:410-442 .btn variants and app/ui.css:85-113 .btn-text. No components/ui/Button.tsx. ProvenanceLabel, SectionHeader, ScreenFrame, LatticeField, SpecList and SiteFooter all exist.",
+   "files": "new components/ui/Button.tsx",
+   "fixSpec": "Add a Button that renders Link, a or button, with variants primary, ghost and text-arrow, a 44px minimum, and one focus style. Replace inline .btn usage.",
+   "priority": "P3"
+  },
+  {
+   "auditSection": "G2 (fifth hero affordance)",
+   "criticism": "The hero still names only four products, with no 'All six products →' link.",
+   "status": "not-fixed",
+   "evidence": "components/sections/Hero.tsx:22-27 has four MOMENTS and no extra link. The report records this as deliberately skipped.",
+   "files": "components/sections/Hero.tsx, app/hero.css",
+   "fixSpec": "Add a text link 'All six products →' under the moments (a link, not new content) pointing to /products/ once the index exists. Keep the mandated moments verbatim.",
+   "priority": "P3"
+  },
+  {
+   "auditSection": "J#7 and J#13 (heading annotation entry; route transitions)",
+   "criticism": "The section-header annotation slide and the optional home-to-product route transition were not built.",
+   "status": "not-fixed",
+   "evidence": "No IntersectionObserver or scroll timeline on .sec-head .annot (app/ui.css:53-65). No view transitions in next.config.ts.",
+   "files": "app/ui.css, next.config.ts",
+   "fixSpec": "J7: an IntersectionObserver adds .is-in, and the .annot moves x -8→0 over 240ms (the heading never animates). J13 (HYP): try experimental.viewTransition or React <ViewTransition> for a 240ms cross-fade of <main>; drop it if it needs unstable flags or causes jank. Disable both under reduced motion.",
+   "priority": "P3"
+  },
+  {
+   "auditSection": "I /company/ (video, leadership, mission)",
+   "criticism": "The company page links out to the feature video instead of using a poster-first player. Mission and leadership are absent.",
+   "status": "partly",
+   "evidence": "app/company/page.tsx:141-152 is a plain YouTube link. Mission (EV-011) and leadership (EV-013) are deliberately omitted.",
+   "files": "app/company/page.tsx",
+   "fixSpec": "Use a lazy, user-initiated youtube-nocookie embed behind a poster button (no autoplay). Add mission and leadership only when the owner supplies them with consent.",
+   "priority": "P3"
+  },
+  {
+   "auditSection": "I /contact/ form, /privacy/ (DL-T04/05/06)",
+   "criticism": "The enquiry form cannot go live: there is no API host, no Turnstile decision and no privacy text.",
+   "status": "blocked-on-owner",
+   "evidence": "lib/flags.ts:21-25 sets FORM_ENABLED only when both the API and privacy env vars exist. app/privacy/page.tsx is a noindex shell. The mailto fallback with ?interest= subject works (components/contact/ContactPanel.tsx).",
+   "files": "lib/flags.ts, components/contact/ContactForm.tsx, app/privacy/page.tsx",
+   "fixSpec": "Once the owner supplies them, set NEXT_PUBLIC_ENQUIRY_API and NEXT_PUBLIC_PRIVACY_URL, publish the privacy text, add Turnstile if chosen, and add 'nazo', 'ai-in-a-box' and 'partnership' to the server interest enum.",
+   "priority": "P1"
+  },
+  {
+   "auditSection": "N#11 / G4 / H (owner rulings)",
+   "criticism": "Several owner rulings are still pending: 'Intelligence Layer' despite EV-473 do-not-use, the section order, the H1 weight, and now whether the client's horizontal-everywhere request replaces DD-23's 250vh, 1280x760 pin budget and the net-content rule.",
+   "status": "blocked-on-owner",
+   "evidence": "components/sections/Showcase.tsx:271-276 keeps the mandated heading. The order Hero, Showcase, Scenario, World, Cta is shipped without recorded sign-off (app/page.tsx:13-17). The report lists these as owner rulings.",
+   "files": "docs/DESIGN-DIRECTIONS.md, docs/OWNER-DECISIONS-2026-10-10.md",
+   "fixSpec": "Record the client's 2026-10-11 instruction (horizontal products, 3D layers, cinematic motion, more content) as DD-26, superseding DD-23's gate and the one-signature-motion rule for product contexts. Keep the mandated copy verbatim. Ask for explicit rulings on EV-473, section order and the H1 weight.",
+   "priority": "P2"
+  },
+  {
+   "auditSection": "N#1, N#5 (logo masters, native captures)",
+   "criticism": "Some assets are still soft or carry markings: the Mandoobee composite looks upscaled, Tasree3 captures carry IP markings, Wasel has no app or controller imagery, and there are no vector logo masters.",
+   "status": "blocked-on-owner",
+   "evidence": "content/media.ts:37-44 uses the mandoobee-phones-cutout 1556x1284 composite. Tasree3 uses card-tasree3-command-center (DV-11). Wasel uses an illustration only. public/brand holds only rasters.",
+   "files": "public/media/v3/, public/brand/, content/media.ts",
+   "fixSpec": "Request native-resolution captures (Mandoobee, clean Tasree3, Wasel app and controller) and the DL-B02/B03 vector masters. Drop them into ScreenFrame, srcset and the lockup when they arrive.",
+   "priority": "P2"
+  },
+  {
+   "auditSection": "L Phase 0 (version control / CI)",
+   "criticism": "The repository is still not under version control and has no CI.",
+   "status": "blocked-on-owner",
+   "evidence": "The environment reports the directory is not a git repository. Report: 'git init needs the owner's approval'. A backup tarball exists at .backup/.",
+   "files": "(repo root)",
+   "fixSpec": "With owner approval, git init, make an initial commit, then add CI running build, typecheck and verify-launch, including the new laptop group, against the static export.",
+   "priority": "P2"
+  },
+  {
+   "auditSection": "D homepage 1-3, D product 4, G14, M honesty",
+   "criticism": "Honesty problems: the prototype footer, the 'retrieved…' line, 'to be confirmed' strings, the unsourced stats counter, mislabelled 'Product screen' diagrams and cross-product fallback labels.",
+   "status": "fixed",
+   "evidence": "verify-launch honesty group: 0 banned strings in 75 exported files, no stats counter. content/media.ts:17-24 is a typed Provenance union. BeatVisual.tsx has no fallback labels. content/showcase.ts:139-141 omits the AI in a Box deploy. SiteFooter.tsx:366-370 shows the preview note only behind a flag.",
+   "files": "content/*, components/story/BeatVisual.tsx, components/site/SiteFooter.tsx",
+   "fixSpec": "No change needed. Keep the grep guard in verify-launch. (The stricter BeatVisual caused the beat-06 regression, which has its own item.)",
+   "priority": "P3"
+  },
+  {
+   "auditSection": "D routes, G1, G11, G16, I, M navigation",
+   "criticism": "Journey problems: the /contact 404, no company or services pages, no shared footer or 404 page, two products unreachable on desktop, and no focus management in the menus.",
+   "status": "fixed",
+   "evidence": "verify-launch: 20 internal links with 0 broken. Menus group: router panel arrow keys, Escape returns focus, sheet focus trap, aria-controls resolves. The footer renders from app/layout.tsx:92. app/not-found.tsx exists. All six products are reachable from the header router.",
+   "files": "app/contact, app/company, app/services, app/not-found.tsx, components/site/Header.tsx, components/site/SiteFooter.tsx",
+   "fixSpec": "No change needed. Repoint 'All six products' to /products/ when the index ships, and carry focus management into the Dynamic Island.",
+   "priority": "P3"
+  },
+  {
+   "auditSection": "D homepage 4, G2, J#2, K reduced motion",
+   "criticism": "H1 SplitText blur that also ran under reduced motion.",
+   "status": "fixed",
+   "evidence": "components/sections/Hero.tsx:43-45 is a plain H1. app/hero.css:292-308 limits the entrance to the lede, moments and CTA under no-preference. verify-launch reduced-motion: H1 opacity 1 with no transform in 28 samples.",
+   "files": "components/sections/Hero.tsx, app/hero.css",
+   "fixSpec": "No change needed. Keep the H1 static in the hero redesign.",
+   "priority": "P3"
+  },
+  {
+   "auditSection": "D homepage 6-9, G5 (pin budget, focus, links)",
+   "criticism": "Gallery problems: an 8,305px pin, keyboard focus lost off screen, no product links, double provenance, AI-generated plates and permanent skip pills.",
+   "status": "fixed",
+   "evidence": "verify-launch: pin 2250px at 1440x900 (2.5 x viewport), first 40 Tab stops visible at 1440x900 and 1024x768, neighbours inert, one wheel notch moves one card, 4 x Next lands on card 5. Showcase.tsx:391-398 has Explore and briefing links. Plates are removed. One skip link is hidden until focused (showcase.css:148-175).",
+   "files": "components/sections/Showcase.tsx, app/showcase.css",
+   "fixSpec": "No change needed for these specific issues. The short-screen and horizontal items above build on this logic, which should be extracted into HorizontalTrack.",
+   "priority": "P3"
+  },
+  {
+   "auditSection": "G3 / K (room gating and off-screen cost)",
+   "criticism": "The room rendered on phones, never paused, used 8 panels and overlapped the H1.",
+   "status": "fixed",
+   "evidence": "components/room/RoomClient.tsx:18-49 gates on xl, Save-Data and deviceMemory ≤ 4. Room.tsx:265-273 and :307 switch frameloop to demand off screen; verify-launch counted 0 frames after scrolling past. room-layout.ts has 6 panels. The room sits in the right column (hero.css:84-99). The shadow map is 1024².",
+   "files": "components/room/*",
+   "fixSpec": "No change needed. Legibility, framing and the lattice floor are separate items.",
+   "priority": "P3"
+  },
+  {
+   "auditSection": "D homepage 11-14, G6, G8-G10",
+   "criticism": "Homepage section problems: wrong GMT offsets, a mixed partner list, the logo marquee with no pause control, duplicate mailto CTAs and the stats row.",
+   "status": "fixed",
+   "evidence": "components/sections/Sections.tsx:26-59 shows offices as city and country with no offsets, and one merged partners list (preview-only unconfirmed list). LogoLoop and CountUp are removed. The CTA is /contact/ plus CopyEmail (:98-103).",
+   "files": "components/sections/Sections.tsx, content/company.ts",
+   "fixSpec": "No change needed.",
+   "priority": "P3"
+  },
+  {
+   "auditSection": "D product 1-2, 5, 8, 10-11; G12, G13 layout",
+   "criticism": "Product-page problems: the CTA 404, diagrams under the text and a scrim, ghosting visuals, the templated closing line and missing Arabic lang.",
+   "status": "fixed",
+   "evidence": "Story.tsx:332 and :365 link to /contact/?interest=. app/story.css:146-174 uses the 12-column split, visibility:hidden for inactive visuals and no scrim. Story.tsx:324 has lang='ar' dir='rtl'. closingLine is per product (PROVISIONAL). The keyboard chapter rail is at Story.tsx:131-148.",
+   "files": "components/story/Story.tsx, app/story.css, content/storyboards.ts",
+   "fixSpec": "No change needed. The horizontal rebuild must keep these guarantees.",
+   "priority": "P3"
+  },
+  {
+   "auditSection": "D global, K perf/SEO/console",
+   "criticism": "Engineering problems: Tailwind scanned the whole repo, unused dependencies, unpermitted marks in public/, no favicon, OG image, sitemap or JSON-LD, and RSC prefetch 404s in the console.",
+   "status": "fixed",
+   "evidence": "app/globals.css:199-207 uses source(none). package.json no longer has motion, ogl or @gsap/react. media-src/held holds the marks. verify-launch: icon, apple-icon, OG, sitemap and robots return 200; 0 console errors on 11 routes at 3 widths; axe 0 serious or critical on 10 routes at 2 widths. app/layout.tsx:56-70 has JSON-LD with verified fields. scripts/postexport-rsc.mjs flattens the RSC files.",
+   "files": "app/globals.css, package.json, scripts/postexport-rsc.mjs, app/layout.tsx",
+   "fixSpec": "No change needed locally. The RSC flatten fix still has to be verified on the production Apache host.",
+   "priority": "P3"
+  }
+ ]
+}

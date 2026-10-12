@@ -1,0 +1,341 @@
+{
+ "screenshotsDir": "C:/Users/abhin/AppData/Local/Temp/mrn/r2p/shots (122 PNGs; contact sheets per route x viewport in C:/Users/abhin/AppData/Local/Temp/mrn/r2p/sheets; scripts C:/Users/abhin/AppData/Local/Temp/mrn/r2p/audit.cjs and depth.cjs; raw metrics C:/Users/abhin/AppData/Local/Temp/mrn/r2p/results.json)",
+ "viewports": [
+  {
+   "viewport": "1920x937",
+   "route": "/products/tasree3/",
+   "galleryMode": "vertical sticky stage: 8 beats x 100svh, text scrolls left, one card swaps on the right (no horizontal)",
+   "h1Lines": 4,
+   "heroCtaVisible": true,
+   "cardFitsViewport": true,
+   "docHeightViewports": 9.8,
+   "roomOverlapsCopy": false,
+   "issues": [
+    "Content sits in a ~1184px container, leaving ~370px of empty lattice on each side. The visual covers 9-17% of the viewport and the text 5-6%, so roughly 80% of every frame is empty background",
+    "In 34% of scroll positions the beat text covers less than 25% of the viewport",
+    "Beat 1's dark card peeks over the bottom edge of the hero (y=920) and looks like a rendering artifact",
+    "Beat 06 'Enterprise process management' shows nothing on the right: the features grid renders null",
+    "Between beats 2 and 3, half the screen is empty. Beat 2's body is leaving at the top and beat 3's heading is arriving at the bottom, while the card has already switched to beat 3 (the visual no longer matches the text being read)",
+    "Beat 05: the visual repeats the step list from the text word for word, and its 5 steps wrap 4+1, leaving 'Govern' orphaned",
+    "Beats 03/08: 3 tiles sit in a 2-column grid with an empty 4th cell. The tiles only repeat the heading or feature words",
+    "Close: a ~250px band of empty lattice above it, then a text-only block with an empty right half and no next/previous product link",
+    "H1 runs to 4 lines at 68px in a 6/12 column"
+   ]
+  },
+  {
+   "viewport": "1536x730",
+   "route": "/products/tasree3/",
+   "galleryMode": "vertical sticky stage, 8 beats",
+   "h1Lines": 4,
+   "heroCtaVisible": false,
+   "cardFitsViewport": false,
+   "docHeightViewports": 10.6,
+   "roomOverlapsCopy": false,
+   "issues": [
+    "Hero CTA bottom is at 730px, exactly on the fold, so the buttons are cut off. The hero is 1.1 viewports tall",
+    "Beat 1's split card (514px) starts at y=53, under the 73px fixed header, which hides the 'As drawn / As it runs' labels",
+    "The walkthrough beat is 1.23 viewports tall: its text runs off the bottom while the card stays fixed",
+    "Beat 06's visual is empty",
+    "The stage swaps the visual before its text arrives (text and visual mismatch mid-scroll)",
+    "The close is preceded by an empty lattice band"
+   ]
+  },
+  {
+   "viewport": "1440x900",
+   "route": "/products/tasree3/",
+   "galleryMode": "vertical sticky stage, 8 beats",
+   "h1Lines": 4,
+   "heroCtaVisible": true,
+   "cardFitsViewport": true,
+   "docHeightViewports": 9.9,
+   "roomOverlapsCopy": false,
+   "issues": [
+    "Layout holds, but in 30% of scroll positions the text covers less than 25% of the viewport, and the visual takes only 12-23% of the area",
+    "Every beat repeats one template (eyebrow, H2, 1-2 lines, dark rounded card on the right) with only a 12px fade between them",
+    "Beat 06's visual is empty",
+    "The beat 05 visual duplicates the step list"
+   ]
+  },
+  {
+   "viewport": "1366x657",
+   "route": "/products/tasree3/",
+   "galleryMode": "vertical sticky stage, 8 beats",
+   "h1Lines": 4,
+   "heroCtaVisible": false,
+   "cardFitsViewport": false,
+   "docHeightViewports": 11,
+   "roomOverlapsCopy": false,
+   "issues": [
+    "Hero CTA bottom is at 730px against a 657px viewport: both buttons are below the fold and the Arabic name moment sits on the fold line. The hero is 1.22 viewports tall",
+    "Beat 1's card top is at y=23, behind the header, which hides its column labels",
+    "The walkthrough beat is 1.37 viewports tall and its text reaches y=795, so the reader scrolls through text past a static card",
+    "Beat 06: an empty right half with only a heading and one line on the left (screenshot tasree3_1366x657_6-beat06.png)",
+    "The story body alone takes 8.4 viewports of scrolling for ~450 words on the whole page",
+    "The close is preceded by an empty band"
+   ]
+  },
+  {
+   "viewport": "1280x601",
+   "route": "/products/tasree3/",
+   "galleryMode": "vertical sticky stage, 8 beats",
+   "h1Lines": 4,
+   "heroCtaVisible": false,
+   "cardFitsViewport": false,
+   "docHeightViewports": 11.3,
+   "roomOverlapsCopy": false,
+   "issues": [
+    "Hero CTA (bottom at 722px) and name moment are below the fold, and the hero screen's provenance label is cut. The hero is 1.32 viewports tall",
+    "Beat 1's card top is at y=0, so its top 73px sit fully behind the fixed header",
+    "The walkthrough beat is 1.49 viewports tall and its text is clipped at the bottom",
+    "The chapter-rail ticks (x≈1218-1250) overlap the card's right edge (≈1230)",
+    "Beat 06's visual is empty",
+    "At 11.3 viewports, this is the longest page of the set"
+   ]
+  },
+  {
+   "viewport": "1024x768",
+   "route": "/products/tasree3/",
+   "galleryMode": "vertical sticky stage, 8 beats (lg breakpoint)",
+   "h1Lines": 4,
+   "heroCtaVisible": true,
+   "cardFitsViewport": false,
+   "docHeightViewports": 10.6,
+   "roomOverlapsCopy": false,
+   "issues": [
+    "Beat 1's card top is at y=68, under the 73px header",
+    "The rail ticks overlap the card's right edge",
+    "The walkthrough beat is 1.31 viewports tall with its text clipped",
+    "Beat headings wrap to 3 lines in a 5/12 column",
+    "Beat 06's visual is empty"
+   ]
+  },
+  {
+   "viewport": "768x1024",
+   "route": "/products/tasree3/",
+   "galleryMode": "no stage: every beat is a vertical stack (text, then an inline card)",
+   "h1Lines": 2,
+   "heroCtaVisible": true,
+   "cardFitsViewport": true,
+   "docHeightViewports": 8,
+   "roomOverlapsCopy": false,
+   "issues": [
+    "Purely vertical document with no swipe or horizontal interaction",
+    "In 47% of scroll positions the text covers less than 25% of the viewport, with large empty bands between beats",
+    "The walkthrough shows the step list, then the same 5 steps again as a diagram",
+    "Beat 06 is only a heading and one line: the features grid renders null and BeatText suppresses the features list, so the 6 features never appear",
+    "The close is a text-only block"
+   ]
+  },
+  {
+   "viewport": "390x844",
+   "route": "/products/tasree3/",
+   "galleryMode": "no stage: every beat is a vertical stack",
+   "h1Lines": 3,
+   "heroCtaVisible": true,
+   "cardFitsViewport": true,
+   "docHeightViewports": 10.5,
+   "roomOverlapsCopy": false,
+   "issues": [
+    "10.5 phone screens of vertical scrolling and no horizontal swipe",
+    "The walkthrough beat is 1.67 screens tall: a step list plus a duplicate steps diagram",
+    "Beat 06 shows no features at all",
+    "The hero screen starts only after the CTAs, at the bottom of the first screen",
+    "The close is preceded by a sliced card tail and an empty band"
+   ]
+  },
+  {
+   "viewport": "1920x937",
+   "route": "/products/yisbir/",
+   "galleryMode": "vertical sticky stage, 8 beats",
+   "h1Lines": 4,
+   "heroCtaVisible": true,
+   "cardFitsViewport": true,
+   "docHeightViewports": 9.9,
+   "roomOverlapsCopy": false,
+   "issues": [
+    "Beat 01 'wall' is six identical diagonal-striped grey boxes. It reads as broken image placeholders, not a camera wall",
+    "Beat 03 'One frame, four layers' is a flat stack of 4 identical frames where only 'PEOPLE' is legible. Speech, on-screen text and objects/events are hidden, even though this is the one scene whose message is literally separated depth",
+    "In 38% of scroll positions the text covers less than 25% of the viewport. The visual takes 9-13% of the area and ~370px side margins stay empty",
+    "Beat 06's visual is empty",
+    "Between beats, the beat 3 card is already visible while beat 2's text is still leaving",
+    "Only 2 product images on the page (hero fire/smoke and beat 8 PPE). SCREENS.yisbirAlerts and yisbirPpeWall exist but are used only on the homepage"
+   ]
+  },
+  {
+   "viewport": "1536x730",
+   "route": "/products/yisbir/",
+   "galleryMode": "vertical sticky stage, 8 beats",
+   "h1Lines": 4,
+   "heroCtaVisible": false,
+   "cardFitsViewport": true,
+   "docHeightViewports": 10.6,
+   "roomOverlapsCopy": false,
+   "issues": [
+    "Hero CTA buttons are cut by the fold (bottom at 763 vs 730): only the top half of 'Request a Yisbir demo' shows",
+    "The walkthrough beat is 1.19 viewports tall with its text clipped",
+    "Beat 06's visual is empty",
+    "Layers and wall are static and flat"
+   ]
+  },
+  {
+   "viewport": "1440x900",
+   "route": "/products/yisbir/",
+   "galleryMode": "vertical sticky stage, 8 beats",
+   "h1Lines": 4,
+   "heroCtaVisible": true,
+   "cardFitsViewport": true,
+   "docHeightViewports": 9.9,
+   "roomOverlapsCopy": false,
+   "issues": [
+    "In 37% of scroll positions the text covers less than 25% of the viewport",
+    "The same card template repeats 8 times",
+    "Beat 06 is empty",
+    "The layers diagram shows only one of its four labels"
+   ]
+  },
+  {
+   "viewport": "1366x657",
+   "route": "/products/yisbir/",
+   "galleryMode": "vertical sticky stage, 8 beats",
+   "h1Lines": 4,
+   "heroCtaVisible": false,
+   "cardFitsViewport": true,
+   "docHeightViewports": 11,
+   "roomOverlapsCopy": false,
+   "issues": [
+    "Hero CTA is below the fold (bottom at 763 vs 657) and the hero is 1.27 viewports tall",
+    "The walkthrough beat is 1.32 viewports tall and its text is clipped",
+    "Beat 06: empty right half",
+    "The close's solid top edge slices beat 8's PPE screen in half at y≈230 (screenshot yisbir_1366x657_9-close.png)",
+    "Beat 2's tiles: 3 items in a 2x2 grid with an empty cell"
+   ]
+  },
+  {
+   "viewport": "1280x601",
+   "route": "/products/yisbir/",
+   "galleryMode": "vertical sticky stage, 8 beats",
+   "h1Lines": 4,
+   "heroCtaVisible": false,
+   "cardFitsViewport": true,
+   "docHeightViewports": 11.3,
+   "roomOverlapsCopy": false,
+   "issues": [
+    "Hero sub-copy is cut at the fold, with the name moment and CTAs fully below it (bottom at 754). The hero is 1.37 viewports tall",
+    "The walkthrough beat is 1.45 viewports tall",
+    "The close slices the PPE screen, leaving only a sliver strip",
+    "The rail overlaps the card's right edge",
+    "Between beats, the layers card shows while beat 2's text is still on screen"
+   ]
+  },
+  {
+   "viewport": "1024x768",
+   "route": "/products/yisbir/",
+   "galleryMode": "vertical sticky stage, 8 beats (lg breakpoint)",
+   "h1Lines": 4,
+   "heroCtaVisible": true,
+   "cardFitsViewport": true,
+   "docHeightViewports": 10.5,
+   "roomOverlapsCopy": false,
+   "issues": [
+    "The walkthrough beat is 1.28 viewports tall with its text clipped",
+    "The rail ticks overlap the card edge",
+    "Beat 06's visual is empty",
+    "Beat headings wrap to 3 lines"
+   ]
+  },
+  {
+   "viewport": "768x1024",
+   "route": "/products/yisbir/",
+   "galleryMode": "no stage: vertical stacked beats",
+   "h1Lines": 2,
+   "heroCtaVisible": true,
+   "cardFitsViewport": true,
+   "docHeightViewports": 7.9,
+   "roomOverlapsCopy": false,
+   "issues": [
+    "Vertical stack with no horizontal behaviour",
+    "In 31% of scroll positions the text covers less than 25% of the viewport",
+    "The layers diagram is an empty frame labelled 'PEOPLE'",
+    "The walkthrough steps are duplicated",
+    "Beat 06 has no features"
+   ]
+  },
+  {
+   "viewport": "390x844",
+   "route": "/products/yisbir/",
+   "galleryMode": "no stage: vertical stacked beats",
+   "h1Lines": 4,
+   "heroCtaVisible": true,
+   "cardFitsViewport": true,
+   "docHeightViewports": 10.5,
+   "roomOverlapsCopy": false,
+   "issues": [
+    "10.5 screens of vertical scrolling",
+    "H1 is 4 lines at 40px",
+    "The walkthrough beat is 1.62 screens tall, with steps listed twice",
+    "The layers visual is an empty box",
+    "The close is preceded by a sliced PPE screen tail and a ~200px empty band",
+    "No swipe or horizontal navigation between scenes"
+   ]
+  }
+ ],
+ "topProblems": [
+  {
+   "problem": "The product pages are entirely vertical. The client's first ask (horizontal) is not met at any size.",
+   "evidence": "At ≥1024px it is a sticky right-hand card with 8 beats of 100svh scrolling vertically on the left. Below 1024px it is a plain vertical stack. Every route and viewport has 0px of horizontal travel. The story body takes 8.0-8.5 viewports of vertical scroll (4,840px at 1366x657), and the whole document is 9.8-11.3 viewports tall on desktop and 10.5 on a phone.",
+   "rootCause": "Story.tsx is built as vertical scrollytelling. `.beats` is normal flow of `.beat {min-height:100svh}`, `.stage` is `position:sticky; margin-bottom:-100svh`, and the only scroll logic is a ScrollTrigger that picks the beat whose midpoint is nearest the viewport centre and sets `active`. Nothing translates on the x axis.",
+   "fix": "Replace the stage and beats with a pinned horizontal scene track. Make `.story-track` a flex row of `.scene` panels, each 100vw wide and `calc(100svh - var(--header-h))` tall. Pin it with ScrollTrigger (`pin:true, scrub:0.6, end:()=>'+='+(track.scrollWidth-innerWidth), invalidateOnRefresh:true`), drive it with `gsap.to(track,{x:()=>-(track.scrollWidth-innerWidth),ease:'none'})`, and snap to panels (`snap:{snapTo:1/(n-1),duration:{min:.3,max:.6},ease:'power2.inOut'}`). Turn the rail into a bottom progress bar with labelled chapter links that jump via ScrollToPlugin to `st.start + i/(n-1)*(st.end-st.start)`. On touch devices or heights under ~560px, use a native horizontal scroll-snap rail instead of a pin (`overflow-x:auto; scroll-snap-type:x mandatory`, panels ~88vw) with prev/next buttons. Under reduced motion, show the same panels as a static complete list with no pin.",
+   "files": "components/story/Story.tsx, app/story.css, lib/breakpoints.ts (MQ for the horizontal pin, mirroring MQ.pinned but with a lower min-height)"
+  },
+  {
+   "problem": "There is no perceptible 3D depth, and no real background, midground and foreground planes.",
+   "evidence": "Measured at 1366x657 over the full 4,840px story: the lattice (.stage-bg) moves from -34 to +39px (73px), the visual layer (.stage-grid) from -48 to +55px (103px), and the text moves 4,840px. The two 'depth' layers differ by 30px across the whole page, about 0.6% of scroll. On screen it reads as a fixed card with text scrolling past it. Every visual sits in the same flat chrome (ink-950 card, 1px line, same radius, same shadow, same position).",
+   "rootCause": "Story.tsx sets BG_RATE=0.14 and MID_RATE=0.2 times `innerHeight*0.5`, spread over the entire story body. There is no perspective, no translateZ, and no per-scene layers. The foreground is just document flow.",
+   "fix": "Give each scene explicit planes moving at different horizontal rates via `containerAnimation`. (1) A back plate: a full-bleed product-tinted gradient, an oversized lattice, and a huge outlined chapter numeral or keyword, at about 0.3x track speed. (2) A midground: the diagram or real screen at 1x, inside `perspective:1200px`, easing from `rotateY(-10deg) translateZ(-80px)` to flat as it centres. (3) A foreground: the text card plus 2-3 floating callout chips built from the beat's own data (the 'Wait'/'Loop' warn nodes, a timecode like '00:14:32', a KPI from the real screen) at 1.25-1.4x with `translateZ(60px)` and a soft shadow. Animate transform and opacity only, and show the final state under reduced motion."
+  },
+  {
+   "problem": "No scene has its own cinematic animation. The whole page uses one 12px crossfade.",
+   "evidence": "story.css has zero @keyframes. Its only transitions are `.stage-visual` opacity plus translateY(12px) and the rail ticks. The page's only other motion is the one-shot hero lattice assemble. All diagrams (split, lanes, flow, steps, tiles, wall, layers, records) are static DOM. Yisbir's 'One frame, four layers' is a flat stack where only 'PEOPLE' is legible, which hides 3 of the 4 layers the copy promises. The 'wall' is six identical striped boxes that read as broken placeholders.",
+   "rootCause": "BeatVisual.tsx renders static markup, and Story.tsx has no per-beat timeline: it only toggles `.is-active`.",
+   "fix": "Write one timeline per viz kind, triggered as its panel enters (`containerAnimation: trackTween, start:'left 75%', end:'center center', scrub`). Split: the 'as it runs' nodes build in sequence and the warn nodes nudge out of line. Lanes: the SVG case path draws across the departments (stroke-dashoffset). Flow: the edges draw and a dash runs back along the rework loop. Steps: an animated pipeline lights each step in turn. Layers: an exploded isometric stack (`rotateX(55deg) rotateZ(-30deg)`, layers separating along translateZ, each label fading in), which turns Yisbir's message into literal foreground/background. Wall: tiles power on, a scan line sweeps, one tile highlights with a timecode. Records: the query types in and rows stagger in. Real screens: a scale 1.08→1 plus clip-path reveal with chips pinned to real UI regions. Under reduced motion each scene renders its end state."
+  },
+  {
+   "problem": "Beat 06 (features) renders nothing on all six product pages, and its six features never appear anywhere.",
+   "evidence": "Screenshots tasree3_1366x657_6-beat06.png and yisbir_1366x657_6-beat06.png show an empty right half. metricsAt recorded `.stage-visual.is-active` with no child (height 0), and the first audit run crashed on it. Below 1024px the beat is just a heading and one line.",
+   "rootCause": "In content/storyboards.ts, the features beats at lines 201, 328, 452, 590, 722 and 846 have `viz:{kind:'grid'}` but no `provenance`. BeatVisual.tsx calls `fail('draws a diagram but has no provenance')`, which returns null when NODE_ENV is production, so `next build` never throws. BeatText also skips `beat.features` when `viz.kind==='grid'`. The result: the features render neither as a visual nor as text.",
+   "fix": "Render the features list without a provenance gate, since it is a list rather than a diagram, or add `provenance:'Illustrative diagram'`. Also add a content unit test, run in CI rather than relying on the dev-only throw, that asserts every non-screen viz has provenance and every grid or steps viz has data.",
+   "files": "content/storyboards.ts, components/story/BeatVisual.tsx, components/story/Story.tsx (BeatText)"
+  },
+  {
+   "problem": "The content is thin and repetitive: one template eight times, with the visuals restating the text.",
+   "evidence": "The whole page has ~450 words (tasree3 452, yisbir 432). Beat text runs 16-33 words except the walkthrough (78-82). There are only 2 real product images per page, and no next or previous product link (only 'All six products' pointing to /#products). The walkthrough visual repeats the step list beside it word for word, and its 5 steps wrap 4+1, orphaning the last one. Tile visuals restate headings: Tasree3 beat 8's tiles equal its features, and 3 tiles sit in a 2-column grid with an empty cell. Every beat is eyebrow, H2, 1-2 lines and a card on the right, with the same card size and position.",
+   "rootCause": "The storyboard schema gives each beat one short body and one viz, and Story.tsx renders all beats through one layout. Media already in content/media.ts (SCREENS.yisbirAlerts, SCREENS.yisbirPpeWall) is used only on the homepage scenario.",
+   "fix": "Vary the scene layouts: full-bleed screen, split diagram, centred statement, 6-card capability grid, and a closing panel. Give each scene a detail row of 2-3 chips taken from data already in the beat (warn nodes, timecodes, real-screen KPIs labelled 'demo data'). Add the existing register-backed screens (yisbirAlerts and yisbirPpeWall on Yisbir). Turn the walkthrough visual into an animated pipeline instead of a duplicate list. End with a 'next product' panel that shows the next product's real screen. Do not invent claims: any new line must come from register items marked ok-to-use or use-with-edit."
+  },
+  {
+   "problem": "Layout breaks at short laptop heights (1536x730, 1366x657, 1280x601) and at 1024x768.",
+   "evidence": "The hero CTA is below or on the fold at 1536x730 (bottom at 730/763), 1366x657 (730/763) and 1280x601 (722/754). The hero is 1.1-1.37 viewports tall and the H1 is always 4 lines at 66-68px. Beat 1's 514px split card slides under the 73px fixed header (top at y=53 at 1536x730, 23 at 1366x657, 0 at 1280x601, 68 at 1024x768), which hides the 'As drawn / As it runs' labels. The walkthrough beat is 1.19-1.49 viewports tall, so its text is clipped while the card stays still. The chapter-rail ticks overlap the card's right edge at 1280 and 1024 widths.",
+   "rootCause": "`.story-hero` uses padding-block 148px 72px and an H1 clamp up to 4.25rem in a 6/12 column. `.stage` is a full 100svh that includes the header area, `.stage-mid` centres the visual with no max-height, and the parallax adds about -48px. `.beat` has no height budget. `.stage-rail` sits at `right: gutter/2` inside the content area.",
+   "fix": "Hero: `padding-top: calc(var(--header-h) + clamp(16px,4svh,48px))`, `font-size: min(clamp(2.5rem,1.4rem+3.4vw,4.25rem), 9svh)`, a 7/12 text column, and an `@media (max-height:760px)` compaction (smaller sub, name moment inline) so the CTA fits in the first viewport from 600px tall up. Scenes: height `calc(100svh - var(--header-h))` below the header, and visuals capped at `max-height: calc(100svh - var(--header-h) - 2*var(--sp-6))` with screens scaled to fit. Size type with `min(vw, svh)` clamps. Move the rail into a bottom progress bar outside the content columns.",
+   "files": "app/story.css (.story-hero, .stage, .stage-mid, .beat, .stage-rail), components/story/Story.tsx"
+  },
+  {
+   "problem": "Scrolling between beats is dead air, and the text and visual go out of sync.",
+   "evidence": "In the between-beat screenshots, about half of each frame is empty: the previous body is leaving at the top and the next heading entering at the bottom, while the card has already switched (1920x937 tasree3 shows beat 3's tiles beside beat 2's text, and yisbir 1280x601 shows the layers card beside beat 2's text). At 1920x937 and 1440x900, 30-38% of scroll positions have under 25% text coverage, and at 768x1024 it is 47%. On wide screens the visual takes 9-17% of the viewport and the text 5-6%.",
+   "rootCause": "Each beat is 100svh with short, centred text, and the active visual is chosen by nearest midpoint, so it switches about half a viewport before the matching text is readable. The ~1184px container leaves ~370px empty on each side at 1920px.",
+   "fix": "In the horizontal track, each scene's text and visual live in one panel and arrive together, and snapping ensures the user never rests between scenes. Use a full-bleed back plate and let the visual grow to about 55-60vw at ≥1440px, so a 1920px frame is composed rather than mostly empty."
+  },
+  {
+   "problem": "The ending is broken and abrupt, and the hero leaks the stage.",
+   "evidence": "At 1366x657 and 1280x601, the close's solid top edge slices Yisbir's beat 8 PPE screen in half (y≈230). At 1920x937 a ~250px empty lattice band sits above the Tasree3 close. On a phone the close is preceded by a sliced screen tail and a ~200px empty band. At 1920x937, beat 1's dark card peeks over the bottom of the hero (y=920). The close itself is a text-only band with the right half empty.",
+   "rootCause": "The sticky stage, with `margin-bottom:-100svh` and `.story-body{overflow:clip}`, keeps the last visual on screen until `.story-close` (z-index 3, solid background) covers it. The stage begins immediately under the hero.",
+   "fix": "Make the close the last panel inside the pinned track (product CTA, 'All six products', and a next-product teaser with its real screen), so the pin releases only after the ending is fully composed. Start the track below the hero with its own entrance so nothing peeks."
+  },
+  {
+   "problem": "Phones and tablets get the weakest version: a long vertical stack with duplicated content and no swipe.",
+   "evidence": "390x844 runs 10.5 screens, and the walkthrough beat is 1.62-1.67 screens tall because the step list is followed by the same steps as a diagram. 768x1024 runs 7.9-8 viewports, with 31-47% of positions mostly empty. Yisbir's layers visual is an empty frame reading 'PEOPLE'. Beat 06 shows no features.",
+   "rootCause": "Story.tsx never loads GSAP below 1024px and falls back to inline vertical beats. The CSS duplicates content (beat-steps plus a viz-steps diagram).",
+   "fix": "Below 1024px, or on any touch device, use a native horizontal scroll-snap scene rail (no pin, no GSAP needed). Each card holds the visual on top and the text below and fits within `100svh - header`. Add a progress or dot indicator and prev/next buttons that are visibly focusable. Run lightweight per-card reveal animations from an IntersectionObserver on the rail root. Drop the duplicated steps diagram. Reduced motion keeps the same rail, static and complete."
+  }
+ ]
+}

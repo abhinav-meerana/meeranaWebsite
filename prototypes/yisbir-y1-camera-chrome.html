@@ -1,0 +1,1076 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-brand="yisbir" data-surface="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>YISBIR · Y1 Camera Chrome · hero prototype</title>
+<meta name="description" content="Design prototype Y1 (Camera Chrome) for YISBIR site safety. Internal exploration: illustrative interface with simulated detections; copy pending evidence sign-off.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* Critical paint before the Tailwind browser build compiles: page colour and font only. */
+  html { background: #00132D; color: #FFFFFF; font-family: "Montserrat", ui-sans-serif, system-ui, sans-serif; }
+</style>
+<script>
+  (function () { var d = document.documentElement;
+    try { if (localStorage.getItem('yisbir-motion') === 'reduce') d.dataset.motion = 'reduce'; } catch (e) {} })();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.3"></script>
+<style type="text/tailwindcss">
+@import "tailwindcss";
+/* ==========================================================================
+   tokens.css: Meerana + YISBIR design tokens for Tailwind CSS v4 (CSS-first)
+   --------------------------------------------------------------------------
+   Source of truth:
+   - plan/design-tokens.json: primitive → derived → semantic (Meerana + 4 products)
+   - YISBIR-derived values added here with the same recipe: mix(a, b, t) = a + (b − a)·t in sRGB
+   - Contrast: references/contrast-matrix.md (every pair used below is listed there)
+
+   Import order in Next.js app/globals.css (see references/shadcn-setup.md §3):
+       1. tailwindcss          (the framework)
+       2. ./tokens.css         (this file)
+       3. tw-animate-css       (only if shadcn/ui is used)
+   NOTE: never write the literal at-import keyword inside this file, not even in comments.
+   The Tailwind Play CDN (@tailwindcss/browser) prepends the framework import only when the
+   stylesheet text contains no at-import string at all. A comment mentioning one silently drops all
+   utilities. Prototypes therefore import the framework explicitly as their first line.
+
+   Rules:
+   1. Components use SEMANTIC utilities only (bg-surface, text-fg, border-line, bg-action …).
+      Primitives live in :root and generate NO utilities, so off-brand colours cannot be written.
+   2. Sections choose a surface with data-surface="dark|light" (dark is the default)
+      and optionally data-product="wasel|mandoobee|tasree3|yisbir|nazo".
+      Brand roots use data-brand="meerana" (default) or data-brand="yisbir".
+   3. Our product accent is --product-accent. It is NOT shadcn's --accent, which is a
+      hover-background token; that name collision is why it was renamed from plan/09's --accent.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Remove Tailwind's default palette, shadows and radii.
+      Utilities exist only for the tokens defined in this file.
+   -------------------------------------------------------------------------- */
+@theme {
+  --color-*: initial;
+  --shadow-*: initial;
+  --radius-*: initial;
+  --font-*: initial;
+
+  /* Breakpoints: 375 base · 768 · 1024 · 1280 · 1600 (meerana-a11y-responsive).
+     sm is kept for shadcn/ui compatibility. */
+  --breakpoint-*: initial;
+  --breakpoint-sm: 40rem;
+  --breakpoint-md: 48rem;
+  --breakpoint-lg: 64rem;
+  --breakpoint-xl: 80rem;
+  --breakpoint-2xl: 100rem;
+
+  /* Type scale. plan/design-tokens.json → type.scale, plus the brief's display-xl for heroes. */
+  /* hero headline of up to 8 words (two lines in a 7-of-12 column at 1440 with Poppins Light).
+     Measured in prototypes/meerana-m1: 6rem wrapped an 8-word H1 onto 4 lines. */
+  --text-display-xl: clamp(2.6rem, 1.15rem + 4.1vw, 4.4rem);
+  --text-display-xl--line-height: 1.02;
+  --text-display-xl--letter-spacing: -0.035em;
+  --text-display-1: clamp(2.75rem, 1.6rem + 4.6vw, 5.25rem);
+  --text-display-1--line-height: 1.04;
+  --text-display-1--letter-spacing: -0.03em;
+  --text-display-2: clamp(2.25rem, 1.5rem + 3vw, 3.75rem);
+  --text-display-2--line-height: 1.08;
+  --text-display-2--letter-spacing: -0.025em;
+  --text-heading-1: clamp(1.75rem, 1.35rem + 1.6vw, 2.5rem);
+  --text-heading-1--line-height: 1.15;
+  --text-heading-1--letter-spacing: -0.015em;
+  --text-heading-2: clamp(1.375rem, 1.2rem + 0.7vw, 1.75rem);
+  --text-heading-2--line-height: 1.25;
+  --text-heading-2--letter-spacing: -0.01em;
+  --text-heading-3: 1.25rem;
+  --text-heading-3--line-height: 1.3;
+  --text-lede: clamp(1.125rem, 1.05rem + 0.35vw, 1.3125rem);
+  --text-lede--line-height: 1.55;
+  --text-body: 1.0625rem;
+  --text-body--line-height: 1.65;
+  --text-small: 0.9375rem;
+  --text-small--line-height: 1.5;
+  --text-ui: 0.875rem;
+  --text-ui--line-height: 1.4;
+  --text-label: 0.8125rem;
+  --text-label--line-height: 1.3;
+  --text-label--letter-spacing: 0.06em;
+  --text-mono: 0.75rem;
+  --text-mono--line-height: 1.4;
+  --text-mono--letter-spacing: 0.04em;
+
+  /* Radius (plan/09 §7), with shadcn's sm/md/lg/xl mapped onto it */
+  --radius-control: 6px;
+  --radius-input: 8px;
+  --radius-card: 16px;
+  --radius-panel: 24px;
+  --radius-pill: 999px;
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+
+  /* Elevation: light surfaces only, max 2 levels. Dark surfaces use borders. */
+  --shadow-xs: 0 1px 2px rgb(7 27 54 / 0.06);
+  --shadow-sm: 0 1px 2px rgb(7 27 54 / 0.06), 0 1px 1px rgb(7 27 54 / 0.04);
+  --shadow-md: 0 8px 24px rgb(7 27 54 / 0.08);
+  --shadow-lg: 0 8px 24px rgb(7 27 54 / 0.08);
+
+  /* Motion: one easing family, three durations (web-animations skill; DD-13) */
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-enter: cubic-bezier(0, 0, 0, 1);
+  --ease-exit: cubic-bezier(0.3, 0, 1, 1);
+  --animate-reveal: reveal 240ms cubic-bezier(0, 0, 0, 1) both;
+  --animate-fade: fade 240ms cubic-bezier(0.2, 0, 0, 1) both;
+
+  @keyframes reveal {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: none; }
+  }
+  @keyframes fade {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+}
+
+/* --------------------------------------------------------------------------
+   2. Primitives and derived values (NO utilities generated)
+   -------------------------------------------------------------------------- */
+:root {
+  /* Meerana master: brand PDF p.1 swatches */
+  --meerana-blue: #0D3BFF;
+  --meerana-navy: #071B36;
+  --meerana-cyan: #3FD0FF;
+  --meerana-neutral: #EDEDED;
+  --meerana-white: #FFFFFF;
+  /* Meerana derived: plan/design-tokens.json → derived */
+  --navy-950: #051326;  /* mix(navy, #000, .30) */
+  --navy-900: #1B2D46;  /* mix(navy, white, .08). NEW: raised dark panel. plan's navy-800 fails muted text (4.38:1). */
+  --navy-800: #2C3D54;  /* mix(navy, white, .15): hairlines on dark; never a text background for muted text */
+  --navy-600: #515F72;  /* mix(navy, white, .30) */
+  --navy-500: #778290;  /* mix(navy, white, .45): UI boundaries ≥3:1 on white and navy */
+  --navy-300: #9CA4AF;  /* mix(navy, white, .60) */
+  --navy-200: #B5BBC3;  /* mix(navy, white, .70) */
+  --navy-150: #C1C6CD;  /* mix(navy, white, .75): decorative dividers on light only */
+  --navy-050: #F5F6F7;  /* mix(navy, white, .96) */
+  --blue-050: #ECEFFF;  /* mix(blue, white, .92) */
+  --blue-100: #DBE2FF;  /* mix(blue, white, .85) */
+  --blue-hover: #0C35D7;   /* mix(blue, navy, .20) */
+  --blue-pressed: #0B30B9; /* mix(blue, navy, .35) */
+
+  /* Product sub-brands: brand PDF p.3 swatches */
+  --wasel-brown: #6B3E26;  --wasel-sand: #D9C1A3;  --wasel-copper: #C58A52;  --wasel-ivory: #F7F4EF;
+  --mandoobee-royal: #0D3D91;  --mandoobee-azure: #047AFF;  --mandoobee-slate: #6C819A;  --mandoobee-mist: #F0F4F9;
+  --tasree3-ink: #001731;  --tasree3-sky: #009BFD;  --tasree3-orange: #FD5D01;  --tasree3-white: #FFFFFF;
+  --yisbir-blue: #0045F8;  --yisbir-aqua: #43DAFE;  --yisbir-abyss: #00132D;  --yisbir-white: #FFFFFF;
+
+  /* YISBIR derived: NEW in this file, same recipes as the Meerana navy scale */
+  --abyss-950: #000D20;  /* mix(abyss, #000, .30) */
+  --abyss-800: #26364C;  /* mix(abyss, white, .15) */
+  --abyss-700: #14263E;  /* mix(abyss, white, .08): raised dark panel */
+  --abyss-600: #4C5A6C;  /* mix(abyss, white, .30): secondary/muted text on light (7.03:1) */
+  --abyss-500: #737D8C;  /* mix(abyss, white, .45): UI boundaries ≥3:1 */
+  --abyss-300: #99A1AB;  /* mix(abyss, white, .60): muted/mono on abyss (7.11:1) */
+  --abyss-200: #B2B8C0;  /* mix(abyss, white, .70): secondary on abyss (9.29:1) */
+  --abyss-150: #BFC4CA;  /* mix(abyss, white, .75): decorative divider on light */
+  --abyss-050: #F5F6F7;  /* mix(abyss, white, .96) */
+  --aqua-050: #ECFBFF;   /* mix(aqua, white, .90): match highlight */
+  --ybl-050: #EBF0FE;    /* mix(yisbir blue, white, .92) */
+  --ybl-hover: #003BCF;  /* mix(yisbir blue, abyss, .20) */
+
+  /* Functional states (non-brand; plan derived.state). Never decorative. */
+  --state-success-on-light: #0F7B4A;  --state-error-on-light: #B42318;  --state-warning-on-light: #B54708;
+  --state-success-on-dark: #12B76A;   --state-error-on-dark: #F97066;   --state-warning-on-dark: #FDB022;
+
+  /* Fonts: next/font injects --font-poppins etc.; the CDN prototypes use the family names */
+  --font-family-sans: var(--font-poppins, "Poppins"), ui-sans-serif, system-ui, sans-serif;
+  --font-family-arabic: var(--font-almarai, "Almarai"), Tahoma, sans-serif;
+  --font-family-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; /* DD-06: zero webfont cost */
+
+  /* Motion durations (the reduced-motion block below collapses them) */
+  --dur-1: 160ms;
+  --dur-2: 240ms;
+  --dur-3: 420ms;
+}
+
+/* --------------------------------------------------------------------------
+   3. Semantic layer: Meerana (default brand), dark-first
+   -------------------------------------------------------------------------- */
+:root,
+[data-surface="dark"] {
+  --surface-page: var(--meerana-navy);
+  --surface-deep: var(--navy-950);
+  --surface-raised: var(--navy-900);        /* white 13.90 · navy-200 7.19 · navy-300 5.52 · cyan 7.73 */
+  --surface-muted: var(--navy-950);
+  --surface-tint: var(--navy-950);
+  --text-primary: var(--meerana-white);     /* 17.23 on navy */
+  --text-secondary: var(--navy-200);        /*  8.91 */
+  --text-muted: var(--navy-300);            /*  6.84 */
+  --text-accent: var(--meerana-cyan);       /*  9.58 */
+  --text-link: var(--meerana-cyan);
+  --border-subtle: var(--navy-800);         /* decorative hairline */
+  --border-control: var(--navy-500);        /*  4.41 ≥ 3:1 */
+  --action-primary-bg: var(--meerana-white);
+  --action-primary-fg: var(--meerana-navy); /* 17.23 */
+  --action-primary-hover: var(--navy-050);
+  --action-secondary-border: var(--meerana-cyan);
+  --action-secondary-fg: var(--meerana-white);
+  --focus-ring: var(--meerana-cyan);
+  --state-success: var(--state-success-on-dark);
+  --state-warning: var(--state-warning-on-dark);
+  --state-danger: var(--state-error-on-dark);
+  --product-accent: var(--meerana-cyan);
+  --product-accent-2: var(--meerana-white);
+  --on-product-accent: var(--meerana-navy);
+  color-scheme: dark;
+}
+
+[data-surface="light"] {
+  --surface-page: var(--meerana-white);
+  --surface-deep: var(--meerana-neutral);
+  --surface-raised: var(--navy-050);
+  --surface-muted: var(--meerana-neutral);
+  --surface-tint: var(--blue-050);
+  --text-primary: var(--meerana-navy);      /* 17.23 on white · 14.71 on neutral */
+  --text-secondary: var(--navy-800);        /* 11.04 */
+  --text-muted: var(--navy-600);            /*  6.50 on white · 5.55 on neutral */
+  --text-accent: var(--meerana-blue);       /*  6.80 */
+  --text-link: var(--meerana-blue);
+  --border-subtle: var(--navy-150);         /* decorative only (1.72) */
+  --border-control: var(--navy-500);        /*  3.90 ≥ 3:1 */
+  --action-primary-bg: var(--meerana-blue);
+  --action-primary-fg: var(--meerana-white);/*  6.80 */
+  --action-primary-hover: var(--blue-hover);/*  8.38 */
+  --action-secondary-border: var(--meerana-navy);
+  --action-secondary-fg: var(--meerana-navy);
+  --focus-ring: var(--meerana-blue);
+  --state-success: var(--state-success-on-light);
+  --state-warning: var(--state-warning-on-light);
+  --state-danger: var(--state-error-on-light);
+  --product-accent: var(--meerana-blue);
+  --product-accent-2: var(--meerana-navy);
+  --on-product-accent: var(--meerana-white);
+  color-scheme: light;
+}
+
+/* --------------------------------------------------------------------------
+   4. Semantic layer: YISBIR brand root (yisbir.com), dark-first
+   -------------------------------------------------------------------------- */
+[data-brand="yisbir"],
+[data-brand="yisbir"] [data-surface="dark"],
+[data-brand="yisbir"][data-surface="dark"] {
+  --surface-page: var(--yisbir-abyss);
+  --surface-deep: var(--abyss-950);
+  --surface-raised: var(--abyss-700);
+  --surface-muted: var(--abyss-950);
+  --surface-tint: var(--abyss-800);
+  --text-primary: var(--yisbir-white);      /* 18.57 */
+  --text-secondary: var(--abyss-200);       /*  9.29 */
+  --text-muted: var(--abyss-300);           /*  7.11 */
+  --text-accent: var(--yisbir-aqua);        /* 11.23 */
+  --text-link: var(--yisbir-aqua);
+  --border-subtle: var(--abyss-800);
+  --border-control: var(--abyss-500);       /*  4.46 */
+  --action-primary-bg: var(--yisbir-aqua);
+  --action-primary-fg: var(--yisbir-abyss); /* 11.23 */
+  --action-primary-hover: #85E7FE;          /* mix(aqua, white, .35): abyss text 13.14 */
+  --action-secondary-border: var(--abyss-500);
+  --action-secondary-fg: var(--yisbir-white);
+  --focus-ring: var(--yisbir-aqua);
+  --state-success: var(--state-success-on-dark);
+  --state-warning: var(--state-warning-on-dark);
+  --state-danger: var(--state-error-on-dark);
+  --product-accent: var(--yisbir-aqua);
+  --product-accent-2: var(--yisbir-white);
+  --on-product-accent: var(--yisbir-abyss);
+  --font-family-sans: var(--font-montserrat, "Montserrat"), ui-sans-serif, system-ui, sans-serif;
+  --font-family-arabic: var(--font-tajawal, "Tajawal"), Tahoma, sans-serif;
+  --font-family-mono: var(--font-plex-mono, "IBM Plex Mono"), ui-monospace, Consolas, monospace; /* DD-06 */
+  color-scheme: dark;
+}
+
+[data-brand="yisbir"][data-surface="light"],
+[data-brand="yisbir"] [data-surface="light"] {
+  --surface-page: var(--yisbir-white);
+  --surface-deep: var(--abyss-050);
+  --surface-raised: var(--abyss-050);
+  --surface-muted: var(--abyss-050);
+  --surface-tint: var(--aqua-050);
+  --text-primary: var(--yisbir-abyss);      /* 18.57 · 17.51 on aqua-050 */
+  --text-secondary: var(--abyss-800);
+  --text-muted: var(--abyss-600);           /*  7.03 */
+  --text-accent: var(--yisbir-blue);        /*  6.55 */
+  --text-link: var(--yisbir-blue);
+  --border-subtle: var(--abyss-150);
+  --border-control: var(--abyss-500);       /*  4.17 */
+  --action-primary-bg: var(--yisbir-blue);
+  --action-primary-fg: var(--yisbir-white); /*  6.55 */
+  --action-primary-hover: var(--ybl-hover); /*  8.31 */
+  --action-secondary-border: var(--yisbir-abyss);
+  --action-secondary-fg: var(--yisbir-abyss);
+  --focus-ring: var(--yisbir-blue);
+  --state-success: var(--state-success-on-light);
+  --state-warning: var(--state-warning-on-light);
+  --state-danger: var(--state-error-on-light);
+  --product-accent: var(--yisbir-blue);
+  --product-accent-2: var(--yisbir-abyss);
+  --on-product-accent: var(--yisbir-white);
+  color-scheme: light;
+}
+
+/* --------------------------------------------------------------------------
+   5. Product accents on the Meerana layer: identify a product, never theme the page
+   -------------------------------------------------------------------------- */
+[data-product="wasel"] {
+  --product-accent: var(--wasel-copper);      /* decorative on ivory (2.68); line work only */
+  --product-accent-2: var(--wasel-sand);      /* text on brown 5.17 */
+  --on-product-accent: var(--wasel-brown);
+  --product-surface-dark: var(--wasel-brown);
+  --product-surface-light: var(--wasel-ivory);
+  --product-text-on-light: var(--wasel-brown);/* 8.17 on ivory */
+}
+[data-product="mandoobee"] {
+  --product-accent: var(--mandoobee-azure);   /* large text / UI only on mist (3.63) */
+  --product-accent-2: var(--mandoobee-slate);
+  --on-product-accent: var(--meerana-white);
+  --product-surface-dark: var(--mandoobee-royal);
+  --product-surface-light: var(--mandoobee-mist);
+  --product-text-on-light: var(--mandoobee-royal); /* 9.08 on mist */
+}
+[data-product="tasree3"] {
+  --product-accent: var(--tasree3-orange);    /* 5.78 on ink; ink text on orange buttons */
+  --product-accent-2: var(--tasree3-sky);
+  --on-product-accent: var(--tasree3-ink);
+  --product-surface-dark: var(--tasree3-ink);
+  --product-surface-light: var(--tasree3-white);
+  --product-text-on-light: var(--tasree3-ink);
+}
+[data-product="yisbir"] {
+  --product-accent: var(--yisbir-aqua);       /* 11.23 on abyss; never yisbir blue on abyss */
+  --product-accent-2: var(--yisbir-blue);
+  --on-product-accent: var(--yisbir-abyss);
+  --product-surface-dark: var(--yisbir-abyss);
+  --product-surface-light: var(--yisbir-white);
+  --product-text-on-light: var(--yisbir-abyss);
+}
+[data-product="nazo"] {
+  /* No Nazo sub-brand in the brand PDF (DD-07): uses the Meerana master layer until defined */
+  --product-accent: var(--meerana-cyan);
+  --product-accent-2: var(--meerana-blue);
+  --on-product-accent: var(--meerana-navy);
+  --product-surface-dark: var(--meerana-navy);
+  --product-surface-light: var(--meerana-white);
+  --product-text-on-light: var(--meerana-navy);
+}
+
+/* --------------------------------------------------------------------------
+   6. Utilities: semantic only. @theme inline resolves at the element,
+      so nested data-surface / data-brand switching works.
+   -------------------------------------------------------------------------- */
+@theme inline {
+  --color-surface: var(--surface-page);
+  --color-surface-deep: var(--surface-deep);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-muted: var(--surface-muted);
+  --color-surface-tint: var(--surface-tint);
+  --color-fg: var(--text-primary);
+  --color-fg-secondary: var(--text-secondary);
+  --color-fg-muted: var(--text-muted);
+  --color-signal: var(--text-accent);
+  --color-link: var(--text-link);
+  --color-line: var(--border-subtle);
+  --color-line-strong: var(--border-control);
+  --color-action: var(--action-primary-bg);
+  --color-action-hover: var(--action-primary-hover);
+  --color-on-action: var(--action-primary-fg);
+  --color-action-secondary: var(--action-secondary-border);
+  --color-on-action-secondary: var(--action-secondary-fg);
+  --color-focus: var(--focus-ring);
+  --color-success: var(--state-success);
+  --color-warning: var(--state-warning);
+  --color-danger: var(--state-danger);
+  --color-product: var(--product-accent);
+  --color-product-2: var(--product-accent-2);
+  --color-on-product: var(--on-product-accent);
+  --color-product-surface-dark: var(--product-surface-dark);
+  --color-product-surface-light: var(--product-surface-light);
+  --color-product-ink: var(--product-text-on-light);
+
+  /* shadcn/ui contract (ui.shadcn.com/docs/theming): mapped to the semantic layer */
+  --color-background: var(--surface-page);
+  --color-foreground: var(--text-primary);
+  --color-card: var(--surface-raised);
+  --color-card-foreground: var(--text-primary);
+  --color-popover: var(--surface-raised);
+  --color-popover-foreground: var(--text-primary);
+  --color-primary: var(--action-primary-bg);
+  --color-primary-foreground: var(--action-primary-fg);
+  --color-secondary: var(--surface-raised);
+  --color-secondary-foreground: var(--text-primary);
+  --color-muted: var(--surface-muted);
+  --color-muted-foreground: var(--text-muted);
+  --color-accent: var(--surface-raised);          /* shadcn hover background, NOT the product accent */
+  --color-accent-foreground: var(--text-primary);
+  --color-destructive: var(--state-danger);
+  --color-border: var(--border-subtle);
+  --color-input: var(--border-control);
+  --color-ring: var(--focus-ring);
+  --color-chart-1: var(--text-accent);
+  --color-chart-2: var(--text-primary);
+  --color-chart-3: var(--text-muted);
+  --color-chart-4: var(--product-accent);
+  --color-chart-5: var(--border-control);
+
+  --font-sans: var(--font-family-sans);
+  --font-arabic: var(--font-family-arabic);
+  --font-mono: var(--font-family-mono);
+}
+
+/* --------------------------------------------------------------------------
+   7. Variants (surface-scoped). Prefer tokens over variants: nested opposite
+      surfaces make dark:/light: ambiguous. Tailwind v4 already ships rtl:/ltr:.
+   -------------------------------------------------------------------------- */
+@custom-variant dark (&:where([data-surface="dark"], [data-surface="dark"] *));
+@custom-variant light (&:where([data-surface="light"], [data-surface="light"] *));
+
+/* --------------------------------------------------------------------------
+   8. Base
+   -------------------------------------------------------------------------- */
+@layer base {
+  html {
+    background: var(--surface-page);
+    color: var(--text-primary);
+    font-family: var(--font-family-sans);
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+  body { background: var(--surface-page); color: var(--text-primary); }
+  [data-surface] { background-color: var(--surface-page); color: var(--text-primary); }
+  :lang(ar) {
+    font-family: var(--font-family-arabic);
+    letter-spacing: 0 !important;
+    text-transform: none !important;
+    line-height: 1.85;
+  }
+  :focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+    border-radius: var(--radius-control);
+  }
+  ::selection { background: var(--text-accent); color: var(--surface-page); }
+  /* No global smooth scroll: it fights ScrollTrigger and Lenis (stack facts §3/§4). */
+  html { scroll-behavior: auto; }
+}
+
+/* --------------------------------------------------------------------------
+   9. Reduced motion collapses durations. Signature motion code must ALSO branch on it.
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  :root { --dur-1: 0ms; --dur-2: 0ms; --dur-3: 0ms; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+
+@layer components {
+  .wrap { margin-inline: auto; max-width: 80rem; padding-inline: clamp(16px, 4vw, 48px); }
+  .skip { position: absolute; inset-inline-start: -9999px; }
+  .skip:focus { inset-inline-start: 16px; top: 16px; z-index: 50; background: var(--action-primary-bg); color: var(--action-primary-fg); padding: 10px 14px; border-radius: var(--radius-control); }
+  .btn-primary { display: inline-flex; align-items: center; min-height: 44px; padding-inline: 20px; border-radius: var(--radius-control);
+    background: var(--action-primary-bg); color: var(--action-primary-fg); font-weight: 600; font-size: var(--text-ui);
+    transition: background-color var(--dur-1) var(--ease-standard); }
+  .btn-primary:hover { background: var(--action-primary-hover); }
+  .link-arrow { display: inline-flex; align-items: center; gap: .45em; min-height: 44px; color: var(--text-link); font-weight: 500; font-size: var(--text-ui); }
+  .link-arrow > span { transition: transform var(--dur-1) var(--ease-standard); }
+  .link-arrow:hover > span { transform: translateX(3px); }
+  .mono { font-family: var(--font-family-mono); letter-spacing: .04em; text-transform: uppercase; }
+  .mono-xs { font-family: var(--font-family-mono); font-size: .6875rem; line-height: 1.3; letter-spacing: .04em; text-transform: uppercase; }
+
+  /* pause control: constant label, aria-pressed carries the state (APG); glyph is decorative */
+  .mono-btn { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding-inline: 16px; border-radius: var(--radius-pill);
+    border: 1px solid var(--border-control); color: var(--text-secondary);
+    font: 500 .75rem/1 var(--font-family-mono); letter-spacing: .04em; text-transform: uppercase;
+    transition: background-color var(--dur-1) var(--ease-standard), color var(--dur-1) var(--ease-standard); }
+  .mono-btn:hover { color: var(--text-primary); }
+  .mono-btn .glyph { width: 9px; height: 10px; border-inline: 3px solid currentColor; }
+  .mono-btn[aria-pressed="true"] { background: var(--surface-raised); color: var(--text-primary); border-color: var(--text-accent); }
+
+  /* camera console */
+  .console { border: 1px solid var(--border-control); border-radius: 14px; overflow: hidden; background: var(--surface-deep); }
+  .console-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; padding: 6px 8px 6px 16px; border-bottom: 1px solid var(--border-subtle); }
+  .console-grid { display: grid; grid-template-columns: minmax(0, 1fr); }
+  @media (min-width: 1024px) { .console-grid { grid-template-columns: minmax(0, 1fr) 300px; } }
+  .cam { position: relative; aspect-ratio: 16 / 9; margin: 0; background: var(--abyss-950); }
+  /* layers: static site backdrop (SVG) · t = 0 poster overlay (SVG) · transparent live canvas */
+  .cam .scene, .cam .poster, .cam canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .cam canvas { visibility: hidden; }
+  .cam.is-live canvas { visibility: visible; }
+  .cam.is-live .poster { visibility: hidden; }
+  .cam svg .chip text { font: 500 22px var(--font-family-mono); }
+  /* < 640 px the 22-unit labels would render at ~5 px: brackets and colour carry the state, the event list carries the text */
+  @media (max-width: 639px) { .cam svg .chip { display: none; } }
+  @media (max-width: 1023px) { [data-events] li:nth-child(n+4) { display: none; } }
+  .cam .scene .zone { transition: fill-opacity var(--dur-2) var(--ease-standard); }
+  .cam .scene.zone-hot .zone { fill-opacity: .16; }
+  .chrome { position: absolute; display: flex; align-items: center; gap: 8px; padding: 6px 9px; border-radius: 6px;
+    background: rgb(0 13 32 / .8); color: var(--abyss-200); font: 500 .6875rem/1 var(--font-family-mono); letter-spacing: .04em; text-transform: uppercase; white-space: nowrap; }
+  .chrome.tl { top: 10px; inset-inline-start: 10px; } .chrome.tr { top: 10px; inset-inline-end: 10px; }
+  .chrome.bl { bottom: 10px; inset-inline-start: 10px; } .chrome.br { bottom: 10px; inset-inline-end: 10px; }
+  @media (max-width: 639px) { .chrome.bl, .chrome.br { display: none; } }
+  .rec { width: 8px; height: 8px; border-radius: 50%; background: var(--state-error-on-dark); }
+  .cam.is-paused .rec { background: var(--abyss-300); }
+  @media (prefers-reduced-motion: no-preference) {
+    html:not([data-motion="reduce"]) .cam.is-live:not(.is-paused) .rec { animation: rec-blink 1s steps(2, jump-none) infinite; }  /* 1 Hz, stops with Pause (WCAG 2.2.2, 2.3.1) */
+  }
+  @keyframes rec-blink { 50% { opacity: .25; } }
+
+  .events { border-top: 1px solid var(--border-subtle); min-width: 0; }
+  @media (min-width: 1024px) { .events { border-top: 0; border-inline-start: 1px solid var(--border-subtle); } }
+  .event { display: grid; grid-template-columns: 4.4rem minmax(0, 1fr); gap: 3px 10px; padding: 11px 16px; border-bottom: 1px solid var(--border-subtle); }
+  .event[data-new] { animation: event-in var(--dur-2) var(--ease-enter) both; }
+  @keyframes event-in { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+  .lvl-danger { color: var(--state-error-on-dark); } .lvl-warning { color: var(--state-warning-on-dark); } .lvl-info { color: var(--yisbir-aqua); }
+
+  /* chapter dividers: the page reads like an indexed video */
+  .chapter { display: flex; align-items: center; gap: 14px; color: var(--text-muted); font: 500 .75rem var(--font-family-mono); letter-spacing: .06em; text-transform: uppercase; }
+  .chapter::after { content: ""; flex: 1; height: 1px; background: var(--border-subtle); }
+  .chapter b { color: var(--text-accent); font-weight: 500; }
+
+  .classes { display: grid; gap: 0 40px; grid-template-columns: minmax(0, 1fr); }
+  @media (min-width: 768px) { .classes { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .classes > div { padding: 18px 0 20px; border-top: 1px solid var(--border-subtle); }
+  .classes dt { display: flex; align-items: center; gap: 12px; font-weight: 600; font-size: var(--text-heading-3); line-height: 1.3; }
+  .classes dt::before { content: ""; width: 18px; height: 14px; flex: none;   /* a detection bracket, not an icon */
+    background: linear-gradient(var(--yisbir-aqua), var(--yisbir-aqua)) left top / 6px 1.5px no-repeat,
+                linear-gradient(var(--yisbir-aqua), var(--yisbir-aqua)) left top / 1.5px 6px no-repeat,
+                linear-gradient(var(--yisbir-aqua), var(--yisbir-aqua)) right bottom / 6px 1.5px no-repeat,
+                linear-gradient(var(--yisbir-aqua), var(--yisbir-aqua)) right bottom / 1.5px 6px no-repeat; }
+  .classes dd { margin: 6px 0 0 30px; color: var(--text-secondary); }
+  .query { display: inline-flex; align-items: center; min-height: 32px; padding-inline: 12px; border-radius: var(--radius-control);
+    border: 1px solid var(--border-control); background: var(--surface-raised); color: var(--text-primary); font: 500 .75rem var(--font-family-mono); letter-spacing: .02em; }
+  .query b { color: var(--text-accent); font-weight: 500; margin-inline-end: 6px; }
+  .proto-note { border: 1px dashed var(--border-control); border-radius: 8px; padding: 10px 14px; color: var(--text-muted);
+    font: 400 .75rem/1.5 var(--font-family-mono); letter-spacing: .02em; }
+  .proto-note b { color: var(--text-secondary); font-weight: 500; text-transform: uppercase; letter-spacing: .06em; }
+}
+</style>
+</head>
+<body class="bg-surface text-fg antialiased">
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="border-b border-line">
+  <div class="wrap flex h-[72px] items-center justify-between gap-6">
+    <a href="#top" class="flex items-center">
+      <img src="data:image/png;base64,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" width="262" height="67" alt="YISBIR home" class="h-7 w-auto">
+    </a>
+    <nav aria-label="Primary" class="hidden md:block">
+      <ul class="flex items-center gap-8 text-ui text-fg-secondary">
+        <li><a class="hover:text-fg" href="#detects">Site safety</a></li>
+        <li><a class="hover:text-fg" href="yisbir-y2-search-index.html">Video search</a></li>
+        <li><a class="hover:text-fg" href="#runs">Deployment</a></li>
+      </ul>
+    </nav>
+    <div class="flex items-center gap-5">
+      <span class="mono-xs hidden text-fg-muted lg:inline" data-ev="EV-441">A Meerana product</span>
+      <a class="btn-primary" href="#contact">Request a demo</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section id="top" data-surface="dark" aria-labelledby="hero-title">
+    <div class="wrap pt-12 pb-16 lg:pt-14">
+      <div class="grid grid-cols-12 gap-x-6 gap-y-6">
+        <div class="col-span-12 min-w-0 lg:col-span-8">
+          <p class="mono text-mono text-fg-muted"><span data-ev="EV-131">Operational intelligence</span> · <span data-ev="EV-133">Construction &amp; infrastructure</span></p>
+          <h1 id="hero-title" class="mt-4 font-semibold text-display-xl text-balance text-fg">Safer sites from the cameras you already have.</h1>
+        </div>
+        <div class="col-span-12 min-w-0 flex flex-col justify-end lg:col-span-4">
+          <p class="text-body text-fg-secondary" data-ev="EV-133 EV-134 EV-136 EV-443 EV-444">YISBIR watches your existing CCTV for missing PPE, restricted-zone entry and falls, and alerts your team in real time. It works with the cameras you have and can run fully on your own servers.</p>
+          <div class="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2">
+            <a class="btn-primary" href="#contact">Request a demo</a>
+            <a class="link-arrow" href="yisbir-y2-search-index.html">See video search <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Signature motion (one per page). Purpose: shows the model's actual output — classes, confidence,
+           track IDs, zone alerts — on an existing camera, which a static claim cannot. Continuous loop ⇒ the
+           Pause control sits before the moving region (WCAG 2.2.2). Reduced motion, < 768 px or a stored pause
+           ⇒ the annotated poster frame. Sample data only (modern-ai-company rules 1–3). -->
+      <div class="console mt-9" data-illustrative>
+        <div class="console-bar">
+          <p class="mono-xs text-fg-muted">Illustrative interface · simulated detections</p>
+          <button type="button" class="mono-btn" data-motion-control aria-pressed="false" aria-controls="cam"><span class="glyph" aria-hidden="true"></span>Pause feed</button>
+        </div>
+        <div class="console-grid">
+          <figure id="cam" class="cam" data-signature aria-labelledby="cam-desc">
+            <svg class="scene zone-hot" viewBox="0 0 1600 900" aria-hidden="true" focusable="false"><path d="M0,0h1600v900h-1600z" fill="#000D20"/><path d="M488.5,255L-1000,900M514.4,255L-850,900M540.4,255L-700,900M566.3,255L-550,900M592.3,255L-400,900M618.3,255L-250,900M644.2,255L-100,900M670.2,255L50,900M696.2,255L200,900M722.1,255L350,900M748.1,255L500,900M774,255L650,900M800,255L800,900M826,255L950,900M851.9,255L1100,900M877.9,255L1250,900M903.8,255L1400,900M929.8,255L1550,900M955.8,255L1700,900M981.7,255L1850,900M1007.7,255L2000,900M1033.7,255L2150,900M1059.6,255L2300,900M1085.6,255L2450,900M1111.5,255L2600,900M0,255H1600M0,266.2H1600M0,280H1600M0,297.2H1600M0,318.4H1600M0,344.8H1600M0,377.5H1600M0,418.1H1600M0,468.4H1600M0,530.8H1600M0,608.1H1600M0,704.1H1600M0,823H1600" fill="none" stroke="#43DAFE" stroke-width="1.2" stroke-opacity="0.08"/><path d="M0,226H716M884,226H1600M0,244H716M884,244H1600M12,212V252M60,212V252M108,212V252M156,212V252M204,212V252M252,212V252M300,212V252M348,212V252M396,212V252M444,212V252M492,212V252M540,212V252M588,212V252M636,212V252M684,212V252M924,212V252M972,212V252M1020,212V252M1068,212V252M1116,212V252M1164,212V252M1212,212V252M1260,212V252M1308,212V252M1356,212V252M1404,212V252M1452,212V252M1500,212V252M1548,212V252M1596,212V252" fill="none" stroke="#B2B8C0" stroke-width="1.5" stroke-opacity="0.32"/><path d="M716,194V252M884,194V252" fill="none" stroke="#B2B8C0" stroke-width="3" stroke-opacity="0.5"/><path d="M716,205H872" fill="none" stroke="#B2B8C0" stroke-width="5" stroke-opacity="0.55" stroke-dasharray="12 8"/><path d="M716,255L323,900M884,255L1277,900" fill="none" stroke="#B2B8C0" stroke-width="1.6" stroke-opacity="0.24"/><path d="M800,255V900" fill="none" stroke="#B2B8C0" stroke-width="2" stroke-opacity="0.18" stroke-dasharray="18 24"/><path d="M90,272h310v126h-310zM80,272H410M86,262H404M318,318h34v80h-34zM120,300h80v44h-80zM220,300h80v44h-80z" fill="none" stroke="#B2B8C0" stroke-width="2" stroke-opacity="0.42"/><path d="M540,252V70H582M574,64h30v12h-30z" fill="none" stroke="#B2B8C0" stroke-width="2" stroke-opacity="0.32"/><path d="M1404,18V252M1424,18V252M1030,22H1590M1030,40H1590M1395,52H1433V78H1395ZM1404,18L1424,40M1404,40L1424,62M1404,62L1424,84M1404,84L1424,106M1404,106L1424,128M1404,128L1424,150M1404,150L1424,172M1404,172L1424,194M1404,194L1424,216M1404,216L1424,238M1030,40L1045,22L1060,40M1060,40L1075,22L1090,40M1090,40L1105,22L1120,40M1120,40L1135,22L1150,40M1150,40L1165,22L1180,40M1180,40L1195,22L1210,40M1210,40L1225,22L1240,40M1240,40L1255,22L1270,40M1270,40L1285,22L1300,40M1300,40L1315,22L1330,40M1330,40L1345,22L1360,40M1360,40L1375,22L1390,40M1390,40L1405,22L1420,40M1420,40L1435,22L1450,40M1450,40L1465,22L1480,40M1480,40L1495,22L1510,40M1510,40L1525,22L1540,40M1540,40L1555,22L1570,40M1570,40L1585,22L1600,40M1414,0L1150,22M1414,0L1560,22M1186,40V138M1180,138h12v10h-12z" fill="none" stroke="#B2B8C0" stroke-width="1.4" stroke-opacity="0.28"/><path d="M1520,40h60v22h-60z" fill="#B2B8C0" fill-opacity="0.16"/><path d="M1013,440L1205,440L1560,720L1200,720Z" class="zone" fill="#F97066" fill-opacity="0.07" stroke="#F97066" stroke-width="2.5" stroke-dasharray="14 10"/><path d="M1032.6,500L1039.1,480.5L1045.6,500ZM1090.9,590L1099.2,565.1L1107.5,590ZM1149.2,680L1159.3,649.7L1169.4,680Z" fill="none" stroke="#B2B8C0" stroke-width="1.6" stroke-opacity="0.55"/><g class="chip"><rect x="1200" y="730" width="268.8" height="30" rx="4" fill="#000D20" fill-opacity=".85"/><text x="1209" y="752" fill="#F97066">ZONE B · RESTRICTED</text></g></svg><svg class="poster" viewBox="0 0 1600 900" aria-hidden="true" focusable="false"><path d="M0.3,766.3L9.8,766.9L19.2,767.5L28.7,768L38.2,768.6L47.7,769.2L57.1,769.8L66.6,770.4L76.2,771L85.7,771.6L95.2,772.2L104.8,772.8L114.3,773.4L123.9,774L133.4,774.6L143,775.2L152.6,775.8L162.2,776.4L171.8,777L181.4,777.6L191.1,778.2L200.7,778.8L210.3,779.4L220,780" fill="none" stroke="#43DAFE" stroke-width="1.5" stroke-opacity="0.28" stroke-linecap="round" stroke-linejoin="round"/><path d="M220,579.1L220,659M193.4,586.4L246.6,586.4M203.1,659L236.9,659M193.4,586.4L176.1,623.9L167.3,661.4M246.6,586.4L263.9,623.9L272.7,661.4M203.1,659L218.7,717.1L232.2,776.4M236.9,659L221.3,717.1L207.8,776.4M205,558.6a15,15 0 1,0 30,0a15,15 0 1,0 -30,0" fill="none" stroke="#B2B8C0" stroke-width="2.904" stroke-linecap="round" stroke-linejoin="round"/><path d="M203.2,556.8A16.8,16.8 0 0 1 236.8,556.8ZM199,555.6h42v3.3h-42z" fill="#B2B8C0"/><path d="M190,586.4a3.4,3.4 0 1,0 6.8,0a3.4,3.4 0 1,0 -6.8,0M243.2,586.4a3.4,3.4 0 1,0 6.8,0a3.4,3.4 0 1,0 -6.8,0M172.7,623.9a3.4,3.4 0 1,0 6.8,0a3.4,3.4 0 1,0 -6.8,0M260.5,623.9a3.4,3.4 0 1,0 6.8,0a3.4,3.4 0 1,0 -6.8,0M164,661.4a3.4,3.4 0 1,0 6.8,0a3.4,3.4 0 1,0 -6.8,0M269.3,661.4a3.4,3.4 0 1,0 6.8,0a3.4,3.4 0 1,0 -6.8,0M199.7,659a3.4,3.4 0 1,0 6.8,0a3.4,3.4 0 1,0 -6.8,0M233.6,659a3.4,3.4 0 1,0 6.8,0a3.4,3.4 0 1,0 -6.8,0M215.4,717.1a3.4,3.4 0 1,0 6.8,0a3.4,3.4 0 1,0 -6.8,0M217.9,717.1a3.4,3.4 0 1,0 6.8,0a3.4,3.4 0 1,0 -6.8,0M228.8,776.4a3.4,3.4 0 1,0 6.8,0a3.4,3.4 0 1,0 -6.8,0M204.4,776.4a3.4,3.4 0 1,0 6.8,0a3.4,3.4 0 1,0 -6.8,0" fill="#43DAFE"/><path d="M159.5,558.3V538H179.8M260.2,538H280.5V558.3M280.5,766.9V787.3H260.2M179.8,787.3H159.5V766.9" fill="none" stroke="#000D20" stroke-width="5.445"/><path d="M159.5,558.3V538H179.8M260.2,538H280.5V558.3M280.5,766.9V787.3H260.2M179.8,787.3H159.5V766.9" fill="none" stroke="#43DAFE" stroke-width="2.904"/><path d="M351,400.6L357.3,404.3L363.7,408L370.2,411.9L376.7,415.7L383.4,419.7L390.2,423.7L397.2,427.7L404.2,431.9L411.3,436.1L418.6,440.3L426,444.7L433.5,449.1L441.1,453.6L448.8,458.1L456.7,462.8L464.7,467.5L472.8,472.3L481.1,477.1L489.5,482.1L498,487.1L506.7,492.2L515.5,497.4" fill="none" stroke="#43DAFE" stroke-width="1.5" stroke-opacity="0.28" stroke-linecap="round" stroke-linejoin="round"/><path d="M520,392.1L520,435M505.7,396L534.3,396M510.9,435L529.1,435M505.7,396L505.4,416.2L509.6,436.3M534.3,396L534.6,416.2L530.4,436.3M510.9,435L506.8,466.2L503.3,498.1M529.1,435L533.2,466.2L536.7,498.1M511.9,381.1a8.1,8.1 0 1,0 16.1,0a8.1,8.1 0 1,0 -16.1,0" fill="none" stroke="#B2B8C0" stroke-width="1.56" stroke-linecap="round" stroke-linejoin="round"/><path d="M503.9,396a1.8,1.8 0 1,0 3.6,0a1.8,1.8 0 1,0 -3.6,0M532.5,396a1.8,1.8 0 1,0 3.6,0a1.8,1.8 0 1,0 -3.6,0M503.6,416.2a1.8,1.8 0 1,0 3.6,0a1.8,1.8 0 1,0 -3.6,0M532.8,416.2a1.8,1.8 0 1,0 3.6,0a1.8,1.8 0 1,0 -3.6,0M507.8,436.3a1.8,1.8 0 1,0 3.6,0a1.8,1.8 0 1,0 -3.6,0M528.6,436.3a1.8,1.8 0 1,0 3.6,0a1.8,1.8 0 1,0 -3.6,0M509.1,435a1.8,1.8 0 1,0 3.6,0a1.8,1.8 0 1,0 -3.6,0M527.3,435a1.8,1.8 0 1,0 3.6,0a1.8,1.8 0 1,0 -3.6,0M505,466.2a1.8,1.8 0 1,0 3.6,0a1.8,1.8 0 1,0 -3.6,0M531.4,466.2a1.8,1.8 0 1,0 3.6,0a1.8,1.8 0 1,0 -3.6,0M501.5,498.1a1.8,1.8 0 1,0 3.6,0a1.8,1.8 0 1,0 -3.6,0M534.9,498.1a1.8,1.8 0 1,0 3.6,0a1.8,1.8 0 1,0 -3.6,0" fill="#FDB022"/><path d="M487.5,380.9V370H498.4M541.6,370H552.5V380.9M552.5,493V503.9H541.6M498.4,503.9H487.5V493" fill="none" stroke="#000D20" stroke-width="2.9250000000000003"/><path d="M487.5,380.9V370H498.4M541.6,370H552.5V380.9M552.5,493V503.9H541.6M498.4,503.9H487.5V493" fill="none" stroke="#FDB022" stroke-width="1.56"/><path d="M1406.1,596.5L1399.4,597.4L1392.7,598.3L1386,599.2L1379.2,600.2L1372.7,602.2L1366.2,604.3L1359.6,606.3L1353,608.3L1346.3,610.4L1339.7,612.4L1333,614.5L1326.2,616.5L1319.5,618.6L1312.7,620.7L1305.8,622.8L1299,624.9L1292.1,627.1L1285.1,629.2L1278.2,631.3L1271.2,633.5L1264.2,635.6L1257.1,637.8L1250,640" fill="none" stroke="#43DAFE" stroke-width="1.5" stroke-opacity="0.28" stroke-linecap="round" stroke-linejoin="round"/><path d="M1250,485.6L1250,547M1229.5,491.2L1270.5,491.2M1237,547L1263,547M1229.5,491.2L1224.5,520L1226,548.9M1270.5,491.2L1275.5,520L1274,548.9M1237,547L1237.5,591.6L1238,637.2M1263,547L1262.5,591.6L1262,637.2M1238.5,469.8a11.5,11.5 0 1,0 23.1,0a11.5,11.5 0 1,0 -23.1,0" fill="none" stroke="#B2B8C0" stroke-width="2.2320000000000007" stroke-linecap="round" stroke-linejoin="round"/><path d="M1237.1,468.4A12.9,12.9 0 0 1 1262.9,468.4ZM1233.9,467.5h32.3v2.5h-32.3z" fill="#B2B8C0"/><path d="M1226.9,491.2a2.6,2.6 0 1,0 5.2,0a2.6,2.6 0 1,0 -5.2,0M1267.9,491.2a2.6,2.6 0 1,0 5.2,0a2.6,2.6 0 1,0 -5.2,0M1221.9,520a2.6,2.6 0 1,0 5.2,0a2.6,2.6 0 1,0 -5.2,0M1272.9,520a2.6,2.6 0 1,0 5.2,0a2.6,2.6 0 1,0 -5.2,0M1223.4,548.9a2.6,2.6 0 1,0 5.2,0a2.6,2.6 0 1,0 -5.2,0M1271.4,548.9a2.6,2.6 0 1,0 5.2,0a2.6,2.6 0 1,0 -5.2,0M1234.4,547a2.6,2.6 0 1,0 5.2,0a2.6,2.6 0 1,0 -5.2,0M1260.4,547a2.6,2.6 0 1,0 5.2,0a2.6,2.6 0 1,0 -5.2,0M1234.9,591.6a2.6,2.6 0 1,0 5.2,0a2.6,2.6 0 1,0 -5.2,0M1259.9,591.6a2.6,2.6 0 1,0 5.2,0a2.6,2.6 0 1,0 -5.2,0M1235.4,637.2a2.6,2.6 0 1,0 5.2,0a2.6,2.6 0 1,0 -5.2,0M1259.4,637.2a2.6,2.6 0 1,0 5.2,0a2.6,2.6 0 1,0 -5.2,0" fill="#F97066"/><path d="M1203.5,469.6V454H1219.1M1280.9,454H1296.5V469.6M1296.5,630V645.6H1280.9M1219.1,645.6H1203.5V630" fill="none" stroke="#000D20" stroke-width="4.185000000000001"/><path d="M1203.5,469.6V454H1219.1M1280.9,454H1296.5V469.6M1296.5,630V645.6H1280.9M1219.1,645.6H1203.5V630" fill="none" stroke="#F97066" stroke-width="2.2320000000000007"/><path d="M789.6,262.9L786.4,270.2L784,275.7L781.6,281.1L779.1,286.6L775.9,294L773.5,299.4L771,305L768.4,310.9L765.7,317L762.9,323.3L760,330" fill="none" stroke="#43DAFE" stroke-width="1.5" stroke-opacity="0.28" stroke-linecap="round" stroke-linejoin="round"/><path d="M760,278.5L760,299M753.2,280.4L766.8,280.4M755.7,299L764.3,299M753.2,280.4L752.6,290L754.3,299.6M766.8,280.4L767.4,290L765.7,299.6M755.7,299L754.3,313.9L753,329.1M764.3,299L765.7,313.9L767,329.1M756.2,273.3a3.8,3.8 0 1,0 7.7,0a3.8,3.8 0 1,0 -7.7,0" fill="none" stroke="#B2B8C0" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M755.7,272.8A4.3,4.3 0 0 1 764.3,272.8ZM754.6,272.5h10.8v1.5h-10.8z" fill="#B2B8C0"/><path d="M751.4,280.4a1.8,1.8 0 1,0 3.6,0a1.8,1.8 0 1,0 -3.6,0M765,280.4a1.8,1.8 0 1,0 3.6,0a1.8,1.8 0 1,0 -3.6,0M750.8,290a1.8,1.8 0 1,0 3.6,0a1.8,1.8 0 1,0 -3.6,0M765.6,290a1.8,1.8 0 1,0 3.6,0a1.8,1.8 0 1,0 -3.6,0M752.5,299.6a1.8,1.8 0 1,0 3.6,0a1.8,1.8 0 1,0 -3.6,0M763.9,299.6a1.8,1.8 0 1,0 3.6,0a1.8,1.8 0 1,0 -3.6,0M753.9,299a1.8,1.8 0 1,0 3.6,0a1.8,1.8 0 1,0 -3.6,0M762.5,299a1.8,1.8 0 1,0 3.6,0a1.8,1.8 0 1,0 -3.6,0M752.5,313.9a1.8,1.8 0 1,0 3.6,0a1.8,1.8 0 1,0 -3.6,0M763.9,313.9a1.8,1.8 0 1,0 3.6,0a1.8,1.8 0 1,0 -3.6,0M751.2,329.1a1.8,1.8 0 1,0 3.6,0a1.8,1.8 0 1,0 -3.6,0M765.2,329.1a1.8,1.8 0 1,0 3.6,0a1.8,1.8 0 1,0 -3.6,0" fill="#43DAFE"/><path d="M744.5,276V268H752.5M767.5,268H775.5V276M775.5,323.9V331.9H767.5M752.5,331.9H744.5V323.9" fill="none" stroke="#000D20" stroke-width="2.5"/><path d="M744.5,276V268H752.5M767.5,268H775.5V276M775.5,323.9V331.9H767.5M752.5,331.9H744.5V323.9" fill="none" stroke="#43DAFE" stroke-width="1.4"/><g class="chip"><rect x="159.5" y="496" width="268.8" height="30" rx="4" fill="#000D20" fill-opacity=".85"/><text x="168.5" y="518" fill="#43DAFE">PERSON 0.95 · ID 03</text></g><g class="chip"><rect x="487.5" y="328" width="242.4" height="30" rx="4" fill="#000D20" fill-opacity=".85"/><text x="496.5" y="350" fill="#FDB022">NO HELMET · ID 07</text></g><g class="chip"><rect x="1203.5" y="412" width="282" height="30" rx="4" fill="#000D20" fill-opacity=".85"/><text x="1212.5" y="434" fill="#F97066">ZONE B ENTRY · ID 11</text></g><g class="chip"><rect x="744.5" y="226" width="268.8" height="30" rx="4" fill="#000D20" fill-opacity=".85"/><text x="753.5" y="248" fill="#43DAFE">PERSON 0.92 · ID 14</text></g></svg>
+            <canvas aria-hidden="true"></canvas>
+            <span class="chrome tl">CAM-03<span class="hidden sm:inline">&nbsp;· Gate 2 — North entrance</span></span>
+            <span class="chrome tr"><span class="rec" aria-hidden="true"></span><span data-rec-label>Rec</span> <time data-timecode>07:42:00</time></span>
+            <span class="chrome bl" data-ev="EV-443">Local node · on-prem</span>
+            <span class="chrome br">Sample feed</span>
+            <figcaption id="cam-desc" class="sr-only">Illustrative sample feed from a site gate camera: outline figures with person detections and confidence scores, a worker flagged for a missing helmet, and a worker inside restricted Zone B. When playing, a vehicle enters through the gate and new events are added to the list beside the feed.</figcaption>
+          </figure>
+          <aside class="events" aria-label="Sample event stream">
+            <div class="flex items-center justify-between gap-3 border-b border-line px-4 py-3">
+              <span class="mono-xs text-fg-muted">Events · sample</span>
+              <span class="mono-xs text-fg-muted"><span class="text-fg" data-count="zone">1</span> in zone B · <span class="text-fg" data-count="ppe">3</span> PPE</span>
+            </div>
+            <ol class="max-h-[22rem] overflow-hidden" aria-live="off" data-events><li class="event"><time class="mono-xs text-fg-muted">07:41:57</time><span class="text-small lvl-danger">Restricted-zone entry</span><span></span><span class="mono-xs text-fg-muted">CAM-03 · Zone B · ID 11</span></li><li class="event"><time class="mono-xs text-fg-muted">07:41:56</time><span class="text-small lvl-warning">Worker near hazard</span><span></span><span class="mono-xs text-fg-muted">CAM-03 · Zone B · ID 11</span></li><li class="event"><time class="mono-xs text-fg-muted">07:41:55</time><span class="text-small lvl-warning">Missing helmet</span><span></span><span class="mono-xs text-fg-muted">CAM-03 · Gate 2 · ID 07</span></li><li class="event"><time class="mono-xs text-fg-muted">07:41:48</time><span class="text-small lvl-info">Vehicle detected</span><span></span><span class="mono-xs text-fg-muted">CAM-03 · Yard road · ID 12</span></li><li class="event"><time class="mono-xs text-fg-muted">07:41:46</time><span class="text-small lvl-danger">Restricted-zone entry</span><span></span><span class="mono-xs text-fg-muted">CAM-03 · Zone B · ID 89</span></li><li class="event"><time class="mono-xs text-fg-muted">07:41:46</time><span class="text-small lvl-danger">Restricted-zone entry</span><span></span><span class="mono-xs text-fg-muted">CAM-03 · Zone B · ID 93</span></li></ol>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section data-surface="dark" aria-labelledby="problem-title" class="bg-surface-deep">
+    <div class="wrap py-20 lg:py-24">
+      <p class="chapter"><b>CH 01</b> 00:00 · The problem</p>
+      <div class="mt-10 grid grid-cols-12 gap-6">
+        <h2 id="problem-title" class="col-span-12 min-w-0 font-semibold text-display-2 text-balance text-fg lg:col-span-6">Hours of footage. One minute that matters.</h2>
+        <p class="col-span-12 min-w-0 text-lede text-fg-secondary lg:col-span-5 lg:col-start-8" data-ev="EV-136 EV-440">YISBIR flags the moments your team needs to see while they happen, and indexes the rest so any minute can be found later.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="detects" data-surface="dark" aria-labelledby="detects-title">
+    <div class="wrap py-20 lg:py-24">
+      <p class="chapter"><b>CH 02</b> 00:42 · What it watches for</p>
+      <h2 id="detects-title" class="mt-10 max-w-[44rem] font-semibold text-display-2 text-balance text-fg">Six site-safety detections, on the cameras you have.</h2>
+      <dl class="classes mt-10" data-audit-ok="G05" data-ev="EV-134">
+        <div><dt>Missing helmet</dt><dd>Workers without the required head protection.</dd></div>
+        <div><dt>Missing vest</dt><dd>PPE violations in active work zones.</dd></div>
+        <div><dt>Unsafe work practices</dt><dd>Risky behaviour and unsafe activity on site.</dd></div>
+        <div><dt>Restricted-zone entry</dt><dd>An alert when someone enters a hazardous area.</dd></div>
+        <div><dt>Falls and incidents</dt><dd>Falls, accidents and emergencies.</dd></div>
+        <div><dt>Workers in hazardous areas</dt><dd>People working near hazards and danger zones.</dd></div>
+      </dl>
+      <p class="proto-note mt-10 max-w-[52rem]"><b>Prototype note ·</b> The six classes are EV-134 verbatim. The live site's security list (after-hours intrusion, perimeter breaches, vehicle movement anomalies) is in research/sources/live-site-extract.md but not yet in the evidence register. Faces, gender and plates are not shown (DL-P07).</p>
+    </div>
+  </section>
+
+  <section data-surface="dark" aria-labelledby="investigate-title" class="bg-surface-deep">
+    <div class="wrap py-20 lg:py-24">
+      <p class="chapter"><b>CH 03</b> 01:30 · Investigate</p>
+      <div class="mt-10 grid grid-cols-12 gap-6">
+        <h2 id="investigate-title" class="col-span-12 min-w-0 font-semibold text-display-2 text-balance text-fg lg:col-span-6">Search by what you saw.</h2>
+        <div class="col-span-12 min-w-0 lg:col-span-5 lg:col-start-8">
+          <p class="text-lede text-fg-secondary" data-ev="EV-135">Filter live and recorded footage by clothing, helmet or vest colour, by zone, gate or camera, and by date and time.</p>
+          <div class="mt-6" data-illustrative>
+            <p class="mono-xs text-fg-muted">Sample query</p>
+            <p class="mt-3 flex flex-wrap gap-2">
+              <span class="query"><b>helmet</b>white</span><span class="query"><b>vest</b>orange</span><span class="query"><b>zone</b>B</span><span class="query"><b>camera</b>CAM-03</span><span class="query"><b>time</b>07:00–08:00</span>
+            </p>
+          </div>
+          <a class="link-arrow mt-6" href="yisbir-y2-search-index.html">See video search <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="runs" data-surface="dark" aria-labelledby="runs-title">
+    <div class="wrap py-20 lg:py-24">
+      <p class="chapter"><b>CH 04</b> 02:05 · Deployment</p>
+      <h2 id="runs-title" class="mt-10 font-semibold text-display-2 text-balance text-fg">Runs where your footage lives.</h2>
+      <dl class="mt-10 grid gap-8 md:grid-cols-3" data-audit-ok="G05">
+        <div class="border-t border-line-strong pt-5"><dt class="mono text-mono text-fg-muted">Deployment</dt><dd class="mt-3 text-heading-3 text-fg" data-ev="EV-444">Cloud, on-premises or hybrid</dd></div>
+        <div class="border-t border-line-strong pt-5"><dt class="mono text-mono text-fg-muted">Cameras</dt><dd class="mt-3 text-heading-3 text-fg" data-ev="EV-444">Works with your existing infrastructure, with no hardware changes</dd></div>
+        <div class="border-t border-line-strong pt-5"><dt class="mono text-mono text-fg-muted">Data</dt><dd class="mt-3 text-heading-3 text-fg" data-ev="EV-443">Can run fully on-premises, with no public cloud connection</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section id="contact" data-surface="dark" aria-labelledby="contact-title" class="bg-surface-deep">
+    <div class="wrap grid grid-cols-12 gap-6 py-20 lg:py-24">
+      <h2 id="contact-title" class="col-span-12 min-w-0 font-semibold text-display-2 text-balance text-fg lg:col-span-7">Put your cameras to work.</h2>
+      <div class="col-span-12 min-w-0 flex flex-col items-start justify-end gap-4 lg:col-span-5">
+        <div class="flex flex-wrap items-center gap-x-6 gap-y-2">
+          <a class="btn-primary" href="mailto:info@meerana.ae?subject=YISBIR%20demo">Request a demo</a>
+          <a class="link-arrow" href="yisbir-y2-search-index.html">See video search <span aria-hidden="true">→</span></a>
+        </div>
+        <p class="text-small text-fg-muted" data-ev="EV-441">YISBIR is developed by Meerana Technologies.</p>
+        <p class="proto-note"><b>Prototype note ·</b> Enquiries go to info@meerana.ae (EV-004) until info@yisbir.ai is fixed (EV-448, DL-T08).</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="border-t border-line">
+  <div class="wrap flex flex-wrap items-center justify-between gap-4 py-8 text-small text-fg-muted">
+    <p>Prototype Y1 · Camera Chrome · internal design exploration with sample data and simulated detections.</p>
+    <p class="mono-xs">Official raster logo at ≤ native size · vector master pending</p>
+  </div>
+</footer>
+
+<script>
+/* Y1 · Camera Chrome scene: ONE source for the build-time poster (node) and the runtime canvas (browser).
+   Scene units 1600 × 900 (16:9). Outline pose skeletons only: no faces, gender or identity cues (DL-P07).
+   Classes shown are documented ones: person/vehicle object detection (EV-136), missing helmet and
+   restricted-zone entry (EV-134). Every number on screen is sample data inside a labelled frame. */
+(function (root) {
+  'use strict';
+  var W = 1600, H = 900, HOR = 175, VPX = 800, VPY = 120, FENCE = 252;
+  var AQUA = '#43DAFE', WARN = '#FDB022', DANGER = '#F97066', LINE = '#B2B8C0', DEEP = '#000D20';
+  var FONT = '500 22px "IBM Plex Mono", ui-monospace, monospace', ADV = 13.2;   // Plex Mono advance = 0.6 em
+  var CLOCK0 = 7 * 3600 + 42 * 60;                                               // sample clock 07:42:00
+  var ZONE = [[1013, 440], [1205, 440], [1560, 720], [1200, 720]];               // perspective-correct (VP 800,120)
+  var WALK = 80, DRIVE = 170;                                                    // scene units / s at scale 1
+
+  // at = path vertex where the actor stands at t = 0 (the poster composition), or delay = seconds until it first
+  // appears; gap = seconds hidden per cycle. Track IDs renew each cycle, as a real tracker's would.
+  // Story: 07 leaves the site office without a helmet and walks across the road into Zone B
+  // (missing helmet → near hazard → zone entry). The others give the frame depth and keep events spaced.
+  var ACTORS = [
+    { id: '03', kind: 'person', helmet: true,  at: 1, gap: 2, speed: WALK, path: [[-100, 760], [220, 780], [400, 840], [480, 990]] },
+    { id: '07', kind: 'person', helmet: false, at: 1, gap: 2, speed: WALK, path: [[350, 400], [520, 500], [760, 560], [1000, 600], [1180, 640], [1340, 700], [1700, 760]] },
+    { id: '11', kind: 'person', helmet: true,  at: 2, gap: 1, speed: WALK, path: [[1680, 560], [1380, 600], [1250, 640], [1290, 780], [1330, 990]] },
+    { id: '14', kind: 'person', helmet: true,  at: 1, gap: 1, speed: WALK, path: [[790, 262], [760, 330], [700, 560], [660, 990]] },
+    { id: '12', kind: 'vehicle', delay: 1, gap: 6, speed: DRIVE, path: [[840, 255], [900, 420], [1020, 650], [1120, 1000]] }   // rolls in through the gate ~1 s after Play
+  ];
+
+  function sAt(y) { return Math.max(0.25, Math.min(1.45, (y - HOR) / (H - HOR) * 1.45)); }
+  function f1(v) { return Math.round(v * 10) / 10; }
+  function pt(x, y) { return f1(x) + ',' + f1(y); }
+  function circle(cx, cy, r) { return 'M' + pt(cx - r, cy) + 'a' + f1(r) + ',' + f1(r) + ' 0 1,0 ' + f1(2 * r) + ',0a' + f1(r) + ',' + f1(r) + ' 0 1,0 ' + f1(-2 * r) + ',0'; }
+  function rect(x, y, w, h) { return 'M' + pt(x, y) + 'h' + f1(w) + 'v' + f1(h) + 'h' + f1(-w) + 'z'; }
+  function easeEnter(x) { x = Math.min(1, Math.max(0, x)); return 1 - Math.pow(1 - x, 4); }   // ≈ cubic-bezier(0,0,0,1)
+  function inZone(x, y) { var p = ZONE, inside = false;
+    for (var i = 0, j = p.length - 1; i < p.length; j = i++) {
+      if (((p[i][1] > y) !== (p[j][1] > y)) && (x < (p[j][0] - p[i][0]) * (y - p[i][1]) / (p[j][1] - p[i][1]) + p[i][0])) inside = !inside; }
+    return inside; }
+  function zoneDist(x, y) { var best = Infinity;   // distance from the feet to the zone outline
+    for (var i = 0, j = ZONE.length - 1; i < ZONE.length; j = i++) {
+      var ax = ZONE[j][0], ay = ZONE[j][1], dx = ZONE[i][0] - ax, dy = ZONE[i][1] - ay;
+      var u = Math.max(0, Math.min(1, ((x - ax) * dx + (y - ay) * dy) / (dx * dx + dy * dy)));
+      best = Math.min(best, Math.hypot(x - ax - u * dx, y - ay - u * dy)); }
+    return best; }
+  function tc(sec) { sec = Math.floor(CLOCK0 + sec); var h = Math.floor(sec / 3600) % 24, m = Math.floor(sec / 60) % 60, s = sec % 60;
+    return [h, m, s].map(function (v) { return (v < 10 ? '0' : '') + v; }).join(':'); }
+
+  /* ---- motion: perspective-correct speed via a time lookup table (far = slower on screen) ---- */
+  ACTORS.forEach(function (a) {
+    var pts = [[0, a.path[0][0], a.path[0][1], 0]], t = 0, wd = 0, t0 = 0;
+    for (var i = 1; i < a.path.length; i++) {
+      var x0 = a.path[i - 1][0], y0 = a.path[i - 1][1], x1 = a.path[i][0], y1 = a.path[i][1];
+      var L = Math.hypot(x1 - x0, y1 - y0), n = Math.max(1, Math.ceil(L / 4)), ds = L / n;
+      for (var k = 1; k <= n; k++) {
+        var y = y0 + (y1 - y0) * k / n, sm = sAt(y - (y1 - y0) / n / 2);
+        t += ds / (a.speed * sm); wd += ds / sm;
+        pts.push([t, x0 + (x1 - x0) * k / n, y, wd]);
+      }
+      if (i === a.at) t0 = t;
+    }
+    var period = t + (a.gap || 0);
+    a.tr = { pts: pts, run: t, period: period, t0: a.delay != null ? period - a.delay : t0 };
+  });
+  function trackId(a, t) {   // cycle 0 keeps the base ID (the poster); later and earlier cycles get fresh two-digit IDs
+    var c = Math.floor((t + a.tr.t0) / a.tr.period), n = ((Number(a.id) - 1 + c * 17) % 99 + 99) % 99 + 1;
+    return (n < 10 ? '0' : '') + n;
+  }
+  function sample(a, t) {
+    var tr = a.tr, tau = ((t + tr.t0) % tr.period + tr.period) % tr.period;
+    if (tau > tr.run) return { tau: tau, alpha: 0 };
+    var lo = 0, hi = tr.pts.length - 1;
+    while (hi - lo > 1) { var mid = (lo + hi) >> 1; if (tr.pts[mid][0] <= tau) lo = mid; else hi = mid; }
+    var A = tr.pts[lo], B = tr.pts[hi], f = B[0] > A[0] ? (tau - A[0]) / (B[0] - A[0]) : 0;
+    var dx = B[1] - A[1], dy = B[2] - A[2], dl = Math.hypot(dx, dy) || 1;
+    return { tau: tau, x: A[1] + dx * f, y: A[2] + dy * f, wd: A[3] + (B[3] - A[3]) * f, ux: dx / dl,
+             alpha: Math.max(0, Math.min(1, Math.min(tau, tr.run - tau) / 0.6)) };
+  }
+
+  /* ---- drawing primitives: {d, s(troke), w, sa, f(ill), fa, dash, cap, a(lpha), cls} or {t:'chip', x, y, text, c, a} ---- */
+  function chipW(text) { return 18 + ADV * text.length; }
+  function chipBox(p) { var w = chipW(p.text), x = Math.max(8, Math.min(W - 8 - w, p.x)), y = Math.max(46, p.y); return [x, y, w]; }
+  function brackets(out, x0, y0, x1, y1, color, s, lock, a) {
+    var g = 1 + 0.4 * (1 - easeEnter(lock)), cx = (x0 + x1) / 2, cy = (y0 + y1) / 2, L = Math.max(8, 0.42 * (x1 - x0) * 0.4);
+    x0 = cx + (x0 - cx) * g; x1 = cx + (x1 - cx) * g; y0 = cy + (y0 - cy) * g; y1 = cy + (y1 - cy) * g;
+    var d = 'M' + pt(x0, y0 + L) + 'V' + f1(y0) + 'H' + f1(x0 + L) + 'M' + pt(x1 - L, y0) + 'H' + f1(x1) + 'V' + f1(y0 + L) +
+            'M' + pt(x1, y1 - L) + 'V' + f1(y1) + 'H' + f1(x1 - L) + 'M' + pt(x0 + L, y1) + 'H' + f1(x0) + 'V' + f1(y1 - L);
+    out.push({ d: d, s: DEEP, w: Math.max(2.5, 4.5 * s), a: a });          // keyline keeps ≥ 3:1 over real footage
+    out.push({ d: d, s: color, w: Math.max(1.4, 2.4 * s), a: a });
+    return [x0, y0];
+  }
+  function person(out, a, p, color, label, lock) {
+    var s = sAt(p.y), h = 200 * s, al = p.alpha;
+    var sw = Math.sin(2 * Math.PI * p.wd / 150), A = (0.35 + 0.65 * Math.abs(p.ux)) * (p.ux < 0 ? -1 : 1);
+    function J(px, py) { return [p.x + px * h, p.y + py * h]; }
+    var j = { neck: J(0, -0.83), pel: J(0, -0.5), shL: J(-0.11, -0.8), shR: J(0.11, -0.8),
+      elL: J(-0.135 + 0.05 * sw * A, -0.645), elR: J(0.135 - 0.05 * sw * A, -0.645),
+      wrL: J(-0.125 + 0.1 * sw * A, -0.49), wrR: J(0.125 - 0.1 * sw * A, -0.49),
+      hpL: J(-0.07, -0.5), hpR: J(0.07, -0.5),
+      knL: J(-0.07 - 0.07 * sw * A, -0.26), knR: J(0.07 + 0.07 * sw * A, -0.26),
+      anL: J(-0.07 - 0.13 * sw * A, -0.015), anR: J(0.07 + 0.13 * sw * A, -0.015) };
+    function M(k) { return 'M' + pt(j[k][0], j[k][1]); } function Lk(k) { return 'L' + pt(j[k][0], j[k][1]); }
+    var d = M('neck') + Lk('pel') + M('shL') + Lk('shR') + M('hpL') + Lk('hpR') + M('shL') + Lk('elL') + Lk('wrL') + M('shR') + Lk('elR') + Lk('wrR') +
+            M('hpL') + Lk('knL') + Lk('anL') + M('hpR') + Lk('knR') + Lk('anR');
+    var hx = p.x, hy = p.y - 0.915 * h, r = 0.062 * h;
+    out.push({ d: d + circle(hx, hy, r), s: LINE, w: Math.max(1.4, 2.4 * s), cap: 'round', a: al });
+    if (a.helmet) out.push({ d: 'M' + pt(hx - 1.12 * r, hy - 0.12 * r) + 'A' + f1(1.12 * r) + ',' + f1(1.12 * r) + ' 0 0 1 ' + pt(hx + 1.12 * r, hy - 0.12 * r) + 'Z' +
+                                 rect(hx - 1.4 * r, hy - 0.2 * r, 2.8 * r, Math.max(1.5, 0.22 * r)), f: LINE, a: al });
+    var dots = '', dr = Math.max(1.8, 0.014 * h);
+    ['shL', 'shR', 'elL', 'elR', 'wrL', 'wrR', 'hpL', 'hpR', 'knL', 'knR', 'anL', 'anR'].forEach(function (k) { dots += circle(j[k][0], j[k][1], dr); });
+    out.push({ d: dots, f: color, a: al });                                         // pose keypoints in the detection colour
+    var b = brackets(out, p.x - 0.25 * h, p.y - 1.0 * h, p.x + 0.25 * h, p.y + 0.03 * h, color, s, lock, al);
+    out.push({ t: 'chip', x: b[0], y: b[1] - 4, text: label, c: color, a: al });
+  }
+  function vehicle(out, id, p, lock) {
+    var s = sAt(p.y), vw = 250 * s, vh = 160 * s, x = p.x, y = p.y, al = p.alpha;
+    var d = rect(x - vw / 2, y - vh, vw, vh * 0.8) +
+            'M' + pt(x - vw * 0.36, y - vh * 0.9) + 'L' + pt(x + vw * 0.36, y - vh * 0.9) + 'L' + pt(x + vw * 0.42, y - vh * 0.56) + 'L' + pt(x - vw * 0.42, y - vh * 0.56) + 'Z' +
+            'M' + pt(x - vw * 0.3, y - vh * 0.36) + 'L' + pt(x + vw * 0.3, y - vh * 0.36) +
+            rect(x - vw * 0.46, y - vh * 0.2, vw * 0.16, vh * 0.2) + rect(x + vw * 0.3, y - vh * 0.2, vw * 0.16, vh * 0.2);
+    out.push({ d: d, s: LINE, w: Math.max(1.4, 2.4 * s), cap: 'round', a: al });
+    var b = brackets(out, x - vw / 2 - 6 * s, y - vh - 6 * s, x + vw / 2 + 6 * s, y + 6 * s, AQUA, s, lock, al);
+    out.push({ t: 'chip', x: b[0], y: b[1] - 4, text: 'VEHICLE 0.91 · ID ' + id, c: AQUA, a: al });
+  }
+
+  /* ---- static site backdrop (SVG only, drawn once behind the transparent canvas) ---- */
+  function staticPrims() {
+    var o = [{ d: rect(0, 0, W, H), f: DEEP }], g = '', k, x, y, step;
+    for (k = -12; k <= 12; k++) { var xb = VPX + k * 150, xs = VPX + (xb - VPX) * (FENCE + 3 - VPY) / (H - VPY); g += 'M' + pt(xs, FENCE + 3) + 'L' + pt(xb, H); }
+    for (y = FENCE + 3, step = 9; y < H; step *= 1.24, y += step) g += 'M' + pt(0, y) + 'H' + W;
+    o.push({ d: g, s: AQUA, w: 1.2, sa: 0.08 });
+    var fence = 'M0,226H716M884,226H' + W + 'M0,244H716M884,244H' + W;
+    for (x = 12; x < W; x += 48) if (x < 708 || x > 892) fence += 'M' + x + ',212V' + FENCE;
+    o.push({ d: fence, s: LINE, w: 1.5, sa: 0.32 });
+    o.push({ d: 'M716,194V' + FENCE + 'M884,194V' + FENCE, s: LINE, w: 3, sa: 0.5 });                                   // gate posts
+    o.push({ d: 'M716,205H872', s: LINE, w: 5, sa: 0.55, dash: [12, 8] });                                               // barrier arm
+    o.push({ d: 'M716,' + (FENCE + 3) + 'L323,' + H + 'M884,' + (FENCE + 3) + 'L1277,' + H, s: LINE, w: 1.6, sa: 0.24 });  // road edges
+    o.push({ d: 'M800,' + (FENCE + 3) + 'V' + H, s: LINE, w: 2, sa: 0.18, dash: [18, 24] });                               // centre line
+    o.push({ d: rect(90, 272, 310, 126) + 'M80,272H410M86,262H404' + rect(318, 318, 34, 80) + rect(120, 300, 80, 44) + rect(220, 300, 80, 44),
+             s: LINE, w: 2, sa: 0.42 });                                                                                     // site office cabin
+    o.push({ d: 'M540,' + FENCE + 'V70H582' + rect(574, 64, 30, 12), s: LINE, w: 2, sa: 0.32 });                       // light pole
+    var crane = 'M1404,18V' + FENCE + 'M1424,18V' + FENCE + 'M1030,22H1590M1030,40H1590M1395,52H1433V78H1395Z';
+    for (y = 18; y < FENCE - 20; y += 22) crane += 'M1404,' + y + 'L1424,' + (y + 22);
+    for (x = 1030; x < 1590; x += 30) crane += 'M' + x + ',40L' + (x + 15) + ',22L' + (x + 30) + ',40';
+    crane += 'M1414,0L1150,22M1414,0L1560,22M1186,40V138M1180,138h12v10h-12z';
+    o.push({ d: crane, s: LINE, w: 1.4, sa: 0.28 });
+    o.push({ d: rect(1520, 40, 60, 22), f: LINE, fa: 0.16 });                                                           // counterweight
+    o.push({ d: 'M' + ZONE.map(function (q) { return pt(q[0], q[1]); }).join('L') + 'Z', f: DANGER, fa: 0.07, s: DANGER, w: 2.5, dash: [14, 10], cls: 'zone' });
+    var cones = '';
+    [500, 590, 680].forEach(function (cy) { var cx = 1013 + (1200 - 1013) * (cy - 440) / 280 - 14, cs = sAt(cy);
+      cones += 'M' + pt(cx - 10 * cs, cy) + 'L' + pt(cx, cy - 30 * cs) + 'L' + pt(cx + 10 * cs, cy) + 'Z'; });
+    o.push({ d: cones, s: LINE, w: 1.6, sa: 0.55 });
+    o.push({ t: 'chip', x: 1200, y: 768, text: 'ZONE B · RESTRICTED', c: DANGER });
+    return o;
+  }
+
+  /* ---- simulation: stateful only for events, lock-on timing and trails ---- */
+  function placeChips(chips) {   // labels never overlap: a colliding chip steps up one row (identical in node and browser)
+    var placed = [];
+    chips.forEach(function (c) {
+      for (var n = 0; n < 4; n++) {
+        var b = chipBox(c), hit = placed.some(function (q) { return b[0] < q[0] + q[2] + 6 && q[0] < b[0] + b[2] + 6 && b[1] - 38 < q[1] - 4 && q[1] - 38 < b[1] - 4; });
+        if (!hit) break; c.y -= 34;
+      }
+      placed.push(chipBox(c));
+    });
+    return chips;
+  }
+  var PREROLL = 40;   // seconds of history simulated before t = 0, so the event list starts with real, staggered timestamps
+  function createSim() {
+    var ppe = 0;
+    var st = ACTORS.map(function () { return { inFrame: false, zone: 'out', lockT: -1e9, trail: [], tau: -1 }; });
+    function step(t, now) {
+      var prims = [], chips = [], events = [], nZone = 0;
+      ACTORS.forEach(function (a, i) {
+        var p = sample(a, t), S = st[i], id = trackId(a, t);
+        if (p.tau < S.tau) S.trail = [];                                            // new cycle: fresh track
+        S.tau = p.tau;
+        var inFrame = p.alpha > 0.5 && p.x > 20 && p.x < W - 20 && p.y > HOR && p.y < H + 30;
+        if (inFrame && !S.inFrame) {                                                 // acquired
+          S.lockT = now;
+          if (a.kind === 'vehicle') events.push({ t: t, text: 'Vehicle detected', zone: 'Yard road', id: id, lvl: 'info' });
+          else if (!a.helmet) { ppe++; events.push({ t: t, text: 'Missing helmet', zone: 'Gate 2', id: id, lvl: 'warning' }); }
+        }
+        S.inFrame = inFrame;
+        if (!(p.alpha > 0)) { S.zone = 'out'; return; }
+        var zone = 'out';
+        if (a.kind === 'person' && inFrame) {                                        // EV-134: restricted-zone entry; workers in hazardous areas
+          var dz = zoneDist(p.x, p.y);
+          zone = inZone(p.x, p.y) ? 'in' : (dz < (S.zone === 'out' ? 70 : 90) ? 'near' : 'out');   // hysteresis: no flicker on the edge
+        }
+        if (zone === 'in' && S.zone !== 'in') { S.lockT = now; events.push({ t: t, text: 'Restricted-zone entry', zone: 'Zone B', id: id, lvl: 'danger' }); }
+        if (zone === 'near' && S.zone === 'out') { S.lockT = now; events.push({ t: t, text: 'Worker near hazard', zone: 'Zone B', id: id, lvl: 'warning' }); }
+        S.zone = zone; if (zone === 'in') nZone++;
+        var last = S.trail[S.trail.length - 1];
+        if (!last || Math.hypot(last[0] - p.x, last[1] - p.y) > 6) { S.trail.push([p.x, p.y]); if (S.trail.length > 24) S.trail.shift(); }
+        if (S.trail.length > 1) prims.push({ d: 'M' + S.trail.map(function (q) { return pt(q[0], q[1]); }).join('L'), s: AQUA, w: 1.5, sa: 0.28, cap: 'round', a: p.alpha });
+        var lock = (now - S.lockT) / 160;
+        var n0 = prims.length;
+        if (a.kind === 'vehicle') vehicle(prims, id, p, lock);
+        else {
+          var color = zone === 'in' ? DANGER : zone === 'near' || !a.helmet ? WARN : AQUA;
+          var label = zone === 'in' ? 'ZONE B ENTRY · ID ' + id : zone === 'near' ? 'NEAR ZONE B · ID ' + id :
+                      a.helmet ? 'PERSON 0.9' + (Number(id) % 7 + 2) + ' · ID ' + id : 'NO HELMET · ID ' + id;
+          person(prims, a, p, color, label, lock);
+        }
+        for (var k = n0; k < prims.length; k++) if (prims[k].t === 'chip') { chips.push(prims.splice(k, 1)[0]); k--; }
+      });
+      return { prims: prims.concat(placeChips(chips)), events: events, inZone: nZone, ppe: ppe };   // labels above every figure
+    }
+    function prime() {   // run the history; lock-ons from it are long settled by t = 0
+      var hist = [];
+      for (var t = -PREROLL; t < -1e-9; t += 0.1) hist = hist.concat(step(t, t * 1000 - 1e6).events);
+      return hist.slice(-6);
+    }
+    return { step: step, prime: prime };
+  }
+
+  /* ---- renderers ---- */
+  function toSVG(prims, cls) {
+    var o = ['<svg class="' + cls + '" viewBox="0 0 ' + W + ' ' + H + '" aria-hidden="true" focusable="false">'];
+    prims.forEach(function (p) {
+      var op = p.a != null && p.a < 1 ? ' opacity="' + p.a.toFixed(3) + '"' : '';
+      if (p.t === 'chip') { var b = chipBox(p);
+        o.push('<g class="chip"' + op + '><rect x="' + f1(b[0]) + '" y="' + f1(b[1] - 38) + '" width="' + f1(b[2]) + '" height="30" rx="4" fill="' + DEEP + '" fill-opacity=".85"/>' +
+               '<text x="' + f1(b[0] + 9) + '" y="' + f1(b[1] - 16) + '" fill="' + p.c + '">' + p.text + '</text></g>'); return; }
+      var s = '<path d="' + p.d + '"' + (p.cls ? ' class="' + p.cls + '"' : '') + ' fill="' + (p.f || 'none') + '"' + (p.f && p.fa != null ? ' fill-opacity="' + p.fa + '"' : '');
+      if (p.s) s += ' stroke="' + p.s + '" stroke-width="' + p.w + '"' + (p.sa != null ? ' stroke-opacity="' + p.sa + '"' : '') +
+                    (p.dash ? ' stroke-dasharray="' + p.dash.join(' ') + '"' : '') + (p.cap ? ' stroke-linecap="' + p.cap + '" stroke-linejoin="round"' : '');
+      o.push(s + op + '/>');
+    });
+    o.push('</svg>');
+    return o.join('');
+  }
+  function draw(ctx, prims, noChips) {   // noChips: narrow screens, where 22-unit labels would be illegible
+    for (var i = 0; i < prims.length; i++) {
+      var p = prims[i], a = p.a == null ? 1 : p.a;
+      if (!(a > 0)) continue;
+      if (p.t === 'chip') { if (noChips) continue; var b = chipBox(p);
+        ctx.globalAlpha = a * 0.85; ctx.fillStyle = DEEP; ctx.beginPath();
+        if (ctx.roundRect) ctx.roundRect(b[0], b[1] - 38, b[2], 30, 4); else ctx.rect(b[0], b[1] - 38, b[2], 30);
+        ctx.fill(); ctx.globalAlpha = a; ctx.fillStyle = p.c; ctx.font = FONT; ctx.fillText(p.text, b[0] + 9, b[1] - 16); continue; }
+      var P = new Path2D(p.d);
+      if (p.f) { ctx.globalAlpha = a * (p.fa == null ? 1 : p.fa); ctx.fillStyle = p.f; ctx.fill(P); }
+      if (p.s) { ctx.globalAlpha = a * (p.sa == null ? 1 : p.sa); ctx.strokeStyle = p.s; ctx.lineWidth = p.w; ctx.setLineDash(p.dash || []);
+        ctx.lineCap = p.cap || 'butt'; ctx.lineJoin = p.cap ? 'round' : 'miter'; ctx.stroke(P); }
+    }
+    ctx.globalAlpha = 1; ctx.setLineDash([]);
+  }
+  function eventHTML(e) {   // shared by the build (pre-rendered list) and the live stream
+    return '<li class="event"><time class="mono-xs text-fg-muted">' + tc(e.t) + '</time><span class="text-small lvl-' + e.lvl + '">' + e.text + '</span>' +
+           '<span></span><span class="mono-xs text-fg-muted">CAM-03 · ' + e.zone + ' · ID ' + e.id + '</span></li>';
+  }
+
+  var Y1 = { W: W, H: H, createSim: createSim, draw: draw, toSVG: toSVG, staticPrims: staticPrims, eventHTML: eventHTML, tc: tc, FONT: FONT };
+  root.Y1 = Y1;
+
+  /* ---- build: `node y1_scene.js` prints the static scene, the t = 0 poster, and the events that frame produces ---- */
+  if (typeof module !== 'undefined' && module.exports) {
+    module.exports = Y1;
+    if (typeof require !== 'undefined' && require.main === module) {
+      var sim = createSim(), hist = sim.prime(), out = sim.step(0, 0), settled = sim.step(0, 1e6);   // second call: same t, locks settled
+      var scene = toSVG(staticPrims(), 'scene' + (out.inZone > 0 ? ' zone-hot' : ''));
+      process.stdout.write(JSON.stringify({ scene: scene, poster: toSVG(settled.prims, 'poster'),
+        events: hist.concat(out.events).slice(-6).reverse().map(eventHTML).join(''), inZone: out.inZone, ppe: out.ppe }));
+    }
+  }
+})(typeof window !== 'undefined' ? window : globalThis);
+
+</script>
+<script>
+(function () {
+  'use strict';
+  var Y1 = window.Y1, root = document.documentElement;
+  var mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+  function isReduced() { return mq.matches || root.dataset.motion === 'reduce'; }
+
+  var cam = document.getElementById('cam');
+  var scene = cam.querySelector('.scene');
+  var canvas = cam.querySelector('canvas');
+  var ctx = canvas.getContext('2d');
+  var btn = document.querySelector('[data-motion-control]');
+  var tcEl = cam.querySelector('[data-timecode]');
+  var recLabel = cam.querySelector('[data-rec-label]');
+  var list = document.querySelector('[data-events]');
+  var cZone = document.querySelector('[data-count="zone"]');
+  var cPpe = document.querySelector('[data-count="ppe"]');
+
+  var sim = null, simT = 0, last = 0, running = false, raf = 0, mounted = false, visible = true;
+
+  function resize() {
+    var r = cam.getBoundingClientRect(), dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    canvas.width = Math.round(r.width * dpr); canvas.height = Math.round(r.height * dpr);
+    var k = r.width / Y1.W; ctx.setTransform(dpr * k, 0, 0, dpr * k, 0, 0);
+  }
+  function pushEvent(html) {
+    var tpl = document.createElement('template'); tpl.innerHTML = html;
+    var li = tpl.content.firstChild; li.setAttribute('data-new', '');
+    list.insertBefore(li, list.firstChild);
+    while (list.children.length > 6) list.removeChild(list.lastChild);
+    setTimeout(function () { li.removeAttribute('data-new'); }, 300);
+  }
+  function frame(t, now) {
+    var out = sim.step(t, now);
+    ctx.clearRect(0, 0, Y1.W, Y1.H);
+    Y1.draw(ctx, out.prims, cam.clientWidth < 640);
+    for (var i = 0; i < out.events.length; i++) pushEvent(Y1.eventHTML(out.events[i]));
+    cZone.textContent = String(out.inZone); cPpe.textContent = String(out.ppe);
+    scene.classList.toggle('zone-hot', out.inZone > 0);
+    tcEl.textContent = Y1.tc(t);
+  }
+  function loop(now) {
+    if (!last) last = now;
+    simT += Math.min(0.1, (now - last) / 1000); last = now;
+    frame(simT, now);
+    raf = requestAnimationFrame(loop);
+  }
+  function play() { if (running || !visible || document.hidden) return; running = true; last = 0; raf = requestAnimationFrame(loop); }
+  function halt() { running = false; cancelAnimationFrame(raf); }
+  function mount() {   // same history as the build-time poster, so the hand-over is seamless
+    if (mounted) return; mounted = true;
+    sim = Y1.createSim(); simT = 0;
+    var hist = sim.prime(); list.textContent = '';
+    for (var i = 0; i < hist.length; i++) list.insertAdjacentHTML('afterbegin', Y1.eventHTML(hist[i]));
+    resize(); frame(0, performance.now()); cam.classList.add('is-live');
+  }
+  function setPaused(p, persist) {
+    btn.setAttribute('aria-pressed', String(p));
+    cam.classList.toggle('is-paused', p); recLabel.textContent = p ? 'Paused' : 'Rec';
+    if (persist) { try { localStorage.setItem('yisbir-feed', p ? 'paused' : 'playing'); } catch (e) {} }
+    if (p) { halt(); } else { mount(); play(); }
+  }
+  // Canvas text needs the mono face before the first frame; never wait more than 1.5 s for it.
+  var fontsReady = Promise.race([
+    document.fonts && document.fonts.load ? document.fonts.load(Y1.FONT).catch(function () {}) : Promise.resolve(),
+    new Promise(function (r) { setTimeout(r, 1500); })]);
+
+  var stored = null; try { stored = localStorage.getItem('yisbir-feed'); } catch (e) {}
+  var qa = /[#&]t=(\d+(?:\.\d+)?)/.exec(location.hash);   // QA hook: #t=<seconds> renders that frame, paused
+  btn.addEventListener('click', function () { setPaused(btn.getAttribute('aria-pressed') !== 'true', true); });
+  if (qa) {
+    fontsReady.then(function () {
+      mount(); var T = Number(qa[1]);
+      for (var s = 0.25; s <= T + 1e-9; s += 0.25) { simT = s; frame(s, 1000 + s * 1000); }
+      setPaused(true, false);
+    });
+  } else if (isReduced() || stored === 'paused' || window.innerWidth < 768) {
+    btn.setAttribute('aria-pressed', 'true'); cam.classList.add('is-paused'); recLabel.textContent = 'Paused';   // poster frame; Play is an explicit opt-in
+  } else {
+    var idle = 'requestIdleCallback' in window ? function (cb) { window.requestIdleCallback(cb, { timeout: 1200 }); } : function (cb) { setTimeout(cb, 200); };
+    requestAnimationFrame(function () { idle(function () { fontsReady.then(function () {   // after first paint: LCP stays the H1
+      if (btn.getAttribute('aria-pressed') === 'false') setPaused(false, false); }); }); });
+  }
+  mq.addEventListener('change', function (e) { if (e.matches) setPaused(true, false); });
+  if ('IntersectionObserver' in window) new IntersectionObserver(function (es) {
+    visible = es[0].isIntersecting;
+    if (!visible) halt(); else if (mounted && btn.getAttribute('aria-pressed') === 'false') play();
+  }).observe(cam);
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) halt(); else if (mounted && btn.getAttribute('aria-pressed') === 'false') play(); });
+  if ('ResizeObserver' in window) new ResizeObserver(function () {
+    if (!mounted) return; resize(); if (!running) { ctx.clearRect(0, 0, Y1.W, Y1.H); Y1.draw(ctx, sim.step(simT, performance.now() + 1e6).prims, cam.clientWidth < 640); }
+  }).observe(cam);
+})();
+</script>
+</body>
+</html>

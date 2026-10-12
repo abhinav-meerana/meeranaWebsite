@@ -1,0 +1,243 @@
+/* Meerana design tokens — CSS custom properties.
+   Primitives are brand-specified and verified from MEERANA-BRAND IDENTITY-04062026.pdf
+   vector swatches (see .claude/skills/meerana-brand/references/brand-reference.md).
+   Derived and semantic tiers follow plan/design-tokens.json.
+   DO NOT introduce raw hex outside this file.
+
+   The "depth" block at the end is new: it is the grade stack that gives the page
+   luminance variation. Values come from docs/DEPTH-DIRECTION-2026-10-10.md. */
+
+@layer tokens {
+  :root {
+    /* ---------- Tier 1 · primitives (brand PDF swatches) ---------- */
+    --meerana-blue: #0d3bff;
+    --meerana-navy: #071b36;
+    --meerana-cyan: #3fd0ff;
+    --meerana-neutral: #ededed;
+    --meerana-white: #ffffff;
+
+    --wasel-brown: #6b3e26;
+    --wasel-sand: #d9c1a3;
+    --wasel-copper: #c58a52;
+    --wasel-ivory: #f7f4ef;
+
+    --mandoobee-royal: #0d3d91;
+    --mandoobee-azure: #047aff;
+    --mandoobee-slate: #6c819a;
+    --mandoobee-mist: #f0f4f9;
+
+    --tasree3-ink: #001731;
+    --tasree3-sky: #009bfd;
+    --tasree3-orange: #fd5d01;
+
+    --yisbir-blue: #0045f8;
+    --yisbir-aqua: #43dafe;
+    --yisbir-abyss: #00132d;
+
+    /* ---------- Tier 2 · derived (documented mix recipes) ---------- */
+    --navy-950: #051326;   /* mix(navy, #000, .30) — deepest surface */
+    --navy-900: #06192e;
+    --navy-800: #2c3d54;   /* mix(navy, white, .15) */
+    --navy-700: #3e4d63;
+    --navy-600: #515f72;   /* mix(navy, white, .30) */
+    --navy-500: #778290;   /* mix(navy, white, .45) — UI boundary */
+    --navy-300: #9ca4af;   /* mix(navy, white, .60) */
+    --navy-200: #b5bbc3;   /* mix(navy, white, .70) */
+    --navy-150: #c1c6cd;   /* mix(navy, white, .75) */
+    --navy-100: #dfe3e8;
+    --navy-050: #f5f6f7;
+
+    --blue-050: #ecefff;
+    --blue-100: #dbe2ff;
+    --blue-hover: #0c35d7;
+    --blue-pressed: #0b30b9;
+
+    /* Non-brand functional colours — form validation and demo status only. */
+    --state-success-on-dark: #12b76a;
+    --state-error-on-dark: #f97066;
+    --state-warning-on-dark: #fdb022;
+    --state-success-on-light: #0f7b4a;
+    --state-error-on-light: #b42318;
+
+    /* ---------- Tier 3 · semantic (dark surface is the page default) ---------- */
+    --surface-page: var(--meerana-navy);
+    --surface-deep: var(--navy-950);
+    --surface-sunken: var(--navy-950);
+    --surface-raised: var(--navy-800);
+    --surface-inset: rgba(255, 255, 255, 0.03);
+    /* Diagram and screen stages. Solid, so media never sits on a scrim.
+       Open decision: DD-14 names #1B2D46 as the raised dark surface; the
+       build still uses the navy ramp until the owner rules. */
+    --ink-950: #04101f;
+    --ink-900: #08172b;
+    --ink-800: #0a1a2e;
+    --ink-700: #0d2137;
+    --ink-on-accent: var(--ink-950);
+
+    --text-primary: var(--meerana-white);
+    --text-secondary: var(--navy-200);
+    --text-muted: var(--navy-300);
+    --text-accent: var(--meerana-cyan);
+
+    --line: rgba(255, 255, 255, 0.08);
+    --line-strong: rgba(255, 255, 255, 0.14);
+    --line-faint: rgba(255, 255, 255, 0.05);
+
+    --action-primary-bg: var(--meerana-white);
+    --action-primary-fg: var(--meerana-navy);
+    --focus-ring: var(--meerana-cyan);
+
+    /* ---------- Scene (the homepage three.js room) ----------
+       WebGL code cannot read custom properties, so lib/scene-colors.ts
+       mirrors these (and --meerana-navy, --meerana-cyan) as literals.
+       Change a value here first, then its mirror. */
+    --scene-lattice: #16405f;  /* floor and back-wall hairlines */
+    --scene-key: #dbe8ff;      /* key light, a cool white */
+    --scene-fill: #6f9fd0;     /* fill light, so shadow sides are never black */
+    --scene-ambient: #8fb0d8;  /* ambient, a desaturated sky */
+
+    /* ---------- Fluid unit (docs/r2/FINAL-SPEC.md §3.2) ----------
+       One height-aware unit for every fluid role, so a short laptop viewport
+       (1366×657, 1280×601) scales type and space down instead of overflowing.
+       Width-driven until the viewport is shorter than ~16:9, then
+       height-driven. Portrait overrides sit after this layer (end of file).
+       Resolved values per viewport are tabled in §3.3. */
+    --u: min(1vw, 1.85svh);
+
+    /* ---------- Type scale ----------
+       Display roles read --u; body, small and label stay fixed at 17/15/13 px
+       (plan/design-tokens.json). No ad-hoc clamps in component CSS (C8). */
+    --fs-hero:    clamp(2.25rem, calc(5.2 * var(--u)), 7.5rem);      /* homepage H1 only */
+    --fs-display: clamp(2.25rem, calc(4.4 * var(--u)), 6rem);        /* CTA headline (.t-display) */
+    --fs-h2:      clamp(1.75rem, calc(2.6 * var(--u)), 2.75rem);
+    --fs-h3: 1.25rem;
+    --fs-lede:    clamp(1.0625rem, calc(1.45 * var(--u)), 1.5rem);
+    --fs-body: 1.0625rem;
+    --fs-small: 0.9375rem;
+    --fs-label: 0.8125rem;
+    --fs-sc-name: clamp(1.75rem, calc(3.4 * var(--u)), 3.25rem);
+    /* Product story (.ps-*). */
+    --fs-ps-title:     clamp(2.25rem, calc(4.4 * var(--u)), 4.5rem);   /* product title H1 */
+    --fs-ps-h:         clamp(1.5rem,  calc(2.9 * var(--u)), 2.75rem);  /* scene H2 */
+    --fs-ps-statement: clamp(2rem,    calc(4   * var(--u)), 4rem);     /* value / next H2 */
+    --fs-ps-body: clamp(0.9375rem, calc(0.55rem + 0.6 * var(--u)), 1.0625rem);  /* floor 15px */
+    --fs-ps-item: clamp(0.8125rem, calc(0.5rem + 0.5 * var(--u)), 0.9375rem);   /* floor 13px */
+    --fs-bigtype: clamp(9rem, 38svh, 26rem);
+
+    /* ---------- Space · radius · layout ---------- */
+    --sp-1: 4px;
+    --sp-2: 8px;
+    --sp-3: 12px;
+    --sp-4: 16px;
+    --sp-5: 24px;
+    --sp-6: 32px;
+    --sp-7: 48px;
+    --sp-8: 64px;
+    --sp-9: 96px;
+    --sp-10: 128px;
+    /* Fluid space, read from --u. */
+    --sp-fluid-xs: clamp(6px,  calc(0.8 * var(--u)), 12px);
+    --sp-fluid-s:  clamp(10px, calc(1.9 * var(--u)), 32px);
+    --sp-fluid-m:  clamp(16px, calc(3.2 * var(--u)), 56px);
+    --sp-fluid-l:  clamp(32px, calc(5   * var(--u)), 96px);
+    --section-py:  clamp(48px, calc(7   * var(--u)), 128px);
+
+    --radius-control: 6px;
+    --radius-input: 8px;
+    --radius-card: 16px;
+    --radius-panel: 24px;
+    --radius-pill: 999px;
+
+    --content-max: clamp(1280px, 72vw, 1560px);
+    --gutter: clamp(16px, 4vw, 48px);
+    /* Fluid header (C7): 56 px on short laptops, 72 px from ~1536×864 up.
+       All stage, sticky and scroll-padding geometry reads this. */
+    --header-h: clamp(56px, calc(4.6 * var(--u)), 72px);
+
+    /* ---------- Type: annotation voice ----------
+       Provenance, indices and spec labels. System mono stack only (DD-06):
+       zero font cost. Numbers use tabular figures. */
+    --font-mono: ui-monospace, "Cascadia Mono", "Segoe UI Mono", "SF Mono", Menlo,
+      Consolas, monospace;
+    --annotation: var(--meerana-cyan);
+
+    /* ---------- Lattice (the brand's isometric geometry) ---------- */
+    --lattice-cell: 56px;
+    --lattice-line: rgba(255, 255, 255, 0.06);
+    --lattice-line-strong: rgba(255, 255, 255, 0.12);
+    /* The opaque stop in mask gradients. A mask reads alpha only, so this is
+       "fully shown", never a colour on screen; it keeps raw values out of
+       component CSS. */
+    --mask-solid: #000;
+
+    /* ---------- Motion ---------- */
+    --dur-instant: 100ms;
+    --dur-fast: 160ms;
+    --dur-base: 240ms;
+    --dur-slow: 420ms;
+    /* Used only by a page's single signature motion. */
+    --dur-signature: 720ms;
+    /* Product-story scene entrances and act wipes only. */
+    --dur-cinematic: 900ms;
+    --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+    --ease-enter: cubic-bezier(0, 0, 0, 1);
+    --ease-exit: cubic-bezier(0.3, 0, 1, 1);
+
+    /* ================================================================
+       DEPTH · the grade stack. Layer order (painted bottom to top):
+         1. surface-page        flat base
+         2. --glow-* radials    large-scale luminance non-uniformity
+         3. grid lines          mid-scale structure
+         4. --vignette-*        corner falloff
+         5. grain tile          micro-scale texture
+       Flatness on a dark page is a layer-2 failure, not a texture failure:
+       a single flat fill cannot be rescued by grain alone.
+       ================================================================ */
+
+    /* Layer 2 · key light + atmospheric mesh. Single hue family, all stops
+       within ~±15° of brand navy. Alpha kept low so text contrast is untouched. */
+    --glow-key: rgba(96, 140, 200, 0.14);      /* top-centre key light */
+    --glow-fill: rgba(60, 110, 180, 0.07);     /* off-axis fill */
+    --glow-accent: rgba(63, 208, 255, 0.055);  /* brand cyan, used sparingly */
+    --glow-deep: rgba(13, 59, 255, 0.05);      /* brand blue, lowest layer */
+
+    /* Layer 3 · hairline grid. Line alpha 3–5%; >5% reads as graph paper. */
+    --grid-line: rgba(255, 255, 255, 0.035);
+    --grid-cell: 56px;
+
+    /* Layer 4 · vignette. Target corner delta 10–20% luminance. */
+    --vignette: rgba(2, 6, 12, 0.55);
+    --vignette-clear: 45%;
+
+    /* Layer 5 · film grain. 0.03–0.06; >0.08 reads as a dirty screen. */
+    --grain-opacity: 0.045;
+    --grain-size: 256px;
+
+    /* Interaction light — a pointer-tracked sheen set from JS as --mx/--my. */
+    --sheen: rgba(255, 255, 255, 0.08);
+    --mx: 50%;
+    --my: 50%;
+
+    /* Panel elevation on the dark surface. Real shadows, not borders alone:
+       elevation is what makes a panel sit above a surface rather than on it. */
+    --shadow-panel: 0 24px 48px -24px rgba(0, 0, 0, 0.7);
+    --shadow-room: 0 40px 80px -40px rgba(0, 0, 0, 0.8);
+  }
+
+  /* Contrasting-theme support: flatten blur and drop the grade stack. */
+  @media (prefers-reduced-transparency: reduce) {
+    :root {
+      --grain-opacity: 0;
+      --glow-key: transparent;
+      --glow-fill: transparent;
+      --glow-accent: transparent;
+      --glow-deep: transparent;
+    }
+  }
+}
+
+/* Portrait --u (§3.2). Unlayered, after the layer, so these win over the
+   landscape value above. Tablets read width a little larger; phones larger
+   still, capped by height so a short phone (375×667) stays in budget. */
+@media (orientation: portrait) { :root { --u: min(1.5vw, 1.1svh); } }
+@media (orientation: portrait) and (max-width: 599px) { :root { --u: min(2.15vw, 1.1svh); } }
