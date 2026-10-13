@@ -12,6 +12,11 @@
  * Usage: node scripts/verify-launch.mjs [--only honesty,links,console,...]
  *
  * Groups: lint honesty links external console overflow keyboard reduced menus pin gpu axe
+ *
+ * Redesign (2026-10-12): `reduced`, `menus`, `pin` and `gpu` now measure the
+ * cinematic story, PillNav / option wheel and the interactive background;
+ * the retired hero room, gallery and header are gone. The homepage's own
+ * detail checks are in verify-redesign.mjs.
  * (`external` needs network access: it requests the store and press links.)
  *
  * Screenshots: the `console` group saves the first screen of every route at
@@ -290,6 +295,7 @@ if (want("overflow")) await safely("overflow", async () => {
       if (o > 0) bad.push(`${route}+${o}px`);
     }
     check(bad.length === 0, `${w}×${h}`, bad.join(", "));
+    await page.context().close();
   }
 });
 
@@ -311,11 +317,11 @@ if (want("keyboard")) await safely("keyboard", async () => {
         const a = document.activeElement;
         if (!a || a === document.body) return null;
         const b = a.getBoundingClientRect();
-        const hdr = document.querySelector(".site-header")?.getBoundingClientRect().bottom ?? 0;
+        const hdr = document.querySelector(".pill-nav")?.getBoundingClientRect().bottom ?? 0;
         return {
           t: (a.textContent || a.getAttribute("aria-label") || a.tagName).trim().slice(0, 30),
           inView: b.width > 0 && b.height > 0 && b.left >= -1 && b.right <= innerWidth + 1 && b.bottom <= innerHeight + 1,
-          belowHeader: b.top >= hdr - 1 || hdr === 0 || a.closest(".site-header") !== null || /skip/.test(a.className),
+          belowHeader: b.top >= hdr - 1 || hdr === 0 || a.closest(".pill-nav-container") !== null || /skip/.test(a.className),
           outline: getComputedStyle(a).outlineStyle !== "none",
           top: Math.round(b.top),
         };
@@ -345,14 +351,15 @@ if (want("reduced")) await safely("reduced", async () => {
   const s = await page.evaluate(() => window.__h1);
   const bad = s.filter((x) => x.o !== "1" || (x.t !== "none" && x.t !== "matrix(1, 0, 0, 1, 0, 0)") || x.f !== "none");
   check(s.length >= 4 && bad.length === 0, `H1 opacity 1, no transform or filter in ${s.length} samples over 3 s`, JSON.stringify(bad[0] ?? ""));
-  const mode = await page.evaluate(() => document.querySelector(".showcase")?.className ?? "");
-  check(/is-rail/.test(mode), "gallery is a rail (no pin)", mode);
-  const enter = await page.evaluate(() => [...document.querySelectorAll(".hero-enter")].map((el) => getComputedStyle(el).animationName).filter((n) => n !== "none"));
-  check(enter.length === 0, "hero entrance animation is off", enter.join(","));
-  const dim = await page.evaluate(() => [...document.querySelectorAll(".sc-panel")].map((p) => getComputedStyle(p).opacity));
-  check(dim.length === 6 && dim.every((o) => o === "1"), "no gallery card is dimmed", dim.join(","));
-  const hs = await page.evaluate(() => getComputedStyle(document.querySelector(".showcase")).marginTop);
-  check(hs === "0px", "the hero hand-off is off (.showcase margin-top 0)", hs);
+  const story = await page.evaluate(() => ({
+    motion: document.documentElement.dataset.motion,
+    pin: getComputedStyle(document.querySelector(".story-pin")).position,
+    hidden: [...document.querySelectorAll("[data-copy]")].filter((c) => getComputedStyle(c).visibility === "hidden" || getComputedStyle(c).opacity !== "1").length,
+    blurred: [...document.querySelectorAll(".sp")].filter((x) => getComputedStyle(x).display !== "none" && getComputedStyle(x).filter !== "none").length,
+  }));
+  check(story.motion === "reduced" && story.pin !== "sticky", "the story is not pinned", JSON.stringify(story));
+  check(story.hidden === 0, "every story beat and caption is visible", String(story.hidden));
+  check(story.blurred === 0, "no story screen is blurred", String(story.blurred));
   // C3: reduced motion keeps the product story horizontal (a static rail).
   for (const slug of ["tasree3", "ai-in-a-box"]) {
     await page.goto(`${BASE}/products/${slug}/`, { waitUntil: "load" });
@@ -368,88 +375,83 @@ if (want("reduced")) await safely("reduced", async () => {
 
 /* ------------------------------------------------------------------ menus */
 if (want("menus")) await safely("menus", async () => {
-  await group("menus: focus moves in, cycles, and returns");
+  await group("menus: PillNav (desktop) and the option wheel (tablet/phone) — focus in, out and back");
+  const waitFor = async (page, fn, ms = 8000) => {
+    const t0 = Date.now();
+    while (Date.now() - t0 < ms) {
+      if (await page.evaluate(fn)) return true;
+      await page.waitForTimeout(150);
+    }
+    return false;
+  };
   {
     const { page } = await newPage(1440, 900);
-    await page.goto(BASE + "/", { waitUntil: "load" });
+    await page.goto(BASE + "/company/", { waitUntil: "load" });
     await settle(page);
-    const trigger = page.locator(".hdr-trigger");
-    await trigger.focus();
+    const BTN = ".pill-nav button.pill";
+    await page.locator(BTN).focus();
     await page.keyboard.press("Enter");
-    await page.waitForTimeout(300);
-    const open = await page.evaluate(() => !document.querySelector("#hdr-products-panel").hidden);
-    check(open, "Enter opens the products panel");
-    const links = await page.locator("#hdr-products-panel a").count();
-    check(links === 7, "panel lists six products plus 'All six products'", String(links));
-    const all = await page.evaluate(() => [...document.querySelectorAll("#hdr-products-panel a")].find((a) => /all six/i.test(a.textContent))?.getAttribute("href"));
-    check(all === "/products/", "'All six products' points to /products/", String(all));
-    await page.keyboard.press("ArrowDown");
-    await page.waitForTimeout(150);
-    await page.keyboard.press("ArrowDown");
-    await page.waitForTimeout(150);
-    const focused = await page.evaluate(() => document.activeElement?.closest("#hdr-products-panel") !== null);
-    check(focused, "ArrowDown moves focus inside the panel");
+    const open = await waitFor(page, () => {
+      const b = document.querySelector(".pill-nav button.pill");
+      const panel = document.getElementById(b.getAttribute("aria-controls"));
+      return b.getAttribute("aria-expanded") === "true" && !panel.hidden;
+    });
+    check(open, "Enter opens the Platforms panel");
+    const links = await page.locator(".pill-panel:not([hidden]) a").count();
+    check(links === 7, "the panel lists 7 real destinations (six platforms and the overview)", String(links));
+    await page.keyboard.press("Tab");
+    const inside = await page.evaluate(() => !!document.activeElement?.closest(".pill-panel"));
+    check(inside, "Tab from the open button moves into the panel");
     await page.keyboard.press("Escape");
-    await page.waitForTimeout(200);
-    const back = await page.evaluate(() => document.activeElement?.classList.contains("hdr-trigger"));
-    const closed = await page.evaluate(() => document.querySelector("#hdr-products-panel").hidden);
-    check(back && closed, "Escape closes the panel and returns focus to its button");
+    const closed = await waitFor(page, () => document.querySelector(".pill-nav button.pill").getAttribute("aria-expanded") === "false");
+    const back = await page.evaluate(() => document.activeElement?.matches(".pill-nav button.pill"));
+    check(closed && back, "Escape closes it and returns focus to the button");
+    const ctl = await page.evaluate(() => !!document.getElementById(document.querySelector(".pill-nav button.pill").getAttribute("aria-controls")));
+    check(ctl, "aria-controls resolves while the panel is closed");
   }
   {
     const { page } = await newPage(390, 844);
-    await page.goto(BASE + "/", { waitUntil: "load" });
+    await page.goto(BASE + "/company/", { waitUntil: "load" });
     await settle(page);
-    await page.locator(".hdr-toggle").click();
-    await page.waitForTimeout(300);
-    const inside = await page.evaluate(() => document.querySelector("#hdr-sheet").contains(document.activeElement));
-    check(inside, "opening the sheet moves focus inside it");
-    const n = await page.locator("#hdr-sheet a, #hdr-sheet button").count();
-    let escaped = false;
-    for (let i = 0; i < n + 3; i++) {
-      await page.keyboard.press("Tab");
-      if (!(await page.evaluate(() => document.querySelector("#hdr-sheet").contains(document.activeElement)))) escaped = true;
-    }
-    check(!escaped, `Tab cycles within the sheet (${n} stops, ${n + 3} presses)`);
-    await page.keyboard.press("Shift+Tab");
-    check(await page.evaluate(() => document.querySelector("#hdr-sheet").contains(document.activeElement)), "Shift+Tab stays inside the sheet");
+    await page.locator(".wheel-dock .option-wheel").focus();
+    await page.keyboard.press("Enter");
+    const expanded = await waitFor(page, () => document.querySelector(".wheel-dock").classList.contains("is-expanded"));
+    check(expanded, "Enter expands the wheel");
     await page.keyboard.press("Escape");
-    await page.waitForTimeout(250);
-    const ret = await page.evaluate(() => document.activeElement?.classList.contains("hdr-toggle"));
-    const hiddenNow = await page.evaluate(() => document.querySelector("#hdr-sheet").hidden);
-    check(ret && hiddenNow, "Escape closes the sheet and returns focus to the toggle");
-    const ctl = await page.evaluate(() => !!document.getElementById(document.querySelector(".hdr-toggle").getAttribute("aria-controls")));
-    check(ctl, "aria-controls resolves while the sheet is closed");
+    const collapsed = await waitFor(page, () => !document.querySelector(".wheel-dock").classList.contains("is-expanded"));
+    const kept = await page.evaluate(() => document.activeElement?.classList.contains("option-wheel"));
+    check(collapsed && kept, "Escape collapses it and focus stays on the wheel");
+    await page.keyboard.press("Enter");
+    await page.waitForTimeout(300);
+    await page.keyboard.press("End");
+    await page.keyboard.press("Enter");
+    await page.waitForURL(/\/contact\/$/, { timeout: 8000 }).catch(() => {});
+    check(/\/contact\/$/.test(page.url()), "End then Enter goes to Contact", page.url());
   }
 });
 
 /* -------------------------------------------------------------------- pin */
 if (want("pin")) await safely("pin", async () => {
-  await group("motion budget: the gallery pins on every laptop; homepage ≤ 300vh pinned, ≤ 8.5 screens");
-  for (const [w, h] of [[1093, 529], [1280, 601], [1366, 657], [1536, 730], [1920, 937], [1440, 900]]) {
+  await group("motion budget: the homepage story is one CSS-sticky scene of a fixed length; short screens get the static layout");
+  for (const [w, h, len] of [[1440, 900, 7.4], [1366, 657, 7.4], [1920, 937, 7.4], [1024, 768, 7.4], [390, 844, 5.9], [768, 1024, 5.9], [1280, 480, 0]]) {
     const { page } = await newPage(w, h);
     await page.goto(BASE + "/", { waitUntil: "load" });
     await settle(page);
-    await page.waitForTimeout(1500);
-    const m = await page.evaluate(() => {
-      const s = document.querySelector(".showcase");
-      const film = document.querySelector(".sc-film");
-      const hs = document.querySelector(".hero-stage");
-      const hero = document.querySelector(".hero");
-      return {
-        cls: s?.className ?? "none",
-        film: film ? film.getBoundingClientRect().height - innerHeight : null,
-        hand: hs && hero ? Math.max(0, hs.getBoundingClientRect().height - hero.getBoundingClientRect().height) : 0,
-        spacer: !!document.querySelector(".pin-spacer"),
-        docH: document.documentElement.scrollHeight,
-        vh: innerHeight,
-      };
-    });
-    check(/is-pinned/.test(m.cls), `${w}×${h}: the gallery is pinned`, m.cls);
-    check(m.film !== null && Math.abs(m.film - 2.5 * m.vh) <= 2, `${w}×${h}: gallery travel = 2.5 × innerHeight`, `${m.film === null ? "no .sc-film" : Math.round(m.film)} vs ${2.5 * m.vh}`);
-    check(!m.spacer, `${w}×${h}: CSS sticky, no GSAP pin spacer`);
-    const total = (m.film ?? 0) + m.hand;
-    check(total <= 3 * m.vh + 2, `${w}×${h}: homepage total pin ${(total / m.vh).toFixed(2)} × innerHeight (≤ 3)`);
-    if (w === 1440) check(m.docH / m.vh <= 8.5, `${w}×${h}: homepage is ${(m.docH / m.vh).toFixed(2)} screens (≤ 8.5)`);
+    await page.waitForFunction(() => document.querySelector(".story")?.dataset.story === "ready", null, { timeout: 20000 }).catch(() => {});
+    await page.waitForTimeout(600);
+    const m = await page.evaluate(() => ({
+      travel: (document.querySelector(".story").getBoundingClientRect().height - innerHeight) / innerHeight,
+      sticky: getComputedStyle(document.querySelector(".story-pin")).position === "sticky",
+      spacer: !!document.querySelector(".pin-spacer"),
+      layout: document.querySelector(".story").dataset.layout,
+      screens: document.documentElement.scrollHeight / innerHeight,
+    }));
+    if (len === 0) check(!m.sticky && m.layout === "static", `${w}×${h}: short landscape → static story, no pin`, JSON.stringify(m));
+    else check(m.sticky && !m.spacer && Math.abs(m.travel - len) < 0.02, `${w}×${h}: story travel ${m.travel.toFixed(2)} × innerHeight (= ${len}), CSS sticky, no pin spacer`, m.layout);
+    console.log(`        ${w}×${h}: homepage is ${m.screens.toFixed(1)} screens long`);
+    /* Close at once: software GL (SwiftShader) renders every open homepage,
+       and several at a time starve each other's loads. */
+    await page.context().close();
   }
 
   // Product pages are exempt from the homepage budget (D1); their length is P-02.
@@ -471,65 +473,35 @@ if (want("pin")) await safely("pin", async () => {
       check(r.mode === "stage" && Math.abs(r.h - exp) <= 2 && r.n === SCENES_N[slug], `${w}×${h} /products/${slug}/: stage, ${r.n} scenes, length ${Math.round(r.h)} = ${Math.round(exp)} (P-02)`, `mode ${r.mode}`);
     }
   }
-
-  // Previous/next move the pinned gallery one card at a time; the card they land
-  // on has its call to action on screen and its neighbours are inert.
-  for (const [w, h] of [[1366, 657], [1440, 900]]) {
-    const { page } = await newPage(w, h);
-    await page.goto(BASE + "/", { waitUntil: "load" });
-    await settle(page);
-    await page.waitForTimeout(1500);
-    const start = await page.evaluate(() => Math.round(document.querySelector(".sc-film").getBoundingClientRect().top + scrollY));
-    await page.evaluate((y) => window.scrollTo(0, y), start);
-    await page.waitForTimeout(1200);
-    for (let i = 0; i < 4; i++) {
-      await page.locator('button[aria-label="Next product"]').click();
-      await page.waitForTimeout(1300);
-    }
-    const r = await page.evaluate(() => {
-      const p = document.querySelector('.sc-panel[data-i="4"]');
-      const b = p?.querySelector(".btn-primary")?.getBoundingClientRect();
-      return {
-        cur: p?.classList.contains("is-current"),
-        cta: b ? { l: Math.round(b.left), r: Math.round(b.right), t: Math.round(b.top), b: Math.round(b.bottom) } : null,
-        w: innerWidth, h: innerHeight,
-        inertOthers: [...document.querySelectorAll(".sc-panel")].filter((x) => x !== p).every((x) => x.inert),
-      };
-    });
-    const c = r.cta;
-    check(r.cur && c && c.l >= 0 && c.r <= r.w && c.t >= 0 && c.b <= r.h, `${w}×${h}: 4 × Next lands on card 5 with its call to action on screen`, JSON.stringify(r));
-    check(r.inertOthers, `${w}×${h}: the dimmed neighbours are inert`);
-    await page.evaluate((y) => window.scrollTo(0, y), start);
-    await page.waitForTimeout(1300);
-    await page.mouse.move(w / 2, h / 2);
-    await page.mouse.wheel(0, 100);
-    await page.waitForTimeout(1500);
-    const cur = await page.evaluate(() => document.querySelector(".sc-panel.is-current")?.dataset.i);
-    check(cur === "1", `${w}×${h}: one wheel notch moves exactly one card`, `current ${Number(cur) + 1}`);
-  }
 });
 
 /* -------------------------------------------------------------------- gpu */
 if (want("gpu")) await safely("gpu", async () => {
-  await group("3D room: loaded only where it should be (H-05)");
-  for (const [w, h, label, expect] of [[1440, 900, "desktop", true], [1366, 657, "laptop", true], [768, 1024, "tablet", false], [390, 844, "phone", false], [1280, 480, "short", false]]) {
-    const { page } = await newPage(w, h);
-    const big = [];
+  await group("background: WebGL (ColorBends) and the dot field load only on fine-pointer desktops");
+  for (const [w, h, label, expect, touch] of [[1440, 900, "desktop", true, false], [1366, 657, "laptop", true, false], [1024, 768, "tablet landscape (touch)", false, true], [768, 1024, "tablet", false, true], [390, 844, "phone", false, true]]) {
+    const ctx = await browser.newContext({ viewport: { width: w, height: h }, hasTouch: touch, isMobile: touch && w < 1024 });
+    contexts.push(ctx);
+    const page = await ctx.newPage();
+    const three = [];
     page.on("response", async (r) => {
       if (!/\.js(\?|$)/.test(r.url())) return;
-      // three.js by content, not size: size misfires on dev builds of React.
       const b = await r.text().catch(() => "");
-      if (/\bWebGLRenderer\b/.test(b) && /\bPerspectiveCamera\b/.test(b)) big.push(r.url().split("/").pop());
+      if (/\bWebGLRenderer\b/.test(b)) three.push(r.url().split("/").pop());
     });
     await page.goto(BASE + "/", { waitUntil: "load" });
     await settle(page);
-    await page.waitForTimeout(2500);
-    const canvas = await page.evaluate(() => !!document.querySelector(".hero-room canvas"));
-    const depth = await page.evaluate(() => !!document.querySelector(".hero-depth"));
+    /* Wait for the background's decision (and, when live, both canvases). */
+    await page.waitForFunction((live) => {
+      const m = document.querySelector(".mib")?.dataset.mode;
+      return live ? m === "live" && document.querySelectorAll(".mib canvas").length === 2 : m === "static";
+    }, expect, { timeout: 20000 }).catch(() => {});
+    await page.waitForTimeout(800);
+    const c = await page.evaluate(() => ({ mode: document.querySelector(".mib")?.dataset.mode, canvases: document.querySelectorAll(".mib canvas").length }));
+    await ctx.close();
     check(
-      expect ? canvas && big.length >= 1 : !canvas && big.length === 0,
-      `${label} ${w}×${h}: ${expect ? "3D canvas rendered" : "no three.js chunk, no canvas"}`,
-      `canvas=${canvas} depth-band=${depth} three.js chunks=${big.length}`,
+      expect ? c.mode === "live" && c.canvases === 2 && three.length >= 1 : c.mode === "static" && c.canvases === 0 && three.length === 0,
+      `${label} ${w}×${h}: ${expect ? "ColorBends + DotField running" : "static gradient, no three.js chunk, no canvas"}`,
+      `mode=${c.mode} canvases=${c.canvases} three.js chunks=${three.length}`,
     );
   }
   {
@@ -540,57 +512,34 @@ if (want("gpu")) await safely("gpu", async () => {
     await page.goto(BASE + "/", { waitUntil: "load" });
     await settle(page);
     await page.waitForTimeout(1500);
-    check(!(await page.evaluate(() => !!document.querySelector(".hero-room canvas"))), "Save-Data on a wide screen: no 3D canvas");
+    check((await page.evaluate(() => document.querySelectorAll(".mib canvas").length)) === 0, "Save-Data on a wide screen: no WebGL or canvas background");
   }
   {
-    // The room must stop rendering once the hero is off screen. GSAP's ticker
-    // legitimately keeps its own frame loop, so frames are attributed to the
-    // script that asked for them and only the 3D chunk's are counted.
-    const { page } = await newPage(1440, 900);
+    // Reduced motion: ColorBends draws one still frame and stops its loop.
+    // Frames are attributed to the script that asked for them (the three.js
+    // chunk), since GSAP's ticker legitimately keeps its own loop.
+    const { page } = await newPage(1440, 900, { reduced: true });
     await page.addInitScript(() => {
       window.__raf = [];
-      window.__on = false;
       const orig = window.requestAnimationFrame.bind(window);
       window.requestAnimationFrame = (cb) => {
-        if (window.__on) window.__raf.push(new Error().stack || "");
+        window.__raf.push(new Error().stack || "");
         return orig(cb);
       };
     });
-    // The chunk that carries three.js (and so the room's render loop), by content.
-    const threeChunks = [];
+    const chunks = [];
     page.on("response", async (r) => {
       if (!/\.js(\?|$)/.test(r.url())) return;
       const b = await r.text().catch(() => "");
-      if (/\bWebGLRenderer\b/.test(b)) threeChunks.push(r.url().split("/").pop().split("?")[0]);
+      if (/\bWebGLRenderer\b/.test(b)) chunks.push(r.url().split("/").pop().split("?")[0]);
     });
     await page.goto(BASE + "/", { waitUntil: "load" });
     await settle(page);
-    await page.waitForTimeout(2000);
-    const chunk =
-      threeChunks[0] ??
-      (await page.evaluate(() => {
-        const js = performance.getEntriesByType("resource").filter((e) => e.name.endsWith(".js"));
-        js.sort((a, b) => b.decodedBodySize - a.decodedBodySize);
-        return js[0]?.name.split("/").pop() ?? "";
-      }));
-    // The room renders on demand (frameloop "demand"): once the entrance has
-    // settled it draws only when something changes, so an idle hero draws no
-    // frames by design. The pointer orbit (M-home-hero-02) is what must draw,
-    // so the mouse sweeps across the room column during both windows; with the
-    // hero scrolled away the same sweep must draw nothing.
-    const count = async () => {
-      await page.evaluate(() => { window.__raf = []; window.__on = true; });
-      for (let k = 0; k < 10; k++) {
-        await page.mouse.move(900 + 40 * k, 300 + 20 * k);
-        await page.waitForTimeout(150);
-      }
-      return page.evaluate((c) => ({ all: window.__raf.length, three: window.__raf.filter((s) => s.includes(c)).length }), chunk);
-    };
-    const visible = await count();
-    await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight * 0.6));
     await page.waitForTimeout(2500);
-    const away = await count();
-    check(visible.three >= 2 && away.three === 0, `3D frames in 1.5 s with the pointer moving: ${visible.three} with the hero in view, ${away.three} after scrolling past it (all frame loops: ${away.all})`);
+    await page.evaluate(() => { window.__raf = []; });
+    await page.waitForTimeout(1500);
+    const n = await page.evaluate((c) => window.__raf.filter((s) => c.some((x) => s.includes(x))).length, chunks);
+    check(chunks.length >= 1 && n === 0, `reduced motion: ColorBends requests no frames while idle (${n} in 1.5 s)`);
   }
 });
 
@@ -607,6 +556,7 @@ if (want("axe")) await safely("axe", async () => {
       const bad = res.violations.filter((v) => v.impact === "serious" || v.impact === "critical");
       check(bad.length === 0, `${w}px ${route}`, bad.map((v) => `${v.id}(${v.nodes.length}) e.g. ${v.nodes[0]?.target?.[0]}`).slice(0, 3).join("; "));
     }
+    await page.context().close();
   }
 });
 

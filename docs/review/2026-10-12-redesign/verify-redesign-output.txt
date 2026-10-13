@@ -1,0 +1,169 @@
+
+[story 1440×900]
+  PASS  [1440×900] cinematic mode armed (wide) — motion=full
+  PASS  [1440×900] opening: 7 real product screens visible in the first viewport
+  PASS  [1440×900] opening: 6 background screens blurred, focal 1.2px
+  PASS  [1440×900] opening: one dominant focal screen
+  PASS  [1440×900] opening: only “Complexity, Meet Clarity.” is shown
+  PASS  [1440×900] opening: headline centred — 720 vs 720
+  PASS  [1440×900] reveal: its copy (beat-reveal) is the only copy on screen
+  PASS  [1440×900] reveal: the focal screen sharpens and grows — blur 1.2→0, area ×1.04
+  PASS  [1440×900] platforms: its copy (beat-platforms) is the only copy on screen
+  PASS  [1440×900] platforms: all six platforms arranged together (6)
+  PASS  [1440×900] p0: its copy (cap-0) is the only copy on screen
+  PASS  [1440×900] p0: mandoobee is in focus (largest, sharp, loaded) — largest=mandoobee blur=0
+  PASS  [1440×900] p1: its copy (cap-1) is the only copy on screen
+  PASS  [1440×900] p1: tasree3 is in focus (largest, sharp, loaded) — largest=tasree3 blur=0
+  PASS  [1440×900] p1: mandoobee recedes instead of vanishing — opacity 0.60, blur 4
+  PASS  [1440×900] p2: its copy (cap-2) is the only copy on screen
+  PASS  [1440×900] p2: nazo is in focus (largest, sharp, loaded) — largest=nazo blur=0
+  PASS  [1440×900] p2: tasree3 recedes instead of vanishing — opacity 0.60, blur 4
+  PASS  [1440×900] p3: its copy (cap-3) is the only copy on screen
+  PASS  [1440×900] p3: yisbir is in focus (largest, sharp, loaded) — largest=yisbir blur=0
+  PASS  [1440×900] p3: nazo recedes instead of vanishing — opacity 0.60, blur 4
+  PASS  [1440×900] p4: its copy (cap-4) is the only copy on screen
+  PASS  [1440×900] p4: wasel is in focus (largest, sharp, loaded) — largest=wasel blur=0
+  PASS  [1440×900] p4: yisbir recedes instead of vanishing — opacity 0.60, blur 4
+  PASS  [1440×900] p5: its copy (cap-5) is the only copy on screen
+  PASS  [1440×900] p5: ai-in-a-box is in focus (largest, sharp, loaded) — largest=ai-in-a-box blur=0
+  PASS  [1440×900] p5: wasel recedes instead of vanishing — opacity 0.60, blur 4
+  PASS  [1440×900] capability: its copy (beat-capability) is the only copy on screen
+  PASS  [1440×900] capability: 6 interface details framing the message
+  PASS  [1440×900] next: its copy (beat-next) is the only copy on screen
+  PASS  [1440×900] universe: its copy (beat-universe) is the only copy on screen
+  PASS  [1440×900] blur resolves progressively (mid-transition value) — 3px → 1.5083px → 0px
+  PASS  [1440×900] scrolling back: the opening is restored — focal blur 1.2
+  PASS  [1440×900] rapid scrolling: lands cleanly on the expected stage (Yisbir) — largest=yisbir
+  PASS  [1440×900] every story heading stays in the accessibility tree (12: 6 beats, 6 platforms) — 12
+  PASS  [1440×900] keyboard focus on an off-screen caption link scrolls its moment into view — live=1
+  PASS  [1440×900] links in copy that is not on screen take no clicks — 0
+  PASS  [1440×900] the story releases into the platform section (six platforms) — {"top":92,"plats":6}
+        story scroll distance: 7.00 viewport heights
+
+[story 1280×720]
+  FAIL  [1280×720] cinematic mode armed (static) — motion=static
+  FAIL  [1280×720] opening: 6 real product screens visible in the first viewport
+  FAIL  [1280×720] opening: 0 background screens blurred, focal 0px
+  PASS  [1280×720] opening: one dominant focal screen
+  FAIL  [1280×720] opening: only “Complexity, Meet Clarity.” is shown
+  PASS  [1280×720] opening: headline centred — 640 vs 640
+  FAIL  [1280×720] reveal: its copy (beat-reveal) is the only copy on screen
+  FAIL  [1280×720] reveal: the focal screen sharpens and grows — blur 0→0, area ×1.00
+  FAIL  [1280×720] platforms: its copy (beat-platforms) is the only copy on screen
+  PASS  [1280×720] platforms: all six platforms arranged together (6)
+  FAIL  [1280×720] p0: its copy (cap-0) is the only copy on screen
+  FAIL  [1280×720] p0: mandoobee is in focus (largest, sharp, loaded) — largest=ai-in-a-box blur=0
+  FAIL  [1280×720] p1: its copy (cap-1) is the only copy on screen
+  FAIL  [1280×720] p1: tasree3 is in focus (largest, sharp, loaded) — largest=ai-in-a-box blur=0
+  FAIL  [1280×720] p1: mandoobee recedes instead of vanishing — opacity 1.00, blur 0
+  FAIL  [1280×720] p2: its copy (cap-2) is the only copy on screen
+  FAIL  [1280×720] p2: nazo is in focus (largest, sharp, loaded) — largest=ai-in-a-box blur=0
+  FAIL  [1280×720] p2: tasree3 recedes instead of vanishing — opacity 1.00, blur 0
+  FAIL  [1280×720] p3: its copy (cap-3) is the only copy on screen
+  FAIL  [1280×720] p3: yisbir is in focus (largest, sharp, loaded) — largest=ai-in-a-box blur=0
+  FAIL  [1280×720] p3: nazo recedes instead of vanishing — opacity 1.00, blur 0
+  FAIL  [1280×720] p4: its copy (cap-4) is the only copy on screen
+  FAIL  [1280×720] p4: wasel is in focus (largest, sharp, loaded) — largest=ai-in-a-box blur=0
+  FAIL  [1280×720] p4: yisbir recedes instead of vanishing — opacity 1.00, blur 0
+  FAIL  [1280×720] p5: its copy (cap-5) is the only copy on screen
+  PASS  [1280×720] p5: ai-in-a-box is in focus (largest, sharp, loaded) — largest=ai-in-a-box blur=0
+  PASS  [1280×720] p5: wasel recedes instead of vanishing — opacity 0.90, blur 0
+  FAIL  [1280×720] capability: its copy (beat-capability) is the only copy on screen
+  FAIL  [1280×720] capability: 0 interface details framing the message
+  FAIL  [1280×720] next: its copy (beat-next) is the only copy on screen
+  FAIL  [1280×720] universe: its copy (beat-universe) is the only copy on screen
+  FAIL  [1280×720] story group ran to completion — Cannot read properties of undefined (reading 'six')
+
+[universe 1440×900: six platforms, one pointer-reactive structure]
+  PASS  [1280×720] all six platforms shown, loaded and sharp — 0,0,0,0,0,0
+  PASS  [1280×720] not equally prominent: one central focal screen — area ratio 3.51
+  PASS  [1280×720] intentional overlaps between panels (5 pairs)
+  PASS  [1280×720] panels sit at different depths (translateZ) — -80, -300, -100, -260, -640, 40
+  PASS  [1280×720] each platform is labelled — 6
+  PASS  [1280×720] the whole structure turns with the pointer (left vs right) — rotateY -5.4° → 6.1°
+  PASS  [1280×720] and tilts with vertical movement — rotateX 4.3° vs -4.6°
+  PASS  [1280×720] parallax is depth-aware (near panels move more) — near 25.3px, far 10.2px
+  PASS  [1280×720] rotation stays subtle (≤ 8°) — 6.1°, -4.6°
+  PASS  [1280×720] pointer leaves: it eases back to rest — 0.53°, 0.00°
+
+[background: ColorBends + DotField on desktop, static gradient on touch]
+  PASS  [1280×720] ColorBends renders (WebGL canvas, context alive) — {"w":720,"h":450,"lost":false}
+  PASS  [1280×720] DotField renders its dot grid — {"w":1440,"h":900,"painted":322}
+  PASS  [1280×720] fixed behind all content, never intercepts the pointer — z 0
+  PASS  [1280×720] ColorBends animates over time
+  PASS  [1280×720] the navy glow follows the pointer — --gx 1188.1
+  PASS  [1280×720] 390×844 touch: lightweight static gradient, no canvas — {"mode":"static","canvases":0,"bg":true}
+  PASS  [1280×720] 820×1180 touch: lightweight static gradient, no canvas — {"mode":"static","canvases":0,"bg":true}
+
+[desktop CardNav (≥1024 px)]
+  PASS  [1280×720] only the CardNav is active at 1440 px — {"d":"block","m":"none"}
+  PASS  [1280×720] the toggle is a native button — BUTTON
+  PASS  [1280×720] opens: bar grows, three cards stagger in — {"exp":"true","h":337,"cards":[1,1,1],"inert":false,"focus":"hamburger-menu open"}
+  PASS  [1280×720] 14 links incl. all six platforms — /products/mandoobee/ /products/tasree3/ /products/nazo/ /products/yisbir/ /products/wasel/ /products/ai-in-a-box/ /services/ /#technology /company/ /products/ /contact/ /company/#co-recognition /company/#co-news mailto:info@meerana.ae
+  PASS  [1280×720] the CTA goes to the real contact page — /contact/
+  PASS  [1280×720] Escape closes it and returns focus to the toggle — {"exp":"false","h":56,"cards":[0,0,0],"inert":true,"focus":"hamburger-menu "}
+  PASS  [1280×720] keyboard: Enter opens, Tab reaches the cards after the logo and CTA
+  PASS  [1280×720] a click outside closes it — {"exp":"false","h":56,"cards":[0,0,0],"inert":true,"focus":""}
+  PASS  [1280×720] rapid toggling settles in the right state (open) — {"exp":"true","h":337,"cards":[1,1,0.9991],"inert":false,"focus":"hamburger-menu open"}
+  PASS  [1280×720] resizing while open re-measures the height (cards fit) — {"nav":351,"cards":342}
+  PASS  [1280×720] a link closes the menu and lands on its section — technology top 92
+
+[OptionWheel 390×844 touch]
+  PASS  [1280×720] only the wheel is active — {"d":"none","m":"block"}
+  PASS  [1280×720] collapsed: shows Home, lets vertical touch scrolling through — {"expanded":false,"selected":"Home","ta":"pan-y","y":0}
+  PASS  [1280×720] compact, on the right edge — {"x":292,"y":772,"w":172,"right":12}
+  PASS  [1280×720] a touch swipe on the collapsed wheel scrolls the page — scrollY 285
+  PASS  [1280×720] a mouse wheel over the collapsed wheel scrolls the page — 285 → 685
+  PASS  [1280×720] a tap expands it (drag mode) without navigating — {"expanded":true,"selected":"Home","ta":"none","y":0}
+  PASS  [1280×720] expanded: the wheel scrolls the options, not the page — {"expanded":true,"selected":"Platforms","ta":"none","y":0}
+  PASS  [1280×720] a touch drag on the expanded wheel browses options: no page scroll, no navigation — Platforms → Technology, {"expanded":true,"selected":"Technology","ta":"none","y":0}
+  PASS  [1280×720] tapping Platforms goes to the platform section and collapses — top 82, {"expanded":false,"selected":"Platforms","ta":"pan-y","y":5488}
+  PASS  [1280×720] scrolling to #solutions selects “Solutions” and nothing else moves — Solutions, y 10814→10814
+  PASS  [1280×720] scrolling to #technology selects “Technology” and nothing else moves — Technology, y 14760→14760
+  PASS  [1280×720] scrolling to #about selects “About” and nothing else moves — About, y 19899→19899
+  PASS  [1280×720] scrolling to #contact selects “Contact” and nothing else moves — Contact, y 20801→20801
+  PASS  [1280×720] keyboard: Enter, ↓↓, Enter goes to Solutions — top 82
+  PASS  [1280×720] Escape collapses it and keeps focus on the wheel — {"expanded":false,"focus":true}
+  PASS  [1280×720] on /company/ the wheel shows About — About
+  PASS  [1280×720] from another page, Contact routes to /contact/ — http://localhost:4173/contact/
+
+[OptionWheel 820×1180 touch]
+  PASS  [1280×720] only the wheel is active — {"d":"none","m":"block"}
+  PASS  [1280×720] collapsed: shows Home, lets vertical touch scrolling through — {"expanded":false,"selected":"Home","ta":"pan-y","y":0}
+  PASS  [1280×720] compact, on the right edge — {"x":706,"y":1098,"w":188,"right":20}
+  PASS  [1280×720] a touch swipe on the collapsed wheel scrolls the page — scrollY 285
+  PASS  [1280×720] a mouse wheel over the collapsed wheel scrolls the page — 285 → 685
+  PASS  [1280×720] a tap expands it (drag mode) without navigating — {"expanded":true,"selected":"Home","ta":"none","y":0}
+  PASS  [1280×720] expanded: the wheel scrolls the options, not the page — {"expanded":true,"selected":"Platforms","ta":"none","y":0}
+  PASS  [1280×720] a touch drag on the expanded wheel browses options: no page scroll, no navigation — Platforms → Technology, {"expanded":true,"selected":"Technology","ta":"none","y":0}
+  PASS  [1280×720] tapping Platforms goes to the platform section and collapses — top 82, {"expanded":false,"selected":"Platforms","ta":"pan-y","y":7706}
+  PASS  [1280×720] scrolling to #solutions selects “Solutions” and nothing else moves — Solutions, y 10695→10695
+  FAIL  [1280×720] scrolling to #technology selects “Technology” and nothing else moves — Solutions, y 13075→13075
+  PASS  [1280×720] scrolling to #about selects “About” and nothing else moves — About, y 18061→18061
+  PASS  [1280×720] scrolling to #contact selects “Contact” and nothing else moves — Contact, y 18674→18674
+  PASS  [1280×720] keyboard: Enter, ↓↓, Enter goes to Solutions — top 82
+  PASS  [1280×720] Escape collapses it and keeps focus on the wheel — {"expanded":false,"focus":true}
+  PASS  [1280×720] on /company/ the wheel shows About — About
+  PASS  [1280×720] from another page, Contact routes to /contact/ — http://localhost:4173/contact/
+
+[prefers-reduced-motion]
+  PASS  [1280×720] 1440px: no pinned scroll sequence — reduced, static
+  PASS  [1280×720] 1440px: all 12 story headings visible in normal flow
+  PASS  [1280×720] 1440px: the six platforms as a still composition, nothing blurred or moved — {"blurred":0,"shown":6,"words":0}
+  PASS  [1280×720] 390px: no pinned scroll sequence — reduced, static
+  PASS  [1280×720] 390px: all 12 story headings visible in normal flow
+  PASS  [1280×720] 390px: the six platforms as a still composition, nothing blurred or moved — {"blurred":0,"shown":6,"words":0}
+  PASS  [1280×720] CardNav opens without the movement — 295px after 250 ms
+  PASS  [1280×720] the background holds still
+
+[JavaScript disabled]
+  PASS  [1280×720] every story heading is in the HTML and visible — {"h1":"Complexity, Meet Clarity.","visible":6,"total":6,"plats":10,"navLinks":14}
+  PASS  [1280×720] the six platforms and their screens are in the HTML — 10
+
+[console: zero errors (including hydration) while using the page]
+  PASS  [1280×720] 1440×900: 6 routes, story scrolled
+  PASS  [1280×720] 390×844: 6 routes, story scrolled
+  PASS  [1280×720] 1024×768: 6 routes, story scrolled
+
+verify-redesign: 117 passed, 28 failed (http://localhost:4173).
+exit 1

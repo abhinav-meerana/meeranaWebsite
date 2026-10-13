@@ -15,6 +15,18 @@
     --meerana-cyan: #3fd0ff;
     --meerana-neutral: #ededed;
     --meerana-white: #ffffff;
+    /* Redesign palette (2026-10-12 brief). Midnight is the new page base;
+       --meerana-navy stays the brand "deep navy". */
+    --meerana-midnight: #061226;
+    --meerana-navy-2: #0a2348;   /* secondary navy */
+    --bends-start: #0004a7;      /* ColorBends band colour (mirrored in lib/scene-colors.ts) */
+    --cool-grey: #91a5c3;        /* cool blue-grey: wheel labels, quiet UI */
+    /* Derived (2026-10-13, owner: "closer to the Meerana logo, darker"): the
+       logo blue (#0D3BFF, rendered #0436CA in the logo rasters) at about 22 %
+       lightness, and a deeper floor. The page blends into these towards the
+       bottom (components/background). Mirrored in lib/scene-colors.ts. */
+    --meerana-deep: #031a6b;
+    --meerana-deep-floor: #020e45;
 
     --wasel-brown: #6b3e26;
     --wasel-sand: #d9c1a3;
@@ -60,7 +72,7 @@
     --state-error-on-light: #b42318;
 
     /* ---------- Tier 3 · semantic (dark surface is the page default) ---------- */
-    --surface-page: var(--meerana-navy);
+    --surface-page: var(--meerana-midnight);
     --surface-deep: var(--navy-950);
     --surface-sunken: var(--navy-950);
     --surface-raised: var(--navy-800);
@@ -75,8 +87,10 @@
     --ink-on-accent: var(--ink-950);
 
     --text-primary: var(--meerana-white);
-    --text-secondary: var(--navy-200);
-    --text-muted: var(--navy-300);
+    /* Cool blue-grey secondary text (brief §2). Same lightness as the old
+       neutral navy-200 / navy-300, so every contrast pair is unchanged. */
+    --text-secondary: #b3c0d3;
+    --text-muted: #96a6bd;
     --text-accent: var(--meerana-cyan);
 
     --line: rgba(255, 255, 255, 0.08);
@@ -152,7 +166,12 @@
     --gutter: clamp(16px, 4vw, 48px);
     /* Fluid header (C7): 56 px on short laptops, 72 px from ~1536×864 up.
        All stage, sticky and scroll-padding geometry reads this. */
-    --header-h: clamp(56px, calc(4.6 * var(--u)), 72px);
+    /* The floating nav (app/nav.css): the PillNav bar at ≥1024 px, the home
+       mark below. --header-h is the band it occupies, which the product
+       stage, the scroll padding and page tops clear. */
+    --nav-bar-h: 48px;
+    --nav-top: 16px;
+    --header-h: calc(var(--nav-top) + var(--nav-bar-h) + 6px);
 
     /* ---------- Type: annotation voice ----------
        Provenance, indices and spec labels. System mono stack only (DD-06):
@@ -224,6 +243,109 @@
     --shadow-room: 0 40px 80px -40px rgba(0, 0, 0, 0.8);
   }
 
+  :root {
+    /* ---------- Interactive background (components/background) ----------
+       Static base painted by CSS everywhere; the live layers (ColorBends,
+       DotField, pointer glow) sit on top on fine-pointer desktops only. */
+    --bg-base: var(--meerana-midnight);
+    --bg-deep: var(--meerana-navy);
+    --bg-royal-glow: rgba(13, 59, 255, 0.22);
+    --bg-royal-soft: rgba(13, 59, 255, 0.1);
+    --bg-cyan-glow: rgba(63, 208, 255, 0.08);
+    --bg-floor: rgba(10, 35, 72, 0.6);
+    --bg-shade: rgba(3, 9, 20, 0.62);
+    --bg-deep-glow: rgba(13, 59, 255, 0.3);   /* royal light in the deep-blue layer */
+
+    /* ---------- Glass surfaces (PillNav, wheel dock) ---------- */
+    --glass-bg: rgba(7, 27, 54, 0.72);
+    --glass-bg-strong: rgba(6, 18, 38, 0.9);
+    --glass-card: rgba(10, 35, 72, 0.62);
+    --glass-card-hover: rgba(13, 47, 96, 0.72);
+    --glass-line: rgba(145, 165, 195, 0.18);
+    --glass-line-strong: rgba(63, 208, 255, 0.32);
+    --glass-shadow: 0 18px 48px -18px rgba(0, 0, 0, 0.75);
+
+    /* ---------- Cinematic story ---------- */
+    --story-scrim: rgba(6, 18, 38, 0.78);
+    --story-scrim-soft: rgba(6, 18, 38, 0.42);
+    --screen-edge: rgba(63, 208, 255, 0.28);
+    --screen-edge-soft: rgba(145, 165, 195, 0.16);
+    --screen-shadow: 0 40px 90px -30px rgba(0, 0, 0, 0.85);
+    --screen-glow: 0 0 0 1px rgba(63, 208, 255, 0.14), 0 30px 80px -40px rgba(13, 59, 255, 0.55);
+
+    /* ---------- Coded product dashboards (app/dashboards.css) ----------
+       Derived, not brand primitives: the UI chrome each product screen needs.
+       Each theme is built on its product's own palette (brand-reference §2):
+       Nazo and AI in a Box on Meerana blue/navy, Yisbir on blue/aqua/abyss,
+       Wasel on brown/sand/copper/ivory (never cyan). Status hues are the
+       conventional red/amber/green, used for state, never decoration. */
+    --dz-red: #e5484d;
+    --dz-red-soft: rgba(229, 72, 77, 0.14);
+    --dz-red-ink: #b4232a;          /* red text on light surfaces (5.6:1 on white) */
+    --dz-amber: #f5a524;
+    --dz-amber-soft: rgba(245, 165, 36, 0.16);
+    --dz-amber-ink: #8a5a00;        /* amber text on light surfaces */
+    --dz-green: #2fbf71;
+    --dz-green-soft: rgba(47, 191, 113, 0.15);
+    --dz-green-ink: #17784a;        /* green text on light surfaces */
+    --dz-violet: #7c5cff;
+    --dz-violet-soft: rgba(124, 92, 255, 0.13);
+
+    /* Nazo: light workspace on Meerana blue. */
+    --dn-bg: #f5f7fb;
+    --dn-surface: #ffffff;
+    --dn-side: #eef2f8;
+    --dn-line: #e1e7f0;
+    --dn-ink: #0d1a2e;
+    --dn-muted: #5a6a80;
+    --dn-blue-soft: #e7ecff;
+    --dn-shadow: 0 1px 2px rgba(13, 26, 46, 0.06), 0 6px 18px -8px rgba(13, 26, 46, 0.12);
+
+    /* Yisbir operations: abyss command centre, aqua signal. */
+    --dy-panel: #031c3e;
+    --dy-panel-2: #062754;
+    --dy-line: rgba(67, 218, 254, 0.14);
+    --dy-ink: #e8f3ff;
+    --dy-muted: #8ea6c4;
+    --dy-aqua-soft: rgba(67, 218, 254, 0.14);
+    --dy-cam-a: #0b2236;
+    --dy-cam-b: #13324a;
+    --dy-cam-rack: rgba(142, 166, 196, 0.22);
+    --dy-zone: rgba(229, 72, 77, 0.18);
+
+    /* Yisbir video indexing: light library on Yisbir blue. */
+    --dv-bg: #f3f6fc;
+    --dv-surface: #ffffff;
+    --dv-line: #dfe6f2;
+    --dv-ink: #0a1730;
+    --dv-muted: #5b6b84;
+    --dv-blue-soft: #e6eeff;
+    --dv-mark: rgba(67, 218, 254, 0.38);
+    --dv-thumb-a: #0a2a5c;
+    --dv-thumb-b: #133f86;
+
+    /* AI in a Box: night console on Meerana navy, cyan for live state. */
+    --da-bg: #060f20;
+    --da-side: #081429;
+    --da-card: #0c1a33;
+    --da-card-2: #102342;
+    --da-line: rgba(145, 165, 195, 0.14);
+    --da-ink: #eef3ff;
+    --da-muted: #8c9cb8;
+    --da-cyan-soft: rgba(63, 208, 255, 0.12);
+    --da-blue-soft: rgba(13, 59, 255, 0.22);
+
+    /* Wasel: ivory console, brown chrome, copper as decoration only. */
+    --dw-ink: #2a1a10;              /* mix(wasel-brown, black, .55) */
+    --dw-muted: #76604f;
+    --dw-line: #e6dccf;
+    --dw-card: #ffffff;
+    --dw-side-ink: #f3e8da;
+    --dw-side-line: rgba(247, 244, 239, 0.16);
+    --dw-sand-soft: rgba(217, 193, 163, 0.32);
+    --dw-shadow: 0 1px 2px rgba(42, 26, 16, 0.06), 0 8px 20px -10px rgba(42, 26, 16, 0.18);
+  }
+
   /* Contrasting-theme support: flatten blur and drop the grade stack. */
   @media (prefers-reduced-transparency: reduce) {
     :root {
@@ -241,3 +363,6 @@
    still, capped by height so a short phone (375×667) stays in budget. */
 @media (orientation: portrait) { :root { --u: min(1.5vw, 1.1svh); } }
 @media (orientation: portrait) and (max-width: 599px) { :root { --u: min(2.15vw, 1.1svh); } }
+
+/* Below 1024 px the nav is a 48 px home mark plus the wheel dock. */
+@media (max-width: 1023px) { :root { --nav-bar-h: 48px; --nav-top: 12px; } }

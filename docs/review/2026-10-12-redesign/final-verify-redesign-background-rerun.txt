@@ -1,0 +1,12 @@
+
+[background: ColorBends + DotField on desktop, static gradient on touch]
+  PASS  ColorBends renders (WebGL canvas, context alive) — {"w":720,"h":450,"lost":false}
+  PASS  DotField renders its dot grid — {"w":1440,"h":900,"painted":323}
+  PASS  fixed behind all content, never intercepts the pointer — z 0
+  PASS  ColorBends animates over time
+  PASS  the navy glow follows the pointer — --gx 1172.6
+  PASS  390×844 touch: lightweight static gradient, no canvas — {"mode":"static","canvases":0,"bg":true}
+  PASS  820×1180 touch: lightweight static gradient, no canvas — {"mode":"static","canvases":0,"bg":true}
+
+verify-redesign: 7 passed, 0 failed (http://localhost:4173).
+exit 0

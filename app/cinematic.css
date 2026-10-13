@@ -1,0 +1,566 @@
+/* ============================================================================
+   The homepage story (components/story/CinematicStory.tsx).
+
+   Static by default: every beat in normal flow and the six platforms as one
+   still 3D composition. That is the layout for reduced motion, no JavaScript,
+   a story that failed to start, and short landscape screens.
+
+   Cinematic under html[data-motion="full"] in the two supported shapes:
+     wide    ≥768 px wide, landscape, ≥500 px tall
+     narrow  portrait
+   There the section is 100svh × (1 + --story-len) tall and `.story-pin` is
+   sticky. Screen poses come from components/story/poses.ts as custom
+   properties: --x/--y in container units of `.story-world` (the same units
+   GSAP is given), --z px, --rx/--ry deg, --s, --o, --b px. Suffix -n is the
+   narrow layout, -u / -un the universe (the static composition).
+   ========================================================================== */
+
+.story {
+  --fs-story-hero: clamp(2.5rem, min(7vw, 12.5svh), 8.25rem);
+  --fs-story: clamp(2rem, min(4.4vw, 8svh), 5rem);
+  --fs-story-lede: clamp(1.0625rem, min(1.45vw, 2.6svh), 1.4rem);
+  /* Screen width, in container units of .story-world (resolved on .sp). */
+  --sw: min(54cqw, 86cqh);
+  --blur-k: 1;
+  position: relative;
+}
+@media not ((hover: hover) and (pointer: fine)) {
+  .story {
+    --blur-k: 0.35;
+  }
+}
+
+/* ---------------------------------------------------------------- static -- */
+
+.story-pin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(40px, 8svh, 96px);
+  padding: calc(var(--header-h) + clamp(32px, 8svh, 96px)) var(--gutter) var(--section-py);
+}
+
+.beat {
+  position: relative;
+  width: min(100%, 1120px);
+  text-align: center;
+}
+.beat-title {
+  margin: 0;
+  font-size: var(--fs-story);
+  font-weight: 600;
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+.beat--opening .beat-title {
+  font-size: var(--fs-story-hero);
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+}
+.beat-title .w {
+  display: inline-block;
+}
+.beat-lede {
+  margin: 0.9em auto 0;
+  max-width: 42ch;
+  font-size: var(--fs-story-lede);
+  line-height: 1.5;
+  color: var(--text-secondary);
+  text-wrap: balance;
+}
+.beat-cta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin: 1.6rem 0 0;
+}
+
+/* The stage, static: the six platforms as one still composition. */
+.story-world {
+  position: relative;
+  width: min(100%, 1400px);
+  aspect-ratio: 16 / 9;
+  max-height: 80svh;
+  container-type: size;
+  perspective: 1400px;
+  perspective-origin: 50% 46%;
+}
+.story-tilt {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+}
+.sp {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--sw);
+  aspect-ratio: 16 / 10;
+  margin-left: calc(var(--sw) / -2);
+  margin-top: calc(var(--sw) / -3.2);
+  transform: translate3d(calc(var(--x-u) * 1cqw), calc((var(--y-u) - 12) * 1cqh), calc(var(--z-u) * 1px))
+    rotateY(calc(var(--ry-u) * 1deg)) rotateX(calc(var(--rx-u) * 1deg)) scale(var(--s-u));
+  opacity: var(--o-u);
+}
+.sp[data-role="detail"] {
+  display: none;
+}
+.sp-par {
+  width: 100%;
+  height: 100%;
+}
+.sp-frame {
+  position: relative;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: clamp(8px, 1.1cqw, 16px);
+  background: var(--ink-900);
+  box-shadow: var(--screen-shadow), var(--screen-glow);
+}
+/* Restrained cyan edge light: a hairline rim and a brighter top edge. */
+.sp-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow: inset 0 0 0 1px var(--screen-edge-soft);
+  background: linear-gradient(90deg, transparent, var(--screen-edge), transparent) top / 100% 1px no-repeat;
+}
+.sp-frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  user-select: none;
+}
+/* A coded dashboard fills the 16:10 frame exactly (its canvas is 16:10). */
+.sp-frame > .dash-frame {
+  height: 100%;
+  aspect-ratio: auto;
+}
+/* A second screen of one platform (Yisbir's video indexing) belongs to its
+   own story beat only; the still universe shows one screen per platform. */
+.sp[data-extra] {
+  display: none;
+}
+.sp-tag {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 0.6em);
+  translate: -50% 0;
+  padding: 0.5em 0.95em;
+  border-radius: var(--radius-pill);
+  border: 1px solid color-mix(in srgb, var(--p-accent) 55%, transparent);
+  background: var(--glass-bg-strong);
+  color: var(--text-primary);
+  /* Divided by the screen's own universe scale, so every tag reads at about
+     the same size however deep its screen sits. */
+  font: 600 calc(max(11px, 0.95cqw) / var(--s-u, 1)) / 1 var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.story-shade,
+.story-cue,
+.story-progress {
+  display: none;
+}
+
+/* Product captions, static: the six platforms at a glance. */
+.story-captions {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: min(100%, 1120px);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: var(--sp-6) var(--sp-7);
+  text-align: left;
+}
+.bp-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+  margin: 0 0 8px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.08em;
+  color: var(--p-accent);
+}
+.bp-meta .prov {
+  color: var(--text-muted);
+}
+.bp-name {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+.bp-desc {
+  margin: 0.35em 0 0;
+  color: var(--text-primary);
+}
+.bp-line {
+  margin: 0.5em 0 0;
+  max-width: 56ch;
+  font-size: var(--fs-small);
+  line-height: 1.55;
+  color: var(--text-secondary);
+  text-wrap: pretty;
+}
+.bp-link {
+  display: inline-flex;
+  gap: 0.4em;
+  margin-top: 0.9rem;
+  padding-bottom: 2px;
+  border-bottom: 1px solid var(--p-accent);
+  color: var(--text-primary);
+  font-size: var(--fs-small);
+  font-weight: 500;
+  text-decoration: none;
+}
+.bp-link:hover {
+  color: var(--text-accent);
+}
+
+.story-note {
+  margin: 0;
+  text-align: center;
+}
+/* The universe's own provenance line; the static layout shows .story-note. */
+.beat-note {
+  display: none;
+  justify-content: center;
+  margin: 1.1rem 0 0;
+}
+
+@media (max-aspect-ratio: 1/1) {
+  .story {
+    --sw: min(86cqw, 80cqh);
+  }
+  .story-world {
+    aspect-ratio: 4 / 5;
+  }
+  .sp {
+    transform: translate3d(calc(var(--x-un) * 1cqw), calc((var(--y-un) - 18) * 1cqh), calc(var(--z-un) * 1px))
+      rotateY(calc(var(--ry-un) * 1deg)) rotateX(calc(var(--rx-un) * 1deg)) scale(var(--s-un));
+    opacity: var(--o-un);
+  }
+  .sp-tag {
+    font-size: calc(clamp(10px, 2.9cqw, 13px) / var(--s-un, 1));
+  }
+}
+
+/* -------------------------------------------------------------- cinematic -- */
+
+@media (min-width: 768px) and (min-aspect-ratio: 1/1) and (min-height: 500px), (max-aspect-ratio: 1/1) {
+  html[data-motion="full"] .story {
+    --story-len: 7.4; /* STORY_LENGTH.wide in poses.ts */
+    height: calc(100svh * (1 + var(--story-len)));
+  }
+  html[data-motion="full"] .story-pin {
+    position: sticky;
+    top: 0;
+    display: block;
+    height: 100svh;
+    padding: 0;
+    overflow: hidden;
+  }
+  html[data-motion="full"] .story-world {
+    position: absolute;
+    inset: 0;
+    width: auto;
+    max-height: none;
+    aspect-ratio: auto;
+    perspective-origin: 50% 50%;
+  }
+  html[data-motion="full"] .sp {
+    transform: translate3d(calc(var(--x) * 1cqw), calc(var(--y) * 1cqh), calc(var(--z) * 1px))
+      rotateY(calc(var(--ry) * 1deg)) rotateX(calc(var(--rx) * 1deg)) scale(var(--s));
+    opacity: var(--o);
+    filter: blur(calc(var(--b) * var(--blur-k) * 1px));
+    will-change: transform, opacity, filter;
+  }
+  html[data-motion="full"] .sp[data-role="detail"],
+  html[data-motion="full"] .sp[data-extra] {
+    display: block;
+  }
+  html[data-motion="full"] .sp[data-defer-wide] {
+    display: none;
+  }
+  html[data-motion="full"] .sp-par {
+    will-change: transform;
+  }
+
+  html[data-motion="full"] .beat,
+  html[data-motion="full"] .story-captions {
+    position: absolute;
+    left: 0;
+    right: 0;
+    z-index: 3;
+    width: min(calc(100% - 2 * var(--gutter)), 1120px);
+    margin-inline: auto;
+    pointer-events: none;
+  }
+  /* Links take pointer input only while their copy is on screen
+     (data-live, set by the timeline); otherwise an invisible button could
+     catch a click meant for the visible one. */
+  html[data-motion="full"] .story-cue a,
+  html[data-motion="full"] [data-live="1"] a {
+    pointer-events: auto;
+  }
+  html[data-motion="full"] .beat--center {
+    top: 0;
+    bottom: 0;
+    height: fit-content;
+    margin-block: auto;
+  }
+  /* The opening headline sits a little above centre, over the focal
+     screen's top edge. */
+  html[data-motion="full"] .beat--opening {
+    bottom: 12svh;
+  }
+  html[data-motion="full"] .beat--top,
+  html[data-motion="full"] .story-captions {
+    top: calc(var(--header-h) + 3.5svh);
+  }
+  /* Legibility: each block carries its own soft scrim. */
+  html[data-motion="full"] .beat::before,
+  html[data-motion="full"] .bp::before {
+    content: "";
+    position: absolute;
+    inset: -16% -8%;
+    z-index: -1;
+    pointer-events: none;
+    background: radial-gradient(closest-side, var(--story-scrim) 35%, transparent);
+  }
+  /* Hidden by opacity, never visibility: every beat's heading stays in the
+     accessibility tree, and keyboard focus inside one scrolls it on screen. */
+  html[data-motion="full"] .beat:not(.beat--opening),
+  html[data-motion="full"] .bp {
+    opacity: 0;
+  }
+  html[data-motion="full"] .beat-title .w {
+    will-change: transform, opacity, filter;
+  }
+
+  html[data-motion="full"] .beat-note {
+    display: flex;
+  }
+  html[data-motion="full"] .beat--universe .beat-title {
+    font-size: clamp(2rem, min(4vw, 7svh), 4.5rem);
+  }
+  html[data-motion="full"] .beat--universe .beat-lede {
+    margin-top: 0.6em;
+    max-width: 60ch;
+  }
+  /* A compact band, so the universe below it has the room. */
+  html[data-motion="full"] .beat--universe .beat-cta {
+    gap: 10px;
+    margin-top: 1rem;
+  }
+  html[data-motion="full"] .beat--universe .beat-cta .btn {
+    height: 42px;
+    padding-inline: 20px;
+    white-space: nowrap;
+  }
+  /* The universe's provenance line sits at the foot of the stage, not in the
+     heading band (the beat's top is --header-h + 3.5svh). */
+  html[data-motion="full"] .beat--universe .beat-note {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(90svh - var(--header-h));
+    margin: 0;
+  }
+  html[data-motion="full"] .story-captions {
+    display: grid;
+    gap: 0;
+    text-align: center;
+  }
+  html[data-motion="full"] .bp {
+    position: relative;
+    grid-area: 1 / 1;
+  }
+  html[data-motion="full"] .bp-meta {
+    justify-content: center;
+  }
+  html[data-motion="full"] .bp-name {
+    font-size: var(--fs-story);
+    line-height: 1.04;
+    letter-spacing: -0.03em;
+  }
+  html[data-motion="full"] .bp-desc {
+    font-size: var(--fs-story-lede);
+  }
+  html[data-motion="full"] .bp-line {
+    margin-inline: auto;
+    text-wrap: balance;
+  }
+
+  html[data-motion="full"] .story-shade {
+    display: block;
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background: radial-gradient(44% 30% at 50% 46%, var(--story-scrim) 0%, var(--story-scrim-soft) 55%, transparent 100%);
+  }
+
+  html[data-motion="full"] .story-note {
+    position: absolute;
+    left: var(--gutter);
+    bottom: 3svh;
+    z-index: 3;
+    max-width: min(46ch, 40vw);
+    text-align: left;
+  }
+
+  html[data-motion="full"] .story-cue {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 4.5svh;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-inline: auto;
+    width: fit-content;
+    font: 600 var(--fs-label) / 1 var(--font-mono);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  html[data-motion="full"] .story-cue-line {
+    width: 1px;
+    height: 44px;
+    background: linear-gradient(to bottom, var(--meerana-cyan), transparent);
+    transform-origin: top;
+    animation: story-cue 2.4s var(--ease-standard) infinite;
+  }
+  html[data-motion="full"] .story-skip {
+    color: var(--text-secondary);
+    letter-spacing: 0.06em;
+    text-transform: none;
+    font-family: var(--font-poppins), system-ui, sans-serif;
+    font-weight: 500;
+    text-underline-offset: 4px;
+  }
+  html[data-motion="full"] .story-skip:hover {
+    color: var(--text-primary);
+  }
+
+  html[data-motion="full"] .story-progress {
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 2svh;
+    z-index: 3;
+    width: min(220px, 40vw);
+    height: 2px;
+    margin-inline: auto;
+    overflow: hidden;
+    border-radius: 2px;
+    background: var(--line);
+  }
+  html[data-motion="full"] .story-progress-bar {
+    display: block;
+    height: 100%;
+    background: linear-gradient(90deg, var(--meerana-blue), var(--meerana-cyan));
+    transform: scaleX(0);
+    transform-origin: left center;
+  }
+}
+
+/* Narrow (portrait) cinematic overrides. */
+@media (max-aspect-ratio: 1/1) {
+  html[data-motion="full"] .story {
+    --story-len: 5.9; /* STORY_LENGTH.narrow in poses.ts */
+  }
+  html[data-motion="full"] .sp {
+    transform: translate3d(calc(var(--x-n) * 1cqw), calc(var(--y-n) * 1cqh), calc(var(--z-n) * 1px))
+      rotateY(calc(var(--ry-n) * 1deg)) rotateX(calc(var(--rx-n) * 1deg)) scale(var(--s-n));
+    opacity: var(--o-n);
+    filter: blur(calc(var(--b-n) * var(--blur-k) * 1px));
+  }
+  html[data-motion="full"] .sp[data-narrow="false"],
+  .sp[data-narrow="false"] {
+    display: none;
+  }
+  /* Deferral follows the narrow layout's own first frame. */
+  html[data-motion="full"] .sp[data-defer-wide]:not([data-defer-narrow]) {
+    display: block;
+  }
+  html[data-motion="full"] .sp[data-defer-narrow] {
+    display: none;
+  }
+  html[data-motion="full"] .beat--top,
+  html[data-motion="full"] .story-captions {
+    top: calc(var(--header-h) + 3svh);
+  }
+  html[data-motion="full"] .story-note {
+    top: calc(var(--nav-top) + 4px);
+    bottom: auto;
+    left: calc(var(--gutter) + var(--nav-bar-h) + 10px);
+    right: var(--gutter);
+    max-width: none;
+    text-align: right;
+    font-size: 0.625rem;
+  }
+  /* Left-aligned, clear of the wheel dock in the bottom-right corner. */
+  html[data-motion="full"] .story-cue {
+    bottom: calc(4svh + 8px);
+    left: var(--gutter);
+    right: auto;
+    margin-inline: 0;
+    align-items: flex-start;
+  }
+  html[data-motion="full"] .bp-line {
+    font-size: 0.875rem;
+  }
+  html[data-motion="full"] .beat--universe .beat-cta .btn {
+    padding-inline: 14px;
+    font-size: 0.875rem;
+  }
+  /* Portrait: the universe's note sits top-right beside the home mark,
+     clear of the wheel dock (beat top here is --header-h + 3svh). */
+  html[data-motion="full"] .beat--universe .beat-note {
+    top: calc(var(--nav-top) + 4px - var(--header-h) - 3svh);
+    left: calc(var(--nav-bar-h) + 10px);
+    justify-content: flex-end;
+    text-align: right;
+    font-size: 0.625rem;
+  }
+}
+
+@keyframes story-cue {
+  0% {
+    transform: scaleY(0);
+    opacity: 1;
+  }
+  60% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scaleY(1);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .story-cue-line {
+    animation: none;
+  }
+}

@@ -1,0 +1,21 @@
+
+[overflow: no horizontal page scroll at any width]
+  PASS  320×568
+  PASS  390×844
+  PASS  768×1024
+  PASS  1024×520
+  PASS  1280×601
+  PASS  1366×657
+  PASS  1440×900
+  PASS  1920×937
+
+[background: WebGL (ColorBends) and the dot field load only on fine-pointer desktops]
+  PASS  desktop 1440×900: ColorBends + DotField running — mode=live canvases=2 three.js chunks=1
+  PASS  laptop 1366×657: ColorBends + DotField running — mode=live canvases=2 three.js chunks=1
+  PASS  tablet landscape (touch) 1024×768: static gradient, no three.js chunk, no canvas — mode=static canvases=0 three.js chunks=0
+  PASS  tablet 768×1024: static gradient, no three.js chunk, no canvas — mode=static canvases=0 three.js chunks=0
+  PASS  phone 390×844: static gradient, no three.js chunk, no canvas — mode=static canvases=0 three.js chunks=0
+  PASS  Save-Data on a wide screen: no WebGL or canvas background
+  PASS  reduced motion: ColorBends requests no frames while idle (0 in 1.5 s)
+
+All checks passed.

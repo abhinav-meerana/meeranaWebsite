@@ -1,0 +1,54 @@
+
+[overflow: no horizontal page scroll at any width]
+  PASS  320×568
+  PASS  390×844
+  FAIL  [overflow] stopped early — page.goto: Timeout 90000ms exceeded.
+
+[menus: CardNav (desktop) and the option wheel (tablet/phone) — focus in, out and back]
+  PASS  Enter opens the CardNav and its three cards
+  PASS  the cards list 14 real destinations (six platforms, explore, company) — 14
+  PASS  Tab reaches the cards after the logo and the call to action
+  PASS  Escape closes it and returns focus to the toggle
+  PASS  aria-controls resolves while the menu is closed
+  PASS  Enter expands the wheel
+  PASS  Escape collapses it and focus stays on the wheel
+  PASS  End then Enter goes to Contact — http://localhost:4173/contact/
+
+[motion budget: the homepage story is one CSS-sticky scene of a fixed length; short screens get the static layout]
+  PASS  1440×900: story travel 7.00 × innerHeight (= 7), CSS sticky, no pin spacer — wide
+        1440×900: homepage is 20.1 screens long
+  PASS  1366×657: story travel 7.00 × innerHeight (= 7), CSS sticky, no pin spacer — wide
+        1366×657: homepage is 23.4 screens long
+  PASS  1920×937: story travel 7.00 × innerHeight (= 7), CSS sticky, no pin spacer — wide
+        1920×937: homepage is 20.1 screens long
+  PASS  1024×768: story travel 7.00 × innerHeight (= 7), CSS sticky, no pin spacer — wide
+        1024×768: homepage is 20.5 screens long
+  PASS  390×844: story travel 5.60 × innerHeight (= 5.6), CSS sticky, no pin spacer — narrow
+        390×844: homepage is 26.3 screens long
+  PASS  768×1024: story travel 5.60 × innerHeight (= 5.6), CSS sticky, no pin spacer — narrow
+        768×1024: homepage is 18.3 screens long
+  PASS  1280×480: short landscape → static story, no pin — {"travel":3.356705729166667,"sticky":false,"spacer":false,"layout":"static","screens":23.897916666666667}
+        1280×480: homepage is 23.9 screens long
+  PASS  1366×657 /products/mandoobee/: stage, 12 scenes, length 5937 = 5937 (P-02) — mode stage
+  PASS  1366×657 /products/tasree3/: stage, 14 scenes, length 6897 = 6897 (P-02) — mode stage
+  PASS  1366×657 /products/nazo/: stage, 13 scenes, length 6417 = 6417 (P-02) — mode stage
+  PASS  1366×657 /products/yisbir/: stage, 14 scenes, length 6897 = 6897 (P-02) — mode stage
+  PASS  1366×657 /products/wasel/: stage, 12 scenes, length 5937 = 5937 (P-02) — mode stage
+  PASS  1366×657 /products/ai-in-a-box/: stage, 10 scenes, length 4977 = 4977 (P-02) — mode stage
+  PASS  1920×937 /products/mandoobee/: stage, 12 scenes, length 8152 = 8152 (P-02) — mode stage
+  PASS  1920×937 /products/tasree3/: stage, 14 scenes, length 9464 = 9464 (P-02) — mode stage
+  PASS  1920×937 /products/nazo/: stage, 13 scenes, length 8808 = 8808 (P-02) — mode stage
+  PASS  1920×937 /products/yisbir/: stage, 14 scenes, length 9464 = 9464 (P-02) — mode stage
+  PASS  1920×937 /products/wasel/: stage, 12 scenes, length 8152 = 8152 (P-02) — mode stage
+  PASS  1920×937 /products/ai-in-a-box/: stage, 10 scenes, length 6840 = 6840 (P-02) — mode stage
+
+[background: WebGL (ColorBends) and the dot field load only on fine-pointer desktops]
+  PASS  desktop 1440×900: ColorBends + DotField running — mode=live canvases=2 three.js chunks=1
+  PASS  laptop 1366×657: ColorBends + DotField running — mode=live canvases=2 three.js chunks=1
+  PASS  tablet landscape (touch) 1024×768: static gradient, no three.js chunk, no canvas — mode=static canvases=0 three.js chunks=0
+  PASS  tablet 768×1024: static gradient, no three.js chunk, no canvas — mode=static canvases=0 three.js chunks=0
+  PASS  phone 390×844: static gradient, no three.js chunk, no canvas — mode=static canvases=0 three.js chunks=0
+  PASS  Save-Data on a wide screen: no WebGL or canvas background
+  FAIL  reduced motion: ColorBends requests no frames while idle (0 in 1.5 s)
+
+2 check(s) FAILED.

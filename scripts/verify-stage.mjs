@@ -217,7 +217,7 @@ if (want("mode") || want("rest")) {
               const dockTop = dockEl && dockEl.getBoundingClientRect().height > 0
                 ? dockEl.getBoundingClientRect().top
                 : H - (parseFloat(getComputedStyle(ps).getPropertyValue("--ps-dock")) || 56);
-              const hdrBottom = Math.max(hdr, document.querySelector(".site-header")?.getBoundingClientRect().bottom ?? 0);
+              const hdrBottom = Math.max(hdr, document.querySelector(".card-nav")?.getBoundingClientRect().bottom ?? 0);
               // P-03
               const dim = v.textEls(scene, ".ps-shutter")
                 .filter((el) => !v.srOnly(el) && v.opacity(el, scene) < 0.999)
@@ -498,11 +498,11 @@ for (const vp of DEEP) {
               const W = innerWidth;
               const H = innerHeight;
               // Skip links sit over the header by design once focused.
-              const inHeader = !!a.closest(".site-header") || /skip/.test(a.className);
+              const inHeader = !!a.closest(".card-nav-container") || /skip/.test(a.className);
               const inDock = !!a.closest(".ps-dock");
               const scene = a.closest(".ps-scene");
               const dock = document.querySelector(".ps-dock")?.getBoundingClientRect();
-              const hb = Math.max(hdr, document.querySelector(".site-header")?.getBoundingClientRect().bottom ?? 0);
+              const hb = Math.max(hdr, document.querySelector(".card-nav")?.getBoundingClientRect().bottom ?? 0);
               let ok = b.width > 0 && b.height > 0 && b.left >= -1 && b.right <= W + 1 && b.top >= -1 && b.bottom <= H + 1;
               if (!inHeader) ok = ok && b.top >= hb - 1;
               if (scene && dock && !inDock) ok = ok && b.bottom <= dock.top + 1;

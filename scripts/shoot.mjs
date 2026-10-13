@@ -66,7 +66,7 @@ async function shoot(browser, vp, opts = {}) {
   const metrics = await page.evaluate(() => {
     const canvas = document.querySelector("canvas");
     const grain = getComputedStyle(document.querySelector(".grain-overlay") ?? document.body);
-    const room = document.querySelector(".hero-room");
+    const room = document.querySelector(".story-world");
     return {
       hasCanvas: !!canvas,
       canvasW: canvas?.width ?? 0,

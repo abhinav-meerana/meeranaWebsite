@@ -13,9 +13,9 @@
 
 /* ============================================================================
    Meerana global styles.
-   The page is dark-first. Depth comes from a five-layer grade stack
-   (surface -> glow -> grid -> vignette -> grain), documented in
-   docs/DEPTH-DIRECTION-2026-10-10.md.
+   The page is dark-first. Depth comes from the fixed background stack
+   (base gradient -> ColorBends -> DotField -> pointer glow -> vignette and
+   grain), app/background.css.
    ========================================================================== */
 
 @theme inline {
@@ -50,16 +50,11 @@ html {
 
 body {
   margin: 0;
-  /* Layer 1 + 2: flat base under the atmospheric mesh. The mesh is painted here
-     rather than as blurred divs, because gradient falloff is infinitely soft
-     and costs nothing, while a blurred div costs a full-radius blur pass. */
+  /* The page colour under everything. The gradient mesh, the ColorBends
+     bands, the dot field, the pointer glow, the vignette and the grain are
+     painted by the fixed background stack (app/background.css), so they are
+     continuous across sections and routes. */
   background-color: var(--surface-page);
-  background-image:
-    radial-gradient(120% 90% at 50% -10%, var(--glow-key), transparent 55%),
-    radial-gradient(90% 70% at 78% 15%, var(--glow-fill), transparent 60%),
-    radial-gradient(70% 50% at 12% 42%, var(--glow-deep), transparent 62%),
-    radial-gradient(100% 60% at 50% 108%, var(--glow-accent), transparent 60%);
-  background-attachment: fixed;
   color: var(--text-primary);
   font-family: var(--font-poppins), system-ui, -apple-system, sans-serif;
   font-size: var(--fs-body);
@@ -67,86 +62,16 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   /* `clip`, not `hidden` (FINAL-SPEC C20): it never makes body a scroll
-     container, so `position: sticky` inside the product stage and the gallery
-     keeps the viewport as its scrollport, and nothing can scroll the page
-     sideways from script or focus. */
+     container, so `position: sticky` inside the homepage story and the
+     product stage keeps the viewport as its scrollport, and nothing can
+     scroll the page sideways from script or focus. */
   overflow-x: clip;
 }
 
-/* ----------------------------------------------------------------------------
-   Layer 3 · hairline structural grid + Layer 4 · vignette.
-   Both are decorative, so they live on one fixed, non-interactive overlay.
-   The mask makes the grid fade out radially: gridlines that stop abruptly at
-   the viewport edge look like graph paper; fading them reads as engineered.
-   -------------------------------------------------------------------------- */
-.grade-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background-image:
-    linear-gradient(var(--grid-line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
-  background-size: var(--grid-cell) var(--grid-cell);
-  -webkit-mask-image: radial-gradient(
-    80% 60% at 50% 0%,
-    var(--mask-solid) 30%,
-    transparent 100%
-  );
-  mask-image: radial-gradient(80% 60% at 50% 0%, var(--mask-solid) 30%, transparent 100%);
-}
-
-/* Vignette: pushed to the edges so it darkens corners without touching text.
-   Painted as a sibling rather than combined with the grid, so the two masks
-   stay independent and neither brightens the other. */
-.vignette-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background: radial-gradient(
-    ellipse 118% 92% at 50% 46%,
-    transparent var(--vignette-clear),
-    var(--vignette) 100%
-  );
-}
-
-/* ----------------------------------------------------------------------------
-   Layer 5 · film grain.
-   Baked at build time into a seamless tile (scripts/make-grain.mjs) and tiled
-   here. Never render feTurbulence live: a per-frame SVG filter is fill-rate
-   bound at every viewport size, which is the worst possible cost model.
-   `overlay` at 4.5% breaks banding on the near-black ramps and adds tactility
-   without greying the page.
-   -------------------------------------------------------------------------- */
-.grain-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  background-image: url("/textures/grain.png");
-  background-size: var(--grain-size) var(--grain-size);
-  opacity: var(--grain-opacity);
-  mix-blend-mode: overlay;
-}
-
-@media (prefers-reduced-transparency: reduce) {
-  .grain-overlay,
-  .grade-overlay {
-    display: none;
-  }
-  body {
-    background-image: none;
-  }
-}
-
-/* Content sits above the grade stack AND above the grain (z-index 2 vs 1), so
-   grain films the page background but never sits on top of type. That keeps
-   text crisp: grain over body copy is the quickest way to make a page look
-   dirty and hurt legibility. */
+/* Content sits above the background stack (z-index 0); the nav is at 60. */
 .page-content {
   position: relative;
-  z-index: 2;
+  z-index: 1;
 }
 
 /* ----------------------------------------------------------------------------

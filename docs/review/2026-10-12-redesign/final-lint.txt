@@ -1,0 +1,8 @@
+
+> meerana-web@0.1.0 lint
+> node scripts/verify-css.mjs
+
+verify-css: 11 stylesheets in app/
+  PASS  every @media value is a shared breakpoint
+  PASS  no raw colour outside app/tokens.css
+exit 0

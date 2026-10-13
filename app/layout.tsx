@@ -1,12 +1,14 @@
 import type { Metadata, Viewport } from "next";
 import { Poppins } from "next/font/google";
-import Header from "@/components/site/Header";
+import MeeranaInteractiveBackground from "@/components/background/MeeranaInteractiveBackground";
+import SiteNav from "@/components/nav/SiteNav";
 import SiteFooter from "@/components/site/SiteFooter";
 import { COMPANY } from "@/content/company";
 import { SCENE } from "@/lib/scene-colors";
 import { SITE } from "@/lib/seo";
 import "./globals.css";
-import "./header.css";
+import "./background.css";
+import "./nav.css";
 
 /* Poppins is the brand Latin face (brand-reference.md §1). Self-hosted at build
    time by next/font, so there are no runtime Google requests — a privacy and
@@ -20,11 +22,12 @@ const poppins = Poppins({
 
 const DESCRIPTION =
   "An AI-powered ecosystem of six enterprise products — for AI, automation, IoT and security. Built in the UAE. Engineered for the world.";
+const TITLE = "Meerana Technologies — Complexity, meet clarity";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
   title: {
-    default: "Meerana Technologies — We engineer intelligence for the real world",
+    default: TITLE,
     template: `%s · ${SITE.name}`,
   },
   description: DESCRIPTION,
@@ -33,13 +36,13 @@ export const metadata: Metadata = {
     type: "website",
     siteName: SITE.name,
     locale: SITE.locale,
-    title: "Meerana Technologies — We engineer intelligence for the real world",
+    title: TITLE,
     description: DESCRIPTION,
     url: "/",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Meerana Technologies — We engineer intelligence for the real world",
+    title: TITLE,
     description: DESCRIPTION,
   },
   robots: { index: true, follow: true },
@@ -59,6 +62,20 @@ export const viewport: Viewport = {
    guarded; with no stored value nothing changes. */
 const VIEW_PREF =
   'try{if(localStorage.getItem("meerana:view")==="list")document.documentElement.dataset.view="list"}catch(e){}';
+
+/* The motion mode, set before first paint so the homepage story renders in
+   its cinematic or its static layout from the first frame (no flash, no
+   hydration mismatch: <html> is suppressHydrationWarning). "full" lets the
+   story arm itself; "reduced" keeps the static layout. A script that fails to
+   load switches to "static" at once; if the story still has not reported
+   ready after 8 s, the page drops to "static" too, where every line of copy
+   is in normal flow. */
+const MOTION_MODE =
+  'var d=document.documentElement;try{d.dataset.motion=matchMedia("(prefers-reduced-motion: reduce)").matches?"reduced":"full"}catch(e){d.dataset.motion="full"}' +
+  /* A script that fails to load cannot start the story: go static at once. */
+  'addEventListener("error",function(e){var t=e.target;if(t&&t.tagName==="SCRIPT"&&d.dataset.motion==="full")d.dataset.motion="static"},true);' +
+  /* Last resort: a script that loaded but never started it. */
+  'setTimeout(function(){var s=document.querySelector("[data-story]");if(s&&s.getAttribute("data-story")!=="ready"&&d.dataset.motion==="full")d.dataset.motion="static"},8000)';
 
 /* Organization data: verified fields only (EV-020 founding year, EV-531 entity,
    address and email). No logo URL until the vector masters exist (DL-B02), and
@@ -86,27 +103,23 @@ export default function RootLayout({
     <html lang="en" dir="ltr" className={poppins.variable} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: VIEW_PREF }} />
+        <script dangerouslySetInnerHTML={{ __html: MOTION_MODE }} />
       </head>
       <body>
-        {/* The grade stack. Painted in DOM rather than in the WebGL scene so it
-            covers the whole page, costs one composite each, and survives having
-            no WebGL at all. All three are non-interactive decoration. */}
-        <div className="grade-overlay" aria-hidden="true" />
-        <div className="vignette-overlay" aria-hidden="true" />
+        {/* The interactive background: one fixed, decorative stack behind
+            every route, mounted once so it never resets between pages. */}
+        <MeeranaInteractiveBackground />
 
         <a className="skip-link" href="#main">
           Skip to content
         </a>
 
-        <Header />
+        <SiteNav />
 
         <div className="page-content">
           {children}
           <SiteFooter />
         </div>
-
-        {/* Grain is last so it films the entire page including the room. */}
-        <div className="grain-overlay" aria-hidden="true" />
 
         <script
           type="application/ld+json"

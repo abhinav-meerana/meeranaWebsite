@@ -279,12 +279,13 @@
   position: relative;
   border-top: 1px solid var(--line);
   padding-block: clamp(40px, calc(5 * var(--u)), 64px) clamp(20px, calc(2.5 * var(--u)), 32px);
-  background: var(--surface-sunken);
+  /* Translucent, so the fixed background runs under the footer too. */
+  background: color-mix(in srgb, var(--surface-sunken) 72%, transparent);
 }
 
 .footer-grid {
   display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(0, 2fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 2fr) minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
   gap: var(--sp-fluid-m) var(--sp-6);
 }
 
@@ -356,7 +357,7 @@
    was 422). */
 @media (min-width: 1024px) {
   .footer-grid {
-    grid-template-columns: minmax(0, 2.4fr) minmax(0, 2fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 2.4fr) minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
   }
   .footer-brand {
     grid-template-columns: auto minmax(0, 1fr);

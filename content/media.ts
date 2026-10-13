@@ -29,7 +29,12 @@ export type Provenance =
   | "Illustration"
   | "Illustrative diagram"
   | "Illustrative diagram · sample data"
-  | "Illustrative diagram · rendered scene, no real footage";
+  | "Illustrative diagram · rendered scene, no real footage"
+  /* Coded dashboards (components/dashboards), per the meerana-product-ui
+     provenance levels: rebuilt from a real screen or recording, or an
+     illustrative interface where no screen exists. */
+  | "Interface reconstruction · sample data"
+  | "Illustrative interface · sample data";
 
 /**
  * A callout anchored on a screen (FINAL-SPEC §5.1, §6.1). `at` is [x, y] as
@@ -170,6 +175,15 @@ export const SCREENS = {
     width: 1920,
     height: 1200,
     alt: "AI in a Box agent matrix: legal, finance, HR, research and IT security agents",
+    provenance: "Product screen · demo data",
+  },
+  /** Already published in public/media/v3 (the retired hero room used it with
+   * this provenance). No callouts: EV-520 is owner-pending. */
+  aiboxGovernance: {
+    src: "/media/v3/wall-12-aibox-governance.webp",
+    width: 1200,
+    height: 750,
+    alt: "AI in a Box summary for today: actions taken by the agents and approvals, each reviewed by a person",
     provenance: "Product screen · demo data",
   },
   /** No callouts: the AI in a Box rows (EV-520) are still owner-pending. */

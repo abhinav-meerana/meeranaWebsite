@@ -51,14 +51,26 @@ export default function SiteFooter() {
           </ul>
         </nav>
 
+        <nav className="footer-col" aria-label="Explore">
+          <p className="annot">Explore</p>
+          <ul>
+            <li>
+              <Link href="/services/">Solutions</Link>
+            </li>
+            <li>
+              <Link href="/#technology">Technology</Link>
+            </li>
+            <li>
+              <Link href="/products/">All six platforms</Link>
+            </li>
+          </ul>
+        </nav>
+
         <nav className="footer-col" aria-label="Company">
           <p className="annot">Company</p>
           <ul>
             <li>
-              <Link href="/company/">Company</Link>
-            </li>
-            <li>
-              <Link href="/services/">Services</Link>
+              <Link href="/company/">About Meerana</Link>
             </li>
             <li>
               <Link href="/contact/">Contact</Link>

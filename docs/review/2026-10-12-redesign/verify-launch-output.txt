@@ -1,0 +1,115 @@
+
+[lint: @media values are shared breakpoints; raw colours only in tokens.css]
+  PASS  @media values across 11 stylesheets
+  PASS  no raw colour outside app/tokens.css
+
+[honesty: no internal notes, placeholders, banned claims or unsourced numbers in out/]
+  PASS  no banned strings across 15 exported pages
+  PASS  no stats counter on the homepage
+  PASS  public/media/proof (client and government marks) is not in the export
+  PASS  uncleared demo videos are not in the export
+
+[links: every internal link resolves; sitemap, icons and per-product OG images (X-01)]
+  PASS  21 distinct internal links, 0 broken
+  PASS  every #anchor on / has a target
+  PASS  every #anchor on /products/ has a target
+  PASS  every #anchor on /products/mandoobee/ has a target
+  PASS  every #anchor on /products/tasree3/ has a target
+  PASS  every #anchor on /products/nazo/ has a target
+  PASS  every #anchor on /products/yisbir/ has a target
+  PASS  every #anchor on /products/wasel/ has a target
+  PASS  every #anchor on /products/ai-in-a-box/ has a target
+  PASS  /sitemap.xml is served — 200
+  PASS  /robots.txt is served — 200
+  PASS  /icon.png is served — 200
+  PASS  /apple-icon.png is served — 200
+  PASS  /opengraph-image.png is served — 200
+  PASS  /products/ is in the sitemap
+  PASS  all six product pages are in the sitemap
+  PASS  OG image, site name, canonical and icon on every route
+  PASS  11 distinct page titles — 11 unique
+  PASS  og:image is unique per product (X-01) — products/mandoobee/og.png products/tasree3/og.png products/nazo/og.png products/yisbir/og.png products/wasel/og.png products/ai-in-a-box/og.png
+  PASS  /products/mandoobee/og.png is a 1200×630 PNG served as image/png — 200 image/png 1200×630 181350 bytes
+  PASS  /products/tasree3/og.png is a 1200×630 PNG served as image/png — 200 image/png 1200×630 173894 bytes
+  PASS  /products/nazo/og.png is a 1200×630 PNG served as image/png — 200 image/png 1200×630 295274 bytes
+  PASS  /products/yisbir/og.png is a 1200×630 PNG served as image/png — 200 image/png 1200×630 376672 bytes
+  PASS  /products/wasel/og.png is a 1200×630 PNG served as image/png — 200 image/png 1200×630 144833 bytes
+  PASS  /products/ai-in-a-box/og.png is a 1200×630 PNG served as image/png — 200 image/png 1200×630 144179 bytes
+
+[console: zero errors, per route and viewport (X-01)]
+  PASS  1440px: 12 routes
+  PASS  1024px: 12 routes
+  PASS  390px: 12 routes
+
+[overflow: no horizontal page scroll at any width]
+  PASS  320×568
+  PASS  390×844
+  PASS  768×1024
+  PASS  1024×520
+  PASS  1280×601
+  PASS  1366×657
+  FAIL  [overflow] stopped early — page.goto: Timeout 90000ms exceeded.
+
+[keyboard: focus stays visible (inside the viewport, below the header)]
+  PASS  1440×900: first 40 Tab stops visible and outlined
+  PASS  1366×657: first 40 Tab stops visible and outlined
+  PASS  1024×768: first 40 Tab stops visible and outlined
+
+[reduced motion: nothing animates, everything is visible, stories stay horizontal]
+  PASS  H1 opacity 1, no transform or filter in 22 samples over 3 s — ""
+  PASS  the story is not pinned — {"motion":"reduced","pin":"static","hidden":0,"blurred":0}
+  PASS  every story beat and caption is visible — 0
+  PASS  no story screen is blurred — 0
+  PASS  /products/tasree3/: static horizontal rail — {"mode":"rail","st":true,"sw":20160,"cw":1440,"n":14}
+  PASS  /products/ai-in-a-box/: static horizontal rail — {"mode":"rail","st":true,"sw":14400,"cw":1440,"n":10}
+
+[menus: CardNav (desktop) and the option wheel (tablet/phone) — focus in, out and back]
+  PASS  Enter opens the CardNav and its three cards
+  PASS  the cards list 14 real destinations (six platforms, explore, company) — 14
+  PASS  Tab reaches the cards after the logo and the call to action
+  PASS  Escape closes it and returns focus to the toggle
+  PASS  aria-controls resolves while the menu is closed
+  FAIL  Enter expands the wheel
+  PASS  Escape collapses it and focus stays on the wheel
+  FAIL  End then Enter goes to Contact — http://localhost:4173/company/
+
+[motion budget: the homepage story is one CSS-sticky scene of a fixed length; short screens get the static layout]
+  PASS  1440×900: story travel 7.00 × innerHeight (= 7), CSS sticky, no pin spacer — wide
+        1440×900: homepage is 20.1 screens long
+  FAIL  1366×657: story travel 2.76 × innerHeight (= 7), CSS sticky, no pin spacer — static
+        1366×657: homepage is 19.1 screens long
+  FAIL  [pin] stopped early — page.goto: Timeout 90000ms exceeded.
+
+[background: WebGL (ColorBends) and the dot field load only on fine-pointer desktops]
+  FAIL  desktop 1440×900: ColorBends + DotField running — mode=live canvases=0 three.js chunks=0
+  FAIL  laptop 1366×657: ColorBends + DotField running — mode=pending canvases=0 three.js chunks=0
+  FAIL  tablet landscape (touch) 1024×768: static gradient, no three.js chunk, no canvas — mode=pending canvases=0 three.js chunks=0
+  PASS  tablet 768×1024: static gradient, no three.js chunk, no canvas — mode=static canvases=0 three.js chunks=0
+  PASS  phone 390×844: static gradient, no three.js chunk, no canvas — mode=static canvases=0 three.js chunks=0
+  PASS  Save-Data on a wide screen: no WebGL or canvas background
+  PASS  reduced motion: ColorBends requests no frames while idle (0 in 1.5 s)
+
+[axe: no serious or critical violations]
+  PASS  1440px /
+  PASS  1440px /products/
+  PASS  1440px /products/mandoobee/
+  PASS  1440px /products/tasree3/
+  PASS  1440px /products/nazo/
+  PASS  1440px /products/yisbir/
+  PASS  1440px /products/wasel/
+  PASS  1440px /products/ai-in-a-box/
+  PASS  1440px /company/
+  PASS  1440px /services/
+  PASS  1440px /contact/
+  PASS  1366px /
+  PASS  1366px /products/
+  PASS  1366px /products/mandoobee/
+  PASS  1366px /products/tasree3/
+  PASS  1366px /products/nazo/
+  PASS  1366px /products/yisbir/
+  PASS  1366px /products/wasel/
+  PASS  1366px /products/ai-in-a-box/
+  FAIL  [axe] stopped early — page.goto: Timeout 90000ms exceeded.
+
+9 check(s) FAILED.
+exit 1
