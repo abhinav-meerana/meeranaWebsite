@@ -1,0 +1,56 @@
+
+[universe 1440×900: six platforms, one pointer-reactive structure]
+  PASS  all six platforms shown, loaded and sharp — 0,0,0,0,0,0
+  PASS  not equally prominent: one central focal screen — area ratio 3.51
+  PASS  intentional overlaps between panels (5 pairs)
+  PASS  panels sit at different depths (translateZ) — -80, -300, -100, -260, -640, 40
+  PASS  each platform is labelled — 6
+  PASS  the whole structure turns with the pointer (left vs right) — rotateY -4.5° → 6.0°
+  PASS  and tilts with vertical movement — rotateX 4.3° vs -4.6°
+  PASS  parallax is depth-aware (near panels move more) — near 25.2px, far 10.2px
+  PASS  rotation stays subtle (≤ 8°) — 6.0°, -4.6°
+  PASS  pointer leaves: it eases back to rest — 0.53°, 0.00°
+
+[background: ColorBends + DotField on desktop, static gradient on touch]
+  PASS  ColorBends renders (WebGL canvas, context alive) — {"w":720,"h":450,"lost":false}
+  PASS  DotField renders its dot grid — {"w":1440,"h":900,"painted":324}
+  PASS  fixed behind all content, never intercepts the pointer — z 0
+  PASS  ColorBends animates over time
+  PASS  the navy glow follows the pointer — --gx 1180
+  PASS  390×844 touch: lightweight static gradient, no canvas — {"mode":"static","canvases":0,"bg":true}
+  PASS  820×1180 touch: lightweight static gradient, no canvas — {"mode":"static","canvases":0,"bg":true}
+
+[desktop CardNav (≥1024 px)]
+  PASS  only the CardNav is active at 1440 px — {"d":"block","m":"none"}
+  PASS  the toggle is a native button — BUTTON
+  PASS  opens: bar grows, three cards stagger in — {"exp":"true","h":337,"cards":[1,1,1],"inert":false,"focus":"hamburger-menu open"}
+  PASS  14 links incl. all six platforms — /products/mandoobee/ /products/tasree3/ /products/nazo/ /products/yisbir/ /products/wasel/ /products/ai-in-a-box/ /services/ /#technology /company/ /products/ /contact/ /company/#co-recognition /company/#co-news mailto:info@meerana.ae
+  PASS  the CTA goes to the real contact page — /contact/
+  PASS  Escape closes it and returns focus to the toggle — {"exp":"false","h":56,"cards":[0,0,0],"inert":true,"focus":"hamburger-menu "}
+  PASS  keyboard: Enter opens, Tab reaches the cards after the logo and CTA
+  PASS  a click outside closes it — {"exp":"false","h":56,"cards":[0,0,0],"inert":true,"focus":""}
+  PASS  rapid toggling settles in the right state (open) — {"exp":"true","h":337,"cards":[1,1,1],"inert":false,"focus":"hamburger-menu open"}
+  PASS  resizing while open re-measures the height (cards fit) — {"nav":351,"cards":342}
+  PASS  a link closes the menu and lands on its section — technology top 92
+
+[prefers-reduced-motion]
+  PASS  1440px: no pinned scroll sequence — reduced, static
+  PASS  1440px: all 12 story headings visible in normal flow
+  PASS  1440px: the six platforms as a still composition, nothing blurred or moved — {"blurred":0,"shown":6,"words":0}
+  PASS  390px: no pinned scroll sequence — reduced, static
+  PASS  390px: all 12 story headings visible in normal flow
+  PASS  390px: the six platforms as a still composition, nothing blurred or moved — {"blurred":0,"shown":6,"words":0}
+  PASS  CardNav opens without the movement — 295px after 250 ms
+  PASS  the background holds still
+
+[JavaScript disabled]
+  PASS  every story heading is in the HTML and visible — {"h1":"Complexity, Meet Clarity.","visible":6,"total":6,"plats":10,"navLinks":14}
+  PASS  the six platforms and their screens are in the HTML — 10
+
+[console: zero errors (including hydration) while using the page]
+  PASS  1440×900: 6 routes, story scrolled
+  PASS  390×844: 6 routes, story scrolled
+  PASS  1024×768: 6 routes, story scrolled
+
+verify-redesign: 41 passed, 0 failed (http://localhost:4173).
+exit 0

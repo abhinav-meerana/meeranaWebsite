@@ -68,6 +68,8 @@ const { SCREENS } = await load("content/media.ts");
 const { SHOWCASE } = await load("content/showcase.ts");
 const company = await load("content/company.ts");
 const { SCENARIO } = await load("content/scenario.ts");
+const demo = await load("content/demo-data.ts");
+const { DASHBOARDS } = await load("content/dashboards.ts");
 
 /* ---- the evidence register ----------------------------------------------- */
 
@@ -373,6 +375,32 @@ scanBanned("company", {
   PRESS: company.PRESS,
   FEATURE_VIDEO: company.FEATURE_VIDEO,
 });
+
+/* ---- coded dashboards (components/dashboards) ---------------------------- */
+
+/* Sample data must look like sample data: no operational telemetry, no
+   people, nothing from the excluded material (README compliance list). */
+const DASHBOARD_BANNED = [
+  [/\buptime\b|\blatency\b|\bSLA\b|nodes online|events\/hour/i, "telemetry figure"],
+  [/\bANPR\b|\bplates?\b/i, "plates / ANPR"],
+  [/\bweapons?\b|\bfirearms?\b|\bK-?9\b|\bVIP\b/i, "excluded board"],
+  [/\bpolice\b|\bministry\b|\bgovernment\b/i, "tenant organisation"],
+  [/sovereignty in your hands/i, "the AI in a Box sovereignty line"],
+  [/\bfaces?\b|\bbehaviou?r\b/i, "faces or behaviour"],
+];
+const DASHBOARD_PROVENANCE = new Set(["Interface reconstruction · sample data", "Illustrative interface · sample data"]);
+const demoData = Object.fromEntries(Object.entries(demo).filter(([, v]) => v && typeof v === "object"));
+scanBanned("demo-data", demoData);
+for (const [path, s] of strings(demoData, "demo-data")) {
+  for (const [re, name] of DASHBOARD_BANNED) if (re.test(s)) fail(path, `${name} in sample data: "${s}"`);
+}
+Object.entries(DASHBOARDS).forEach(([key, d]) => {
+  const where = `DASHBOARDS.${key}`;
+  if (!d.alt) fail(where, "has no alt text");
+  if (!DASHBOARD_PROVENANCE.has(d.provenance)) fail(where, `provenance "${d.provenance}" is not a dashboard label`);
+  if (d.crop && (d.crop.x < 0 || d.crop.y < 0 || d.crop.x + d.crop.w > 1440)) fail(where, "crop leaves the 1440 px canvas");
+});
+scanBanned("dashboards", DASHBOARDS);
 
 /* ---- optional: rendered HTML (P-16) -------------------------------------- */
 

@@ -1,0 +1,88 @@
+
+> meerana-web@0.1.0 prebuild
+> npm run content:check
+
+
+> meerana-web@0.1.0 content:check
+> node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/content-check.mjs
+
+content:check (production build) — scenes: mandoobee 12 · tasree3 14 · nazo 13 · yisbir 14 · wasel 12 · ai-in-a-box 10
+OWNER-PENDING (not in the register yet; neither a pass nor a failure, D8):
+  EV-520: 10 citation(s), e.g. /products/ai-in-a-box/ title; /products/ai-in-a-box/#problem; /products/ai-in-a-box/#people
+PROVISIONAL scenes for owner approval (D4, D9): 24
+  /products/mandoobee/#usecases — One app for the rest of the working day.
+  /products/mandoobee/#deploy — Deploy it your way, under your brand.
+  /products/mandoobee/#faq — What HR and operations teams ask first.
+  /products/tasree3/#usecases — From the first map to the next audit.
+  /products/tasree3/#integrations — Start from the event data you already have.
+  /products/tasree3/#governance — Every change approved. Every version kept.
+  /products/tasree3/#faq — What process teams ask first.
+  /products/nazo/#walkthrough — From request to sealed record.
+  /products/nazo/#ai-actions — Fourteen AI actions, each scoped to a role.
+  /products/nazo/#features — Built for official work.
+  /products/nazo/#usecases — Every official letter, in and out.
+  /products/nazo/#faq — What records teams ask first.
+  /products/yisbir/#people — For teams whose video cannot leave their data centre.
+  /products/yisbir/#usecases — From the archive to the live site.
+  /products/yisbir/#search — Ask for a moment the way you would describe it.
+  /products/yisbir/#deploy — Your infrastructure, the cameras you have.
+  /products/yisbir/#faq — What operations teams ask first.
+  /products/wasel/#walkthrough — Grant, open, monitor, revoke.
+  /products/wasel/#output — One access record.
+  /products/wasel/#usecases — From villas to multi-gate sites.
+  /products/wasel/#faq — What facility managers ask first.
+  /products/ai-in-a-box/#walkthrough — Assign, read, draft, decide, record.
+  /products/ai-in-a-box/#features — Built to sit inside a real organisation.
+  /products/ai-in-a-box/#value — An agent for the desk, not for the demo.
+content:check passed.
+
+> meerana-web@0.1.0 build
+> next build && node scripts/postexport-rsc.mjs
+
+▲ Next.js 16.4.0 (Turbopack)
+✓ Running next.config.ts took 23ms
+- Experiments (use with caution):
+  ✓ inlineCss
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 516ms
+  Running TypeScript ...
+  Finished TypeScript in 1623ms ...
+  Collecting page data using 11 workers ...
+  Generating static pages using 11 workers (0/25) ...
+  Generating static pages using 11 workers (6/25) 
+  Generating static pages using 11 workers (12/25) 
+  Generating static pages using 11 workers (18/25) 
+✓ Generating static pages using 11 workers (25/25) in 1510ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /apple-icon.png
+├ ○ /company
+├ ○ /contact
+├ ○ /icon.png
+├ ○ /opengraph-image.png
+├ ○ /privacy
+├ ○ /products
+├   /products/[slug]
+│ ├ ● /products/mandoobee
+│ ├ ● /products/tasree3
+│ ├ ● /products/nazo
+│ └ ● [+3 more paths]
+├   /products/[slug]/og.png
+│ ├ ● /products/mandoobee/og.png
+│ ├ ● /products/tasree3/og.png
+│ ├ ● /products/nazo/og.png
+│ └ ● [+3 more paths]
+├ ○ /robots.txt
+├ ○ /services
+└ ○ /sitemap.xml
+
+
+○  (Static)  prerendered as static content
+●  (SSG)     prerendered as static HTML (uses generateStaticParams)
+
+postexport-rsc: flattened 12 RSC payload file(s) to the dotted names the client requests.
+exit 0

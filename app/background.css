@@ -1,0 +1,92 @@
+/* ============================================================================
+   The interactive background (components/background/MeeranaInteractiveBackground).
+
+   Fixed behind everything (z-index 0); content sits at z-index 1 and the nav
+   at 60. Every layer is decorative and `pointer-events: none`.
+   --deep (0 → 1, scroll depth) is written on .mib only. Nothing here follows
+   the cursor.
+   ========================================================================== */
+
+.mib {
+  --deep: 0;
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  contain: strict;
+}
+.mib > * {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* 1 · the static base: always painted, and the whole look on touch devices,
+   under reduced motion and without WebGL. A stationary navy gradient with a
+   royal key light from above and a faint cyan rim on the right. */
+.mib-base {
+  background-color: var(--bg-base);
+  background-image:
+    radial-gradient(110% 70% at 50% -14%, var(--bg-royal-soft), transparent 62%),
+    radial-gradient(60% 55% at 92% 18%, var(--bg-cyan-glow), transparent 66%),
+    radial-gradient(80% 70% at 6% 96%, var(--bg-royal-soft), transparent 64%),
+    linear-gradient(to bottom, transparent 40%, var(--bg-floor) 100%);
+}
+
+/* 2 · the deep layer: dark Meerana-logo blue, faded in by scroll depth.
+   Opacity only, so the transition is a compositor change, never a repaint. */
+.mib-deep {
+  opacity: var(--deep);
+  background-color: var(--meerana-deep);
+  background-image:
+    radial-gradient(90% 70% at 50% 110%, var(--bg-deep-glow), transparent 70%),
+    linear-gradient(to bottom, transparent 30%, var(--meerana-deep-floor) 100%);
+}
+
+/* 3 · ColorBends (WebGL). Screen-blended so the bands only ever add light. */
+.mib-bends {
+  mix-blend-mode: screen;
+  opacity: 0.95;
+}
+
+/* React Bits' own container rules (ColorBends sets its container inline). */
+.dot-field-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* 4 · DotField (canvas 2D): a quiet sparkling grid. */
+.mib-dots {
+  opacity: 0.5;
+  -webkit-mask-image: radial-gradient(120% 90% at 50% 40%, var(--mask-solid) 35%, transparent 100%);
+  mask-image: radial-gradient(120% 90% at 50% 40%, var(--mask-solid) 35%, transparent 100%);
+}
+
+/* 5 · vignette and baked grain (scripts/make-grain.mjs). */
+.mib-shade {
+  background: radial-gradient(ellipse 120% 95% at 50% 45%, transparent 48%, var(--vignette) 100%);
+}
+.mib-shade::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("/textures/grain.png");
+  background-size: var(--grain-size) var(--grain-size);
+  opacity: var(--grain-opacity);
+  mix-blend-mode: overlay;
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .mib-bends,
+  .mib-dots,
+  .mib-shade::after {
+    display: none;
+  }
+}
+@media (forced-colors: active) {
+  .mib {
+    display: none;
+  }
+}

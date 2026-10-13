@@ -1,0 +1,149 @@
+
+[lint: @media values are shared breakpoints; raw colours only in tokens.css]
+  PASS  @media values across 12 stylesheets
+  PASS  no raw colour outside app/tokens.css
+
+[honesty: no internal notes, placeholders, banned claims or unsourced numbers in out/]
+  PASS  no banned strings across 15 exported pages
+  PASS  no stats counter on the homepage
+  PASS  public/media/proof (client and government marks) is not in the export
+  PASS  uncleared demo videos are not in the export
+
+[links: every internal link resolves; sitemap, icons and per-product OG images (X-01)]
+  PASS  21 distinct internal links, 0 broken
+  PASS  every #anchor on / has a target
+  PASS  every #anchor on /products/ has a target
+  PASS  every #anchor on /products/mandoobee/ has a target
+  PASS  every #anchor on /products/tasree3/ has a target
+  PASS  every #anchor on /products/nazo/ has a target
+  PASS  every #anchor on /products/yisbir/ has a target
+  PASS  every #anchor on /products/wasel/ has a target
+  PASS  every #anchor on /products/ai-in-a-box/ has a target
+  PASS  /sitemap.xml is served — 200
+  PASS  /robots.txt is served — 200
+  PASS  /icon.png is served — 200
+  PASS  /apple-icon.png is served — 200
+  PASS  /opengraph-image.png is served — 200
+  PASS  /products/ is in the sitemap
+  PASS  all six product pages are in the sitemap
+  PASS  OG image, site name, canonical and icon on every route
+  PASS  11 distinct page titles — 11 unique
+  PASS  og:image is unique per product (X-01) — products/mandoobee/og.png products/tasree3/og.png products/nazo/og.png products/yisbir/og.png products/wasel/og.png products/ai-in-a-box/og.png
+  PASS  /products/mandoobee/og.png is a 1200×630 PNG served as image/png — 200 image/png 1200×630 181350 bytes
+  PASS  /products/tasree3/og.png is a 1200×630 PNG served as image/png — 200 image/png 1200×630 173894 bytes
+  PASS  /products/nazo/og.png is a 1200×630 PNG served as image/png — 200 image/png 1200×630 295274 bytes
+  PASS  /products/yisbir/og.png is a 1200×630 PNG served as image/png — 200 image/png 1200×630 376672 bytes
+  PASS  /products/wasel/og.png is a 1200×630 PNG served as image/png — 200 image/png 1200×630 144833 bytes
+  PASS  /products/ai-in-a-box/og.png is a 1200×630 PNG served as image/png — 200 image/png 1200×630 144179 bytes
+
+[console: zero errors, per route and viewport (X-01)]
+  PASS  1440px: 12 routes
+  PASS  1024px: 12 routes
+  PASS  390px: 12 routes
+
+[overflow: no horizontal page scroll at any width]
+  PASS  320×568
+  PASS  390×844
+  PASS  768×1024
+  PASS  1024×520
+  PASS  1280×601
+  PASS  1366×657
+  PASS  1440×900
+  PASS  1920×937
+
+[keyboard: focus stays visible (inside the viewport, below the header)]
+  PASS  1440×900: first 40 Tab stops visible and outlined
+  PASS  1366×657: first 40 Tab stops visible and outlined
+  PASS  1024×768: first 40 Tab stops visible and outlined
+
+[reduced motion: nothing animates, everything is visible, stories stay horizontal]
+  PASS  H1 opacity 1, no transform or filter in 25 samples over 3 s — ""
+  PASS  the story is not pinned — {"motion":"reduced","pin":"static","hidden":0,"blurred":0}
+  PASS  every story beat and caption is visible — 0
+  PASS  no story screen is blurred — 0
+  PASS  /products/tasree3/: static horizontal rail — {"mode":"rail","st":true,"sw":20160,"cw":1440,"n":14}
+  PASS  /products/ai-in-a-box/: static horizontal rail — {"mode":"rail","st":true,"sw":14400,"cw":1440,"n":10}
+
+[menus: PillNav (desktop) and the option wheel (tablet/phone) — focus in, out and back]
+  PASS  Enter opens the Platforms panel
+  PASS  the panel lists 7 real destinations (six platforms and the overview) — 7
+  PASS  Tab from the open button moves into the panel
+  PASS  Escape closes it and returns focus to the button
+  PASS  aria-controls resolves while the panel is closed
+  PASS  Enter expands the wheel
+  PASS  Escape collapses it and focus stays on the wheel
+  PASS  End then Enter goes to Contact — http://localhost:4173/contact/
+
+[motion budget: the homepage story is one CSS-sticky scene of a fixed length; short screens get the static layout]
+  PASS  1440×900: story travel 7.40 × innerHeight (= 7.4), CSS sticky, no pin spacer — wide
+        1440×900: homepage is 20.5 screens long
+  PASS  1366×657: story travel 7.40 × innerHeight (= 7.4), CSS sticky, no pin spacer — wide
+        1366×657: homepage is 23.8 screens long
+  PASS  1920×937: story travel 7.40 × innerHeight (= 7.4), CSS sticky, no pin spacer — wide
+        1920×937: homepage is 20.5 screens long
+  PASS  1024×768: story travel 7.40 × innerHeight (= 7.4), CSS sticky, no pin spacer — wide
+        1024×768: homepage is 20.9 screens long
+  PASS  390×844: story travel 5.90 × innerHeight (= 5.9), CSS sticky, no pin spacer — narrow
+        390×844: homepage is 26.8 screens long
+  PASS  768×1024: story travel 5.90 × innerHeight (= 5.9), CSS sticky, no pin spacer — narrow
+        768×1024: homepage is 18.6 screens long
+  PASS  1280×480: short landscape → static story, no pin — {"travel":3.949934895833333,"sticky":false,"spacer":false,"layout":"static","screens":24.491666666666667}
+        1280×480: homepage is 24.5 screens long
+  PASS  1366×657 /products/mandoobee/: stage, 12 scenes, length 5937 = 5937 (P-02) — mode stage
+  PASS  1366×657 /products/tasree3/: stage, 14 scenes, length 6897 = 6897 (P-02) — mode stage
+  PASS  1366×657 /products/nazo/: stage, 13 scenes, length 6417 = 6417 (P-02) — mode stage
+  PASS  1366×657 /products/yisbir/: stage, 14 scenes, length 6897 = 6897 (P-02) — mode stage
+  PASS  1366×657 /products/wasel/: stage, 12 scenes, length 5937 = 5937 (P-02) — mode stage
+  PASS  1366×657 /products/ai-in-a-box/: stage, 10 scenes, length 4977 = 4977 (P-02) — mode stage
+  PASS  1920×937 /products/mandoobee/: stage, 12 scenes, length 8152 = 8152 (P-02) — mode stage
+  PASS  1920×937 /products/tasree3/: stage, 14 scenes, length 9464 = 9464 (P-02) — mode stage
+  PASS  1920×937 /products/nazo/: stage, 13 scenes, length 8808 = 8808 (P-02) — mode stage
+  PASS  1920×937 /products/yisbir/: stage, 14 scenes, length 9464 = 9464 (P-02) — mode stage
+  PASS  1920×937 /products/wasel/: stage, 12 scenes, length 8152 = 8152 (P-02) — mode stage
+  PASS  1920×937 /products/ai-in-a-box/: stage, 10 scenes, length 6840 = 6840 (P-02) — mode stage
+
+[background: WebGL (ColorBends) and the dot field load only on fine-pointer desktops]
+  PASS  desktop 1440×900: ColorBends + DotField running — mode=live canvases=2 three.js chunks=1
+  PASS  laptop 1366×657: ColorBends + DotField running — mode=live canvases=2 three.js chunks=1
+  PASS  tablet landscape (touch) 1024×768: static gradient, no three.js chunk, no canvas — mode=static canvases=0 three.js chunks=0
+  PASS  tablet 768×1024: static gradient, no three.js chunk, no canvas — mode=static canvases=0 three.js chunks=0
+  PASS  phone 390×844: static gradient, no three.js chunk, no canvas — mode=static canvases=0 three.js chunks=0
+  PASS  Save-Data on a wide screen: no WebGL or canvas background
+  PASS  reduced motion: ColorBends requests no frames while idle (0 in 1.5 s)
+
+[axe: no serious or critical violations]
+  PASS  1440px /
+  PASS  1440px /products/
+  PASS  1440px /products/mandoobee/
+  PASS  1440px /products/tasree3/
+  PASS  1440px /products/nazo/
+  PASS  1440px /products/yisbir/
+  PASS  1440px /products/wasel/
+  PASS  1440px /products/ai-in-a-box/
+  PASS  1440px /company/
+  PASS  1440px /services/
+  PASS  1440px /contact/
+  PASS  1366px /
+  PASS  1366px /products/
+  PASS  1366px /products/mandoobee/
+  PASS  1366px /products/tasree3/
+  PASS  1366px /products/nazo/
+  PASS  1366px /products/yisbir/
+  PASS  1366px /products/wasel/
+  PASS  1366px /products/ai-in-a-box/
+  PASS  1366px /company/
+  PASS  1366px /services/
+  PASS  1366px /contact/
+  PASS  390px /
+  PASS  390px /products/
+  PASS  390px /products/mandoobee/
+  PASS  390px /products/tasree3/
+  PASS  390px /products/nazo/
+  PASS  390px /products/yisbir/
+  PASS  390px /products/wasel/
+  PASS  390px /products/ai-in-a-box/
+  PASS  390px /company/
+  PASS  390px /services/
+  PASS  390px /contact/
+
+All checks passed.

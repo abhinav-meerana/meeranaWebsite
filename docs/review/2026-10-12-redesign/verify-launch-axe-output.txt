@@ -1,0 +1,37 @@
+
+[axe: no serious or critical violations]
+  PASS  1440px /
+  PASS  1440px /products/
+  PASS  1440px /products/mandoobee/
+  PASS  1440px /products/tasree3/
+  PASS  1440px /products/nazo/
+  PASS  1440px /products/yisbir/
+  PASS  1440px /products/wasel/
+  PASS  1440px /products/ai-in-a-box/
+  PASS  1440px /company/
+  PASS  1440px /services/
+  PASS  1440px /contact/
+  PASS  1366px /
+  PASS  1366px /products/
+  PASS  1366px /products/mandoobee/
+  PASS  1366px /products/tasree3/
+  PASS  1366px /products/nazo/
+  PASS  1366px /products/yisbir/
+  PASS  1366px /products/wasel/
+  PASS  1366px /products/ai-in-a-box/
+  PASS  1366px /company/
+  PASS  1366px /services/
+  PASS  1366px /contact/
+  PASS  390px /
+  PASS  390px /products/
+  PASS  390px /products/mandoobee/
+  PASS  390px /products/tasree3/
+  PASS  390px /products/nazo/
+  PASS  390px /products/yisbir/
+  PASS  390px /products/wasel/
+  PASS  390px /products/ai-in-a-box/
+  PASS  390px /company/
+  PASS  390px /services/
+  PASS  390px /contact/
+
+All checks passed.
